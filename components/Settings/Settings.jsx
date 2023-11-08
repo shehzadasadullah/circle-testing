@@ -87,7 +87,7 @@ function Dashboard() {
         .then((result) => {
           console.log(result);
           if (result.result) {
-            window.open(result.data);
+            window.push(result.data);
           } else {
             toast.error("Something went wrong!");
           }
