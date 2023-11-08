@@ -87,7 +87,7 @@ function Dashboard() {
         .then((result) => {
           console.log(result);
           if (result.result) {
-            window.push(result.data);
+            router.push(result.data);
           } else {
             toast.error("Something went wrong!");
           }
