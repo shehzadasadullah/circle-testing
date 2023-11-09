@@ -72,6 +72,10 @@ function Dashboard() {
   useEffect(() => {
     const codeParam = router.query.code || "";
     const integration = localStorage.getItem("integration");
+    if (!codeParam) {
+      localStorage.removeItem("integration");
+      localStorage.removeItem("loader");
+    }
     if (codeParam && integration === "eventBrite") {
       setEventBriteAccessCode(codeParam);
     }
