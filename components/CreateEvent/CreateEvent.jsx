@@ -9,6 +9,7 @@ import { addDoc } from "firebase/firestore";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { db } from "../../firebase";
 import { auth } from "../../firebase";
+import { getAuth, getIdToken } from "firebase/auth";
 import { Timestamp } from "firebase/firestore";
 import moment from "moment";
 import { DateTime } from "luxon";
@@ -92,10 +93,6 @@ const CreateEvent = () => {
   const [eventWebsite, setEventWebsite] = useState("");
   const [eventLocation, setEventLocation] = useState("");
   const [eventSponsorShip, setEventSponsorShip] = useState("");
-  const [isOnLinkedIn, setIsOnLinkedIn] = useState(false);
-  const [isOnFaceBook, setIsOnFaceBook] = useState(false);
-  const [isOnEventBrite, setIsOnEventBrite] = useState(false);
-  const [isOnMeetUp, setIsOnMeetUp] = useState(false);
   const [isOnExhibitors, setIsOnExhibitors] = useState(false);
   const [isOnSponsorship, setIsOnSponsorship] = useState(false);
   const [isOnPrice, setIsOnPrice] = useState(false);
@@ -137,6 +134,53 @@ const CreateEvent = () => {
   const [fetchCircleDataLoader, setFetchCircleDataLoader] = useState(true);
   const [fetchAllUserLoader, setFetchAllUserLoader] = useState(true);
   const [fetchCoHostsLoader, setFetchCoHostsLoader] = useState(true);
+  const [circleAccessToken, setCircleAccessToken] = useState("");
+  const [thirdPartyIntegrations, setThirdPartyIntegrations] = useState([]);
+  const [thirdPartyLoader, setThirdPartyLoader] = useState(false);
+  const [isThirdPartyEventPosted, setIsThirdPartyEventPosted] = useState("");
+  const [eventID, setEventID] = useState("");
+
+  useEffect(() => {
+    const getIdTokenForUser = async () => {
+      if (user) {
+        try {
+          const idToken = await getIdToken(user);
+          setCircleAccessToken(idToken);
+        } catch (error) {
+          console.error("Error getting ID token:", error);
+        }
+      }
+    };
+    console.log("USER DATA", user);
+    getIdTokenForUser();
+  }, [user]);
+
+  const getThirdPartyIntegrations = async () => {
+    var myHeaders = new Headers();
+    myHeaders.append("accessToken", circleAccessToken);
+
+    var requestOptions = {
+      method: "GET",
+      headers: myHeaders,
+      redirect: "follow",
+    };
+
+    await fetch(
+      "https://api.circle.ooo/api/circle/third-party/get",
+      requestOptions
+    )
+      .then((response) => response.json())
+      .then((result) => {
+        if (result.data.length > 0) {
+          setThirdPartyIntegrations(result.data);
+        }
+      })
+      .catch((error) => console.log("error", error));
+  };
+
+  useEffect(() => {
+    if (user) getThirdPartyIntegrations();
+  }, [user, circleAccessToken]);
 
   const uploadImage = async (file) => {
     const randomID = generateRandomID();
@@ -151,22 +195,6 @@ const CreateEvent = () => {
   function generateRandomID() {
     return Math.random().toString(36).substring(2, 10);
   }
-
-  const toggleSwitchLinkedIn = () => {
-    setIsOnLinkedIn(!isOnLinkedIn);
-  };
-
-  const toggleSwitchFaceBook = () => {
-    setIsOnFaceBook(!isOnFaceBook);
-  };
-
-  const toggleSwitchEventBrite = () => {
-    setIsOnEventBrite(!isOnEventBrite);
-  };
-
-  const toggleSwitchMeetUp = () => {
-    setIsOnMeetUp(!isOnMeetUp);
-  };
 
   const toggleSwitchExhibitors = () => {
     setIsOnExhibitors(!isOnExhibitors);
@@ -608,6 +636,7 @@ const CreateEvent = () => {
                 const eventsCollectionRef = collection(db, "events"); // 'events' is the name of your Firestore collection
                 const docRef = await addDoc(eventsCollectionRef, eventData);
                 console.log("Event added with ID: ", docRef.id);
+                setEventID(docRef.id);
                 // Assuming you have a reference to your Firestore document using a docRef
                 const docRefUpdate = doc(db, "events", docRef.id); // Replace with your actual document ID
                 // Create an object with the fields you want to update
@@ -709,6 +738,53 @@ const CreateEvent = () => {
 
     const userReferences = Array.from(userReferencesMap.values());
     return userReferences;
+  };
+
+  const handleThirdPartyPost = (platform) => {
+    if (eventID === "") {
+      toast.error("Event is not created yet, Please create an event first!");
+    } else {
+      setThirdPartyLoader(true);
+      console.log("PLATfORM: ", platform);
+
+      try {
+        var myHeaders = new Headers();
+        myHeaders.append("accessToken", circleAccessToken);
+
+        var requestOptions = {
+          method: "GET",
+          headers: myHeaders,
+          redirect: "follow",
+        };
+
+        fetch(
+          `https://api.circle.ooo/api/circle/third-party/publish?eventId=${eventID}&platform=${platform}`,
+          requestOptions
+        )
+          .then((response) => response.json())
+          .then((result) => {
+            console.log(result);
+            if (result.result) {
+              toast.success(`Event Published on ${platform} Successfully!`);
+              setThirdPartyLoader(false);
+              setIsThirdPartyEventPosted(platform);
+            } else {
+              toast.error("Something went wrong while publishing event");
+              setThirdPartyLoader(false);
+              setIsThirdPartyEventPosted("");
+            }
+          })
+          .catch((error) => {
+            setThirdPartyLoader(false);
+            setIsThirdPartyEventPosted("");
+            toast.error("Something went wrong while publishing event");
+          });
+      } catch (error) {
+        setThirdPartyLoader(false);
+        setIsThirdPartyEventPosted("");
+        toast.error("Something went wrong while publishing event");
+      }
+    }
   };
 
   return (
@@ -1226,96 +1302,60 @@ const CreateEvent = () => {
                 <div className="w-full lg:w-4/12 h-auto flex flex-col justify-center items-center p-2 pt-0 lg:pt-10 lg:p-10">
                   <div className="flex bg-[#F9F9F9] w-full h-auto flex-col justify-start items-start rounded-lg p-10 lg:mt-[-13%]">
                     <div className="text-[#101820] w-full h-auto border-b-2 border-[#E0E0E0] pb-5 font-semibold text-lg">
-                      <p>Upload To Social Media</p>
+                      <p>Upload To Third Party Platform</p>
                     </div>
-                    <div className="flex justify-between text-[#292D32] flex-row w-full h-auto mt-5">
-                      <div>LinkedIn</div>
-                      <div>
-                        <label
-                          className={`${
-                            isOnLinkedIn ? "bg-[#7367F0]" : "bg-[#E2E2E2]"
-                          } relative inline-flex items-center h-6 rounded-full w-11 cursor-pointer`}
-                        >
-                          <input
-                            type="checkbox"
-                            className="absolute h-0 w-0 opacity-0"
-                            onChange={toggleSwitchLinkedIn}
-                            checked={isOnLinkedIn}
-                          />
-                          <span
-                            className={`${
-                              isOnLinkedIn ? "translate-x-6" : "translate-x-1"
-                            } inline-block w-4 h-4 transform translate-x-0.5 bg-white rounded-full transition-transform duration-200 ease-in-out`}
-                          ></span>
-                        </label>
-                      </div>
-                    </div>
-                    <div className="flex justify-between text-[#292D32] flex-row w-full h-auto mt-2">
-                      <div>FaceBook</div>
-                      <div>
-                        <label
-                          className={`${
-                            isOnFaceBook ? "bg-[#7367F0]" : "bg-[#E2E2E2]"
-                          } relative inline-flex items-center h-6 rounded-full w-11 cursor-pointer`}
-                        >
-                          <input
-                            type="checkbox"
-                            className="absolute h-0 w-0 opacity-0"
-                            onChange={toggleSwitchFaceBook}
-                            checked={isOnFaceBook}
-                          />
-                          <span
-                            className={`${
-                              isOnFaceBook ? "translate-x-6" : "translate-x-1"
-                            } inline-block w-4 h-4 transform translate-x-0.5 bg-white rounded-full transition-transform duration-200 ease-in-out`}
-                          ></span>
-                        </label>
-                      </div>
-                    </div>
-                    <div className="flex justify-between text-[#292D32] flex-row w-full h-auto mt-2">
-                      <div>EventBrite</div>
-                      <div>
-                        <label
-                          className={`${
-                            isOnEventBrite ? "bg-[#7367F0]" : "bg-[#E2E2E2]"
-                          } relative inline-flex items-center h-6 rounded-full w-11 cursor-pointer`}
-                        >
-                          <input
-                            type="checkbox"
-                            className="absolute h-0 w-0 opacity-0"
-                            onChange={toggleSwitchEventBrite}
-                            checked={isOnEventBrite}
-                          />
-                          <span
-                            className={`${
-                              isOnEventBrite ? "translate-x-6" : "translate-x-1"
-                            } inline-block w-4 h-4 transform translate-x-0.5 bg-white rounded-full transition-transform duration-200 ease-in-out`}
-                          ></span>
-                        </label>
-                      </div>
-                    </div>
-                    <div className="flex justify-between text-[#292D32] flex-row w-full h-auto mt-2">
-                      <div>MeetUp</div>
-                      <div>
-                        <label
-                          className={`${
-                            isOnMeetUp ? "bg-[#7367F0]" : "bg-[#E2E2E2]"
-                          } relative inline-flex items-center h-6 rounded-full w-11 cursor-pointer`}
-                        >
-                          <input
-                            type="checkbox"
-                            className="absolute h-0 w-0 opacity-0"
-                            onChange={toggleSwitchMeetUp}
-                            checked={isOnMeetUp}
-                          />
-                          <span
-                            className={`${
-                              isOnMeetUp ? "translate-x-6" : "translate-x-1"
-                            } inline-block w-4 h-4 transform translate-x-0.5 bg-white rounded-full transition-transform duration-200 ease-in-out`}
-                          ></span>
-                        </label>
-                      </div>
-                    </div>
+                    {thirdPartyIntegrations.length > 0 &&
+                      thirdPartyIntegrations?.map((item) => (
+                        <>
+                          <div className="flex justify-between items-center text-[#292D32] font-semibold flex-row w-full h-auto mt-2">
+                            <div>{item.integrationType}</div>
+                            <div>
+                              {thirdPartyLoader ? (
+                                <>
+                                  <div className="flex justify-center items-center w-full p-4">
+                                    <ThreeDots
+                                      height="20"
+                                      color="#007BAB"
+                                      width="60"
+                                      radius="9"
+                                      ariaLabel="three-dots-loading"
+                                      visible={true}
+                                    />
+                                  </div>
+                                </>
+                              ) : isThirdPartyEventPosted ===
+                                item.integrationType ? (
+                                <>
+                                  <button
+                                    disabled={true}
+                                    className={`font14 font-medium rounded-xl py-2 px-4 font-Montserrat text-[#fff] border-2 border-[#4BB543] bg-[#4BB543]`}
+                                  >
+                                    <div className="flex justify-center font-bold text-[20pt] items-center">
+                                      ✓
+                                    </div>
+                                  </button>
+                                </>
+                              ) : (
+                                <>
+                                  <button
+                                    onClick={() => {
+                                      handleThirdPartyPost(
+                                        item.integrationType
+                                      );
+                                    }}
+                                    disabled={thirdPartyLoader}
+                                    className={`font14 font-medium rounded-xl py-2 px-3 font-Montserrat text-[#fff] hover:text-[#007BAB] border-2 border-[#007BAB] hover:bg-transparent bg-[#007BAB]`}
+                                  >
+                                    <div className="flex justify-center items-center">
+                                      Upload
+                                    </div>
+                                  </button>
+                                </>
+                              )}
+                            </div>
+                          </div>
+                        </>
+                      ))}
                   </div>
                   <div className="flex bg-[#F9F9F9] mt-5 w-full h-auto flex-col justify-start items-start rounded-lg p-10">
                     <div className="text-[#101820] w-full h-auto border-b-2 border-[#E0E0E0] pb-5 font-semibold text-lg">
