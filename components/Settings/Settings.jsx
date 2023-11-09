@@ -14,24 +14,24 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Register from "../Home/Register";
 import { IoIosArrowForward } from "react-icons/io";
+import { ThreeDots } from "react-loader-spinner";
 
 function Dashboard() {
   const [user] = useAuthState(auth);
   const router = useRouter();
   const [activeView, setActiveView] = useState("integrations");
-  const [isOnLinkedIn, setIsOnLinkedIn] = useState(false);
-  const [isOnFaceBook, setIsOnFaceBook] = useState(false);
-  const [isOnEventBrite, setIsOnEventBrite] = useState(false);
-  const [isOnMeetUp, setIsOnMeetUp] = useState(false);
   const [showSideBar, setShowSideBar] = useState(true);
   const [circleAccessToken, setCircleAccessToken] = useState("");
-  const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [eventBriteLoader, setEventBriteLoader] = useState(false);
+  const [meetUpLoader, setMeetUpLoader] = useState(false);
+  const [isIntegratedEventBrite, setIsIntegratedEventBrite] = useState(false);
+  const [isIntegratedMeetUp, setIsIntegratedMeetUp] = useState(false);
+  const [eventBriteAccessCode, setEventBriteAccessCode] = useState("");
+  const [meetUpAccessCode, setMeetUpAccessCode] = useState("");
 
   useEffect(() => {
-    // Define your breakpoint for "md" here (e.g., 768 pixels).
     const mdBreakpoint = 992;
-
     const handleResize = () => {
       if (window.innerWidth <= mdBreakpoint) {
         setShowSideBar(false);
@@ -39,14 +39,8 @@ function Dashboard() {
         setShowSideBar(true);
       }
     };
-
-    // Add an event listener for window resize
     window.addEventListener("resize", handleResize);
-
-    // Initial check on component mount
     handleResize();
-
-    // Clean up the event listener when the component unmounts
     return () => {
       window.removeEventListener("resize", handleResize);
     };
@@ -67,52 +61,6 @@ function Dashboard() {
     getIdTokenForUser();
   }, [user]);
 
-  useEffect(() => {
-    if (isOnEventBrite) {
-      setLoading(true);
-      var myHeaders = new Headers();
-      myHeaders.append("accessToken", circleAccessToken);
-
-      var requestOptions = {
-        method: "GET",
-        headers: myHeaders,
-        redirect: "follow",
-      };
-
-      fetch(
-        "https://api.circle.ooo/api/circle/third-party/eventbrite/oauth-url",
-        requestOptions
-      )
-        .then((response) => response.json())
-        .then((result) => {
-          console.log(result);
-          if (result.result) {
-            router.push(result.data);
-          } else {
-            toast.error("Something went wrong!");
-          }
-          setLoading(false);
-        })
-        .catch((error) => console.log("error", error));
-    }
-  }, [isOnEventBrite]);
-
-  const toggleSwitchLinkedIn = () => {
-    setIsOnLinkedIn(!isOnLinkedIn);
-  };
-
-  const toggleSwitchFaceBook = () => {
-    setIsOnFaceBook(!isOnFaceBook);
-  };
-
-  const toggleSwitchEventBrite = () => {
-    setIsOnEventBrite(!isOnEventBrite);
-  };
-
-  const toggleSwitchMeetUp = () => {
-    setIsOnMeetUp(!isOnMeetUp);
-  };
-
   const switchView = (view) => {
     setActiveView(view);
   };
@@ -121,7 +69,129 @@ function Dashboard() {
     setShowModal(true);
   };
 
-  //logout function
+  useEffect(() => {
+    const codeParam = router.query.code || "";
+    const integration = localStorage.getItem("integration");
+    if (codeParam && integration === "eventBrite") {
+      setEventBriteAccessCode(codeParam);
+    }
+    if (codeParam && integration === "meetUp") {
+      setMeetUpAccessCode(codeParam);
+    }
+  }, [user]);
+
+  useEffect(() => {
+    const integration = localStorage.getItem("integration");
+    const loader = localStorage.getItem("loader");
+    if (integration && integration === "eventBrite") {
+      if (loader && loader === "true") {
+        setEventBriteLoader(true);
+        if (eventBriteAccessCode !== "") {
+          var myHeaders = new Headers();
+          myHeaders.append("accessToken", circleAccessToken);
+          var requestOptions = {
+            method: "GET",
+            headers: myHeaders,
+            redirect: "follow",
+          };
+
+          fetch(
+            `https://api.circle.ooo/api/circle/third-party/eventbrite/integrate?accessCode=${eventBriteAccessCode}`,
+            requestOptions
+          )
+            .then((response) => response.json())
+            .then((result) => {
+              if (result.result === true) {
+                if (result.message === "eventbrite integrated successfully") {
+                  setEventBriteLoader(false);
+                  setIsIntegratedEventBrite(true);
+                  toast.success("Eventbrite integrated successfully!");
+                  localStorage.removeItem("integration");
+                  localStorage.removeItem("loader");
+                }
+              }
+            })
+            .catch((error) => console.log("error", error));
+        }
+      }
+    }
+  }, [eventBriteAccessCode]);
+
+  useEffect(() => {
+    const integration = localStorage.getItem("integration");
+    const loader = localStorage.getItem("loader");
+    if (integration && integration === "meetUp") {
+      if (loader && loader === "true") {
+        setMeetUpLoader(true);
+        if (meetUpAccessCode !== "") {
+          var myHeaders = new Headers();
+          myHeaders.append("accessToken", circleAccessToken);
+          var requestOptions = {
+            method: "GET",
+            headers: myHeaders,
+            redirect: "follow",
+          };
+
+          fetch(
+            `https://api.circle.ooo/api/circle/third-party/meetup/integrate?accessCode=${meetUpAccessCode}`,
+            requestOptions
+          )
+            .then((response) => response.json())
+            .then((result) => {
+              console.log("MEETUP RESULT: ", result);
+              // if (result.result === true) {
+              //   if (result.message === "eventbrite integrated successfully") {
+              //     setEventBriteLoader(false);
+              //     setIsIntegratedEventBrite(true);
+              //     toast.success("Eventbrite integrated successfully!");
+              //     localStorage.removeItem("integration");
+              //     localStorage.removeItem("loader");
+              //   }
+              // }
+            })
+            .catch((error) => console.log("error", error));
+        }
+      }
+    }
+  }, [meetUpAccessCode]);
+
+  const getThirdPartyIntegrations = async () => {
+    var myHeaders = new Headers();
+    myHeaders.append("accessToken", circleAccessToken);
+
+    var requestOptions = {
+      method: "GET",
+      headers: myHeaders,
+      redirect: "follow",
+    };
+
+    await fetch(
+      "https://api.circle.ooo/api/circle/third-party/get",
+      requestOptions
+    )
+      .then((response) => response.json())
+      .then((result) => {
+        if (result.data.length > 0) {
+          result.data.map((item) => {
+            if (item.integrationType === "EVENTBRITE") {
+              setEventBriteLoader(false);
+              setIsIntegratedEventBrite(true);
+            }
+
+            if (item.integrationType === "MEETUP") {
+              setMeetUpLoader(false);
+              setIsIntegratedMeetUp(true);
+            }
+          });
+        }
+      })
+      .catch((error) => console.log("error", error));
+  };
+
+  useEffect(() => {
+    if (circleAccessToken !== "") getThirdPartyIntegrations();
+  }, [user, eventBriteAccessCode, circleAccessToken, meetUpAccessCode]);
+
   const logout = async () => {
     try {
       await signOut(auth);
@@ -135,6 +205,62 @@ function Dashboard() {
     } catch (error) {
       console.log("Error logging out:", error);
     }
+  };
+
+  const handleEventBriteIntegration = () => {
+    setEventBriteLoader(true);
+    var myHeaders = new Headers();
+    myHeaders.append("accessToken", circleAccessToken);
+
+    var requestOptions = {
+      method: "GET",
+      headers: myHeaders,
+      redirect: "follow",
+    };
+
+    fetch(
+      "https://api.circle.ooo/api/circle/third-party/eventbrite/oauth-url",
+      requestOptions
+    )
+      .then((response) => response.json())
+      .then((result) => {
+        if (result.result) {
+          localStorage.setItem("integration", "eventBrite");
+          localStorage.setItem("loader", "true");
+          router.push(result.data);
+        } else {
+          toast.error("Something went wrong!");
+        }
+      })
+      .catch((error) => console.log("error", error));
+  };
+
+  const handleMeetUpIntegration = () => {
+    setMeetUpLoader(true);
+    var myHeaders = new Headers();
+    myHeaders.append("accessToken", circleAccessToken);
+
+    var requestOptions = {
+      method: "GET",
+      headers: myHeaders,
+      redirect: "follow",
+    };
+
+    fetch(
+      "https://api.circle.ooo/api/circle/third-party/meetup/oauth-url",
+      requestOptions
+    )
+      .then((response) => response.json())
+      .then((result) => {
+        if (result.result) {
+          localStorage.setItem("integration", "meetUp");
+          localStorage.setItem("loader", "true");
+          router.push(result.data);
+        } else {
+          toast.error("Something went wrong!");
+        }
+      })
+      .catch((error) => console.log("error", error));
   };
 
   return (
@@ -238,7 +364,7 @@ function Dashboard() {
                 <div className="flex flex-row justify-center items-center">
                   <div className="rounded-full border-2 w-10 h-10">
                     <img
-                      src={user?.photoURL}
+                      src={user?.photoURL ? user?.photoURL : img.src}
                       className="rounded-full w-full h-full object-cover"
                       alt=""
                     />
@@ -265,99 +391,94 @@ function Dashboard() {
                     Meetup, LinkedIn etc.)
                   </p>
                   <div className="flex w-full h-auto flex-col justify-start items-start rounded-lg mt-5">
-                    {/* <div className="flex justify-between text-[#292D32] flex-row w-full h-auto mt-5">
-                      <div className="text-[#292D32] font-semibold">
-                        LinkedIn
-                      </div>
-                      <div>
-                        <label
-                          className={`${
-                            isOnLinkedIn ? "bg-[#7367F0]" : "bg-[#E2E2E2]"
-                          } relative inline-flex items-center h-6 rounded-full w-11 cursor-pointer`}
-                        >
-                          <input
-                            type="checkbox"
-                            className="absolute h-0 w-0 opacity-0"
-                            onChange={toggleSwitchLinkedIn}
-                            checked={isOnLinkedIn}
-                          />
-                          <span
-                            className={`${
-                              isOnLinkedIn ? "translate-x-6" : "translate-x-1"
-                            } inline-block w-4 h-4 transform translate-x-0.5 bg-white rounded-full transition-transform duration-200 ease-in-out`}
-                          ></span>
-                        </label>
-                      </div>
-                    </div>
-                    <div className="flex justify-between text-[#292D32] flex-row w-full h-auto mt-2">
-                      <div className="text-[#292D32] font-semibold">
-                        FaceBook
-                      </div>
-                      <div>
-                        <label
-                          className={`${
-                            isOnFaceBook ? "bg-[#7367F0]" : "bg-[#E2E2E2]"
-                          } relative inline-flex items-center h-6 rounded-full w-11 cursor-pointer`}
-                        >
-                          <input
-                            type="checkbox"
-                            className="absolute h-0 w-0 opacity-0"
-                            onChange={toggleSwitchFaceBook}
-                            checked={isOnFaceBook}
-                          />
-                          <span
-                            className={`${
-                              isOnFaceBook ? "translate-x-6" : "translate-x-1"
-                            } inline-block w-4 h-4 transform translate-x-0.5 bg-white rounded-full transition-transform duration-200 ease-in-out`}
-                          ></span>
-                        </label>
-                      </div>
-                    </div> */}
                     <div className="flex justify-between text-[#292D32] flex-row w-full h-auto mt-2">
                       <div className="text-[#292D32] font-semibold">
                         EventBrite
                       </div>
                       <div>
-                        <label
-                          className={`${
-                            isOnEventBrite ? "bg-[#7367F0]" : "bg-[#E2E2E2]"
-                          } relative inline-flex items-center h-6 rounded-full w-11 cursor-pointer`}
-                        >
-                          <input
-                            type="checkbox"
-                            className="absolute h-0 w-0 opacity-0"
-                            onChange={toggleSwitchEventBrite}
-                            checked={isOnEventBrite}
-                            disabled={loading}
-                          />
-                          <span
-                            className={`${
-                              isOnEventBrite ? "translate-x-6" : "translate-x-1"
-                            } inline-block w-4 h-4 transform translate-x-0.5 bg-white rounded-full transition-transform duration-200 ease-in-out`}
-                          ></span>
-                        </label>
+                        {eventBriteLoader ? (
+                          <>
+                            <div className="flex justify-center items-center w-full p-4">
+                              <ThreeDots
+                                height="20"
+                                color="#007BAB"
+                                width="60"
+                                radius="9"
+                                ariaLabel="three-dots-loading"
+                                visible={true}
+                              />
+                            </div>
+                          </>
+                        ) : isIntegratedEventBrite ? (
+                          <>
+                            <button
+                              disabled={true}
+                              className={`font14 font-medium rounded-xl py-2 px-4 font-Montserrat text-[#fff] border-2 border-[#4BB543] bg-[#4BB543]`}
+                            >
+                              <div className="flex justify-center font-bold text-[20pt] items-center">
+                                ✓
+                              </div>
+                            </button>
+                          </>
+                        ) : (
+                          <>
+                            <button
+                              onClick={() => {
+                                handleEventBriteIntegration();
+                              }}
+                              disabled={eventBriteLoader}
+                              className={`font14 font-medium rounded-xl py-3 px-5 font-Montserrat text-[#fff] hover:text-[#007BAB] border-2 border-[#007BAB] hover:bg-transparent bg-[#007BAB]`}
+                            >
+                              <div className="flex justify-center items-center">
+                                Integrate
+                              </div>
+                            </button>
+                          </>
+                        )}
                       </div>
                     </div>
                     <div className="flex justify-between text-[#292D32] flex-row w-full h-auto mt-2">
                       <div className="text-[#292D32] font-semibold">MeetUp</div>
                       <div>
-                        <label
-                          className={`${
-                            isOnMeetUp ? "bg-[#7367F0]" : "bg-[#E2E2E2]"
-                          } relative inline-flex items-center h-6 rounded-full w-11 cursor-pointer`}
-                        >
-                          <input
-                            type="checkbox"
-                            className="absolute h-0 w-0 opacity-0"
-                            onChange={toggleSwitchMeetUp}
-                            checked={isOnMeetUp}
-                          />
-                          <span
-                            className={`${
-                              isOnMeetUp ? "translate-x-6" : "translate-x-1"
-                            } inline-block w-4 h-4 transform translate-x-0.5 bg-white rounded-full transition-transform duration-200 ease-in-out`}
-                          ></span>
-                        </label>
+                        {meetUpLoader ? (
+                          <>
+                            <div className="flex justify-center items-center w-full p-4">
+                              <ThreeDots
+                                height="20"
+                                color="#007BAB"
+                                width="60"
+                                radius="9"
+                                ariaLabel="three-dots-loading"
+                                visible={true}
+                              />
+                            </div>
+                          </>
+                        ) : isIntegratedMeetUp ? (
+                          <>
+                            <button
+                              disabled={true}
+                              className={`font14 font-medium rounded-xl py-2 px-4 font-Montserrat text-[#fff] border-2 border-[#4BB543] bg-[#4BB543]`}
+                            >
+                              <div className="flex justify-center font-bold text-[20pt] items-center">
+                                ✓
+                              </div>
+                            </button>
+                          </>
+                        ) : (
+                          <>
+                            <button
+                              onClick={() => {
+                                handleMeetUpIntegration();
+                              }}
+                              disabled={meetUpLoader}
+                              className={`font14 font-medium rounded-xl py-3 px-5 font-Montserrat text-[#fff] hover:text-[#007BAB] border-2 border-[#007BAB] hover:bg-transparent bg-[#007BAB]`}
+                            >
+                              <div className="flex justify-center items-center">
+                                Integrate
+                              </div>
+                            </button>
+                          </>
+                        )}
                       </div>
                     </div>
                   </div>
