@@ -72,7 +72,8 @@ function Dashboard() {
   useEffect(() => {
     const codeParam = router.query.code || "";
     const integration = localStorage.getItem("integration");
-    if (!codeParam) {
+
+    if (circleAccessToken !== "" && !codeParam) {
       localStorage.removeItem("integration");
       localStorage.removeItem("loader");
     }
@@ -82,7 +83,7 @@ function Dashboard() {
     if (codeParam && integration === "meetUp") {
       setMeetUpAccessCode(codeParam);
     }
-  }, [user]);
+  }, [user, circleAccessToken]);
 
   useEffect(() => {
     const integration = localStorage.getItem("integration");
