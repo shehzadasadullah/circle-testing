@@ -56,6 +56,7 @@ function Dashboard() {
         try {
           const idToken = await getIdToken(user);
           setCircleAccessToken(idToken);
+          console.log("ACCESS TOKEN: ", idToken);
         } catch (error) {
           console.error("Error getting ID token:", error);
         }
@@ -509,7 +510,7 @@ function Dashboard() {
                 className="rounded-xl p-2 cursor-pointer border-2 flex flex-row justify-center items-center"
               >
                 <div>
-                  <TiThMenu size={25} />
+                  <TiThMenu size={30} />
                 </div>
               </div>
             </div>
@@ -584,7 +585,7 @@ function Dashboard() {
                           <>
                             <button
                               disabled={true}
-                              className={`font14 font-medium rounded-xl py-2 px-4 font-Montserrat text-[#fff] border-2 border-[#4BB543] bg-[#4BB543]`}
+                              className={`font14 font-medium rounded-xl py-2 px-4 font-Montserrat text-[#fff] border-2 border-[#007BAB] bg-[#007BAB]`}
                             >
                               <div className="flex justify-center font-bold text-[20pt] items-center">
                                 ✓
@@ -628,7 +629,7 @@ function Dashboard() {
                           <>
                             <button
                               disabled={true}
-                              className={`font14 font-medium rounded-xl py-2 px-4 font-Montserrat text-[#fff] border-2 border-[#4BB543] bg-[#4BB543]`}
+                              className={`font14 font-medium rounded-xl py-2 px-4 font-Montserrat text-[#fff] border-2 border-[#007BAB] bg-[#007BAB]`}
                             >
                               <div className="flex justify-center font-bold text-[20pt] items-center">
                                 ✓
@@ -650,6 +651,11 @@ function Dashboard() {
                             </button>
                           </>
                         )}
+                      </div>
+                    </div>
+                    <div className="flex justify-between text-[#292D32] flex-row w-full h-auto mt-2">
+                      <div className="text-[#292D32] font-semibold">
+                        LinkedIn (Coming Soon)
                       </div>
                     </div>
                   </div>

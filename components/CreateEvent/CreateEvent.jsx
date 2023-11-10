@@ -1349,7 +1349,7 @@ const CreateEvent = () => {
                                     className={`font14 font-medium rounded-xl py-2 px-3 font-Montserrat text-[#fff] hover:text-[#007BAB] border-2 border-[#007BAB] hover:bg-transparent bg-[#007BAB]`}
                                   >
                                     <div className="flex justify-center items-center">
-                                      Upload
+                                      Post Event
                                     </div>
                                   </button>
                                 </>
