@@ -379,7 +379,7 @@ function Dashboard() {
                 </button>
               </Dialog.Title>
               <div className="relative p-4 flex flex-col w-full">
-                <div className="mb-4 mt-4 w-full h-auto">
+                <div className="mb-4 mt-2 w-full h-auto">
                   <label
                     htmlFor="groupUrl"
                     className="block text-[#292D32] font-bold text-[16px] ml-1"
