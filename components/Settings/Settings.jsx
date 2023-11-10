@@ -314,8 +314,30 @@ function Dashboard() {
         requestOptions
       )
         .then((response) => response.json())
-        .then((result) => console.log(result))
-        .catch((error) => console.log("error", error));
+        .then((result) => {
+          if (result.result === true) {
+            if (result.message === "meetup group url added successfully") {
+              setGroupURLLoader(false);
+              setIsOpen(false);
+              setMeetUpLoader(false);
+              setIsIntegratedMeetUp(true);
+              toast.success("Meetup Integrated Successfully!");
+              localStorage.removeItem("integration");
+              localStorage.removeItem("loader");
+            }
+          } else {
+            setGroupURLLoader(false);
+            toast.error(
+              "Integration error from third party, Please integrate again!"
+            );
+          }
+        })
+        .catch((error) => {
+          setGroupURLLoader(false);
+          toast.error(
+            "Integration error from third party, Please integrate again!"
+          );
+        });
     }
   };
 
@@ -398,7 +420,7 @@ function Dashboard() {
                       <div className="flex justify-center items-center w-full">
                         <ThreeDots
                           height="20"
-                          color="#007BAB"
+                          color="#fff"
                           width="60"
                           radius="9"
                           ariaLabel="three-dots-loading"
