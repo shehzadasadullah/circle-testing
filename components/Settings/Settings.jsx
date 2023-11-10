@@ -29,6 +29,9 @@ function Dashboard() {
   const [isIntegratedMeetUp, setIsIntegratedMeetUp] = useState(false);
   const [eventBriteAccessCode, setEventBriteAccessCode] = useState("");
   const [meetUpAccessCode, setMeetUpAccessCode] = useState("");
+  let [isOpen, setIsOpen] = useState(false);
+  const [groupURL, setGroupURL] = useState("");
+  const [groupURLLoader, setGroupURLLoader] = useState(false);
 
   useEffect(() => {
     const mdBreakpoint = 992;
@@ -157,18 +160,27 @@ function Dashboard() {
           )
             .then((response) => response.json())
             .then((result) => {
-              console.log("MEETUP RESULT: ", result);
-              // if (result.result === true) {
-              //   if (result.message === "eventbrite integrated successfully") {
-              //     setEventBriteLoader(false);
-              //     setIsIntegratedEventBrite(true);
-              //     toast.success("Eventbrite integrated successfully!");
-              //     localStorage.removeItem("integration");
-              //     localStorage.removeItem("loader");
-              //   }
-              // }
+              if (result.result === true) {
+                if (result.message === "meetup integrated successfully") {
+                  setIsOpen(true);
+                }
+              } else {
+                setMeetUpLoader(false);
+                toast.error(
+                  "Integration error from third party, Please try again!"
+                );
+                localStorage.removeItem("integration");
+                localStorage.removeItem("loader");
+              }
             })
-            .catch((error) => console.log("error", error));
+            .catch((error) => {
+              setMeetUpLoader(false);
+              toast.error(
+                "Integration error from third party, Please try again!"
+              );
+              localStorage.removeItem("integration");
+              localStorage.removeItem("loader");
+            });
         }
       }
     }
@@ -282,9 +294,126 @@ function Dashboard() {
       .catch((error) => console.log("error", error));
   };
 
+  const handleIntegrateMeetup = () => {
+    if (groupURL === "") {
+      toast.error("Please add group url!");
+    } else {
+      setGroupURLLoader(true);
+      var myHeaders = new Headers();
+      myHeaders.append("accessToken", circleAccessToken);
+
+      var requestOptions = {
+        method: "GET",
+        headers: myHeaders,
+        redirect: "follow",
+      };
+
+      fetch(
+        `https://api.circle.ooo/api/circle/third-party/meetup/add/group-url?group-url=${groupURL}`,
+        requestOptions
+      )
+        .then((response) => response.json())
+        .then((result) => console.log(result))
+        .catch((error) => console.log("error", error));
+    }
+  };
+
   return (
     <>
       <ToastContainer />
+      <Dialog
+        open={isOpen}
+        onClose={() => setIsOpen(false)}
+        className="relative z-50"
+      >
+        <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
+        <div className="fixed inset-0 w-screen overflow-y-auto">
+          <div className="flex min-h-full items-center justify-center p-4">
+            <Dialog.Panel className="w-full md:w-1/2 xl:w-1/3 h-auto rounded-xl shadow-xl bg-white">
+              <Dialog.Title
+                className={`flex w-full items-center justify-between p-3 flex-row border-b-2`}
+              >
+                <p className="font-bold text-lg">Integrate Meetup</p>
+                <button
+                  type="button"
+                  className="box-content rounded-none border-none hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none"
+                  onClick={() => setIsOpen(false)}
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    className="h-6 w-6"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </button>
+              </Dialog.Title>
+              <div className="relative p-4 flex flex-col w-full">
+                <div className="mb-4 mt-4 w-full h-auto">
+                  <label
+                    htmlFor="groupUrl"
+                    className="block text-[#292D32] font-bold text-[16px] ml-1"
+                  >
+                    Add Group URL
+                    <span className="text-red-600"> *</span>
+                  </label>
+                  <input
+                    type="text"
+                    id="groupUrl"
+                    className="border-2 text-[#8392AF] border-[#E6E7EC] mt-2 p-3 w-full rounded-lg focus:border-[#007BAB] focus:outline-none"
+                    placeholder="Enter your group url here"
+                    value={groupURL}
+                    onChange={(e) => {
+                      setGroupURL(e.target.value);
+                    }}
+                  />
+                </div>
+              </div>
+              <Dialog.Title
+                className={`flex w-full items-center justify-end p-3 flex-row border-t-2`}
+              >
+                <button
+                  type="button"
+                  onClick={() => setIsOpen(false)}
+                  className={`bg-[red] border-2 border-[red] text-white hover:border-2 hover:border-[red] hover:bg-transparent hover:text-[red] py-2 px-4 rounded-lg`}
+                >
+                  Close
+                </button>
+                <button
+                  type="button"
+                  disabled={groupURLLoader === true}
+                  onClick={handleIntegrateMeetup}
+                  className={`bg-[#007BAB] ml-2 border-2 border-[#007BAB] text-white hover:border-2 hover:border-[#007BAB] hover:bg-transparent hover:text-[#00384F] py-2 px-4 rounded-lg`}
+                >
+                  {groupURLLoader ? (
+                    <>
+                      <div className="flex justify-center items-center w-full">
+                        <ThreeDots
+                          height="20"
+                          color="#007BAB"
+                          width="60"
+                          radius="9"
+                          ariaLabel="three-dots-loading"
+                          visible={true}
+                        />
+                      </div>
+                    </>
+                  ) : (
+                    "Integrate"
+                  )}
+                </button>
+              </Dialog.Title>
+            </Dialog.Panel>
+          </div>
+        </div>
+      </Dialog>
       <div className="flex h-screen">
         {/* Sidebar Menu */}
         {showSideBar && (
