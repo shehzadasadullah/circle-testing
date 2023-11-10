@@ -15,6 +15,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Register from "../Home/Register";
 import { IoIosArrowForward } from "react-icons/io";
 import { ThreeDots } from "react-loader-spinner";
+import { Dialog } from "@headlessui/react";
 
 function Dashboard() {
   const [user] = useAuthState(auth);
