@@ -140,7 +140,7 @@ const CreateEvent = () => {
   const [thirdPartyIntegrations, setThirdPartyIntegrations] = useState([]);
   const [thirdPartyLoader, setThirdPartyLoader] = useState(false);
   const [isThirdPartyEventPosted, setIsThirdPartyEventPosted] = useState("");
-  const [eventID, setEventID] = useState("p9TBNSJ4jBhslBzWHKNv");
+  const [eventID, setEventID] = useState("");
 
   useEffect(() => {
     const getIdTokenForUser = async () => {
