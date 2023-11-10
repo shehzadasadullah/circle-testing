@@ -88,7 +88,7 @@ function Dashboard() {
   useEffect(() => {
     const integration = localStorage.getItem("integration");
     const loader = localStorage.getItem("loader");
-    if (integration && integration === "eventBrite") {
+    if (circleAccessToken && integration && integration === "eventBrite") {
       if (loader && loader === "true") {
         setEventBriteLoader(true);
         if (eventBriteAccessCode !== "") {
@@ -114,18 +114,32 @@ function Dashboard() {
                   localStorage.removeItem("integration");
                   localStorage.removeItem("loader");
                 }
+              } else {
+                setEventBriteLoader(false);
+                toast.error(
+                  "Integration error from third party, Please try again!"
+                );
+                localStorage.removeItem("integration");
+                localStorage.removeItem("loader");
               }
             })
-            .catch((error) => console.log("error", error));
+            .catch((error) => {
+              setEventBriteLoader(false);
+              toast.error(
+                "Integration error from third party, Please try again!"
+              );
+              localStorage.removeItem("integration");
+              localStorage.removeItem("loader");
+            });
         }
       }
     }
-  }, [eventBriteAccessCode]);
+  }, [eventBriteAccessCode, circleAccessToken]);
 
   useEffect(() => {
     const integration = localStorage.getItem("integration");
     const loader = localStorage.getItem("loader");
-    if (integration && integration === "meetUp") {
+    if (circleAccessToken && integration && integration === "meetUp") {
       if (loader && loader === "true") {
         setMeetUpLoader(true);
         if (meetUpAccessCode !== "") {
@@ -158,7 +172,7 @@ function Dashboard() {
         }
       }
     }
-  }, [meetUpAccessCode]);
+  }, [meetUpAccessCode, circleAccessToken]);
 
   const getThirdPartyIntegrations = async () => {
     var myHeaders = new Headers();

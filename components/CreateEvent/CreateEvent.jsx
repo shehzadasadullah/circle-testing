@@ -21,12 +21,14 @@ import Modal from "react-modal";
 import { Dialog } from "@headlessui/react";
 import { ThreeDots } from "react-loader-spinner";
 import loaderGif from "../../public/events/Loader.gif";
+import { useRouter } from "next/router";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
 const CreateEvent = () => {
+  const router = useRouter();
   const fonts = [
     "Abril Fatface",
     "Aclonica",
@@ -138,7 +140,7 @@ const CreateEvent = () => {
   const [thirdPartyIntegrations, setThirdPartyIntegrations] = useState([]);
   const [thirdPartyLoader, setThirdPartyLoader] = useState(false);
   const [isThirdPartyEventPosted, setIsThirdPartyEventPosted] = useState("");
-  const [eventID, setEventID] = useState("");
+  const [eventID, setEventID] = useState("p9TBNSJ4jBhslBzWHKNv");
 
   useEffect(() => {
     const getIdTokenForUser = async () => {
@@ -179,7 +181,7 @@ const CreateEvent = () => {
   };
 
   useEffect(() => {
-    if (user) getThirdPartyIntegrations();
+    if (user && circleAccessToken !== "") getThirdPartyIntegrations();
   }, [user, circleAccessToken]);
 
   const uploadImage = async (file) => {
@@ -1356,6 +1358,25 @@ const CreateEvent = () => {
                           </div>
                         </>
                       ))}
+                    {thirdPartyIntegrations.length === 0 && (
+                      <>
+                        <div className="flex mt-3 justify-center flex-col items-center w-full">
+                          <div className="font-semibold">
+                            No Integrations found
+                          </div>
+                          <button
+                            onClick={() => {
+                              router.push("/settings");
+                            }}
+                            className={`font14 mt-3 font-medium rounded-xl py-2 px-4 font-Montserrat text-[#fff] hover:text-[#007BAB] border-2 border-[#007BAB] hover:bg-transparent bg-[#007BAB]`}
+                          >
+                            <div className="flex justify-center items-center">
+                              Go to Settings
+                            </div>
+                          </button>
+                        </div>
+                      </>
+                    )}
                   </div>
                   <div className="flex bg-[#F9F9F9] mt-5 w-full h-auto flex-col justify-start items-start rounded-lg p-10">
                     <div className="text-[#101820] w-full h-auto border-b-2 border-[#E0E0E0] pb-5 font-semibold text-lg">
