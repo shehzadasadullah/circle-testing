@@ -3,48 +3,69 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-}
+body {}
+
 @font-face {
   font-family: "Inter";
   font-style: normal;
   font-weight: 400;
   src: url("/fonts/Inter-Regular.ttf") format("truetype");
 }
+
+@font-face {
+  font-family: "Matter";
+  src: url("../public/fonts/Matter-Regular.ttf") format("ttf");
+}
+
+.matterFont {
+  font-family: "Matter";
+}
+
 .placeholder-style {
   color: rgba(0, 0, 0, 0.5);
 }
+
 @layer components {
   .font56 {
     @apply text-3xl sm:text-[42px] sm:leading-[48px] lg:text-[56px] lg:leading-[64px];
   }
+
   .font48 {
     @apply text-3xl sm:text-[38px] sm:leading-[44px] lg:text-[48px] lg:leading-[56px];
   }
+
   .font42 {
     @apply text-[28px] leading-8 sm:text-[34px] sm:leading-[40px] lg:text-[42px] lg:leading-[48px];
   }
+
   .font32 {
     @apply text-2xl sm:text-[28px] sm:leading-9 lg:text-[32px] lg:leading-10;
   }
+
   .font28 {
     @apply text-xl sm:text-2xl sm:leading-8 lg:text-[28px] lg:leading-9;
   }
+
   .font24 {
     @apply text-lg sm:text-xl lg:text-2xl;
   }
+
   .font20 {
     @apply text-base sm:text-lg lg:text-xl;
   }
+
   .font18 {
     @apply text-sm sm:text-base lg:text-lg;
   }
+
   .font16 {
     @apply text-xs sm:text-sm lg:text-base;
   }
+
   .font14 {
     @apply text-[10px] sm:text-xs lg:text-sm;
   }
+
   .font12 {
     @apply text-[8px] leading-3 sm:text-[10px] lg:text-xs;
   }
@@ -52,12 +73,10 @@ body {
 
 .custom-dotted-line {
   width: 100%;
-  height: 10px; /* Adjust the height of the lines as desired */
-  background-image: url("/underline.png"); /* Replace 'line-pattern.png' with your actual image path */
+  height: 10px;
+  /* Adjust the height of the lines as desired */
+  background-image: url("/underline.png");
+  /* Replace 'line-pattern.png' with your actual image path */
   background-repeat: repeat-x;
   background-position: center;
 }
-
-
-
-

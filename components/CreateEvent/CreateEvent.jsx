@@ -138,9 +138,10 @@ const CreateEvent = () => {
   const [fetchCoHostsLoader, setFetchCoHostsLoader] = useState(true);
   const [circleAccessToken, setCircleAccessToken] = useState("");
   const [thirdPartyIntegrations, setThirdPartyIntegrations] = useState([]);
-  const [thirdPartyLoader, setThirdPartyLoader] = useState(false);
-  const [isThirdPartyEventPosted, setIsThirdPartyEventPosted] = useState("");
   const [eventID, setEventID] = useState("");
+  const [thirdPartyCheckboxSelected, setThirdPartyCheckboxSelected] = useState(
+    []
+  );
 
   useEffect(() => {
     const getIdTokenForUser = async () => {
@@ -568,110 +569,170 @@ const CreateEvent = () => {
 
   const handleCreateEvent = async () => {
     setCreateEventLoader(true);
-    if (
-      startDateTime &&
-      endDateTime &&
-      selectedLogo &&
-      eventTitle !== "" &&
-      eventDescription !== "" &&
-      eventLocation !== ""
-    ) {
-      // console.log("Called 1");
-      if (isOnSponsorship && eventSponsorShip === "") {
-        toast.error("Sponsorship package is missing!", {
-          position: "top-right",
-          autoClose: 3000, // Time in milliseconds
-        });
-        setCreateEventLoader(false);
+    if (circleData.length === 0) {
+      toast.error("Please create circle in order to create event!");
+    } else {
+      if (
+        startDateTime &&
+        endDateTime &&
+        selectedLogo &&
+        eventTitle !== "" &&
+        eventDescription !== "" &&
+        eventLocation !== ""
+      ) {
         // console.log("Called 1");
-      } else {
-        // console.log("Called 2");
-        // TODO - RIGHT NOW CIRCLES ARE NOT BEING CREATED ON PWA SO CIRCLE_ID IS NULL OR ""
-        if (checkStartAndEndDateTime() === true) {
-          // console.log("Called 3");
-          if (validateWebsite() === true) {
-            // console.log("Called 4");
-            if (
-              isOnPrice &&
-              (eventTicketPrice === "" || eventMaximumTickets === "")
-            ) {
-              // console.log("Called 5");
-              toast.error("Price data is missing!", {
-                position: "top-right",
-                autoClose: 3000, // Time in milliseconds
-              });
-              setCreateEventLoader(false);
-            } else {
-              let userRefPath = null;
-              if (user) {
-                const userUID = user.uid;
-                const userRef = doc(db, "Users", userUID);
-                userRefPath = userRef;
-                console.log("User document reference: ", userRef);
-              }
-              const coHostsData = await fetchUserReferencesForCoHosts(
-                selectedCoHosts
-              );
-              const eventData = {
-                name: eventTitle,
-                search_name: eventTitle.toLowerCase(),
-                description: eventDescription,
-                hyperlink: eventWebsite,
-                location: eventLocation,
-                timefrom: convertToTimestampStartDateTime(),
-                timeto: convertToTimestampEndDateTime(),
-                small_image: selectedLogoURL !== null && selectedLogoURL,
-                large_image: selectedLogoURL !== null && selectedLogoURL,
-                coords: [deviceLocation[0], deviceLocation[1]],
-                attendees: [],
-                checkedin: [],
-                maxTicket: isOnPrice ? Number(eventMaximumTickets) : 0,
-                ticketPrice: isOnPrice ? eventTicketPrice : "0.00",
-                isexhibitionallowed: isOnExhibitors ? "true" : "false",
-                sponsorship: eventSponsorShip,
-                creator: userRefPath,
-                circle_id: circleDataRef,
-                co_host: coHostsData,
-              };
-              console.log(eventData);
-              try {
-                const eventsCollectionRef = collection(db, "events"); // 'events' is the name of your Firestore collection
-                const docRef = await addDoc(eventsCollectionRef, eventData);
-                console.log("Event added with ID: ", docRef.id);
-                setEventID(docRef.id);
-                // Assuming you have a reference to your Firestore document using a docRef
-                const docRefUpdate = doc(db, "events", docRef.id); // Replace with your actual document ID
-                // Create an object with the fields you want to update
-                const updatedData = {
-                  // Include the fields you want to update and their new values
-                  uid: docRef.id,
+        if (isOnSponsorship && eventSponsorShip === "") {
+          toast.error("Sponsorship package is missing!", {
+            position: "top-right",
+            autoClose: 3000, // Time in milliseconds
+          });
+          setCreateEventLoader(false);
+          // console.log("Called 1");
+        } else {
+          // console.log("Called 2");
+          if (checkStartAndEndDateTime() === true) {
+            // console.log("Called 3");
+            if (validateWebsite() === true) {
+              // console.log("Called 4");
+              if (
+                isOnPrice &&
+                (eventTicketPrice === "" || eventMaximumTickets === "")
+              ) {
+                // console.log("Called 5");
+                toast.error("Price data is missing!", {
+                  position: "top-right",
+                  autoClose: 3000, // Time in milliseconds
+                });
+                setCreateEventLoader(false);
+              } else {
+                let userRefPath = null;
+                if (user) {
+                  const userUID = user.uid;
+                  const userRef = doc(db, "Users", userUID);
+                  userRefPath = userRef;
+                  console.log("User document reference: ", userRef);
+                }
+                const coHostsData = await fetchUserReferencesForCoHosts(
+                  selectedCoHosts
+                );
+                const eventData = {
+                  name: eventTitle,
+                  search_name: eventTitle.toLowerCase(),
+                  description: eventDescription,
+                  hyperlink: eventWebsite,
+                  location: eventLocation,
+                  timefrom: convertToTimestampStartDateTime(),
+                  timeto: convertToTimestampEndDateTime(),
+                  small_image: selectedLogoURL !== null && selectedLogoURL,
+                  large_image: selectedLogoURL !== null && selectedLogoURL,
+                  coords: [deviceLocation[0], deviceLocation[1]],
+                  attendees: [],
+                  checkedin: [],
+                  maxTicket: isOnPrice ? Number(eventMaximumTickets) : 0,
+                  ticketPrice: isOnPrice ? eventTicketPrice : "0.00",
+                  isexhibitionallowed: isOnExhibitors ? "true" : "false",
+                  sponsorship: eventSponsorShip,
+                  creator: userRefPath,
+                  circle_id: circleDataRef,
+                  co_host: coHostsData,
                 };
-                // Update the document
+                console.log(eventData);
                 try {
-                  await updateDoc(docRefUpdate, updatedData);
-                  console.log("Document successfully updated");
-                  toast.success("Event Created Successfully!");
-                  setCreateEventLoader(false);
+                  const eventsCollectionRef = collection(db, "events"); // 'events' is the name of your Firestore collection
+                  const docRef = await addDoc(eventsCollectionRef, eventData);
+                  console.log("Event added with ID: ", docRef.id);
+                  setEventID(docRef.id);
+                  // Assuming you have a reference to your Firestore document using a docRef
+                  const docRefUpdate = doc(db, "events", docRef.id); // Replace with your actual document ID
+                  // Create an object with the fields you want to update
+                  const updatedData = {
+                    // Include the fields you want to update and their new values
+                    uid: docRef.id,
+                  };
+
+                  // Post event to third party platforms
+
+                  try {
+                    const myHeaders = new Headers();
+                    myHeaders.append("Content-Type", "application/json");
+                    myHeaders.append("accessToken", circleAccessToken); // Include accessToken in the headers
+
+                    const dataToPost = {
+                      eventId: docRef.id,
+                      platforms: thirdPartyCheckboxSelected,
+                    };
+
+                    const requestOptions = {
+                      method: "POST",
+                      headers: myHeaders,
+                      body: JSON.stringify(dataToPost),
+                      redirect: "follow",
+                    };
+
+                    const response = await fetch(
+                      "https://api.circle.ooo/api/circle/third-party/publish",
+                      requestOptions
+                    );
+
+                    if (!response.ok) {
+                      throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+
+                    const result = await response.json();
+                    if (result) {
+                      result
+                        .filter((items) => items.result === true)
+                        .map((item) => {
+                          toast.success(
+                            `${item?.integration?.toUpperCase()} - ${item?.message?.toUpperCase()}`
+                          );
+                        });
+                      result
+                        .filter((items) => items.result === false)
+                        .map((item) => {
+                          toast.error(
+                            `${item?.integration?.toUpperCase()} - ${item?.message?.toUpperCase()}`
+                          );
+                        });
+                    }
+                    // console.log("THIRD PARTY RESULT", result);
+                  } catch (error) {
+                    console.error(
+                      "Error posting event to third-party platforms:",
+                      error
+                    );
+                    toast.error(
+                      "Error posting event to third-party platforms!"
+                    );
+                  }
+
+                  // Update the document
+                  try {
+                    await updateDoc(docRefUpdate, updatedData);
+                    console.log("Document successfully updated");
+                    toast.success("Event Created Successfully!");
+                    setCreateEventLoader(false);
+                  } catch (error) {
+                    console.error("Error updating document: ", error);
+                    toast.error("Something went wrong!");
+                    setCreateEventLoader(false);
+                  }
                 } catch (error) {
-                  console.error("Error updating document: ", error);
+                  console.error("Error adding event: ", error);
                   toast.error("Something went wrong!");
                   setCreateEventLoader(false);
                 }
-              } catch (error) {
-                console.error("Error adding event: ", error);
-                toast.error("Something went wrong!");
-                setCreateEventLoader(false);
               }
             }
           }
         }
+      } else {
+        setCreateEventLoader(false);
+        toast.error("Input Fields Missing!", {
+          position: "top-right",
+          autoClose: 3000, // Time in milliseconds
+        });
       }
-    } else {
-      setCreateEventLoader(false);
-      toast.error("Input Fields Missing!", {
-        position: "top-right",
-        autoClose: 3000, // Time in milliseconds
-      });
     }
     setCreateEventLoader(false);
   };
@@ -742,50 +803,66 @@ const CreateEvent = () => {
     return userReferences;
   };
 
-  const handleThirdPartyPost = (platform) => {
-    if (eventID === "") {
-      toast.error("Event is not created yet, Please create an event first!");
+  // const handleThirdPartyPost = (platform) => {
+  //   if (eventID === "") {
+  //     toast.error("Event is not created yet, Please create an event first!");
+  //   } else {
+  //     setThirdPartyLoader(true);
+  //     console.log("PLATfORM: ", platform);
+
+  //     try {
+  //       var myHeaders = new Headers();
+  //       myHeaders.append("accessToken", circleAccessToken);
+
+  //       var requestOptions = {
+  //         method: "GET",
+  //         headers: myHeaders,
+  //         redirect: "follow",
+  //       };
+
+  //       fetch(
+  //         `https://api.circle.ooo/api/circle/third-party/publish?eventId=${eventID}&platform=${platform}`,
+  //         requestOptions
+  //       )
+  //         .then((response) => response.json())
+  //         .then((result) => {
+  //           console.log(result);
+  //           if (result.result) {
+  //             toast.success(`Event Published on ${platform} Successfully!`);
+  //             setThirdPartyLoader(false);
+  //             setIsThirdPartyEventPosted(platform);
+  //           } else {
+  //             toast.error("Something went wrong while publishing event");
+  //             setThirdPartyLoader(false);
+  //             setIsThirdPartyEventPosted("");
+  //           }
+  //         })
+  //         .catch((error) => {
+  //           setThirdPartyLoader(false);
+  //           setIsThirdPartyEventPosted("");
+  //           toast.error("Something went wrong while publishing event");
+  //         });
+  //     } catch (error) {
+  //       setThirdPartyLoader(false);
+  //       setIsThirdPartyEventPosted("");
+  //       toast.error("Something went wrong while publishing event");
+  //     }
+  //   }
+  // };
+
+  const handleCheckboxChange = (integrationType) => {
+    // Check if the integration type is already selected
+    if (thirdPartyCheckboxSelected.includes(integrationType)) {
+      // If selected, remove it from the array
+      setThirdPartyCheckboxSelected((prevSelected) =>
+        prevSelected.filter((item) => item !== integrationType)
+      );
     } else {
-      setThirdPartyLoader(true);
-      console.log("PLATfORM: ", platform);
-
-      try {
-        var myHeaders = new Headers();
-        myHeaders.append("accessToken", circleAccessToken);
-
-        var requestOptions = {
-          method: "GET",
-          headers: myHeaders,
-          redirect: "follow",
-        };
-
-        fetch(
-          `https://api.circle.ooo/api/circle/third-party/publish?eventId=${eventID}&platform=${platform}`,
-          requestOptions
-        )
-          .then((response) => response.json())
-          .then((result) => {
-            console.log(result);
-            if (result.result) {
-              toast.success(`Event Published on ${platform} Successfully!`);
-              setThirdPartyLoader(false);
-              setIsThirdPartyEventPosted(platform);
-            } else {
-              toast.error("Something went wrong while publishing event");
-              setThirdPartyLoader(false);
-              setIsThirdPartyEventPosted("");
-            }
-          })
-          .catch((error) => {
-            setThirdPartyLoader(false);
-            setIsThirdPartyEventPosted("");
-            toast.error("Something went wrong while publishing event");
-          });
-      } catch (error) {
-        setThirdPartyLoader(false);
-        setIsThirdPartyEventPosted("");
-        toast.error("Something went wrong while publishing event");
-      }
+      // If not selected, add it to the array
+      setThirdPartyCheckboxSelected((prevSelected) => [
+        ...prevSelected,
+        integrationType,
+      ]);
     }
   };
 
@@ -1304,57 +1381,31 @@ const CreateEvent = () => {
                 <div className="w-full lg:w-4/12 h-auto flex flex-col justify-center items-center p-2 pt-0 lg:pt-10 lg:p-10">
                   <div className="flex bg-[#F9F9F9] w-full h-auto flex-col justify-start items-start rounded-lg p-10 lg:mt-[-13%]">
                     <div className="text-[#101820] w-full h-auto border-b-2 border-[#E0E0E0] pb-5 font-semibold text-lg">
-                      <p>Upload To Third Party Platform</p>
+                      <p
+                        onClick={() => {
+                          console.log(thirdPartyCheckboxSelected);
+                        }}
+                      >
+                        Post Event To Third Party Platforms
+                      </p>
                     </div>
                     {thirdPartyIntegrations.length > 0 &&
                       thirdPartyIntegrations?.map((item) => (
                         <>
                           <div className="flex justify-between items-center text-[#292D32] font-semibold flex-row w-full h-auto mt-2">
                             <div>{item.integrationType}</div>
-                            <div>
-                              {thirdPartyLoader ? (
-                                <>
-                                  <div className="flex justify-center items-center w-full p-4">
-                                    <ThreeDots
-                                      height="20"
-                                      color="#007BAB"
-                                      width="60"
-                                      radius="9"
-                                      ariaLabel="three-dots-loading"
-                                      visible={true}
-                                    />
-                                  </div>
-                                </>
-                              ) : isThirdPartyEventPosted ===
-                                item.integrationType ? (
-                                <>
-                                  <button
-                                    disabled={true}
-                                    className={`font14 font-medium rounded-xl py-2 px-4 font-Montserrat text-[#fff] border-2 border-[#4BB543] bg-[#4BB543]`}
-                                  >
-                                    <div className="flex justify-center font-bold text-[20pt] items-center">
-                                      ✓
-                                    </div>
-                                  </button>
-                                </>
-                              ) : (
-                                <>
-                                  <button
-                                    onClick={() => {
-                                      handleThirdPartyPost(
-                                        item.integrationType
-                                      );
-                                    }}
-                                    disabled={thirdPartyLoader}
-                                    className={`font14 font-medium rounded-xl py-2 px-3 font-Montserrat text-[#fff] hover:text-[#007BAB] border-2 border-[#007BAB] hover:bg-transparent bg-[#007BAB]`}
-                                  >
-                                    <div className="flex justify-center items-center">
-                                      Post Event
-                                    </div>
-                                  </button>
-                                </>
+                            <input
+                              type="checkbox"
+                              className="h-6 w-6 cursor-pointer"
+                              onChange={() =>
+                                handleCheckboxChange(
+                                  item.integrationType.toString().toUpperCase()
+                                )
+                              }
+                              checked={thirdPartyCheckboxSelected.includes(
+                                item.integrationType
                               )}
-                            </div>
+                            />
                           </div>
                         </>
                       ))}
