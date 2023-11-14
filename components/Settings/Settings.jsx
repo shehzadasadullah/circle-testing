@@ -218,8 +218,8 @@ function Dashboard() {
               setIsIntegratedMeetUp(true);
             }
           });
-          setThirdPartLoader(false);
         }
+        setThirdPartLoader(false);
       })
       .catch((error) => {
         setThirdPartLoader(false);
