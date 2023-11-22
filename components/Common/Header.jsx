@@ -14,6 +14,7 @@ import { HeartIcon, LogoutIcon, UserIcon } from "@/icons";
 import ProfileIcon from "@/icons/ProfileIcon";
 import ImageComp from "../ImageComp";
 import { useRouter } from "next/router";
+import { HiMiniUserCircle } from "react-icons/hi2";
 import { setDoc, doc } from "firebase/firestore";
 import { Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
@@ -31,7 +32,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { AiOutlineMenu } from "react-icons/ai";
 
-const Header = ({ type = "dark", page = "" }) => {
+const Header = ({ type = "", page = "" }) => {
   const [showModal, setShowModal] = useState(false);
   const [userDropdown, setUserDropdown] = useState(false);
 
@@ -246,10 +247,20 @@ const Header = ({ type = "dark", page = "" }) => {
                 <div className="text-left w-full h-auto">
                   <Link
                     href="/"
-                    className={`ml-10 lg:ml-16 font16 font-medium font-Montserrat border-b-2 hover:text-[#007BAB] hover:border-[#007BAB] ${
+                    className={`ml-10 lg:ml-16 font16 font-medium font-Montserrat border-b-2 ${
+                      type === "dark"
+                        ? "hover:text-[#fff] hover:border-[#fff]"
+                        : "hover:text-[#007BAB] hover:border-[#007BAB]"
+                    } ${
                       page == "home"
-                        ? "border-[#007BAB] text-[#007BAB]"
-                        : "border-transparent text-[#333]"
+                        ? ` ${
+                            type === "dark"
+                              ? "border-[#fff] text-[#fff]"
+                              : "border-[#007BAB] text-[#007BAB]"
+                          }`
+                        : `border-transparent ${
+                            type === "dark" ? "text-[#fff]" : "text-[#333]"
+                          }`
                     } py-0.5`}
                   >
                     Home
@@ -266,20 +277,40 @@ const Header = ({ type = "dark", page = "" }) => {
                   </Link> */}
                   <Link
                     href="/about"
-                    className={`ml-6 font16 font-medium font-Montserrat border-b-2 hover:text-[#007BAB] hover:border-[#007BAB] ${
+                    className={`ml-6 font16 font-medium font-Montserrat border-b-2 ${
+                      type === "dark"
+                        ? "hover:text-[#fff] hover:border-[#fff]"
+                        : "hover:text-[#007BAB] hover:border-[#007BAB]"
+                    } ${
                       page == "about"
-                        ? "border-[#007BAB] text-[#007BAB]"
-                        : "border-transparent text-[#333]"
+                        ? ` ${
+                            type === "dark"
+                              ? "border-[#fff] text-[#fff]"
+                              : "border-[#007BAB] text-[#007BAB]"
+                          }`
+                        : `border-transparent ${
+                            type === "dark" ? "text-[#fff]" : "text-[#333]"
+                          }`
                     } py-0.5`}
                   >
                     About
                   </Link>
                   <Link
                     href="/contact"
-                    className={`ml-6 font16 font-medium font-Montserrat border-b-2 hover:text-[#007BAB] hover:border-[#007BAB] ${
+                    className={`ml-6 font16 font-medium font-Montserrat border-b-2 ${
+                      type === "dark"
+                        ? "hover:text-[#fff] hover:border-[#fff]"
+                        : "hover:text-[#007BAB] hover:border-[#007BAB]"
+                    } ${
                       page == "contact"
-                        ? "border-[#007BAB] text-[#007BAB]"
-                        : "border-transparent text-[#333]"
+                        ? ` ${
+                            type === "dark"
+                              ? "border-[#fff] text-[#fff]"
+                              : "border-[#007BAB] text-[#007BAB]"
+                          }`
+                        : `border-transparent ${
+                            type === "dark" ? "text-[#fff]" : "text-[#333]"
+                          }`
                     } py-0.5`}
                   >
                     Contact
@@ -294,7 +325,11 @@ const Header = ({ type = "dark", page = "" }) => {
                     <div className="flex justify-between items-center">
                       <button
                         onClick={handleClick}
-                        className={`font16 font-medium font-Montserrat text-[#333] hover:text-[#007BAB]`}
+                        className={`font16 font-medium font-Montserrat ${
+                          type === "dark"
+                            ? "text-[#fff] hover:text-[#fff]"
+                            : "text-[#333] hover:text-[#007BAB]"
+                        }`}
                       >
                         Login / SignUp
                       </button>
@@ -329,13 +364,18 @@ const Header = ({ type = "dark", page = "" }) => {
                         <div>
                           <Menu.Button className={"flex items-center"}>
                             <div className="flex items-center justify-start">
-                              <img
-                                src="/ProfileIcon.png"
-                                alt="Profile Icon"
-                                className="w-6 lg:w-10 2xl:w-10 h-auto"
+                              <HiMiniUserCircle
+                                size={40}
+                                color={`${
+                                  type === "dark" ? "#fff" : "#007BAB"
+                                }`}
                               />
                               <div
-                                className={`ml-2 font16 text-[#007BAB] font-semibold font-Montserrat`}
+                                className={`ml-1 font16 ${
+                                  type === "dark"
+                                    ? "text-[#fff]"
+                                    : "text-[#007BAB]"
+                                } font-semibold font-Montserrat`}
                               >
                                 Hi,{" "}
                                 {user?.displayName
@@ -348,7 +388,9 @@ const Header = ({ type = "dark", page = "" }) => {
                               </div>
                               <div className="hidden lg:flex">
                                 <ChevronDownIcon
-                                  className="h-5 w-5"
+                                  className={`h-5 w-5 ${
+                                    type === "dark" && "text-[#fff]"
+                                  }`}
                                   aria-hidden="true"
                                 />
                               </div>

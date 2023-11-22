@@ -42,7 +42,7 @@ const HeroSection = () => {
         <img src={"/backgroundVector.svg"} alt="background Vector" />
       </div> */}
       <div className="w-full h-full  z-10">
-        <Header type="dark" page="home" />
+        <Header type="light" page="home" />
       </div>
       <div
         data-aos="fade-up"

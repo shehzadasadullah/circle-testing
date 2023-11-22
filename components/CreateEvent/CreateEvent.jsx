@@ -625,7 +625,10 @@ const CreateEvent = () => {
                   timeto: convertToTimestampEndDateTime(),
                   small_image: selectedLogoURL !== null && selectedLogoURL,
                   large_image: selectedLogoURL !== null && selectedLogoURL,
-                  coords: [deviceLocation[0], deviceLocation[1]],
+                  coords: [
+                    deviceLocation[0] ? deviceLocation[0] : "",
+                    deviceLocation[1] ? deviceLocation[1] : "",
+                  ],
                   attendees: [],
                   checkedin: [],
                   maxTicket: isOnPrice ? Number(eventMaximumTickets) : 0,
@@ -652,58 +655,62 @@ const CreateEvent = () => {
 
                   // Post event to third party platforms
 
-                  try {
-                    const myHeaders = new Headers();
-                    myHeaders.append("Content-Type", "application/json");
-                    myHeaders.append("accessToken", circleAccessToken); // Include accessToken in the headers
+                  if (thirdPartyCheckboxSelected.length > 0) {
+                    try {
+                      const myHeaders = new Headers();
+                      myHeaders.append("Content-Type", "application/json");
+                      myHeaders.append("accessToken", circleAccessToken); // Include accessToken in the headers
 
-                    const dataToPost = {
-                      eventId: docRef.id,
-                      platforms: thirdPartyCheckboxSelected,
-                    };
+                      const dataToPost = {
+                        eventId: docRef.id,
+                        platforms: thirdPartyCheckboxSelected,
+                      };
 
-                    const requestOptions = {
-                      method: "POST",
-                      headers: myHeaders,
-                      body: JSON.stringify(dataToPost),
-                      redirect: "follow",
-                    };
+                      const requestOptions = {
+                        method: "POST",
+                        headers: myHeaders,
+                        body: JSON.stringify(dataToPost),
+                        redirect: "follow",
+                      };
 
-                    const response = await fetch(
-                      "https://api.circle.ooo/api/circle/third-party/publish",
-                      requestOptions
-                    );
+                      const response = await fetch(
+                        "https://api.circle.ooo/api/circle/third-party/publish",
+                        requestOptions
+                      );
 
-                    if (!response.ok) {
-                      throw new Error(`HTTP error! Status: ${response.status}`);
+                      if (!response.ok) {
+                        throw new Error(
+                          `HTTP error! Status: ${response.status}`
+                        );
+                      }
+
+                      const result = await response.json();
+                      if (result) {
+                        result
+                          .filter((items) => items.result === true)
+                          .map((item) => {
+                            toast.success(
+                              `${item?.integration?.toUpperCase()} - ${item?.message?.toUpperCase()}`
+                            );
+                          });
+                        result
+                          .filter((items) => items.result === false)
+                          .map((item) => {
+                            toast.error(
+                              `${item?.integration?.toUpperCase()} - ${item?.message?.toUpperCase()}`
+                            );
+                          });
+                      }
+                      // console.log("THIRD PARTY RESULT", result);
+                    } catch (error) {
+                      console.error(
+                        "Error posting event to third-party platforms:",
+                        error
+                      );
+                      toast.error(
+                        "Error posting event to third-party platforms!"
+                      );
                     }
-
-                    const result = await response.json();
-                    if (result) {
-                      result
-                        .filter((items) => items.result === true)
-                        .map((item) => {
-                          toast.success(
-                            `${item?.integration?.toUpperCase()} - ${item?.message?.toUpperCase()}`
-                          );
-                        });
-                      result
-                        .filter((items) => items.result === false)
-                        .map((item) => {
-                          toast.error(
-                            `${item?.integration?.toUpperCase()} - ${item?.message?.toUpperCase()}`
-                          );
-                        });
-                    }
-                    // console.log("THIRD PARTY RESULT", result);
-                  } catch (error) {
-                    console.error(
-                      "Error posting event to third-party platforms:",
-                      error
-                    );
-                    toast.error(
-                      "Error posting event to third-party platforms!"
-                    );
                   }
 
                   // Update the document
@@ -1084,7 +1091,7 @@ const CreateEvent = () => {
                 </div>
               </div>
             </Dialog>
-            <Header type="dark" page="home" />
+            <Header type="light" page="home" />
             <div className="w-full h-auto p-4">
               <div className="flex justify-center lg:justify-start items-center lg:items-start flex-col p-2 lg:p-10">
                 <h3 className="font-bold font48 text-[#17191C] mt-5">
