@@ -6,8 +6,10 @@ import { IoLogoGooglePlaystore } from "react-icons/io5";
 import AOS from "aos";
 import "aos/dist/aos.css";
 AOS.init();
+import { useRouter } from "next/router";
 
 const InviteToApp = () => {
+  const router = useRouter();
   return (
     <>
       <div
@@ -38,6 +40,11 @@ const InviteToApp = () => {
             </h3>
             <div className="flex flex-row mt-10">
               <button
+                onClick={() => {
+                  router.push(
+                    "https://apps.apple.com/pk/app/circle-ooo/id1611956542"
+                  );
+                }}
                 className={`px-5 font14 font-medium rounded-full py-3 font-Montserrat text-[#000] hover:text-[#fff] border-2 border-[#F2F2F2] hover:bg-transparent bg-[#F2F2F2]`}
               >
                 <div className="flex justify-center items-center">
@@ -48,6 +55,11 @@ const InviteToApp = () => {
                 </div>
               </button>
               <button
+                onClick={() => {
+                  router.push(
+                    "https://play.google.com/store/apps/details?id=com.circle.ooo&hl=en&gl=US"
+                  );
+                }}
                 className={`px-5 ml-5 font14 font-medium rounded-full py-3 font-Montserrat text-[#000] hover:text-[#fff] border-2 border-[#F2F2F2] hover:bg-transparent bg-[#F2F2F2]`}
               >
                 <div className="flex justify-center items-center">

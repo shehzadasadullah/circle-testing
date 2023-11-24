@@ -4,6 +4,7 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { IoIosArrowForward } from "react-icons/io";
 import { IoIosArrowBack } from "react-icons/io";
 import girlImage from "./girl-img.png";
+import img from "./Profile_Picture.png";
 import { useMediaQuery } from "react-responsive";
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -12,83 +13,27 @@ AOS.init();
 const testimonials = [
   {
     id: 1,
-    heading: "“The best Webflow Templates”",
-    text: "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat aute irure sint amet occaecat cupidatat non proident",
-    author: "Sophia Moore",
-    profession: "CEO at Webflow Agency",
-    image: girlImage.src,
+    heading: "“The best event creators”",
+    text: "Circle has an easy way of capturing guest registrations with one tap - fantastic usability. And still had excellent data points to know who was coming, how to serve them, and what Sponsors may be appropriate for the event",
+    author: "Ariana Smetana",
+    profession: "CEO AccelQ.digital",
+    image: img.src,
   },
   {
     id: 2,
-    heading: "“The best Webflow Templates”",
-    text: "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat aute irure sint amet occaecat cupidatat non proident",
-    author: "Sophia Moore",
-    profession: "CEO at Webflow Agency",
-    image: girlImage.src,
+    heading: "“The best event creators”",
+    text: "Circle has an easy way of capturing guest registrations with one tap - fantastic usability. And still had excellent data points to know who was coming, how to serve them, and what Sponsors may be appropriate for the event",
+    author: "Ariana Smetana",
+    profession: "CEO AccelQ.digital",
+    image: img.src,
   },
   {
     id: 3,
-    heading: "“The best Webflow Templates”",
-    text: "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat aute irure sint amet occaecat cupidatat non proident",
-    author: "Sophia Moore",
-    profession: "CEO at Webflow Agency",
-    image: girlImage.src,
-  },
-  {
-    id: 4,
-    heading: "“The best Webflow Templates”",
-    text: "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat aute irure sint amet occaecat cupidatat non proident",
-    author: "Sophia Moore",
-    profession: "CEO at Webflow Agency",
-    image: girlImage.src,
-  },
-  {
-    id: 5,
-    heading: "“The best Webflow Templates”",
-    text: "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat aute irure sint amet occaecat cupidatat non proident",
-    author: "Sophia Moore",
-    profession: "CEO at Webflow Agency",
-    image: girlImage.src,
-  },
-  {
-    id: 6,
-    heading: "“The best Webflow Templates”",
-    text: "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat aute irure sint amet occaecat cupidatat non proident",
-    author: "Sophia Moore",
-    profession: "CEO at Webflow Agency",
-    image: girlImage.src,
-  },
-  {
-    id: 7,
-    heading: "“The best Webflow Templates”",
-    text: "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat aute irure sint amet occaecat cupidatat non proident",
-    author: "Sophia Moore",
-    profession: "CEO at Webflow Agency",
-    image: girlImage.src,
-  },
-  {
-    id: 8,
-    heading: "“The best Webflow Templates”",
-    text: "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat aute irure sint amet occaecat cupidatat non proident",
-    author: "Sophia Moore",
-    profession: "CEO at Webflow Agency",
-    image: girlImage.src,
-  },
-  {
-    id: 9,
-    heading: "“The best Webflow Templates”",
-    text: "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat aute irure sint amet occaecat cupidatat non proident",
-    author: "Sophia Moore",
-    profession: "CEO at Webflow Agency",
-    image: girlImage.src,
-  },
-  {
-    id: 10,
-    heading: "“The best Webflow Templates”",
-    text: "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat aute irure sint amet occaecat cupidatat non proident",
-    author: "Sophia Moore",
-    profession: "CEO at Webflow Agency",
-    image: girlImage.src,
+    heading: "“The best event creators”",
+    text: "Circle has an easy way of capturing guest registrations with one tap - fantastic usability. And still had excellent data points to know who was coming, how to serve them, and what Sponsors may be appropriate for the event",
+    author: "Ariana Smetana",
+    profession: "CEO AccelQ.digital",
+    image: img.src,
   },
   // Add more testimonials as needed
 ];
@@ -192,7 +137,7 @@ const Testimonial = () => {
               <img
                 src={item.image}
                 style={{ height: "50pt", width: "55pt" }}
-                className="bg-[#E1EDFB] rounded-full"
+                className="bg-[#fff] rounded-full"
                 alt=""
               />
               <div className="flex w-full justify-center items-center lg:items-start flex-col lg:ml-5 mt-3 lg:mt-0">

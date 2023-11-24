@@ -17,6 +17,7 @@ import { IoIosArrowForward } from "react-icons/io";
 import { ThreeDots } from "react-loader-spinner";
 import { Dialog } from "@headlessui/react";
 import loaderGif from "../../public/events/Loader.gif";
+import Header from "../Common/Header";
 
 function Dashboard() {
   const [user] = useAuthState(auth);
@@ -334,16 +335,12 @@ function Dashboard() {
             }
           } else {
             setGroupURLLoader(false);
-            toast.error(
-              "Integration error from third party, Please integrate again!"
-            );
+            toast.error("Invalid Group URL, or Third Party Error!");
           }
         })
         .catch((error) => {
           setGroupURLLoader(false);
-          toast.error(
-            "Integration error from third party, Please integrate again!"
-          );
+          toast.error("Invalid Group URL, or Third Party Error!");
         });
     }
   };
@@ -444,9 +441,10 @@ function Dashboard() {
           </div>
         </div>
       </Dialog>
-      <div className="flex h-screen">
+      <div className="flex flex-col w-full h-auto bg-[#00384F]">
+        <Header type="dark" page="attend" />
         {/* Sidebar Menu */}
-        {showSideBar && (
+        {/* {showSideBar && (
           <div className="w-64 flex flex-col border-2 text-[#091E42] p-4">
             <div
               className="cursor-pointer w-full flex justify-center items-center flex-row"
@@ -501,13 +499,12 @@ function Dashboard() {
                   </div>
                 </button>
               </li>
-              {/* Add more menu items */}
             </ul>
           </div>
-        )}
+        )} */}
         {/* Main Content */}
-        <div className="flex-1 flex-col bg-[#FAFCFF]">
-          <div className="border-b-2 flex justify-between p-2 items-center w-full bg-white">
+        <div className="flex flex-col">
+          {/* <div className="border-b-2 flex justify-between p-2 items-center w-full bg-white">
             <div className="ml-2">
               <div
                 onClick={() => {
@@ -556,7 +553,7 @@ function Dashboard() {
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
           <div className="p-6 w-full h-auto">
             {activeView === "integrations" && (
               <>
@@ -570,17 +567,17 @@ function Dashboard() {
                   </>
                 ) : (
                   <>
-                    <div className="p-6 bg-white rounded-xl">
-                      <h1 className="text-2xl text-[#17191C] font-semibold mb-4">
+                    <div className="p-6 lg:p-20 bg-[#012432] rounded-xl">
+                      <h1 className="text-4xl text-[#F9F9F9] font-bold mb-4">
                         Integrations
                       </h1>
-                      <p className="text-[#8392AF]">
+                      <p className="text-[#BDBDBD]">
                         Add all third party event integrations here -
                         (EventBrite, Meetup, LinkedIn etc.)
                       </p>
                       <div className="flex w-full h-auto flex-col justify-start items-start rounded-lg mt-5">
                         <div className="flex justify-between text-[#292D32] flex-row w-full h-auto mt-2">
-                          <div className="text-[#292D32] font-semibold">
+                          <div className="text-[#F9F9F9] text-xl font-bold">
                             EventBrite
                           </div>
                           <div>
@@ -601,7 +598,7 @@ function Dashboard() {
                               <>
                                 <button
                                   disabled={true}
-                                  className={`font14 font-medium rounded-xl py-2 px-4 font-Montserrat text-[#fff] border-2 border-[#007BAB] bg-[#007BAB]`}
+                                  className={`font14 font-medium rounded-xl sm:py-2 px-4 font-Montserrat text-[#fff] border-2 border-[#007BAB] bg-[#007BAB]`}
                                 >
                                   <div className="flex justify-center font-bold text-[20pt] items-center">
                                     ✓
@@ -615,7 +612,7 @@ function Dashboard() {
                                     handleEventBriteIntegration();
                                   }}
                                   disabled={eventBriteLoader}
-                                  className={`font14 font-medium rounded-xl py-3 px-5 font-Montserrat text-[#fff] hover:text-[#007BAB] border-2 border-[#007BAB] hover:bg-transparent bg-[#007BAB]`}
+                                  className={`font14 font-medium rounded-xl py-3 px-5 font-Montserrat text-[#fff] hover:text-[#fff] border-2 border-[#007BAB] hover:bg-transparent bg-[#007BAB]`}
                                 >
                                   <div className="flex justify-center items-center">
                                     Integrate
@@ -625,8 +622,8 @@ function Dashboard() {
                             )}
                           </div>
                         </div>
-                        <div className="flex justify-between text-[#292D32] flex-row w-full h-auto mt-2">
-                          <div className="text-[#292D32] font-semibold">
+                        <div className="flex justify-between text-[#292D32] flex-row w-full h-auto mt-4">
+                          <div className="text-[#F9F9F9] text-xl font-bold">
                             MeetUp
                           </div>
                           <div>
@@ -647,7 +644,7 @@ function Dashboard() {
                               <>
                                 <button
                                   disabled={true}
-                                  className={`font14 font-medium rounded-xl py-2 px-4 font-Montserrat text-[#fff] border-2 border-[#007BAB] bg-[#007BAB]`}
+                                  className={`font14 font-medium rounded-xl sm:py-2 px-4 font-Montserrat text-[#fff] border-2 border-[#007BAB] bg-[#007BAB]`}
                                 >
                                   <div className="flex justify-center font-bold text-[20pt] items-center">
                                     ✓
@@ -661,7 +658,7 @@ function Dashboard() {
                                     handleMeetUpIntegration();
                                   }}
                                   disabled={meetUpLoader}
-                                  className={`font14 font-medium rounded-xl py-3 px-5 font-Montserrat text-[#fff] hover:text-[#007BAB] border-2 border-[#007BAB] hover:bg-transparent bg-[#007BAB]`}
+                                  className={`font14 font-medium rounded-xl py-3 px-5 font-Montserrat text-[#fff] hover:text-[#fff] border-2 border-[#007BAB] hover:bg-transparent bg-[#007BAB]`}
                                 >
                                   <div className="flex justify-center items-center">
                                     Integrate
@@ -671,8 +668,8 @@ function Dashboard() {
                             )}
                           </div>
                         </div>
-                        <div className="flex justify-between text-[#292D32] flex-row w-full h-auto mt-2">
-                          <div className="text-[#292D32] font-semibold">
+                        <div className="flex justify-between text-[#292D32] flex-row w-full h-auto mt-4">
+                          <div className="text-[#F9F9F9] text-xl font-bold">
                             LinkedIn (Coming Soon)
                           </div>
                         </div>

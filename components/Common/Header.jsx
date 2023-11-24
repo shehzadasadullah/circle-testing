@@ -513,7 +513,7 @@ const Header = ({ type = "", page = "" }) => {
                                     <div className="flex justify-start items-start">
                                       <IoSettingsSharp className="w-5 h-5" />
                                       <span className="px-4 text-sm text-[#666F76] font-Poppins font-normal">
-                                        Settings
+                                        Integrations
                                       </span>
                                     </div>
                                   </div>
@@ -541,6 +541,9 @@ const Header = ({ type = "", page = "" }) => {
                                                 autoClose: 3000, // Time in milliseconds
                                               }
                                             );
+                                            setTimeout(() => {
+                                              router.push("/");
+                                            }, 2000);
                                           })
                                           .catch((error) => {
                                             toast.error("Error!", {
@@ -816,7 +819,7 @@ const Header = ({ type = "", page = "" }) => {
                                 <div className="flex justify-start items-start">
                                   <IoSettingsSharp className="w-5 h-5" />
                                   <span className="px-4 text-sm text-[#666F76] font-Poppins font-normal">
-                                    Settings
+                                    Integrations
                                   </span>
                                 </div>
                               </div>
@@ -844,6 +847,9 @@ const Header = ({ type = "", page = "" }) => {
                                             autoClose: 3000, // Time in milliseconds
                                           }
                                         );
+                                        setTimeout(() => {
+                                          router.push("/");
+                                        }, 2000);
                                       })
                                       .catch((error) => {
                                         toast.error("Error!", {

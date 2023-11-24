@@ -52,7 +52,7 @@ const Footer = () => {
               <div
                 className="cursor-pointer text-[#D9D9D9]"
                 onClick={() => {
-                  setCreateEventPopup(!createEventPopup);
+                  router.push("/CreateEvent");
                 }}
               >
                 Create Events
@@ -66,18 +66,20 @@ const Footer = () => {
               {/* <div className="text-[#9A989B]">Pricing</div> */}
               <div
                 className="text-[#D9D9D9] cursor-pointer"
-                onClick={handleClick}
+                onClick={() => {
+                  router.push("/CreateEvent");
+                }}
               >
                 Event Registration
               </div>
-              <div
+              {/* <div
                 className="text-[#D9D9D9]"
                 onClick={() => {
                   router.push("/");
                 }}
               >
                 Sitemap
-              </div>
+              </div> */}
               <div
                 className="text-[#D9D9D9] cursor-pointer"
                 onClick={() => {
@@ -149,6 +151,11 @@ const Footer = () => {
            TX 77019`}</div>
               <div className="flex flex-col mt-5 lg:mt-3">
                 <button
+                  onClick={() => {
+                    router.push(
+                      "https://apps.apple.com/pk/app/circle-ooo/id1611956542"
+                    );
+                  }}
                   className={`px-5 font14 font-medium rounded-full py-3 font-Montserrat text-[#000] hover:text-[#fff] border-2 border-[#F2F2F2] hover:bg-transparent bg-[#F2F2F2]`}
                 >
                   <div className="flex justify-center items-center">
@@ -159,6 +166,11 @@ const Footer = () => {
                   </div>
                 </button>
                 <button
+                  onClick={() => {
+                    router.push(
+                      "https://play.google.com/store/apps/details?id=com.circle.ooo&hl=en&gl=US"
+                    );
+                  }}
                   className={`px-5 mt-3 font14 font-medium rounded-full py-3 font-Montserrat text-[#000] hover:text-[#fff] border-2 border-[#F2F2F2] hover:bg-transparent bg-[#F2F2F2]`}
                 >
                   <div className="flex justify-center items-center">
