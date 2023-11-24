@@ -14,6 +14,8 @@ const RestEvents = dynamic(import("./Events/RestEvents"), { ssr: false });
 const Footer = dynamic(import("../Common/Footer"), { ssr: false });
 import { ThreeCircles } from "react-loader-spinner";
 import loaderGif from "../../public/events/Loader.gif";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 //Main Container Component to contain all the sections of the homepage
 const HomePage = () => {
@@ -30,6 +32,7 @@ const HomePage = () => {
 
   return (
     <>
+      <ToastContainer />
       {loading ? (
         <div className="flex w-screen h-screen justify-center items-center">
           {/* <ThreeCircles
