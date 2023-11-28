@@ -15,7 +15,7 @@ import { auth } from "@/firebase";
 import { arrayUnion } from "firebase/firestore";
 import Register from "@/components/Home/Register";
 import QRCode from "qrcode";
-import toast from "react-simple-toasts";
+// import toast from "react-simple-toasts";
 import img from "./Profile_Picture.png";
 import { LogoUrl } from "@/utils/logo";
 import { HiMiniUserCircle } from "react-icons/hi2";
@@ -34,6 +34,24 @@ import { FaTag } from "react-icons/fa6";
 import { FaClock } from "react-icons/fa";
 import { LiaShareAltSolid } from "react-icons/lia";
 import { FaQrcode } from "react-icons/fa";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { FaCalendarAlt } from "react-icons/fa";
+import { FaWallet } from "react-icons/fa";
+import { FaMobile } from "react-icons/fa";
+import { IoIosArrowForward } from "react-icons/io";
+import { IoIosArrowBack } from "react-icons/io";
+import img1 from "./1.png";
+import img2 from "./2.png";
+import img3 from "./3.png";
+import img4 from "./4.png";
+import img5 from "./5.png";
+import img6 from "./6.png";
+import img7 from "./7.png";
+import img8 from "./8.png";
+import img9 from "./9.png";
+import { AiFillApple } from "react-icons/ai";
+import { IoLogoGooglePlaystore } from "react-icons/io5";
 
 const EventDetails = () => {
   const [createEventPopup, setCreateEventPopup] =
@@ -47,6 +65,7 @@ const EventDetails = () => {
   const [cohostList, setCohostlist] = useState({});
   const [user] = useAuthState(auth);
   const [loading, setLoading] = useState(false);
+  const [showMobileScreen, setShowMobileScreen] = useState(false);
 
   //qr code
   const [text, setText] = useState("");
@@ -245,6 +264,7 @@ const EventDetails = () => {
   const handleAttend = () => {
     if (user?.email == undefined) {
       setShowModal(true);
+      toast.error("Please log in to attend event!");
     } else if (
       EventData.ticketPrice == null ||
       EventData.ticketPrice == "0.00"
@@ -309,7 +329,7 @@ const EventDetails = () => {
 
   const EmailMe = async () => {
     // Set loading state to true
-    setLoading(true);
+    // setLoading(true);
 
     const eventId = EventData?.uid;
     const circleId = CircleData?.id || "JfHpj2gfm4viA7RBPJ8z";
@@ -451,6 +471,7 @@ const EventDetails = () => {
 
   return (
     <>
+      <ToastContainer />
       <div className="w-full h-full p-4 lg:p-10">
         <div className="flex flex-col lg:flex-row justify-start items-start gap-6">
           {/* LEFT SIDE */}
@@ -733,9 +754,6 @@ const EventDetails = () => {
               <button className="flex justify-center items-center flex-row rounded-xl text-lg px-5 py-4 w-full font-semibold bg-[#fff] hover:bg-transparent border-[#fff] border-2 text-[#000] hover:text-[#fff]">
                 <LiaShareAltSolid size={28} /> <p className="ml-2">Share</p>
               </button>
-              <button className="mt-3 xl:mt-0 flex justify-center items-center flex-row rounded-xl text-lg px-5 py-4 xl:ml-4 w-full font-semibold bg-[#fff] hover:bg-transparent border-[#fff] border-2 text-[#000] hover:text-[#fff]">
-                <FaQrcode size={20} /> <p className="ml-2">QR Code</p>
-              </button>
             </div>
 
             <div className="flex w-full mt-4 flex-row justify-center items-center p-6 bg-[#012432] rounded-xl">
@@ -745,14 +763,22 @@ const EventDetails = () => {
                   AttendeesData();
                   handleAttend();
                 }}
-                className="flex justify-between items-center flex-row rounded-xl text-lg py-5 px-5 w-full font-bold bg-[#007BAB] hover:bg-transparent border-[#007BAB] border-2 text-[#fff]"
+                className={`flex ${
+                  Array.isArray(attendeList) && attendeList.includes(user?.uid)
+                    ? "justify-center"
+                    : "justify-between"
+                } items-center flex-row rounded-xl text-lg py-5 px-5 w-full font-bold bg-[#007BAB] hover:bg-transparent border-[#007BAB] border-2 text-[#fff]`}
               >
                 <p>
                   {Array.isArray(attendeList) && attendeList.includes(user?.uid)
                     ? "Check In"
                     : "Attend Event"}
                 </p>
-                <p>${EventData?.ticketPrice}</p>
+                <p>
+                  {Array.isArray(attendeList) && attendeList.includes(user?.uid)
+                    ? ""
+                    : "$" + EventData?.ticketPrice}
+                </p>
               </button>
             </div>
 
@@ -965,7 +991,11 @@ const EventDetails = () => {
                     &#8203;
                   </span>
 
-                  <div className="inline-block w-full lg:w-[90%] align-middle bg-[#00384F] rounded-lg shadow-xl transform transition-all">
+                  <div
+                    className={`inline-block w-full ${
+                      showMobileScreen ? "lg:w-[50%]" : "lg:w-[90%]"
+                    } align-middle bg-[#00384F] rounded-lg shadow-xl transform transition-all`}
+                  >
                     {/* <div
                       className="fixed inset-0 transition-opacity"
                       aria-hidden="true"
@@ -1082,11 +1112,31 @@ const EventDetails = () => {
                       </button>
                     </div> */}
                     <div className="w-full flex justify-between border-[#F9F9F9] text-[#F9F9F9] border-b-2 items-center px-6 py-3">
-                      <p className="font-semibold text-xl">Your Coupon</p>
+                      <p className="font-semibold text-xl w-full">
+                        {showMobileScreen === true ? (
+                          <>
+                            <div className="flex flex-row justify-start items-centre">
+                              <div>
+                                <IoIosArrowBack
+                                  size={30}
+                                  className="border-2 cursor-pointer"
+                                  onClick={() => setShowMobileScreen(false)}
+                                />
+                              </div>
+                              <p className="ml-2">Download Mobile App</p>
+                            </div>
+                          </>
+                        ) : (
+                          "Your Coupon"
+                        )}
+                      </p>
                       <button
                         type="button"
                         className="box-content rounded-none border-none hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none"
-                        onClick={() => setShowTicketModal(false)}
+                        onClick={() => {
+                          setShowMobileScreen(false);
+                          setShowTicketModal(false);
+                        }}
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -1104,162 +1154,319 @@ const EventDetails = () => {
                         </svg>
                       </button>
                     </div>
-                    <div className="w-full h-auto flex justify-start items-start flex-col lg:flex-row gap-2 lg:gap-10 p-2 lg:p-6">
-                      <div className="overflow-hidden w-full h-auto bg-[#012432] rounded-xl lg:w-2/3 flex justify-between items-center flex-row">
-                        <div className="ml-[-4.5%] h-20 w-20 rounded-full bg-[#00384F]"></div>
+                    {showMobileScreen === false && (
+                      <>
+                        <div className="w-full h-auto flex justify-start items-start flex-col lg:flex-row gap-2 lg:gap-10 p-6">
+                          <div className="overflow-hidden w-full h-auto bg-[#012432] rounded-xl lg:w-2/3 flex justify-between items-center flex-row">
+                            <div className="ml-[-12.5%] lg:ml-[-4.5%] h-20 w-20 rounded-full bg-[#00384F]"></div>
 
-                        <div className="flex my-8 w-full justify-center items-center flex-col">
-                          <div className="flex w-full flex-row justify-start items-start gap-3 p-3">
-                            <div className="w-full lg:w-4/5 text-white">
-                              <div className="flex w-full flex-row justify-start items-center flex-row">
-                                <div className="h-20 w-28 text-5xl flex justify-center items-center font-bold bg-[#D2FF3A] rounded-full text-black">
-                                  ✓
+                            <div className="flex my-8 w-full justify-center items-center flex-col">
+                              <div className="flex w-full flex-col lg:flex-row justify-start items-start gap-3 p-3">
+                                <div className="w-full lg:w-4/5 text-white">
+                                  <div className="flex w-full flex-col lg:flex-row justify-center lg:justify-start items-center">
+                                    <div className="h-20 w-28 text-5xl flex justify-center items-center font-bold bg-[#D2FF3A] rounded-full text-black">
+                                      ✓
+                                    </div>
+                                    <div className="flex mt-4 lg:mt-0 w-full lg:ml-4 flex-col text-center lg:text-start justify-center lg:justify-start items-center lg:items-start">
+                                      <p className="text-[#F9F9F9] text-2xl font-semibold">
+                                        Success in creating a ticket
+                                      </p>
+                                      <p
+                                        style={{
+                                          color: "rgba(255, 255, 255, 0.80)",
+                                        }}
+                                        className="text-lg mt-2"
+                                      >
+                                        Check details below
+                                      </p>
+                                    </div>
+                                  </div>
+
+                                  <div className="mt-10 w-full flex justify-start items-start text-[#F9F9F9] text-3xl font-bold">
+                                    <p className="text-start">
+                                      {EventData?.name || ""}
+                                    </p>
+                                  </div>
+
+                                  <div className="flex flex-row text-[#F9F9F9] mt-6 justify-start w-full items-center">
+                                    <LuCalendarDays size={30} />
+                                    <p className="font-Montserrat ml-3">
+                                      {moment(
+                                        EventData?.timefrom?.seconds * 1000
+                                      )
+                                        .local()
+                                        .format("LL")}
+                                    </p>
+                                  </div>
+
+                                  <div className="flex flex-row text-[#F9F9F9] mt-3 justify-start w-full items-center">
+                                    <FaClock size={30} />
+                                    <p className="font-Montserrat ml-3">
+                                      {moment(
+                                        EventData?.timefrom?.seconds * 1000
+                                      )
+                                        .local()
+                                        .format("LT")}{" "}
+                                      -{" "}
+                                      {moment(EventData?.timeto?.seconds * 1000)
+                                        .local()
+                                        .format("LT")}
+                                    </p>
+                                  </div>
+
+                                  <div className="flex flex-row text-[#F9F9F9] mt-3 justify-start w-full items-center">
+                                    <FaLocationDot size={30} />
+                                    <p className="font-Montserrat ml-3">
+                                      {EventData?.location}
+                                    </p>
+                                  </div>
+
+                                  <div className="flex flex-row text-[#F9F9F9] mt-3 justify-start w-full items-center">
+                                    <FaTag size={30} />
+                                    <p className="font-Montserrat ml-3">
+                                      {EventData?.ticketPrice === "0.00"
+                                        ? "FREE"
+                                        : EventData?.ticketPrice}
+                                    </p>
+                                  </div>
                                 </div>
-                                <div className="flex w-full ml-4 flex-col text-start justify-start items-start">
-                                  <p className="text-[#F9F9F9] text-2xl font-semibold">
-                                    Success in creating a ticket
-                                  </p>
-                                  <p
-                                    style={{
-                                      color: "rgba(255, 255, 255, 0.80)",
-                                    }}
-                                    className="text-lg mt-2"
-                                  >
-                                    Check details below
-                                  </p>
+                                <div className="w-full mt-5 lg:mt-0 lg:w-1/5 h-full text-white">
+                                  <div className="flex w-full justify-center items-center bg-white rounded-xl">
+                                    {qrCodeBase64 ? (
+                                      <img
+                                        src={qrCodeBase64}
+                                        alt="QR Code"
+                                        className="rounded-xl object-contain"
+                                      />
+                                    ) : (
+                                      <p>Loading QR code...</p>
+                                    )}
+                                  </div>
+                                  <div className="flex w-full justify-center text-black py-4 mt-3 items-center bg-white rounded-xl">
+                                    {EventData?.attendees?.length}{" "}
+                                    {EventData?.attendees?.length === 1
+                                      ? "Attendee"
+                                      : "Attendees"}{" "}
+                                    {EventData?.attendees?.length === 0 &&
+                                      "No Attendees Yet!"}
+                                  </div>
                                 </div>
                               </div>
-
-                              <div className="mt-10 w-full flex justify-start items-start text-[#F9F9F9] text-3xl font-bold">
-                                <p className="text-start">
-                                  {EventData?.name || ""}
-                                </p>
-                              </div>
-
-                              <div className="flex flex-row text-[#F9F9F9] mt-6 justify-start w-full items-center">
-                                <LuCalendarDays size={30} />
-                                <p className="font-Montserrat ml-3">
-                                  {moment(EventData?.timefrom?.seconds * 1000)
-                                    .local()
-                                    .format("LL")}
-                                </p>
-                              </div>
-
-                              <div className="flex flex-row text-[#F9F9F9] mt-3 justify-start w-full items-center">
-                                <FaClock size={30} />
-                                <p className="font-Montserrat ml-3">
-                                  {moment(EventData?.timefrom?.seconds * 1000)
-                                    .local()
-                                    .format("LT")}{" "}
-                                  -{" "}
-                                  {moment(EventData?.timeto?.seconds * 1000)
-                                    .local()
-                                    .format("LT")}
-                                </p>
-                              </div>
-
-                              <div className="flex flex-row text-[#F9F9F9] mt-3 justify-start w-full items-center">
-                                <FaLocationDot size={30} />
-                                <p className="font-Montserrat ml-3">
-                                  {EventData?.location}
-                                </p>
-                              </div>
-
-                              <div className="flex flex-row text-[#F9F9F9] mt-3 justify-start w-full items-center">
-                                <FaTag size={30} />
-                                <p className="font-Montserrat ml-3">
-                                  {EventData?.ticketPrice === "0.00"
-                                    ? "FREE"
-                                    : EventData?.ticketPrice}
-                                </p>
+                              <div
+                                style={{
+                                  borderColor: "rgba(255, 255, 255, 0.21)",
+                                }}
+                                className="mt-8 flex w-full flex-col lg:flex-row justify-center lg:justify-between items-center border-t-2 border-dashed"
+                              >
+                                <div className="flex text-base w-full justify-start items-center flex-row mt-8">
+                                  <div className="rounded-full bg-white border-2 w-20 h-20">
+                                    <img
+                                      src={
+                                        creatorData?.photoURL
+                                          ? creatorData?.photoURL
+                                          : img.src
+                                      }
+                                      className="rounded-full w-full h-full object-cover"
+                                      alt=""
+                                    />
+                                  </div>
+                                  <div className="flex ml-3 flex-col justify-start items-start">
+                                    <p className="font-normal text-[#BDBDBD]">
+                                      Hosted By:
+                                    </p>
+                                    <p className="font-bold text-[#F2F2F2]">
+                                      {creatorData?.full_name ||
+                                        creatorData?.display_name ||
+                                        "Anonymous"}
+                                    </p>
+                                  </div>
+                                </div>
+                                <button
+                                  onClick={() => setShowMobileScreen(true)}
+                                  className="mt-8 rounded-xl w-full py-4 bg-[#007BAB] border-2 border-[#007BAB] hover:bg-transparent font-semibold text-[#fff]"
+                                >
+                                  Create Your Free Event Passport
+                                </button>
                               </div>
                             </div>
-                            <div className="w-full lg:w-1/5 h-full text-white">
-                              <div className="flex w-full justify-center items-center bg-white rounded-xl">
-                                {qrCodeBase64 ? (
-                                  <img
-                                    src={qrCodeBase64}
-                                    alt="QR Code"
-                                    className="rounded-xl object-contain"
-                                  />
-                                ) : (
-                                  <p>Loading QR code...</p>
-                                )}
-                              </div>
-                              <div className="flex w-full justify-center text-black py-4 mt-3 items-center bg-white rounded-xl">
-                                {EventData?.attendees?.length}{" "}
-                                {EventData?.attendees?.length === 1
-                                  ? "Attendee"
-                                  : "Attendees"}{" "}
-                                {EventData?.attendees?.length === 0 &&
-                                  "No Attendees Yet!"}
-                              </div>
-                            </div>
+
+                            <div className="mr-[-12.5%] lg:mr-[-4.5%] h-20 w-20 rounded-full bg-[#00384F]"></div>
                           </div>
-                          <div
-                            style={{ borderColor: "rgba(255, 255, 255, 0.21)" }}
-                            className="mt-8 flex w-full flex-row justify-between items-center border-t-2 border-dashed"
-                          >
-                            <div className="flex text-base w-full justify-start items-center flex-row mt-8">
-                              <div className="rounded-full bg-white border-2 w-20 h-20">
-                                <img
-                                  src={
-                                    creatorData?.photoURL
-                                      ? creatorData?.photoURL
-                                      : img.src
+
+                          <div className="lg:w-1/3 flex w-full h-auto justify-center items-center flex-col">
+                            <div className="flex w-full justify-center items-center flex-col gap-4">
+                              <div className="bg-[#012432] mt-6 lg:mt-0 flex justify-start items-center flex-col rounded-xl w-full p-6">
+                                <button
+                                  // onClick={handleButtonClick}
+                                  className="rounded-xl px-5 flex flex-row justify-between items-center w-full py-4 bg-[#007BAB] border-2 border-[#007BAB] hover:bg-transparent font-semibold text-[#fff]"
+                                >
+                                  <div className="flex flex-row justify-center items-center">
+                                    <FaCalendarAlt size={20} color="#fff" />
+                                    <p className="ml-2">Add to Calendar</p>
+                                  </div>
+                                  <div>
+                                    <IoIosArrowForward size={20} color="#fff" />
+                                  </div>
+                                </button>
+                                {/* {showOptions && (
+                              <div>
+                                <AddToCalendarButton
+                                  className="rounded-xl w-full py-4 bg-[#007BAB] border-2 border-[#007BAB] hover:bg-transparent font-semibold text-[#fff]"
+                                  name={EventData.name}
+                                  buttonLabel="Add to My Calendar"
+                                  startDate={
+                                    EventData?.timefrom
+                                      ? new Date(
+                                          EventData?.timefrom * 1000
+                                        ).toISOString()
+                                      : undefined
                                   }
-                                  className="rounded-full w-full h-full object-cover"
-                                  alt=""
+                                  endDate={
+                                    EventData?.timeto
+                                      ? new Date(
+                                          EventData.timeto * 1000
+                                        ).toISOString()
+                                      : undefined
+                                  }
+                                  options={[
+                                    "Apple",
+                                    "Google",
+                                    "Yahoo",
+                                    "iCal",
+                                    "Outlook.com",
+                                  ]}
                                 />
                               </div>
-                              <div className="flex ml-3 flex-col justify-start items-start">
-                                <p className="font-normal text-[#BDBDBD]">
-                                  Hosted By:
+                            )} */}
+
+                                <button className="mt-3 rounded-xl px-5 flex flex-row justify-between items-center w-full py-4 bg-[#007BAB] border-2 border-[#007BAB] hover:bg-transparent font-semibold text-[#fff]">
+                                  <div className="flex flex-row justify-center items-center">
+                                    <FaWallet size={20} color="#fff" />
+                                    <p className="ml-2">Add to Wallet</p>
+                                  </div>
+                                  <div>
+                                    <IoIosArrowForward size={20} color="#fff" />
+                                  </div>
+                                </button>
+                                <button
+                                  // onClick={() => {
+                                  //   EmailMe();
+                                  // }}
+                                  className="mt-3 rounded-xl px-5 flex flex-row justify-between items-center w-full py-4 bg-[#007BAB] border-2 border-[#007BAB] hover:bg-transparent font-semibold text-[#fff]"
+                                >
+                                  <div className="flex flex-row justify-center items-center">
+                                    <FaMobile size={20} color="#fff" />
+                                    <p className="ml-2">
+                                      Ticket Text & Reminder
+                                    </p>
+                                  </div>
+                                  <div>
+                                    <IoIosArrowForward size={20} color="#fff" />
+                                  </div>
+                                </button>
+                              </div>
+
+                              <div className="bg-[#012432] mt-6 flex justify-start items-center flex-col rounded-xl w-full p-6">
+                                <p className="w-full text-left mb-2 text-[#F9F9F9] text-xl">
+                                  Connect with Attendees
                                 </p>
-                                <p className="font-bold text-[#F2F2F2]">
-                                  {creatorData?.full_name ||
-                                    creatorData?.display_name ||
-                                    "Anonymous"}
-                                </p>
+                                <div className="w-full flex flex-row justify-center items-center">
+                                  <div className="w-full flex justify-center items-center flex-wrap">
+                                    <div className="rounded-full">
+                                      <img src={img1.src} alt="" />
+                                    </div>
+                                    <div className="ml-[-7pt] rounded-full">
+                                      <img src={img2.src} alt="" />
+                                    </div>
+                                    <div className="ml-[-7pt] rounded-full">
+                                      <img src={img3.src} alt="" />
+                                    </div>
+                                    <div className="ml-[-7pt] rounded-full">
+                                      <img src={img4.src} alt="" />
+                                    </div>
+                                    <div className="ml-[-7pt] rounded-full">
+                                      <img src={img5.src} alt="" />
+                                    </div>
+                                    <div className="ml-[-7pt] rounded-full">
+                                      <img src={img6.src} alt="" />
+                                    </div>
+                                    <div className="ml-[-7pt] rounded-full">
+                                      <img src={img7.src} alt="" />
+                                    </div>
+                                    <div className="ml-[-7pt] rounded-full">
+                                      <img src={img8.src} alt="" />
+                                    </div>
+                                    <div className="ml-[-7pt] rounded-full">
+                                      <img src={img9.src} alt="" />
+                                    </div>
+                                  </div>
+                                </div>
+                                <button
+                                  onClick={() => setShowMobileScreen(true)}
+                                  className="mt-3 rounded-xl w-full py-4 bg-[#007BAB] border-2 border-[#007BAB] hover:bg-transparent font-semibold text-[#fff]"
+                                >
+                                  Connect with Attendees via Mobile App
+                                </button>
                               </div>
                             </div>
-                            <button className="mt-8 rounded-xl w-full py-4 bg-[#007BAB] border-2 border-[#007BAB] hover:bg-transparent font-semibold text-[#fff]">
-                              Create Your Free Event Passport
-                            </button>
                           </div>
                         </div>
-
-                        <div className="mr-[-4.5%] h-20 w-20 rounded-full bg-[#00384F]"></div>
-                      </div>
-
-                      <div className="lg:w-1/3 flex w-full h-auto justify-center items-center flex-col">
-                        <div className="flex w-full justify-center items-center flex-col gap-4">
-                          <div className="bg-[#012432] flex justify-start items-center flex-col rounded-xl w-full p-6">
-                            <button className="rounded-xl w-full py-4 bg-[#007BAB] border-2 border-[#007BAB] hover:bg-transparent font-semibold text-[#fff]">
-                              Add to Calendar
-                            </button>
-                            <button className="mt-3 rounded-xl w-full py-4 bg-[#007BAB] border-2 border-[#007BAB] hover:bg-transparent font-semibold text-[#fff]">
-                              Email my Ticket
-                            </button>
-                            <button className="mt-3 rounded-xl w-full py-4 bg-[#007BAB] border-2 border-[#007BAB] hover:bg-transparent font-semibold text-[#fff]">
-                              Text my Ticket
-                            </button>
-                          </div>
-
-                          <div className="bg-[#012432] mt-6 flex justify-start items-center flex-col rounded-xl w-full p-6">
-                            <button className="rounded-xl w-full py-4 bg-[#007BAB] border-2 border-[#007BAB] hover:bg-transparent font-semibold text-[#fff]">
-                              Add to Calendar
-                            </button>
-                            <button className="mt-3 rounded-xl w-full py-4 bg-[#007BAB] border-2 border-[#007BAB] hover:bg-transparent font-semibold text-[#fff]">
-                              Email my Ticket
-                            </button>
-                            <button className="mt-3 rounded-xl w-full py-4 bg-[#007BAB] border-2 border-[#007BAB] hover:bg-transparent font-semibold text-[#fff]">
-                              Text my Ticket
-                            </button>
+                      </>
+                    )}
+                    {showMobileScreen == true && (
+                      <>
+                        <div className="w-full h-auto flex justify-center items-center flex-col gap-10 p-6">
+                          <div className="w-full h-auto bg-[#012432] rounded-xl flex justify-center items-center flex-col p-10">
+                            <p className="text-[#F9F9F9] text-3xl font-bold">
+                              “Circle Is Available For All Devices”
+                            </p>
+                            <p className="text-[#BDBDBD] w-full lg:w-3/4 mt-4">
+                              Connect effortlessly at the event with a
+                              personalized digital business card. Register now
+                              to explore who else will be there and use Circle,
+                              the user-friendly app for all devices. Sign up
+                              today for a free digital business card and unlock
+                              networking success!
+                            </p>
+                            <div className="flex justify-center items-center flex-row mt-10 w-full">
+                              <button
+                                onClick={() => {
+                                  router.push(
+                                    "https://apps.apple.com/pk/app/circle-ooo/id1611956542"
+                                  );
+                                }}
+                                className={`px-5 font14 font-medium rounded-full py-3 font-Montserrat text-[#000] hover:text-[#fff] border-2 border-[#F2F2F2] hover:bg-transparent bg-[#F2F2F2]`}
+                              >
+                                <div className="flex justify-center items-center">
+                                  <span>
+                                    <AiFillApple className="mr-1" size={30} />
+                                  </span>
+                                  App Store
+                                </div>
+                              </button>
+                              <button
+                                onClick={() => {
+                                  router.push(
+                                    "https://play.google.com/store/apps/details?id=com.circle.ooo&hl=en&gl=US"
+                                  );
+                                }}
+                                className={`px-5 ml-5 font14 font-medium rounded-full py-3 font-Montserrat text-[#000] hover:text-[#fff] border-2 border-[#F2F2F2] hover:bg-transparent bg-[#F2F2F2]`}
+                              >
+                                <div className="flex justify-center items-center">
+                                  <span>
+                                    <IoLogoGooglePlaystore
+                                      className="mr-1"
+                                      size={30}
+                                    />
+                                  </span>
+                                  Play Store
+                                </div>
+                              </button>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </div>
+                      </>
+                    )}
                   </div>
                 </div>
               </div>
