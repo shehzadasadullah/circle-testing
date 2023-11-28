@@ -89,6 +89,10 @@ const EventDetails = () => {
   const [loaderOne, setLoaderOne] = useState(true);
   const [loaderTwo, setLoaderTwo] = useState(true);
   const [loaderThree, setLoaderThree] = useState(true);
+  const [attendeesDataList, setAttendeesDataList] = useState(null);
+  const [filteredAttendeesDataList, setFilteredAttendeesDataList] =
+    useState(null);
+  const [searchAttendees, setSearchAttendees] = useState("");
 
   // Filter events that occur after the current date and time
   const upcomingEvents = sortedEvents.filter((event) => {
@@ -131,6 +135,7 @@ const EventDetails = () => {
 
           const attendesData = docquery?.data()?.attendees || [];
           let attendees_list_temp_array = [];
+          let attendees_list_data_array = [];
 
           if (attendesData?.length > 0) {
             attendesData?.map((item) => {
@@ -139,6 +144,21 @@ const EventDetails = () => {
           }
           console.log("ATTENDEES LIST: ", attendees_list_temp_array);
           setAttendeList(attendees_list_temp_array || []);
+
+          if (attendesData?.length > 0) {
+            for (let i = 0; i < attendesData.length; i++) {
+              const attendeesDocRef = doc(db, "Users", attendesData[i].id);
+              const attendeesDocSnapshot = await getDoc(attendeesDocRef);
+              if (attendeesDocSnapshot.exists()) {
+                const attendeesUserData = attendeesDocSnapshot.data();
+                attendees_list_data_array.push(attendeesUserData);
+              }
+            }
+          }
+
+          console.log("ATTENDEES LIST DATA: ", attendees_list_data_array);
+          setAttendeesDataList(attendees_list_data_array);
+          setFilteredAttendeesDataList(attendees_list_data_array);
 
           console.log(creatorRef, "REFFFFFFFF");
           onSnapshot(creatorRef, (docval) => {
@@ -458,6 +478,42 @@ const EventDetails = () => {
     setActiveTab(tabId);
   };
 
+  useEffect(() => {
+    console.log("ATTENDEES: ", EventData?.attendees);
+    console.log("CREATOR DATA: ", creatorData);
+  }, [EventData, creatorData]);
+
+  // useEffect(() => {
+  //   if (searchAttendees !== "") {
+  //     console.log(searchAttendees);
+  //     console.log("Attendees Data List:", attendeesDataList);
+  //     const filteredAttendees = attendeesDataList.filter(
+  //       (f) =>
+  //         f?.full_name?.toLowerCase() === searchAttendees?.toLowerCase() ||
+  //         f?.display_name?.toLowerCase() === searchAttendees?.toLowerCase()
+  //     );
+  //     setFilteredAttendeesDataList(filteredAttendees);
+  //     console.log("Filtered Attendees Data List:", filteredAttendees);
+  //   } else {
+  //     setFilteredAttendeesDataList(attendeesDataList);
+  //   }
+  // }, [searchAttendees]);
+
+  useEffect(() => {
+    if (searchAttendees !== "") {
+      console.log(searchAttendees);
+      const searchTermLowerCase = searchAttendees.toLowerCase();
+      const filteredAttendees = attendeesDataList.filter(
+        (f) =>
+          f?.full_name?.toLowerCase().indexOf(searchTermLowerCase) !== -1 ||
+          f?.display_name?.toLowerCase().indexOf(searchTermLowerCase) !== -1
+      );
+      setFilteredAttendeesDataList(filteredAttendees);
+    } else {
+      setFilteredAttendeesDataList(attendeesDataList);
+    }
+  }, [searchAttendees]);
+
   return (
     <>
       {loaderOne && loaderTwo && loaderThree ? (
@@ -515,53 +571,53 @@ const EventDetails = () => {
                   ) : (
                     activeTab === "tab2" && (
                       <div className="text-[#F9F9F9] mt-6 w-full flex justify-start items-center">
-                        {cohostList?.length > 0 && (
-                          <div className="flex w-full flex-col flex-nowrap lg:flex-wrap lg:flex-row items-center justify-start gap-y-4">
-                            <div className="relative w-full">
-                              <div className="absolute w-full inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                <svg
-                                  className="w-4 h-4 text-[#fff]"
-                                  aria-hidden="true"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  fill="none"
-                                  viewBox="0 0 20 20"
-                                >
-                                  <path
-                                    stroke="currentColor"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-                                  />
-                                </svg>
-                              </div>
-                              <input
-                                type="search"
-                                id="default-search"
-                                className="block w-full p-4 pl-10 text-[#fff] bg-[#1D5369] border-2 border-[#1D5369] focus:border-[#fff] text-sm rounded-xl focus:outline-none"
-                                placeholder="Search Attendees"
-                                // value={locationInput}
-                                // onChange={(e) => {
-                                //   setLocationInput(e.target.value);
-                                // }}
-                              />
+                        <div className="flex w-full flex-col flex-nowrap lg:flex-wrap lg:flex-row items-center justify-start gap-y-4">
+                          <div className="relative w-full">
+                            <div className="absolute w-full inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                              <svg
+                                className="w-4 h-4 text-[#fff]"
+                                aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 20 20"
+                              >
+                                <path
+                                  stroke="currentColor"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                  stroke-width="2"
+                                  d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+                                />
+                              </svg>
                             </div>
-                            {cohostList.map((key) => {
+                            <input
+                              type="search"
+                              id="default-search"
+                              className="block w-full p-4 pl-10 text-[#fff] bg-[#1D5369] border-2 border-[#1D5369] focus:border-[#fff] text-sm rounded-xl focus:outline-none"
+                              placeholder="Search Attendees"
+                              value={searchAttendees}
+                              onChange={(e) => {
+                                setSearchAttendees(e.target.value);
+                              }}
+                            />
+                          </div>
+                          {filteredAttendeesDataList.length > 0 &&
+                            filteredAttendeesDataList.map((key) => {
                               return (
                                 <>
-                                  <div className="flex w-full justify-center items-center flex-col bg-[#012432] rounded-xl p-2">
-                                    <div className="flex text-base w-full justify-between items-center flex-col lg:flex-row p-2">
-                                      <div className="flex justify-start items-center">
+                                  <div className="flex w-full justify-start items-center flex-col bg-[#012432] rounded-xl p-2">
+                                    <div className="flex text-base w-full justify-between items-center flex-col md:flex-row p-2">
+                                      <div className="flex w-full justify-start items-center">
                                         <div className="rounded-full border-2">
-                                          {key?.photoURL ? (
+                                          {key?.photo_url ? (
                                             <>
                                               <img
                                                 src={
-                                                  key?.photoURL
-                                                    ? key?.photoURL
+                                                  key?.photo_url
+                                                    ? key?.photo_url
                                                     : img.src
                                                 }
-                                                className="rounded-full w-full h-full object-cover"
+                                                className="rounded-full w-12 h-12 object-cover"
                                                 alt=""
                                               />
                                             </>
@@ -575,16 +631,16 @@ const EventDetails = () => {
                                           <p className="font-bold">
                                             {key?.full_name
                                               ? key?.full_name?.toUpperCase()
-                                              : user?.displayName?.toUpperCase()}
+                                              : key?.display_name?.toUpperCase()}
                                           </p>
-                                          <p>
+                                          {/* <p>
                                             {key?.email
                                               ? key?.email?.toUpperCase()
                                               : user?.email?.toUpperCase()}
-                                          </p>
+                                          </p> */}
                                         </div>
                                       </div>
-                                      <div className="flex mt-3 lg:mt-0 justify-center items-center">
+                                      <div className="flex w-full mt-3 md:mt-0 justify-center md:justify-end items-center">
                                         <button className="rounded-xl py-3 font-semibold px-6 bg-[#007BAB] hover:bg-transparent border-[#007BAB] border-2 text-white">
                                           Follow
                                         </button>
@@ -594,8 +650,7 @@ const EventDetails = () => {
                                 </>
                               );
                             })}
-                          </div>
-                        )}
+                        </div>
                       </div>
                     )
                   )}
@@ -610,8 +665,8 @@ const EventDetails = () => {
                       <div className="rounded-full bg-white border-2 w-20 h-20">
                         <img
                           src={
-                            creatorData?.photoURL
-                              ? creatorData?.photoURL
+                            creatorData?.photo_url
+                              ? creatorData?.photo_url
                               : img.src
                           }
                           className="rounded-full w-full h-full object-cover"
@@ -649,12 +704,12 @@ const EventDetails = () => {
                                 <div className="flex w-full lg:w-1/4 justify-center items-center flex-col bg-[#012432] rounded-xl p-2 mt-6">
                                   <div className="flex text-base w-full justify-start items-center flex-col p-2">
                                     <div className="rounded-full border-2 ">
-                                      {key?.photoURL ? (
+                                      {key?.photo_url ? (
                                         <>
                                           <img
                                             src={
-                                              key?.photoURL
-                                                ? key?.photoURL
+                                              key?.photo_url
+                                                ? key?.photo_url
                                                 : img.src
                                             }
                                             className="rounded-full w-full h-full object-cover"
@@ -672,7 +727,7 @@ const EventDetails = () => {
                                       <p className="font-bold">
                                         {key?.full_name
                                           ? key?.full_name?.toUpperCase()
-                                          : user?.displayName?.toUpperCase()}
+                                          : key?.display_name?.toUpperCase()}
                                       </p>
                                     </div>
                                   </div>
@@ -736,8 +791,8 @@ const EventDetails = () => {
                     <div className="rounded-full bg-white border-2 w-20 h-20 mt-5">
                       <img
                         src={
-                          creatorData?.photoURL
-                            ? creatorData?.photoURL
+                          creatorData?.photo_url
+                            ? creatorData?.photo_url
                             : img.src
                         }
                         className="rounded-full w-full h-full object-cover"
@@ -1273,8 +1328,8 @@ const EventDetails = () => {
                                       <div className="rounded-full bg-white border-2 w-20 h-20">
                                         <img
                                           src={
-                                            creatorData?.photoURL
-                                              ? creatorData?.photoURL
+                                            creatorData?.photo_url
+                                              ? creatorData?.photo_url
                                               : img.src
                                           }
                                           className="rounded-full w-full h-full object-cover"
