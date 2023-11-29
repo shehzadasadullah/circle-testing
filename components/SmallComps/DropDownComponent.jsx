@@ -27,10 +27,12 @@ const DropDownComponent = (props) => {
   return (
     <>
       <div
-        style={{
-          opacity: showItems ? "1" : "0",
-          transition: "opacity 0.5s ease",
-        }}
+        style={
+          {
+            // opacity: showItems ? "1" : "0",
+            // transition: "opacity 0.5s ease",
+          }
+        }
         className={`w-full h-auto py-5 cursor-pointer relative rounded-xl ${
           selectedDropdown === title ? "bg-[#007BAB]" : "bg-[#F0F4FB]"
         }`}
@@ -51,8 +53,8 @@ const DropDownComponent = (props) => {
               <h5 className={`font24 font-medium ml-2`}>{title}</h5>
             </div>
             <div
-              className={` duration-500 transition-all ease-in-out`}
-              style={{ transitionDuration: "0.5s" }}
+            // className={` duration-500 transition-all ease-in-out`}
+            // style={{ transitionDuration: "0.5s" }}
             >
               {selectedDropdown === title ? (
                 <AiOutlineMinusCircle size={20} />
@@ -67,14 +69,17 @@ const DropDownComponent = (props) => {
           ref={contentEl}
           className={`relative w-full h-auto overflow-hidden ${
             selectedDropdown === title ? "show" : ""
-          }  transition-all ease-in-out`}
+          } `}
           style={
             selectedDropdown === title
               ? {
                   height: contentEl?.current?.scrollHeight,
-                  transition: "height 0.35s ease",
+                  // transition: "height 0.35s ease",
                 }
-              : { maxHeight: "0px", transition: "height 0.35s ease" }
+              : {
+                  maxHeight: "0px",
+                  // transition: "height 0.35s ease"
+                }
           }
         >
           <div className="w-full px-5 mt-3">

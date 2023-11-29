@@ -12,7 +12,7 @@ const AttendEventMain = () => {
     <div className="w-full h-full bg-[#00384F]">
       <div className="w-full h-full  flex flex-col justify-start items-start relative bg-[#00384F]">
         <div className="w-full h-full">
-          <Header type="dark" page="attend" />
+          <Header type="dark" />
         </div>
         <div className="w-full h-full">
           <EventDetails />

@@ -1155,9 +1155,9 @@ const Checkout = () => {
 
   return (
     <div>
-      <div className="flex flex-col">
+      <div className="flex flex-col bg-[#00384F]">
         <div className="w-full h-full">
-          <Header type="light" page="about" />
+          <Header type="dark" />
         </div>
 
         <Elements stripe={stripePromise}>

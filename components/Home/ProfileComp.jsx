@@ -129,10 +129,12 @@ const ProfileComp = () => {
           </h3>
 
           <div
-            style={{
-              opacity: showItems ? "1" : "0",
-              transition: "opacity 1s ease",
-            }}
+            style={
+              {
+                // opacity: showItems ? "1" : "0",
+                // transition: "opacity 1s ease",
+              }
+            }
           >
             <img
               src={selectedOption.image}
@@ -159,10 +161,12 @@ const ProfileComp = () => {
             {DropdownData.map((item, id) => {
               return (
                 <div
-                  style={{
-                    opacity: showItems ? "1" : "0",
-                    transition: "opacity 0.5s ease",
-                  }}
+                  style={
+                    {
+                      // opacity: showItems ? "1" : "0",
+                      // transition: "opacity 0.5s ease",
+                    }
+                  }
                   className="mt-3"
                 >
                   <DropDownComponent

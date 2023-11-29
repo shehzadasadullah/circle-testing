@@ -781,9 +781,7 @@ const EventDetails = () => {
                   <div className="flex flex-row text-[#F9F9F9] mt-3 justify-start w-full items-center">
                     <FaTag size={30} />
                     <p className="font-Montserrat ml-3">
-                      {EventData?.ticketPrice === "0.00"
-                        ? "FREE"
-                        : EventData?.ticketPrice}
+                      {EventData?.ticketPrice === "0.00" ? "FREE" : "PAID"}
                     </p>
                   </div>
 
