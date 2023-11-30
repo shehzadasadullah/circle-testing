@@ -39,15 +39,19 @@ const Footer = () => {
               width={100}
             />
           </Link>
-          <div className="w-2/3 px-2 text-[#D9D9D9] font14 font-medium font-Montserrat my-6 text-center lg:text-left">
-            Circle.ooo. Simple. Beautiful. Fun. Life Changing Connections.
+          <div className="w-full px-2 text-[#D9D9D9] text-md font-Montserrat mt-6 text-center lg:text-left">
+            Simple. Fast. Beautiful.
+          </div>
+          <div className="w-full px-2 text-[#D9D9D9] text-md mt-1 font-Montserrat mb-6 text-center lg:text-left">
+            <span className="font-bold">Circle.ooo: </span> Life Changing
+            Connections.
           </div>
         </div>
 
         <div className="w-full pb-6 lg:w-3/5 flex flex-col justify-center lg:justify-between items-center gap-4">
           <div className="w-full flex flex-wrap lg:flex-nowrap justify-center lg:justify-between items-center lg:items-start h-full pb-4">
             <div className="w-full lg:w-1/3 flex flex-col justify-center lg:justify-start items-center lg:items-start h-full gap-3 font16 font-medium font-Montserrat py-2 ">
-              <div className="text-[#D9D9D9] text-lg font-bold">Use Circle</div>
+              <div className="text-[#D9D9D9] text-lg font-bold">Try Us!</div>
               <div
                 className="cursor-pointer text-[#D9D9D9]"
                 onClick={() => {

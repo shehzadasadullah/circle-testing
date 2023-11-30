@@ -23,8 +23,7 @@ const Features = () => {
             Event Passport
           </h3>
           <h1 className="lg:text-xl w-full lg:px-10 font-normal  mt-6">
-            The Last Event Registration Profile, Account and Digicard You'll
-            Ever Need
+            The Last Event Profile, Account & Digicard You'll Ever Need
           </h1>
           <div className="relative mt-[-5%] lg:mt-[-8%]">
             <img src={mobile.src} alt="" className="mt-[25%] mb-10" />
