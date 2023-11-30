@@ -195,11 +195,7 @@ const ContactSection2 = () => {
                   alignItems: "flex-end",
                 }}
               >
-                <a
-                  href="mailto:support@noww.co"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
+                <a href="mailto:support@circle.ooo" target="_blank">
                   support@circle.ooo
                 </a>
               </div>
