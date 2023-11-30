@@ -344,7 +344,7 @@ const Header = ({ type = "", page = "" }) => {
                         className={`ml-5 font14 font-medium rounded-full p-4 font-Montserrat text-[#fff] hover:text-[#007BAB] border-2 border-[#007BAB] hover:bg-[#fff] bg-[#007BAB]`}
                       >
                         <div className="flex justify-between items-center">
-                          Create Event
+                          Create an Event
                           <span>
                             <IoIosArrowForward className="ml-1" size={20} />
                           </span>
@@ -579,7 +579,7 @@ const Header = ({ type = "", page = "" }) => {
                           className={`font14 font-medium rounded-full p-4 font-Montserrat text-[#fff] hover:text-[#007BAB] border-2 border-[#007BAB] hover:bg-[#fff] bg-[#007BAB]`}
                         >
                           <div className="flex justify-between items-center">
-                            Create Event
+                            Create an Event
                             <span>
                               <IoIosArrowForward className="ml-1" size={20} />
                             </span>
@@ -888,7 +888,7 @@ const Header = ({ type = "", page = "" }) => {
                               className={`font14 font-medium rounded-full p-4 font-Montserrat text-[#fff] hover:text-[#007BAB] border-2 border-[#007BAB] hover:bg-[#fff] bg-[#007BAB]`}
                             >
                               <div className="flex justify-between items-center">
-                                Create Event
+                                Create an Event
                                 <span>
                                   <IoIosArrowForward
                                     className="ml-1"
@@ -978,7 +978,7 @@ const Header = ({ type = "", page = "" }) => {
                           className={`ml-5 font14 font-medium rounded-full p-4 font-Montserrat text-[#fff] hover:text-[#007BAB] border-2 border-[#007BAB] hover:bg-[#fff] bg-[#007BAB]`}
                         >
                           <div className="flex justify-between items-center">
-                            Create Event
+                            Create an Event
                             <span>
                               <IoIosArrowForward className="ml-1" size={20} />
                             </span>
@@ -1167,7 +1167,7 @@ const Header = ({ type = "", page = "" }) => {
                           className={`font14 font-medium rounded-full p-4 font-Montserrat text-[#fff] hover:text-[#007BAB] border-2 border-[#007BAB] hover:bg-[#fff] bg-[#007BAB]`}
                         >
                           <div className="flex justify-between items-center">
-                            Create Event
+                            Create an Event
                             <span>
                               <IoIosArrowForward className="ml-1" size={20} />
                             </span>

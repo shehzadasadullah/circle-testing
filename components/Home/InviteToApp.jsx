@@ -30,13 +30,13 @@ const InviteToApp = () => {
           <div className="flex flex-col justify-center lg:items-start items-center mb-6">
             <img src={mobile.src} alt="" className="flex lg:hidden p-6" />
             <h3 className="font48 hidden mt-10 lg:mt-0 lg:flex font-semibold font-Montserrat text-center lg:text-left">
-              What are you waiting for?
+              Want to See Who's Coming?
             </h3>
             <h3 className="font48 mt-3 font-semibold flex lg:hidden font-Montserrat text-center lg:text-left">
-              What are you waiting for? Download the Circle App Now!
+              Want to See Who's Coming? Download Circle.ooo
             </h3>
-            <h3 className="font48 font-semibold mt-2 font-Montserrat hidden lg:flex">
-              Download the Circle App
+            <h3 className="text-xl font-semibold mt-2 ml-2 font-Montserrat hidden lg:flex">
+              Download Circle.ooo
             </h3>
             <div className="flex flex-row mt-10">
               <button

@@ -40,8 +40,7 @@ const Footer = () => {
             />
           </Link>
           <div className="w-2/3 px-2 text-[#D9D9D9] font14 font-medium font-Montserrat my-6 text-center lg:text-left">
-            Lorem ipsum dolor sit amet consectetur. Egestas sodales eu aliquam
-            vel.
+            Circle.ooo. Simple. Beautiful. Fun. Life Changing Connections.
           </div>
         </div>
 
@@ -112,9 +111,9 @@ const Footer = () => {
                 <span className="text-[#D9D9D9]">Email: </span>
                 <Link
                   className="underline text-[#D9D9D9]"
-                  href="mailto:support@noww.co"
+                  href="mailto:support@circle.ooo"
                   target="_blank"
-                >{` support@noww.co`}</Link>
+                >{` support@circle.ooo`}</Link>
               </div>
               <div className="text-[#D9D9D9] text-lg font-bold mt-8 lg:mt-10">
                 Social Media

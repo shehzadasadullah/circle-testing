@@ -77,8 +77,8 @@ const ProfileComp = () => {
       },
       {
         id: 6,
-        title: "Wishlist",
-        description: "Create the Ultimate BUCKET Wishlist!",
+        title: "Community",
+        description: "Stay Connected After the Event",
         image: "/profile_images/whishlist.svg",
         width: 713,
         height: 694,
@@ -123,9 +123,7 @@ const ProfileComp = () => {
       >
         <div className="hidden lg:flex w-1/2 justify-center items-center flex-col p-6">
           <h3 className="font48 font-semibold mt-20 text-[#14183E] font-Montserrat">
-            One Profile
-            <br />
-            Feature Lorem Ipsum
+            One Profile for All Events
           </h3>
 
           <div
@@ -148,9 +146,7 @@ const ProfileComp = () => {
         </div>
         <div className="w-full lg:w-1/2 justify-center items-center flex flex-col p-4">
           <h3 className="font48 font-semibold text-center mt-10 text-[#14183E] flex lg:hidden font-Montserrat">
-            One Profile
-            <br />
-            Feature Lorem Ipsum
+            One Profile for All Events
           </h3>
           <div style={{ width: "80%" }} className="mt-5 mb-5 lg:mb-0 lg:mt-0">
             {/* <h5 className="font16">

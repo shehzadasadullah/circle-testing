@@ -63,7 +63,7 @@ const HeroSection = () => {
             />
           </div>
           <h1 className="lg:text-[64px] text-[40px] text-center lg:text-left text-black font-Poppins font-semibold py-2 mt-5">
-            The circle platform Invite, Meet & Network Smarter
+            Invite, Meet & Network Smarter
           </h1>
           <div className="w-full mt-5 flex flex-col  justify-start h-auto">
             <h2 className="flex font18 w-auto p-4 rounded-full border-2 border-[#007bab80] text-black font-Poppins font-light">
@@ -72,12 +72,12 @@ const HeroSection = () => {
             </h2>
             <p className="flex font18 w-auto p-4 mt-3 border-2 border-[#007bab80] rounded-full text-black font-Poppins font-light">
               <img src={green.src} alt="" />
-              <span className="ml-3">Want to Create Events?</span>
+              <span className="ml-3">Create Events Quickly and Better!</span>
             </p>
 
             <p className="flex font18 w-auto p-4 mt-3 border-2 border-[#007bab80] rounded-full text-black font-Poppins font-light">
               <img src={purple.src} alt="" />
-              <span className="ml-3">Scrolling LinkedIn to Find Someone?</span>
+              <span className="ml-3">Know Who You've Met at Every Event!</span>
             </p>
           </div>
           <div className="w-full hidden lg:flex justify-center items-center">
@@ -92,7 +92,7 @@ const HeroSection = () => {
               className={`w-[50%] mt-10 font14 font-medium rounded-full py-5 font-Montserrat text-[#fff] hover:text-[#007BAB] border-2 border-[#007BAB] hover:bg-transparent bg-[#007BAB]`}
             >
               <div className="flex justify-center items-center">
-                Create Event
+                Create an Event
                 <span>
                   <IoIosArrowForward className="ml-1" size={20} />
                 </span>
@@ -113,7 +113,7 @@ const HeroSection = () => {
             className={`flex lg:hidden px-10 mt-5 lg:mt-[-102pt] lg:ml-[-65%] font16 md:font14 font-medium rounded-full py-5 font-Montserrat text-[#fff] hover:text-[#007BAB] border-2 border-[#007BAB] hover:bg-transparent bg-[#007BAB]`}
           >
             <div className="flex justify-center items-center">
-              Create Event
+              Create an Event
               <span>
                 <IoIosArrowForward className="ml-1" size={20} />
               </span>

@@ -24,7 +24,7 @@ const HomePage = () => {
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
-    }, 6000);
+    }, 3000);
   }, []);
   //context
   const [createEventPopup, setCreateEventPopup] =

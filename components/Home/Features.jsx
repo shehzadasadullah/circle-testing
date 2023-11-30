@@ -20,15 +20,13 @@ const Features = () => {
       >
         <div className="w-full lg:w-1/2 text-center lg:text-left flex text-[#F8F9FD] flex-col justify-center items-center text-white p-5">
           <h3 className="font48 w-full lg:ml-20 font-semibold mt-10 font-Montserrat">
-            One Profile
-            <br />
-            Feature Lorem Ipsum
+            Event Passport
           </h3>
-          <h1 className="font16 w-full lg:px-10 font-normal  mt-6">
-            Lorem ipsum dolor sit amet consectetur. Interdum luctus id in
-            pharetra potenti volutpat malesuada risus.
+          <h1 className="lg:text-xl w-full lg:px-10 font-normal  mt-6">
+            The Last Event Registration Profile, Account and Digicard You'll
+            Ever Need
           </h1>
-          <div className="relative mt-[-5%] lg:mt-0">
+          <div className="relative mt-[-5%] lg:mt-[-8%]">
             <img src={mobile.src} alt="" className="mt-[25%] mb-10" />
             <img
               src={pentagon.src}
@@ -40,14 +38,9 @@ const Features = () => {
         </div>
         <div className="w-1/2 lg:flex hidden flex-col justify-center items-center text-white p-5">
           <img src={mobile.src} alt="" />
-          <h3 className="font48 font-semibold mt-20 font-Montserrat">
-            One Profile
-            <br />
-            Feature Lorem Ipsum
-          </h3>
-          <p className="font16 font-normal w-3/4 ml-6 mt-6 mb-10">
-            Lorem ipsum dolor sit amet consectetur. Interdum luctus id in
-            pharetra potenti volutpat malesuada risus.
+          <h3 className="font48 font-semibold mt-20 font-Montserrat">Hosts</h3>
+          <p className="text-xl font-normal w-3/4 ml-6 mt-6 mb-10">
+            Know & Serve Your Audience at Depth, Create Events, and Much More
           </p>
         </div>
       </div>
