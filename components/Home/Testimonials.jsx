@@ -21,18 +21,10 @@ const testimonials = [
   },
   {
     id: 2,
-    heading: "“The best event creators”",
-    text: "Circle has an easy way of capturing guest registrations with one tap - fantastic usability. And still had excellent data points to know who was coming, how to serve them, and what Sponsors may be appropriate for the event",
-    author: "Ariana Smetana",
-    profession: "CEO AccelQ.digital",
-    image: img.src,
-  },
-  {
-    id: 3,
-    heading: "“The best event creators”",
-    text: "Circle has an easy way of capturing guest registrations with one tap - fantastic usability. And still had excellent data points to know who was coming, how to serve them, and what Sponsors may be appropriate for the event",
-    author: "Ariana Smetana",
-    profession: "CEO AccelQ.digital",
+    heading: "“New Era of Event Management”",
+    text: "Circle.ooo is pioneering a new era of event management and  networking through individualized contacts per event attended and instant profile sharing through bumping phones.",
+    author: "Zack LaCanna",
+    profession: "Mobile App Developer",
     image: img.src,
   },
   // Add more testimonials as needed
