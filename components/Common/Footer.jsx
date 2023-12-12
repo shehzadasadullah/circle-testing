@@ -39,12 +39,11 @@ const Footer = () => {
               width={100}
             />
           </Link>
-          <div className="w-full px-2 text-[#D9D9D9] text-md font-Montserrat mt-6 text-center lg:text-left">
-            Simple. Fast. Beautiful.
+          <div className="w-full lg:w-2/3 px-2 text-[#D9D9D9] text-md font-Montserrat mt-6 text-center lg:text-left">
+            Circle.ooo ❤️'s our customers!
           </div>
-          <div className="w-full px-2 text-[#D9D9D9] text-md mt-1 font-Montserrat mb-6 text-center lg:text-left">
-            <span className="font-bold">Circle.ooo: </span> Life Changing
-            Connections.
+          <div className="w-full lg:w-2/3 px-2 text-[#D9D9D9] text-md font-Montserrat text-center lg:text-left">
+            Events: beautiful, fast & simple for all.
           </div>
         </div>
 
@@ -102,7 +101,7 @@ const Footer = () => {
             </div>
 
             <div className="w-full lg:w-1/3 flex flex-col justify-center mt-5 lg:mt-0 lg:justify-start items-center lg:items-start h-full gap-3 font16 font-medium font-Montserrat py-2 ">
-              <div className="text-[#D9D9D9] text-lg font-bold">Need Help</div>
+              <div className="text-[#D9D9D9] text-lg font-bold">Contact</div>
               {/* <div className="text-[#9A989B] flex justify-start items-center gap-1">
               <span>Tel: </span>
               <Link
@@ -234,7 +233,7 @@ const Footer = () => {
       </div>
       <div className="w-full flex justify-center text-center items-center">
         <p className="font18 text-[#D9D9D9] text-base mt-5">
-          © Copyrights 2023 Circle All Rights Reserved.
+          © Copyrights 2023 Circle.ooo All Rights Reserved.
         </p>
       </div>
       {showModal && (

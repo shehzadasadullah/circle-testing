@@ -27,6 +27,14 @@ const testimonials = [
     profession: "Mobile App Developer",
     image: img.src,
   },
+  {
+    id: 3,
+    heading: "“Exceptional Recognition at ASU School of Engineering Demo Day!”",
+    text: "The first judge was impressed with our app's seamless bump, namedrop profile sharing, and per-event contacts, highlighting its innovation and potential for success.",
+    author: "Zack LaCanna",
+    profession: "Student at ASU School of Engineering",
+    image: img.src,
+  },
   // Add more testimonials as needed
 ];
 
@@ -116,7 +124,7 @@ const Testimonial = () => {
       >
         {testimonials.map((item) => (
           <div
-            className="border-[#EFF0F6] cursor-pointer shadow-lg border-2 flex justify-center items-start flex-col gap-4 p-10 rounded-lg mr-10 ml-10 lg:ml-0"
+            className="border-[#EFF0F6] my-4 h-96 cursor-pointer border-2 flex justify-center items-start flex-col gap-4 p-10 rounded-xl mr-10 ml-10 lg:ml-0"
             key={item.id}
           >
             <h4 className="font24 w-full font-bold text-center md:text-start">

@@ -29,6 +29,7 @@ const EventCard = ({
   attend,
   price,
   id = "",
+  type = "",
   location,
 }) => {
   //state
@@ -271,7 +272,11 @@ const EventCard = ({
       }`}
       onClick={() => {
         if (id?.length > 0) {
-          router.push(`/events/${id}`);
+          if (type === "") {
+            router.push(`/events/${id}`);
+          } else {
+            router.push(`/events/${id}?type=${type}`);
+          }
         }
       }}
       style={{ maxWidth: "100%", margin: "0 auto" }} // Add this style for responsiveness
@@ -281,7 +286,7 @@ const EventCard = ({
           <div className="relative flex flex-col">
             <img
               src={image}
-              alt={title}
+              alt={""}
               className="w-full h-[175px] object-fit rounded-[25px]"
             />
             <div className="absolute p-2 mt-2 flex w-full justify-end">
@@ -413,11 +418,13 @@ const EventCard = ({
       <div className="w-full p-4 flex flex-col justify-start items-start gap-1.5">
         <div className="w-full flex justify-between items-start">
           <div className="w-full flex flex-col justify-start items-start gap-1">
-            <div className="w-full flex justify-start items-start truncate font18 lg:font16 text-black font-semibold">
+            <div className="w-full truncate flex justify-start items-start font18 lg:font16 text-black font-semibold">
               {title}
             </div>
             <div className="w-full flex justify-start items-start truncate font16 lg:font12 text-[#828282]">
-              {moment(time?.seconds * 1000).format("MMMM Do YYYY, h:mm:ss a")}
+              {type === ""
+                ? moment(time?.seconds * 1000).format("MMMM Do YYYY, h:mm:ss a")
+                : time}
             </div>
           </div>
         </div>
@@ -429,8 +436,18 @@ const EventCard = ({
           $ {price == 0 ? "Free" : price}
         </div>
         <div className="w-full flex justify-start items-center gap-1 font16 lg:font12 text-[#828282]">
-          <AttendeIcon className="w-3 h-3" />
-          <div className="">{`${attend} Followers`}</div>
+          {type === "" ? (
+            <>
+              <AttendeIcon className="w-3 h-3" />
+              <div className="">{`${attend} Followers`}</div>
+            </>
+          ) : (
+            <>
+              {" "}
+              <AttendeIcon className="w-3 h-3" />
+              <div className="font-semibold">{type?.toUpperCase()}</div>
+            </>
+          )}
         </div>
       </div>
       {showModal && (

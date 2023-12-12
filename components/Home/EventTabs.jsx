@@ -56,6 +56,34 @@ const EventTabs = () => {
     });
   };
 
+  // Other Events Data
+  const [otherEventsData, setOtherEventsData] = useState([]);
+  const [otherEventsLimit, setOtherEventsLimit] = useState(8);
+  const [otherEventsLoader, setOtherEventsLoader] = useState(false);
+
+  const getOtherEventsData = async (limitNum) => {
+    setOtherEventsLoader(true);
+    // reference to the events collection
+    const eventsCollectionRef = collection(db, "ScrapedEvents");
+    //current time stamp
+    // let curtimestamp = Timestamp.now();
+    //compound query - any event which start from now in future
+    const q = query(
+      eventsCollectionRef,
+      // where("timefrom", ">=", curtimestamp),
+      limit(limitNum)
+    );
+    //reading the live data from firestore
+    return onSnapshot(q, (querySnapshot) => {
+      const Docs = [];
+      querySnapshot.forEach((doc) => {
+        Docs.push({ ...doc.data(), eventsDocId: doc?.id });
+      });
+      setOtherEventsData(Docs || []);
+      setOtherEventsLoader(false);
+    });
+  };
+
   // Events Near Me
   const [eventsNearMe, setEventsNearMe] = useState([]);
   const [eventsNearMeLimit, setEventsNearMeLimit] = useState(8);
@@ -475,6 +503,19 @@ const EventTabs = () => {
           }}
         >
           By Location
+        </button>
+        <button
+          className={`${
+            activeTab === 8
+              ? "bg-[#007BAB] text-white border-[#007BAB] border-2"
+              : "bg-transparent text-[#8392AF] border-[#8392AF] border"
+          } px-5 py-2 rounded-full`}
+          onClick={() => {
+            handleTabClick(8);
+            getOtherEventsData(otherEventsLimit);
+          }}
+        >
+          Other Platform Events
         </button>
       </div>
       <div className="mt-10 mb-10 p-5 flex justify-center items-center h-auto w-full">
@@ -1051,6 +1092,65 @@ const EventTabs = () => {
                       </button>
                     )}
                 </>
+              )}
+          </div>
+        )}
+        {activeTab === 8 && (
+          <div className="flex justify-center items-center flex-col w-full">
+            <div className={`w-full flex justify-center items-center flex-col`}>
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 lg:flex-row">
+                {otherEventsData.length > 0 &&
+                  otherEventsData.map((item, id) => (
+                    <div
+                      key={RandomNdigitnumber(10)}
+                      // onClick={() => {
+                      //   router.push(`/events/${item?.eventsDocId}`);
+                      // }}
+                    >
+                      <EventCard
+                        image={item.large_image || item.largeimage || ""}
+                        title={item.name || item.title || ""}
+                        time={item.timefrom || item.datetime || ""}
+                        description={item.description || item.summary || ""}
+                        attend={item.attendees?.length || 0}
+                        price={item.ticketPrice || 0}
+                        id={item?.eventsDocId || item.id || ""}
+                        location={item?.location || ""}
+                        type={item.type || ""}
+                      />
+                    </div>
+                  ))}
+              </div>
+              {otherEventsLoader && (
+                <div className="flex justify-center items-center mt-10">
+                  <RotatingLines
+                    strokeColor="#007BAB"
+                    strokeWidth="5"
+                    animationDuration="0.75"
+                    width="40"
+                    visible={true}
+                  />
+                </div>
+              )}
+              {otherEventsData.length <= 0 && !otherEventsLoader && (
+                <div className="flex justify-center items-center mt-10">
+                  No Events Found!
+                </div>
+              )}
+            </div>
+            {otherEventsData.length > 0 &&
+              !otherEventsLoader &&
+              otherEventsData.length >= otherEventsLimit && (
+                <button
+                  onClick={() => {
+                    setOtherEventsLimit(otherEventsLimit + 8);
+                    getOtherEventsData(otherEventsLimit + 8);
+                  }}
+                  disabled={otherEventsLoader && true}
+                  className={`px-10 mt-12 font14 font-medium rounded-full py-3 font-Montserrat text-[#fff] hover:text-[#007BAB] border-2 border-[#007BAB] hover:bg-transparent bg-[#007BAB]`}
+                >
+                  Show More
+                </button>
               )}
           </div>
         )}

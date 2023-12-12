@@ -569,7 +569,7 @@ function Dashboard() {
                   <>
                     <div className="p-6 lg:p-20 bg-[#012432] rounded-xl">
                       <h1 className="text-4xl text-[#F9F9F9] font-bold mb-4">
-                        Integrations
+                        Third Party Integrations
                       </h1>
                       <p className="text-[#BDBDBD]">
                         Add all third party event integrations here -
@@ -671,6 +671,156 @@ function Dashboard() {
                         <div className="flex justify-between text-[#292D32] flex-row w-full h-auto mt-4">
                           <div className="text-[#F9F9F9] text-xl font-bold">
                             LinkedIn (Coming Soon)
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="p-6 mt-10 lg:p-20 bg-[#012432] rounded-xl">
+                      <h1 className="text-4xl text-[#F9F9F9] font-bold mb-4">
+                        Calendars Integration
+                      </h1>
+                      <p className="text-[#BDBDBD]">
+                        Add all calendars integrations here - (Google Calendar,
+                        iCal, Outlook etc.)
+                      </p>
+                      <div className="flex w-full h-auto flex-col justify-start items-start rounded-lg mt-5">
+                        <div className="flex justify-between text-[#292D32] flex-row w-full h-auto mt-2">
+                          <div className="text-[#F9F9F9] text-xl font-bold">
+                            Google Calendar
+                          </div>
+                          <div>
+                            {/* {eventBriteLoader ? (
+                              <>
+                                <div className="flex justify-center items-center w-full p-4">
+                                  <ThreeDots
+                                    height="20"
+                                    color="#007BAB"
+                                    width="60"
+                                    radius="9"
+                                    ariaLabel="three-dots-loading"
+                                    visible={true}
+                                  />
+                                </div>
+                              </>
+                            ) : isIntegratedEventBrite ? (
+                              <>
+                                <button
+                                  disabled={true}
+                                  className={`font14 font-medium rounded-xl sm:py-2 px-4 font-Montserrat text-[#fff] border-2 border-[#007BAB] bg-[#007BAB]`}
+                                >
+                                  <div className="flex justify-center font-bold text-[20pt] items-center">
+                                    ✓
+                                  </div>
+                                </button>
+                              </>
+                            ) : (
+                              <> */}
+                            <button
+                              // onClick={() => {
+                              //   handleEventBriteIntegration();
+                              // }}
+                              disabled={eventBriteLoader}
+                              className={`font14 font-medium rounded-xl py-3 px-5 font-Montserrat text-[#fff] hover:text-[#fff] border-2 border-[#007BAB] hover:bg-transparent bg-[#007BAB]`}
+                            >
+                              <div className="flex justify-center items-center">
+                                Integrate
+                              </div>
+                            </button>
+                            {/* </>
+                            )} */}
+                          </div>
+                        </div>
+                        <div className="flex justify-between text-[#292D32] flex-row w-full h-auto mt-4">
+                          <div className="text-[#F9F9F9] text-xl font-bold">
+                            iCal
+                          </div>
+                          <div>
+                            {/* {meetUpLoader ? (
+                              <>
+                                <div className="flex justify-center items-center w-full p-4">
+                                  <ThreeDots
+                                    height="20"
+                                    color="#007BAB"
+                                    width="60"
+                                    radius="9"
+                                    ariaLabel="three-dots-loading"
+                                    visible={true}
+                                  />
+                                </div>
+                              </>
+                            ) : isIntegratedMeetUp ? (
+                              <>
+                                <button
+                                  disabled={true}
+                                  className={`font14 font-medium rounded-xl sm:py-2 px-4 font-Montserrat text-[#fff] border-2 border-[#007BAB] bg-[#007BAB]`}
+                                >
+                                  <div className="flex justify-center font-bold text-[20pt] items-center">
+                                    ✓
+                                  </div>
+                                </button>
+                              </>
+                            ) : (
+                              <> */}
+                            <button
+                              // onClick={() => {
+                              //   handleMeetUpIntegration();
+                              // }}
+                              disabled={meetUpLoader}
+                              className={`font14 font-medium rounded-xl py-3 px-5 font-Montserrat text-[#fff] hover:text-[#fff] border-2 border-[#007BAB] hover:bg-transparent bg-[#007BAB]`}
+                            >
+                              <div className="flex justify-center items-center">
+                                Integrate
+                              </div>
+                            </button>
+                            {/* </>
+                            )} */}
+                          </div>
+                        </div>
+                        <div className="flex justify-between text-[#292D32] flex-row w-full h-auto mt-4">
+                          <div className="text-[#F9F9F9] text-xl font-bold">
+                            Outlook Calendar
+                          </div>
+                          <div>
+                            {/* {meetUpLoader ? (
+                              <>
+                                <div className="flex justify-center items-center w-full p-4">
+                                  <ThreeDots
+                                    height="20"
+                                    color="#007BAB"
+                                    width="60"
+                                    radius="9"
+                                    ariaLabel="three-dots-loading"
+                                    visible={true}
+                                  />
+                                </div>
+                              </>
+                            ) : isIntegratedMeetUp ? (
+                              <>
+                                <button
+                                  disabled={true}
+                                  className={`font14 font-medium rounded-xl sm:py-2 px-4 font-Montserrat text-[#fff] border-2 border-[#007BAB] bg-[#007BAB]`}
+                                >
+                                  <div className="flex justify-center font-bold text-[20pt] items-center">
+                                    ✓
+                                  </div>
+                                </button>
+                              </>
+                            ) : (
+                              <> */}
+                            <button
+                              // onClick={() => {
+                              //   handleMeetUpIntegration();
+                              // }}
+                              disabled={meetUpLoader}
+                              className={`font14 font-medium rounded-xl py-3 px-5 font-Montserrat text-[#fff] hover:text-[#fff] border-2 border-[#007BAB] hover:bg-transparent bg-[#007BAB]`}
+                            >
+                              <div className="flex justify-center items-center">
+                                Integrate
+                              </div>
+                            </button>
+                            {/* </>
+                            )} */}
                           </div>
                         </div>
                       </div>

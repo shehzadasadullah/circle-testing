@@ -82,6 +82,7 @@ const EventDetails = () => {
   const [showOptions, setShowOptions] = useState(false);
   const router = useRouter();
   const { id } = router.query;
+  const { type } = router.query;
   const [allevents, setAllEvents] = useState([]);
   const sortedEvents = allevents.sort((a, b) => a.timefrom - b.timefrom);
   const currentDate = moment();
@@ -108,78 +109,90 @@ const EventDetails = () => {
   useEffect(() => {
     if (id?.length > 0) {
       // Reference of event
-      const eventRef = doc(db, "events", id);
+      if (type) {
+        const eventRef = doc(db, "ScrapedEvents", id);
 
-      return onSnapshot(eventRef, async (docquery) => {
-        if (docquery.exists()) {
-          setEventData(docquery?.data() || {});
+        return onSnapshot(eventRef, async (docquery) => {
+          if (docquery.exists()) {
+            console.log("SCRAPPED EVENT DATA: ", docquery);
+            setEventData(docquery?.data() || {});
+          }
+          setLoaderOne(false);
+        });
+      } else {
+        const eventRef = doc(db, "events", id);
 
-          // Reference of creator
-          const creatorRef = docquery?.data()?.creator;
-          const circleRef = docquery?.data()?.circle_id;
+        return onSnapshot(eventRef, async (docquery) => {
+          if (docquery.exists()) {
+            setEventData(docquery?.data() || {});
 
-          const cohostsData = docquery?.data()?.co_host || [];
-          let cohosts_list_temp_array = [];
-          if (cohostsData?.length > 0) {
-            for (let i = 0; i < cohostsData.length; i++) {
-              const cohostUserDocRef = doc(db, "Users", cohostsData[i].id);
-              const cohostUserDocSnapshot = await getDoc(cohostUserDocRef);
-              if (cohostUserDocSnapshot.exists()) {
-                const cohostUserData = cohostUserDocSnapshot.data();
-                cohosts_list_temp_array.push(cohostUserData);
+            // Reference of creator
+            const creatorRef = docquery?.data()?.creator;
+            const circleRef = docquery?.data()?.circle_id;
+
+            const cohostsData = docquery?.data()?.co_host || [];
+            let cohosts_list_temp_array = [];
+            if (cohostsData?.length > 0) {
+              for (let i = 0; i < cohostsData.length; i++) {
+                const cohostUserDocRef = doc(db, "Users", cohostsData[i].id);
+                const cohostUserDocSnapshot = await getDoc(cohostUserDocRef);
+                if (cohostUserDocSnapshot.exists()) {
+                  const cohostUserData = cohostUserDocSnapshot.data();
+                  cohosts_list_temp_array.push(cohostUserData);
+                }
               }
             }
-          }
 
-          setCohostlist(cohosts_list_temp_array || []);
+            setCohostlist(cohosts_list_temp_array || []);
 
-          const attendesData = docquery?.data()?.attendees || [];
-          let attendees_list_temp_array = [];
-          let attendees_list_data_array = [];
+            const attendesData = docquery?.data()?.attendees || [];
+            let attendees_list_temp_array = [];
+            let attendees_list_data_array = [];
 
-          if (attendesData?.length > 0) {
-            attendesData?.map((item) => {
-              attendees_list_temp_array.push(item?.id);
+            if (attendesData?.length > 0) {
+              attendesData?.map((item) => {
+                attendees_list_temp_array.push(item?.id);
+              });
+            }
+            console.log("ATTENDEES LIST: ", attendees_list_temp_array);
+            setAttendeList(attendees_list_temp_array || []);
+
+            if (attendesData?.length > 0) {
+              for (let i = 0; i < attendesData.length; i++) {
+                const attendeesDocRef = doc(db, "Users", attendesData[i].id);
+                const attendeesDocSnapshot = await getDoc(attendeesDocRef);
+                if (attendeesDocSnapshot.exists()) {
+                  const attendeesUserData = attendeesDocSnapshot.data();
+                  attendees_list_data_array.push(attendeesUserData);
+                }
+              }
+            }
+
+            console.log("ATTENDEES LIST DATA: ", attendees_list_data_array);
+            setAttendeesDataList(attendees_list_data_array);
+            setFilteredAttendeesDataList(attendees_list_data_array);
+
+            console.log(creatorRef, "REFFFFFFFF");
+            onSnapshot(creatorRef, (docval) => {
+              if (docval?.exists()) {
+                setCreatorData(docval?.data() || {});
+              }
             });
-          }
-          console.log("ATTENDEES LIST: ", attendees_list_temp_array);
-          setAttendeList(attendees_list_temp_array || []);
 
-          if (attendesData?.length > 0) {
-            for (let i = 0; i < attendesData.length; i++) {
-              const attendeesDocRef = doc(db, "Users", attendesData[i].id);
-              const attendeesDocSnapshot = await getDoc(attendeesDocRef);
-              if (attendeesDocSnapshot.exists()) {
-                const attendeesUserData = attendeesDocSnapshot.data();
-                attendees_list_data_array.push(attendeesUserData);
+            // Snapshot for circleRef
+            if (circleRef) {
+              const circleRefSnapshot = await getDoc(circleRef);
+              if (circleRefSnapshot.exists()) {
+                const circleData = circleRefSnapshot.data();
+                setCircleDtata(circleData);
+
+                // Update state or do something with circleData
               }
             }
           }
-
-          console.log("ATTENDEES LIST DATA: ", attendees_list_data_array);
-          setAttendeesDataList(attendees_list_data_array);
-          setFilteredAttendeesDataList(attendees_list_data_array);
-
-          console.log(creatorRef, "REFFFFFFFF");
-          onSnapshot(creatorRef, (docval) => {
-            if (docval?.exists()) {
-              setCreatorData(docval?.data() || {});
-            }
-          });
-
-          // Snapshot for circleRef
-          if (circleRef) {
-            const circleRefSnapshot = await getDoc(circleRef);
-            if (circleRefSnapshot.exists()) {
-              const circleData = circleRefSnapshot.data();
-              setCircleDtata(circleData);
-
-              // Update state or do something with circleData
-            }
-          }
-        }
-        setLoaderOne(false);
-      });
+          setLoaderOne(false);
+        });
+      }
     }
   }, [id]);
 
@@ -472,6 +485,8 @@ const EventDetails = () => {
     { id: "tab1", label: "About Event", paddingLeft: 0 },
     { id: "tab2", label: "Attendees & Who I Meet", paddingLeft: 4 },
   ];
+
+  const otherTabs = [{ id: "tab1", label: "About Event", paddingLeft: 0 }];
   const [activeTab, setActiveTab] = useState(tabs[0].id);
 
   const handleTabClick = (tabId) => {
@@ -534,39 +549,55 @@ const EventDetails = () => {
                     className="w-full h-full object-contain rounded-xl "
                     alt="event large image"
                     src={
-                      EventData?.large_image
-                        ? EventData?.large_image
+                      EventData?.large_image || EventData.largeimage
+                        ? EventData?.large_image || EventData.largeimage
                         : "https://cdnspicyfy.azureedge.net/images/8400a5e7-639e-4e1a-bd5e-41c689de93a5.jpg"
                     }
                   />
                 </div>
 
                 <div className="mt-8 text-[#F9F9F9] text-3xl flex justify-start items-center w-full font-bold">
-                  {EventData?.name || ""}
+                  {EventData?.name || EventData.title || ""}
                 </div>
 
                 <div className="w-full mt-8 flex flex-col justify-start items-center">
                   <div className="flex border-[#007BAB] flex-row gap-6 border-b-2 w-full">
-                    {tabs.map((tab) => (
-                      <>
-                        <div
-                          key={tab.id}
-                          className={`cursor-pointer text-xl ${
-                            activeTab === tab.id
-                              ? "text-[#007BAB] border-b-4 border-[#007BAB]"
-                              : "text-[#667085]"
-                          }`}
-                          onClick={() => handleTabClick(tab.id)}
-                        >
-                          {tab.label}
-                        </div>
-                      </>
-                    ))}
+                    {type
+                      ? otherTabs.map((tab) => (
+                          <>
+                            <div
+                              key={tab.id}
+                              className={`cursor-pointer text-xl ${
+                                activeTab === tab.id
+                                  ? "text-[#007BAB] border-b-4 border-[#007BAB]"
+                                  : "text-[#667085]"
+                              }`}
+                              onClick={() => handleTabClick(tab.id)}
+                            >
+                              {tab.label}
+                            </div>
+                          </>
+                        ))
+                      : tabs.map((tab) => (
+                          <>
+                            <div
+                              key={tab.id}
+                              className={`cursor-pointer text-xl ${
+                                activeTab === tab.id
+                                  ? "text-[#007BAB] border-b-4 border-[#007BAB]"
+                                  : "text-[#667085]"
+                              }`}
+                              onClick={() => handleTabClick(tab.id)}
+                            >
+                              {tab.label}
+                            </div>
+                          </>
+                        ))}
                   </div>
 
                   {activeTab === "tab1" ? (
                     <div className="text-[#F9F9F9] mt-6 w-full flex justify-start items-start">
-                      {EventData?.description || ""}{" "}
+                      {EventData?.description || EventData?.summary || ""}{" "}
                     </div>
                   ) : (
                     activeTab === "tab2" && (
@@ -678,6 +709,7 @@ const EventDetails = () => {
                         <p className="font-bold">
                           {creatorData?.full_name ||
                             creatorData?.display_name ||
+                            EventData?.organizer ||
                             "Anonymous"}
                         </p>
                       </div>
@@ -752,24 +784,30 @@ const EventDetails = () => {
                   <div className="flex flex-row text-[#F9F9F9] mt-5 justify-start w-full items-center">
                     <LuCalendarDays size={30} />
                     <p className="font-Montserrat ml-3">
-                      {moment(EventData?.timefrom?.seconds * 1000)
-                        .local()
-                        .format("LL")}
+                      {type
+                        ? EventData?.datetime
+                        : moment(EventData?.timefrom?.seconds * 1000)
+                            .local()
+                            .format("LL")}
                     </p>
                   </div>
 
-                  <div className="flex flex-row text-[#F9F9F9] mt-3 justify-start w-full items-center">
-                    <FaClock size={30} />
-                    <p className="font-Montserrat ml-3">
-                      {moment(EventData?.timefrom?.seconds * 1000)
-                        .local()
-                        .format("LT")}{" "}
-                      -{" "}
-                      {moment(EventData?.timeto?.seconds * 1000)
-                        .local()
-                        .format("LT")}
-                    </p>
-                  </div>
+                  {type ? (
+                    ""
+                  ) : (
+                    <div className="flex flex-row text-[#F9F9F9] mt-3 justify-start w-full items-center">
+                      <FaClock size={30} />
+                      <p className="font-Montserrat ml-3">
+                        {moment(EventData?.timefrom?.seconds * 1000)
+                          .local()
+                          .format("LT")}{" "}
+                        -{" "}
+                        {moment(EventData?.timeto?.seconds * 1000)
+                          .local()
+                          .format("LT")}
+                      </p>
+                    </div>
+                  )}
 
                   <div className="flex flex-row text-[#F9F9F9] mt-3 justify-start w-full items-center">
                     <FaLocationDot size={30} />
@@ -781,7 +819,11 @@ const EventDetails = () => {
                   <div className="flex flex-row text-[#F9F9F9] mt-3 justify-start w-full items-center">
                     <FaTag size={30} />
                     <p className="font-Montserrat ml-3">
-                      {EventData?.ticketPrice === "0.00" ? "FREE" : "PAID"}
+                      {type
+                        ? "TODO YET"
+                        : EventData?.ticketPrice === "0.00"
+                        ? "FREE"
+                        : ""}
                     </p>
                   </div>
 
@@ -802,6 +844,7 @@ const EventDetails = () => {
                       <p className="font-bold text-[#F2F2F2]">
                         {creatorData?.full_name ||
                           creatorData?.display_name ||
+                          EventData?.organizer ||
                           "Anonymous"}
                       </p>
                     </div>
@@ -815,32 +858,45 @@ const EventDetails = () => {
                 </div>
 
                 <div className="flex w-full mt-4 flex-row justify-center items-center p-6 bg-[#012432] rounded-xl">
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      AttendeesData();
-                      handleAttend();
-                    }}
-                    className={`flex ${
-                      Array.isArray(attendeList) &&
-                      attendeList.includes(user?.uid)
-                        ? "justify-center"
-                        : "justify-between"
-                    } items-center flex-row rounded-xl text-lg py-5 px-5 w-full font-bold bg-[#007BAB] hover:bg-transparent border-[#007BAB] border-2 text-[#fff]`}
-                  >
-                    <p>
-                      {Array.isArray(attendeList) &&
-                      attendeList.includes(user?.uid)
-                        ? "Check In"
-                        : "Attend Event"}
-                    </p>
-                    <p>
-                      {Array.isArray(attendeList) &&
-                      attendeList.includes(user?.uid)
-                        ? ""
-                        : "$" + EventData?.ticketPrice}
-                    </p>
-                  </button>
+                  {type ? (
+                    <button
+                      onClick={(e) => {
+                        router.push(EventData?.link);
+                      }}
+                      className={`rounded-xl text-lg py-5 px-5 w-full font-bold bg-[#007BAB] hover:bg-transparent border-[#007BAB] border-2 text-[#fff]`}
+                    >
+                      Attend Event
+                    </button>
+                  ) : (
+                    <>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          AttendeesData();
+                          handleAttend();
+                        }}
+                        className={`flex ${
+                          Array.isArray(attendeList) &&
+                          attendeList.includes(user?.uid)
+                            ? "justify-center"
+                            : "justify-between"
+                        } items-center flex-row rounded-xl text-lg py-5 px-5 w-full font-bold bg-[#007BAB] hover:bg-transparent border-[#007BAB] border-2 text-[#fff]`}
+                      >
+                        <p>
+                          {Array.isArray(attendeList) &&
+                          attendeList.includes(user?.uid)
+                            ? "Check In"
+                            : "Attend Event"}
+                        </p>
+                        <p>
+                          {Array.isArray(attendeList) &&
+                          attendeList.includes(user?.uid)
+                            ? ""
+                            : "$" + EventData?.ticketPrice}
+                        </p>
+                      </button>
+                    </>
+                  )}
                 </div>
 
                 {showFreeModal && (
