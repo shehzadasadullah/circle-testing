@@ -73,14 +73,14 @@ const Footer = () => {
                 />
               )}
               {/* <div className="text-[#9A989B]">Pricing</div> */}
-              <div
+              {/* <div
                 className="text-[#D9D9D9] cursor-pointer"
                 onClick={() => {
                   router.push("/CreateEvent");
                 }}
               >
                 Event Registration
-              </div>
+              </div> */}
               {/* <div
                 className="text-[#D9D9D9]"
                 onClick={() => {
