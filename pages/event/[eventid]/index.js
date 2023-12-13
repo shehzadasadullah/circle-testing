@@ -823,7 +823,7 @@ const EventDetails = () => {
                         ? "TODO YET"
                         : EventData?.ticketPrice === "0.00"
                         ? "FREE"
-                        : ""}
+                        : "PAID"}
                     </p>
                   </div>
 

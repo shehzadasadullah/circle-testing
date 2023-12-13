@@ -14,8 +14,11 @@ import Register from "../Home/Register";
 import packageJson from "../../package.json";
 import { AiFillApple } from "react-icons/ai";
 import { IoLogoGooglePlaystore } from "react-icons/io5";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth, db } from "@/firebase";
 
 const Footer = () => {
+  const [user] = useAuthState(auth);
   const [createEventPopup, setCreateEventPopup] =
     useContext(Create_Event_Popup);
   const router = useRouter();
@@ -54,7 +57,11 @@ const Footer = () => {
               <div
                 className="cursor-pointer text-[#D9D9D9]"
                 onClick={() => {
-                  router.push("/CreateEvent");
+                  if (user?.email === undefined) {
+                    handleClick();
+                  } else {
+                    router.push("/CreateEvent");
+                  }
                 }}
               >
                 Create Events
@@ -238,6 +245,7 @@ const Footer = () => {
       </div>
       {showModal && (
         <div
+          className="z-50"
           style={{
             position: "fixed",
             top: "50%",

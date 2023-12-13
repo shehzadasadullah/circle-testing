@@ -1188,7 +1188,7 @@ const Header = ({ type = "", page = "" }) => {
               top: "50%",
               left: "50%",
             }}
-            className="z-10"
+            className="z-50"
           >
             <Register showModal={showModal} setShowModal={setShowModal} />
           </div>

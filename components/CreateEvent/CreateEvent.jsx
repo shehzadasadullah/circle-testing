@@ -1095,7 +1095,7 @@ const CreateEvent = () => {
             <div className="w-full h-auto p-4">
               <div className="flex justify-center lg:justify-start items-center lg:items-start flex-col p-2 lg:p-10">
                 <h3 className="font-bold font48 text-[#17191C] mt-5">
-                  Create Events
+                  Create Event
                 </h3>
                 <p className="font24 text-[#8392AF] text-center lg:text-left font-normal text-base mt-2">
                   Add all your event details, create new tickets, and set up
@@ -1131,8 +1131,8 @@ const CreateEvent = () => {
                         className="block text-[#292D32] font-bold text-[16px] ml-1"
                       >
                         {circleData.length > 0
-                          ? "Your Circle"
-                          : "You haven't created any circle, please create circle to continue"}
+                          ? "Your Circle - TODO (i) button"
+                          : "You haven't created any circle, please create circle to continue - TODO (i) button"}
                         <span className="text-red-600"> *</span>
                       </label>
                       {circleData.length > 0 ? (
