@@ -28,10 +28,16 @@ function Dashboard() {
   const [showModal, setShowModal] = useState(false);
   const [eventBriteLoader, setEventBriteLoader] = useState(false);
   const [meetUpLoader, setMeetUpLoader] = useState(false);
+  const [googleCalenderLoader, setGoogleCalenderLoader] = useState(false);
+  const [iCalLoader, setICalLoader] = useState(false);
   const [isIntegratedEventBrite, setIsIntegratedEventBrite] = useState(false);
   const [isIntegratedMeetUp, setIsIntegratedMeetUp] = useState(false);
+  const [isIntegratedGC, setIsIntegratedGC] = useState(false);
+  const [isIntegratedIC, setIsIntegratedIC] = useState(false);
   const [eventBriteAccessCode, setEventBriteAccessCode] = useState("");
   const [meetUpAccessCode, setMeetUpAccessCode] = useState("");
+  const [GCAccessCode, setGCAccessCode] = useState("");
+  const [ICAccessCode, setICAccessCode] = useState("");
   let [isOpen, setIsOpen] = useState(false);
   const [groupURL, setGroupURL] = useState("");
   const [groupURLLoader, setGroupURLLoader] = useState(false);
@@ -90,6 +96,9 @@ function Dashboard() {
     }
     if (codeParam && integration === "meetUp") {
       setMeetUpAccessCode(codeParam);
+    }
+    if (codeParam && integration === "GC") {
+      setGCAccessCode(codeParam);
     }
   }, [user, circleAccessToken]);
 
@@ -191,6 +200,59 @@ function Dashboard() {
     }
   }, [meetUpAccessCode, circleAccessToken]);
 
+  useEffect(() => {
+    const integration = localStorage.getItem("integration");
+    const loader = localStorage.getItem("loader");
+    if (circleAccessToken && integration && integration === "GC") {
+      if (loader && loader === "true") {
+        setGoogleCalenderLoader(true);
+        if (GCAccessCode !== "") {
+          var myHeaders = new Headers();
+          myHeaders.append("accessToken", circleAccessToken);
+          var requestOptions = {
+            method: "GET",
+            headers: myHeaders,
+            redirect: "follow",
+          };
+
+          fetch(
+            `https://api.circle.ooo/api/circle/third-party/calendar/google-integrate?accessCode=${GCAccessCode}`,
+            requestOptions
+          )
+            .then((response) => response.json())
+            .then((result) => {
+              if (result.result === true) {
+                if (
+                  result.message === "google calendar integrated successfully"
+                ) {
+                  setGoogleCalenderLoader(false);
+                  setIsIntegratedGC(true);
+                  toast.success("Google Calender integrated successfully!");
+                  localStorage.removeItem("integration");
+                  localStorage.removeItem("loader");
+                }
+              } else {
+                setGoogleCalenderLoader(false);
+                toast.error(
+                  "Integration error from third party, Please try again!"
+                );
+                localStorage.removeItem("integration");
+                localStorage.removeItem("loader");
+              }
+            })
+            .catch((error) => {
+              setGoogleCalenderLoader(false);
+              toast.error(
+                "Integration error from third party, Please try again!"
+              );
+              localStorage.removeItem("integration");
+              localStorage.removeItem("loader");
+            });
+        }
+      }
+    }
+  }, [GCAccessCode, circleAccessToken]);
+
   const getThirdPartyIntegrations = async () => {
     var myHeaders = new Headers();
     myHeaders.append("accessToken", circleAccessToken);
@@ -218,6 +280,16 @@ function Dashboard() {
               setMeetUpLoader(false);
               setIsIntegratedMeetUp(true);
             }
+
+            if (item.integrationType === "GOOGLECALENDAR") {
+              setGoogleCalenderLoader(false);
+              setIsIntegratedGC(true);
+            }
+
+            if (item.integrationType === "ICAL") {
+              setICalLoader(false);
+              setIsIntegratedIC(true);
+            }
           });
         }
         setThirdPartLoader(false);
@@ -230,7 +302,13 @@ function Dashboard() {
 
   useEffect(() => {
     if (circleAccessToken !== "") getThirdPartyIntegrations();
-  }, [user, eventBriteAccessCode, circleAccessToken, meetUpAccessCode]);
+  }, [
+    user,
+    eventBriteAccessCode,
+    circleAccessToken,
+    meetUpAccessCode,
+    GCAccessCode,
+  ]);
 
   const logout = async () => {
     try {
@@ -268,6 +346,65 @@ function Dashboard() {
           localStorage.setItem("integration", "eventBrite");
           localStorage.setItem("loader", "true");
           router.push(result.data);
+        } else {
+          toast.error("Something went wrong!");
+        }
+      })
+      .catch((error) => console.log("error", error));
+  };
+
+  const handleGCIntegration = () => {
+    setGoogleCalenderLoader(true);
+    var myHeaders = new Headers();
+    myHeaders.append("accessToken", circleAccessToken);
+
+    var requestOptions = {
+      method: "GET",
+      headers: myHeaders,
+      redirect: "follow",
+    };
+
+    fetch(
+      "https://api.circle.ooo/api/circle/third-party/calendar/google-oauth-url",
+      requestOptions
+    )
+      .then((response) => response.json())
+      .then((result) => {
+        console.log("GC oAuth Result: ", result);
+        if (result.result) {
+          localStorage.setItem("integration", "GC");
+          localStorage.setItem("loader", "true");
+          router.push(result.data);
+        } else {
+          toast.error("Something went wrong!");
+        }
+      })
+      .catch((error) => console.log("error", error));
+  };
+
+  const handleICIntegration = () => {
+    setICalLoader(true);
+    var myHeaders = new Headers();
+    myHeaders.append("accessToken", circleAccessToken);
+
+    var requestOptions = {
+      method: "GET",
+      headers: myHeaders,
+      redirect: "follow",
+    };
+
+    fetch(
+      "https://api.circle.ooo/api/circle/third-party/calendar/ical-integrate",
+      requestOptions
+    )
+      .then((response) => response.json())
+      .then((result) => {
+        if (result.result) {
+          if (result.message === "ical integrated successfully") {
+            setICalLoader(false);
+            setIsIntegratedIC(true);
+            toast.success("iCal Integrated Successfully!");
+          }
         } else {
           toast.error("Something went wrong!");
         }
@@ -690,7 +827,7 @@ function Dashboard() {
                             Google Calendar
                           </div>
                           <div>
-                            {/* {eventBriteLoader ? (
+                            {googleCalenderLoader ? (
                               <>
                                 <div className="flex justify-center items-center w-full p-4">
                                   <ThreeDots
@@ -703,7 +840,7 @@ function Dashboard() {
                                   />
                                 </div>
                               </>
-                            ) : isIntegratedEventBrite ? (
+                            ) : isIntegratedGC ? (
                               <>
                                 <button
                                   disabled={true}
@@ -715,20 +852,20 @@ function Dashboard() {
                                 </button>
                               </>
                             ) : (
-                              <> */}
-                            <button
-                              // onClick={() => {
-                              //   handleEventBriteIntegration();
-                              // }}
-                              disabled={eventBriteLoader}
-                              className={`font14 font-medium rounded-xl py-3 px-5 font-Montserrat text-[#fff] hover:text-[#fff] border-2 border-[#007BAB] hover:bg-transparent bg-[#007BAB]`}
-                            >
-                              <div className="flex justify-center items-center">
-                                Integrate
-                              </div>
-                            </button>
-                            {/* </>
-                            )} */}
+                              <>
+                                <button
+                                  onClick={() => {
+                                    handleGCIntegration();
+                                  }}
+                                  disabled={googleCalenderLoader}
+                                  className={`font14 font-medium rounded-xl py-3 px-5 font-Montserrat text-[#fff] hover:text-[#fff] border-2 border-[#007BAB] hover:bg-transparent bg-[#007BAB]`}
+                                >
+                                  <div className="flex justify-center items-center">
+                                    Integrate
+                                  </div>
+                                </button>
+                              </>
+                            )}
                           </div>
                         </div>
                         <div className="flex justify-between text-[#292D32] flex-row w-full h-auto mt-4">
@@ -736,7 +873,7 @@ function Dashboard() {
                             iCal
                           </div>
                           <div>
-                            {/* {meetUpLoader ? (
+                            {iCalLoader ? (
                               <>
                                 <div className="flex justify-center items-center w-full p-4">
                                   <ThreeDots
@@ -749,7 +886,7 @@ function Dashboard() {
                                   />
                                 </div>
                               </>
-                            ) : isIntegratedMeetUp ? (
+                            ) : isIntegratedIC ? (
                               <>
                                 <button
                                   disabled={true}
@@ -761,66 +898,25 @@ function Dashboard() {
                                 </button>
                               </>
                             ) : (
-                              <> */}
-                            <button
-                              // onClick={() => {
-                              //   handleMeetUpIntegration();
-                              // }}
-                              disabled={meetUpLoader}
-                              className={`font14 font-medium rounded-xl py-3 px-5 font-Montserrat text-[#fff] hover:text-[#fff] border-2 border-[#007BAB] hover:bg-transparent bg-[#007BAB]`}
-                            >
-                              <div className="flex justify-center items-center">
-                                Integrate
-                              </div>
-                            </button>
-                            {/* </>
-                            )} */}
+                              <>
+                                <button
+                                  onClick={() => {
+                                    handleICIntegration();
+                                  }}
+                                  disabled={iCalLoader}
+                                  className={`font14 font-medium rounded-xl py-3 px-5 font-Montserrat text-[#fff] hover:text-[#fff] border-2 border-[#007BAB] hover:bg-transparent bg-[#007BAB]`}
+                                >
+                                  <div className="flex justify-center items-center">
+                                    Integrate
+                                  </div>
+                                </button>
+                              </>
+                            )}
                           </div>
                         </div>
                         <div className="flex justify-between text-[#292D32] flex-row w-full h-auto mt-4">
                           <div className="text-[#F9F9F9] text-xl font-bold">
-                            Outlook Calendar
-                          </div>
-                          <div>
-                            {/* {meetUpLoader ? (
-                              <>
-                                <div className="flex justify-center items-center w-full p-4">
-                                  <ThreeDots
-                                    height="20"
-                                    color="#007BAB"
-                                    width="60"
-                                    radius="9"
-                                    ariaLabel="three-dots-loading"
-                                    visible={true}
-                                  />
-                                </div>
-                              </>
-                            ) : isIntegratedMeetUp ? (
-                              <>
-                                <button
-                                  disabled={true}
-                                  className={`font14 font-medium rounded-xl sm:py-2 px-4 font-Montserrat text-[#fff] border-2 border-[#007BAB] bg-[#007BAB]`}
-                                >
-                                  <div className="flex justify-center font-bold text-[20pt] items-center">
-                                    ✓
-                                  </div>
-                                </button>
-                              </>
-                            ) : (
-                              <> */}
-                            <button
-                              // onClick={() => {
-                              //   handleMeetUpIntegration();
-                              // }}
-                              disabled={meetUpLoader}
-                              className={`font14 font-medium rounded-xl py-3 px-5 font-Montserrat text-[#fff] hover:text-[#fff] border-2 border-[#007BAB] hover:bg-transparent bg-[#007BAB]`}
-                            >
-                              <div className="flex justify-center items-center">
-                                Integrate
-                              </div>
-                            </button>
-                            {/* </>
-                            )} */}
+                            Google Outlook (Coming Soon)
                           </div>
                         </div>
                       </div>

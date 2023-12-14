@@ -9,12 +9,14 @@ import { ShareIcon } from "@/icons";
 import { Create_Event_Popup } from "@/context/context";
 import CreateEventPopup from "@/components/Common/CreateEventPopup";
 import { updateDoc } from "firebase/firestore";
+import { getAuth, getIdToken } from "firebase/auth";
 import { getFirestore, collection, getDocs, getDoc } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/firebase";
 import { arrayUnion } from "firebase/firestore";
 import Register from "@/components/Home/Register";
 import QRCode from "qrcode";
+import { ThreeDots } from "react-loader-spinner";
 // import toast from "react-simple-toasts";
 import img from "./Profile_Picture.png";
 import { LogoUrl } from "@/utils/logo";
@@ -67,6 +69,7 @@ const EventDetails = () => {
   const [user] = useAuthState(auth);
   const [loading, setLoading] = useState(false);
   const [showMobileScreen, setShowMobileScreen] = useState(false);
+  const [showNoIntegrationScreen, setShowNoIntegrationScreen] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showFreeModal, setShowFreeModal] = useState(false);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
@@ -528,6 +531,107 @@ const EventDetails = () => {
       setFilteredAttendeesDataList(attendeesDataList);
     }
   }, [searchAttendees]);
+
+  // Add to calendar
+
+  const [circleAccessToken, setCircleAccessToken] = useState("");
+  const [thirdPartyIntegrations, setThirdPartyIntegrations] = useState([]);
+  const [addToCalenderLoader, setAddToCalenderLoader] = useState(false);
+
+  useEffect(() => {
+    const getIdTokenForUser = async () => {
+      if (user) {
+        try {
+          const idToken = await getIdToken(user);
+          setCircleAccessToken(idToken);
+          console.log("ACCESS TOKEN: ", idToken);
+        } catch (error) {
+          console.error("Error getting ID token:", error);
+        }
+      }
+    };
+    console.log("USER DATA", user);
+    getIdTokenForUser();
+  }, [user]);
+
+  const getThirdPartyIntegrations = async () => {
+    var myHeaders = new Headers();
+    myHeaders.append("accessToken", circleAccessToken);
+
+    var requestOptions = {
+      method: "GET",
+      headers: myHeaders,
+      redirect: "follow",
+    };
+
+    await fetch(
+      "https://api.circle.ooo/api/circle/third-party/get",
+      requestOptions
+    )
+      .then((response) => response.json())
+      .then((result) => {
+        if (result.data.length > 0) {
+          console.log("Third party integrations: ", result);
+          setThirdPartyIntegrations(result.data);
+        }
+      })
+      .catch((error) => console.log("error", error));
+  };
+
+  useEffect(() => {
+    if (user && circleAccessToken !== "") getThirdPartyIntegrations();
+  }, [user, circleAccessToken]);
+
+  const handleAddToCalendar = () => {
+    setAddToCalenderLoader(true);
+
+    try {
+      var myHeaders = new Headers();
+      myHeaders.append("accessToken", circleAccessToken);
+      myHeaders.append("Content-Type", "application/json");
+
+      const pArray = [];
+      thirdPartyIntegrations
+        .filter(
+          (fl) =>
+            fl.integrationType === "GOOGLECALENDAR" ||
+            fl.integrationType === "ICAL"
+        )
+        .map((item) => {
+          pArray.push(item.integrationType);
+        });
+
+      var raw = JSON.stringify({
+        eventId: EventData.uid,
+        platforms: pArray,
+      });
+
+      var requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: raw,
+        redirect: "follow",
+      };
+
+      fetch(
+        "https://api.circle.ooo/api/circle/third-party/calendar/add-event",
+        requestOptions
+      )
+        .then((response) => response.text())
+        .then((result) => {
+          console.log("ADD TO CALENDER RESULT: ", result);
+          setAddToCalenderLoader(false);
+          toast.success("Event Added to Calendar Successfully!");
+        })
+        .catch((error) => {
+          setAddToCalenderLoader(false);
+          toast.error("Something went wrong!");
+        });
+    } catch (error) {
+      setAddToCalenderLoader(false);
+      toast.error("Something went wrong!");
+    }
+  };
 
   return (
     <>
@@ -1110,7 +1214,9 @@ const EventDetails = () => {
 
                       <div
                         className={`inline-block w-full ${
-                          showMobileScreen ? "lg:w-[50%]" : "lg:w-[90%]"
+                          showMobileScreen || showNoIntegrationScreen
+                            ? "lg:w-[50%]"
+                            : "lg:w-[90%]"
                         } align-middle bg-[#00384F] rounded-lg shadow-xl transform transition-all`}
                       >
                         {/* <div
@@ -1243,6 +1349,21 @@ const EventDetails = () => {
                                   <p className="ml-2">Download Mobile App</p>
                                 </div>
                               </>
+                            ) : showNoIntegrationScreen ? (
+                              <>
+                                <div className="flex flex-row justify-start items-centre">
+                                  <div>
+                                    <IoIosArrowBack
+                                      size={30}
+                                      className="border-2 cursor-pointer"
+                                      onClick={() =>
+                                        setShowNoIntegrationScreen(false)
+                                      }
+                                    />
+                                  </div>
+                                  <p className="ml-2">Integrate Calendars</p>
+                                </div>
+                              </>
                             ) : (
                               "Your Coupon"
                             )}
@@ -1252,6 +1373,7 @@ const EventDetails = () => {
                             className="box-content rounded-none border-none hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none"
                             onClick={() => {
                               setShowMobileScreen(false);
+                              setShowNoIntegrationScreen(false);
                               setShowTicketModal(false);
                             }}
                           >
@@ -1271,167 +1393,214 @@ const EventDetails = () => {
                             </svg>
                           </button>
                         </div>
-                        {showMobileScreen === false && (
-                          <>
-                            <div className="w-full h-auto flex justify-start items-start flex-col lg:flex-row gap-2 lg:gap-10 p-6">
-                              <div className="overflow-hidden w-full h-auto bg-[#012432] rounded-xl lg:w-2/3 flex justify-between items-center flex-row">
-                                <div className="ml-[-12.5%] lg:ml-[-4.5%] h-20 w-20 rounded-full bg-[#00384F]"></div>
+                        {showMobileScreen === false &&
+                          showNoIntegrationScreen === false && (
+                            <>
+                              <div className="w-full h-auto flex justify-start items-start flex-col lg:flex-row gap-2 lg:gap-10 p-6">
+                                <div className="overflow-hidden w-full h-auto bg-[#012432] rounded-xl lg:w-2/3 flex justify-between items-center flex-row">
+                                  <div className="ml-[-12.5%] lg:ml-[-4.5%] h-20 w-20 rounded-full bg-[#00384F]"></div>
 
-                                <div className="flex my-8 w-full justify-center items-center flex-col">
-                                  <div className="flex w-full flex-col lg:flex-row justify-start items-start gap-3 p-3">
-                                    <div className="w-full lg:w-4/5 text-white">
-                                      <div className="flex w-full flex-col lg:flex-row justify-center lg:justify-start items-center">
-                                        <div className="h-20 w-28 text-5xl flex justify-center items-center font-bold bg-[#D2FF3A] rounded-full text-black">
-                                          ✓
+                                  <div className="flex my-8 w-full justify-center items-center flex-col">
+                                    <div className="flex w-full flex-col lg:flex-row justify-start items-start gap-3 p-3">
+                                      <div className="w-full lg:w-4/5 text-white">
+                                        <div className="flex w-full flex-col lg:flex-row justify-center lg:justify-start items-center">
+                                          <div className="h-20 w-28 text-5xl flex justify-center items-center font-bold bg-[#D2FF3A] rounded-full text-black">
+                                            ✓
+                                          </div>
+                                          <div className="flex mt-4 lg:mt-0 w-full lg:ml-4 flex-col text-center lg:text-start justify-center lg:justify-start items-center lg:items-start">
+                                            <p className="text-[#F9F9F9] text-2xl font-semibold">
+                                              Success in creating a ticket
+                                            </p>
+                                            <p
+                                              style={{
+                                                color:
+                                                  "rgba(255, 255, 255, 0.80)",
+                                              }}
+                                              className="text-lg mt-2"
+                                            >
+                                              Check details below
+                                            </p>
+                                          </div>
                                         </div>
-                                        <div className="flex mt-4 lg:mt-0 w-full lg:ml-4 flex-col text-center lg:text-start justify-center lg:justify-start items-center lg:items-start">
-                                          <p className="text-[#F9F9F9] text-2xl font-semibold">
-                                            Success in creating a ticket
+
+                                        <div className="mt-10 w-full flex justify-start items-start text-[#F9F9F9] text-3xl font-bold">
+                                          <p className="text-start">
+                                            {EventData?.name || ""}
                                           </p>
-                                          <p
-                                            style={{
-                                              color:
-                                                "rgba(255, 255, 255, 0.80)",
-                                            }}
-                                            className="text-lg mt-2"
-                                          >
-                                            Check details below
+                                        </div>
+
+                                        <div className="flex flex-row text-[#F9F9F9] mt-6 justify-start w-full items-center">
+                                          <LuCalendarDays size={30} />
+                                          <p className="font-Montserrat ml-3">
+                                            {moment(
+                                              EventData?.timefrom?.seconds *
+                                                1000
+                                            )
+                                              .local()
+                                              .format("LL")}
+                                          </p>
+                                        </div>
+
+                                        <div className="flex flex-row text-[#F9F9F9] mt-3 justify-start w-full items-center">
+                                          <FaClock size={30} />
+                                          <p className="font-Montserrat ml-3">
+                                            {moment(
+                                              EventData?.timefrom?.seconds *
+                                                1000
+                                            )
+                                              .local()
+                                              .format("LT")}{" "}
+                                            -{" "}
+                                            {moment(
+                                              EventData?.timeto?.seconds * 1000
+                                            )
+                                              .local()
+                                              .format("LT")}
+                                          </p>
+                                        </div>
+
+                                        <div className="flex flex-row text-[#F9F9F9] mt-3 justify-start w-full items-center">
+                                          <FaLocationDot size={30} />
+                                          <p className="font-Montserrat ml-3">
+                                            {EventData?.location}
+                                          </p>
+                                        </div>
+
+                                        <div className="flex flex-row text-[#F9F9F9] mt-3 justify-start w-full items-center">
+                                          <FaTag size={30} />
+                                          <p className="font-Montserrat ml-3">
+                                            {EventData?.ticketPrice === "0.00"
+                                              ? "FREE"
+                                              : EventData?.ticketPrice}
                                           </p>
                                         </div>
                                       </div>
-
-                                      <div className="mt-10 w-full flex justify-start items-start text-[#F9F9F9] text-3xl font-bold">
-                                        <p className="text-start">
-                                          {EventData?.name || ""}
-                                        </p>
-                                      </div>
-
-                                      <div className="flex flex-row text-[#F9F9F9] mt-6 justify-start w-full items-center">
-                                        <LuCalendarDays size={30} />
-                                        <p className="font-Montserrat ml-3">
-                                          {moment(
-                                            EventData?.timefrom?.seconds * 1000
-                                          )
-                                            .local()
-                                            .format("LL")}
-                                        </p>
-                                      </div>
-
-                                      <div className="flex flex-row text-[#F9F9F9] mt-3 justify-start w-full items-center">
-                                        <FaClock size={30} />
-                                        <p className="font-Montserrat ml-3">
-                                          {moment(
-                                            EventData?.timefrom?.seconds * 1000
-                                          )
-                                            .local()
-                                            .format("LT")}{" "}
-                                          -{" "}
-                                          {moment(
-                                            EventData?.timeto?.seconds * 1000
-                                          )
-                                            .local()
-                                            .format("LT")}
-                                        </p>
-                                      </div>
-
-                                      <div className="flex flex-row text-[#F9F9F9] mt-3 justify-start w-full items-center">
-                                        <FaLocationDot size={30} />
-                                        <p className="font-Montserrat ml-3">
-                                          {EventData?.location}
-                                        </p>
-                                      </div>
-
-                                      <div className="flex flex-row text-[#F9F9F9] mt-3 justify-start w-full items-center">
-                                        <FaTag size={30} />
-                                        <p className="font-Montserrat ml-3">
-                                          {EventData?.ticketPrice === "0.00"
-                                            ? "FREE"
-                                            : EventData?.ticketPrice}
-                                        </p>
+                                      <div className="w-full mt-5 lg:mt-0 lg:w-1/5 h-full text-white">
+                                        <div className="flex w-full justify-center items-center bg-white rounded-xl">
+                                          {qrCodeBase64 ? (
+                                            <img
+                                              src={qrCodeBase64}
+                                              alt="QR Code"
+                                              className="rounded-xl object-contain"
+                                            />
+                                          ) : (
+                                            <p>Loading QR code...</p>
+                                          )}
+                                        </div>
+                                        <div className="flex w-full justify-center text-black py-4 mt-3 items-center bg-white rounded-xl">
+                                          {EventData?.attendees?.length}{" "}
+                                          {EventData?.attendees?.length === 1
+                                            ? "Attendee"
+                                            : "Attendees"}{" "}
+                                          {EventData?.attendees?.length === 0 &&
+                                            "No Attendees Yet!"}
+                                        </div>
                                       </div>
                                     </div>
-                                    <div className="w-full mt-5 lg:mt-0 lg:w-1/5 h-full text-white">
-                                      <div className="flex w-full justify-center items-center bg-white rounded-xl">
-                                        {qrCodeBase64 ? (
-                                          <img
-                                            src={qrCodeBase64}
-                                            alt="QR Code"
-                                            className="rounded-xl object-contain"
-                                          />
-                                        ) : (
-                                          <p>Loading QR code...</p>
-                                        )}
-                                      </div>
-                                      <div className="flex w-full justify-center text-black py-4 mt-3 items-center bg-white rounded-xl">
-                                        {EventData?.attendees?.length}{" "}
-                                        {EventData?.attendees?.length === 1
-                                          ? "Attendee"
-                                          : "Attendees"}{" "}
-                                        {EventData?.attendees?.length === 0 &&
-                                          "No Attendees Yet!"}
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div
-                                    style={{
-                                      borderColor: "rgba(255, 255, 255, 0.21)",
-                                    }}
-                                    className="mt-8 flex w-full flex-col lg:flex-row justify-center lg:justify-between items-center border-t-2 border-dashed"
-                                  >
-                                    <div className="flex text-base w-full justify-start items-center flex-row mt-8">
-                                      <div className="rounded-full bg-white border-2 w-20 h-20">
-                                        <img
-                                          src={
-                                            creatorData?.photo_url
-                                              ? creatorData?.photo_url
-                                              : img.src
-                                          }
-                                          className="rounded-full w-full h-full object-cover"
-                                          alt=""
-                                        />
-                                      </div>
-                                      <div className="flex ml-3 flex-col justify-start items-start">
-                                        <p className="font-normal text-[#BDBDBD]">
-                                          Hosted By:
-                                        </p>
-                                        <p className="font-bold text-[#F2F2F2]">
-                                          {creatorData?.full_name ||
-                                            creatorData?.display_name ||
-                                            "Anonymous"}
-                                        </p>
-                                      </div>
-                                    </div>
-                                    <button
-                                      onClick={() => setShowMobileScreen(true)}
-                                      className="mt-8 rounded-xl w-full py-4 bg-[#007BAB] border-2 border-[#007BAB] hover:bg-transparent font-semibold text-[#fff]"
+                                    <div
+                                      style={{
+                                        borderColor:
+                                          "rgba(255, 255, 255, 0.21)",
+                                      }}
+                                      className="mt-8 p-3 flex w-full flex-col lg:flex-row justify-center lg:justify-between items-center border-t-2 border-dashed"
                                     >
-                                      Create Your Free Event Passport
-                                    </button>
+                                      <div className="flex text-base w-full justify-start items-center flex-row mt-8">
+                                        <div className="rounded-full bg-white border-2 w-20 h-20">
+                                          <img
+                                            src={
+                                              creatorData?.photo_url
+                                                ? creatorData?.photo_url
+                                                : img.src
+                                            }
+                                            className="rounded-full w-full h-full object-cover"
+                                            alt=""
+                                          />
+                                        </div>
+                                        <div className="flex ml-3 flex-col justify-start items-start">
+                                          <p className="font-normal text-[#BDBDBD]">
+                                            Hosted By:
+                                          </p>
+                                          <p className="font-bold text-[#F2F2F2]">
+                                            {creatorData?.full_name ||
+                                              creatorData?.display_name ||
+                                              "Anonymous"}
+                                          </p>
+                                        </div>
+                                      </div>
+                                      <button
+                                        onClick={() =>
+                                          setShowMobileScreen(true)
+                                        }
+                                        className="mt-8 rounded-xl w-full py-4 bg-[#007BAB] border-2 border-[#007BAB] hover:bg-transparent font-semibold text-[#fff]"
+                                      >
+                                        Create Your Free Event Passport
+                                      </button>
+                                    </div>
                                   </div>
+
+                                  <div className="mr-[-12.5%] lg:mr-[-4.5%] h-20 w-20 rounded-full bg-[#00384F]"></div>
                                 </div>
 
-                                <div className="mr-[-12.5%] lg:mr-[-4.5%] h-20 w-20 rounded-full bg-[#00384F]"></div>
-                              </div>
+                                <div className="lg:w-1/3 flex w-full h-auto justify-center items-center flex-col">
+                                  <div className="flex w-full justify-center items-center flex-col gap-4">
+                                    <div className="bg-[#012432] mt-6 lg:mt-0 flex justify-start items-center flex-col rounded-xl w-full p-6">
+                                      <button
+                                        disabled={addToCalenderLoader}
+                                        onClick={() => {
+                                          const hasValidIntegration =
+                                            thirdPartyIntegrations.some(
+                                              (fl) => {
+                                                return (
+                                                  fl.integrationType ===
+                                                    "GOOGLECALENDAR" ||
+                                                  fl.integrationType === "ICAL"
+                                                );
+                                              }
+                                            );
 
-                              <div className="lg:w-1/3 flex w-full h-auto justify-center items-center flex-col">
-                                <div className="flex w-full justify-center items-center flex-col gap-4">
-                                  <div className="bg-[#012432] mt-6 lg:mt-0 flex justify-start items-center flex-col rounded-xl w-full p-6">
-                                    <button
-                                      // onClick={handleButtonClick}
-                                      className="rounded-xl px-5 flex flex-row justify-between items-center w-full py-4 bg-[#007BAB] border-2 border-[#007BAB] hover:bg-transparent font-semibold text-[#fff]"
-                                    >
-                                      <div className="flex flex-row justify-center items-center">
-                                        <FaCalendarAlt size={20} color="#fff" />
-                                        <p className="ml-2">Add to Calendar</p>
-                                      </div>
-                                      <div>
-                                        <IoIosArrowForward
-                                          size={20}
-                                          color="#fff"
-                                        />
-                                      </div>
-                                    </button>
-                                    {/* {showOptions && (
+                                          if (!hasValidIntegration) {
+                                            setShowNoIntegrationScreen(true);
+                                          } else {
+                                            setShowNoIntegrationScreen(false);
+                                            handleAddToCalendar();
+                                          }
+                                        }}
+                                        className="rounded-xl px-5 flex flex-row justify-between items-center w-full py-4 bg-[#007BAB] border-2 border-[#007BAB] hover:bg-transparent font-semibold text-[#fff]"
+                                      >
+                                        <div className="flex flex-row justify-center items-center">
+                                          <FaCalendarAlt
+                                            size={20}
+                                            color="#fff"
+                                          />
+                                          <p className="ml-2">
+                                            Add to Calendar
+                                          </p>
+                                        </div>
+                                        {addToCalenderLoader ? (
+                                          <>
+                                            <div>
+                                              <ThreeDots
+                                                height="20"
+                                                color="#fff"
+                                                width="60"
+                                                radius="9"
+                                                ariaLabel="three-dots-loading"
+                                                visible={true}
+                                              />
+                                            </div>
+                                          </>
+                                        ) : (
+                                          <>
+                                            <div>
+                                              <IoIosArrowForward
+                                                size={20}
+                                                color="#fff"
+                                              />
+                                            </div>
+                                          </>
+                                        )}
+                                      </button>
+                                      {/* {showOptions && (
                               <div>
                                 <AddToCalendarButton
                                   className="rounded-xl w-full py-4 bg-[#007BAB] border-2 border-[#007BAB] hover:bg-transparent font-semibold text-[#fff]"
@@ -1462,87 +1631,89 @@ const EventDetails = () => {
                               </div>
                             )} */}
 
-                                    <button className="mt-3 rounded-xl px-5 flex flex-row justify-between items-center w-full py-4 bg-[#007BAB] border-2 border-[#007BAB] hover:bg-transparent font-semibold text-[#fff]">
-                                      <div className="flex flex-row justify-center items-center">
-                                        <FaWallet size={20} color="#fff" />
-                                        <p className="ml-2">Add to Wallet</p>
-                                      </div>
-                                      <div>
-                                        <IoIosArrowForward
-                                          size={20}
-                                          color="#fff"
-                                        />
-                                      </div>
-                                    </button>
-                                    <button
-                                      // onClick={() => {
-                                      //   EmailMe();
-                                      // }}
-                                      className="mt-3 rounded-xl px-5 flex flex-row justify-between items-center w-full py-4 bg-[#007BAB] border-2 border-[#007BAB] hover:bg-transparent font-semibold text-[#fff]"
-                                    >
-                                      <div className="flex flex-row justify-center items-center">
-                                        <FaMobile size={20} color="#fff" />
-                                        <p className="ml-2">
-                                          Ticket Text & Reminder
-                                        </p>
-                                      </div>
-                                      <div>
-                                        <IoIosArrowForward
-                                          size={20}
-                                          color="#fff"
-                                        />
-                                      </div>
-                                    </button>
-                                  </div>
-
-                                  <div className="bg-[#012432] mt-6 flex justify-start items-center flex-col rounded-xl w-full p-6">
-                                    <p className="w-full text-left mb-2 text-[#F9F9F9] text-xl">
-                                      Connect with Attendees
-                                    </p>
-                                    <div className="w-full flex flex-row justify-center items-center">
-                                      <div className="w-full flex justify-center items-center flex-wrap">
-                                        <div className="rounded-full">
-                                          <img src={img1.src} alt="" />
+                                      <button className="mt-3 rounded-xl px-5 flex flex-row justify-between items-center w-full py-4 bg-[#007BAB] border-2 border-[#007BAB] hover:bg-transparent font-semibold text-[#fff]">
+                                        <div className="flex flex-row justify-center items-center">
+                                          <FaWallet size={20} color="#fff" />
+                                          <p className="ml-2">Add to Wallet</p>
                                         </div>
-                                        <div className="ml-[-7pt] rounded-full">
-                                          <img src={img2.src} alt="" />
+                                        <div>
+                                          <IoIosArrowForward
+                                            size={20}
+                                            color="#fff"
+                                          />
                                         </div>
-                                        <div className="ml-[-7pt] rounded-full">
-                                          <img src={img3.src} alt="" />
+                                      </button>
+                                      <button
+                                        // onClick={() => {
+                                        //   EmailMe();
+                                        // }}
+                                        className="mt-3 rounded-xl px-5 flex flex-row justify-between items-center w-full py-4 bg-[#007BAB] border-2 border-[#007BAB] hover:bg-transparent font-semibold text-[#fff]"
+                                      >
+                                        <div className="flex flex-row justify-center items-center">
+                                          <FaMobile size={20} color="#fff" />
+                                          <p className="ml-2">
+                                            Ticket Text & Reminder
+                                          </p>
                                         </div>
-                                        <div className="ml-[-7pt] rounded-full">
-                                          <img src={img4.src} alt="" />
+                                        <div>
+                                          <IoIosArrowForward
+                                            size={20}
+                                            color="#fff"
+                                          />
                                         </div>
-                                        <div className="ml-[-7pt] rounded-full">
-                                          <img src={img5.src} alt="" />
-                                        </div>
-                                        <div className="ml-[-7pt] rounded-full">
-                                          <img src={img6.src} alt="" />
-                                        </div>
-                                        <div className="ml-[-7pt] rounded-full">
-                                          <img src={img7.src} alt="" />
-                                        </div>
-                                        <div className="ml-[-7pt] rounded-full">
-                                          <img src={img8.src} alt="" />
-                                        </div>
-                                        <div className="ml-[-7pt] rounded-full">
-                                          <img src={img9.src} alt="" />
-                                        </div>
-                                      </div>
+                                      </button>
                                     </div>
-                                    <button
-                                      onClick={() => setShowMobileScreen(true)}
-                                      className="mt-3 rounded-xl w-full py-4 bg-[#007BAB] border-2 border-[#007BAB] hover:bg-transparent font-semibold text-[#fff]"
-                                    >
-                                      Connect with Attendees via Mobile App
-                                    </button>
+
+                                    <div className="bg-[#012432] mt-6 flex justify-start items-center flex-col rounded-xl w-full p-6">
+                                      <p className="w-full text-left mb-2 text-[#F9F9F9] text-xl">
+                                        Connect with Attendees
+                                      </p>
+                                      <div className="w-full flex flex-row justify-center items-center">
+                                        <div className="w-full flex justify-center items-center flex-wrap">
+                                          <div className="rounded-full">
+                                            <img src={img1.src} alt="" />
+                                          </div>
+                                          <div className="ml-[-7pt] rounded-full">
+                                            <img src={img2.src} alt="" />
+                                          </div>
+                                          <div className="ml-[-7pt] rounded-full">
+                                            <img src={img3.src} alt="" />
+                                          </div>
+                                          <div className="ml-[-7pt] rounded-full">
+                                            <img src={img4.src} alt="" />
+                                          </div>
+                                          <div className="ml-[-7pt] rounded-full">
+                                            <img src={img5.src} alt="" />
+                                          </div>
+                                          <div className="ml-[-7pt] rounded-full">
+                                            <img src={img6.src} alt="" />
+                                          </div>
+                                          <div className="ml-[-7pt] rounded-full">
+                                            <img src={img7.src} alt="" />
+                                          </div>
+                                          <div className="ml-[-7pt] rounded-full">
+                                            <img src={img8.src} alt="" />
+                                          </div>
+                                          <div className="ml-[-7pt] rounded-full">
+                                            <img src={img9.src} alt="" />
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <button
+                                        onClick={() =>
+                                          setShowMobileScreen(true)
+                                        }
+                                        className="mt-3 rounded-xl w-full py-4 bg-[#007BAB] border-2 border-[#007BAB] hover:bg-transparent font-semibold text-[#fff]"
+                                      >
+                                        Connect with Attendees via Mobile App
+                                      </button>
+                                    </div>
                                   </div>
                                 </div>
                               </div>
-                            </div>
-                          </>
-                        )}
-                        {showMobileScreen == true && (
+                            </>
+                          )}
+                        {showMobileScreen === true && (
                           <>
                             <div className="w-full h-auto flex justify-center items-center flex-col gap-10 p-6">
                               <div className="w-full h-auto bg-[#012432] rounded-xl flex justify-center items-center flex-col p-10">
@@ -1592,6 +1763,37 @@ const EventDetails = () => {
                                         />
                                       </span>
                                       Play Store
+                                    </div>
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </>
+                        )}
+                        {showNoIntegrationScreen === true && (
+                          <>
+                            <div className="w-full h-auto flex justify-center items-center flex-col gap-10 p-6">
+                              <div className="w-full h-auto bg-[#012432] rounded-xl flex justify-center items-center flex-col p-10">
+                                <p className="text-[#F9F9F9] text-3xl font-bold">
+                                  “Oops, No Calendar Integration Found”
+                                </p>
+                                <p className="text-[#BDBDBD] w-full lg:w-3/4 mt-4">
+                                  In-Order to add events into your calendars,
+                                  you must have to integrate calendars first in
+                                  the Settings page. Click on the button below
+                                  to navigate to Settings page and integrate
+                                  your calendars.
+                                </p>
+                                <div className="flex justify-center items-center flex-row mt-10 w-full">
+                                  <button
+                                    onClick={() => {
+                                      router.push("/settings");
+                                    }}
+                                    className={`px-5 flex flex-row justify-center items-center font14 font-medium rounded-full py-3 font-Montserrat text-[#000] hover:text-[#fff] border-2 border-[#F2F2F2] hover:bg-transparent bg-[#F2F2F2]`}
+                                  >
+                                    <p>Add your first Calendar</p>
+                                    <div className="ml-2">
+                                      <IoIosArrowForward size={20} />
                                     </div>
                                   </button>
                                 </div>

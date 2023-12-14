@@ -1397,25 +1397,33 @@ const CreateEvent = () => {
                       </p>
                     </div>
                     {thirdPartyIntegrations.length > 0 &&
-                      thirdPartyIntegrations?.map((item) => (
-                        <>
-                          <div className="flex justify-between items-center text-[#292D32] font-semibold flex-row w-full h-auto mt-2">
-                            <div>{item.integrationType}</div>
-                            <input
-                              type="checkbox"
-                              className="h-6 w-6 cursor-pointer"
-                              onChange={() =>
-                                handleCheckboxChange(
-                                  item.integrationType.toString().toUpperCase()
-                                )
-                              }
-                              checked={thirdPartyCheckboxSelected.includes(
-                                item.integrationType
-                              )}
-                            />
-                          </div>
-                        </>
-                      ))}
+                      thirdPartyIntegrations
+                        ?.filter(
+                          (fl) =>
+                            fl.integrationType === "EVENTBRITE" ||
+                            fl.integrationType === "MEETUP"
+                        )
+                        .map((item) => (
+                          <>
+                            <div className="flex justify-between items-center text-[#292D32] font-semibold flex-row w-full h-auto mt-2">
+                              <div>{item.integrationType}</div>
+                              <input
+                                type="checkbox"
+                                className="h-6 w-6 cursor-pointer"
+                                onChange={() =>
+                                  handleCheckboxChange(
+                                    item.integrationType
+                                      .toString()
+                                      .toUpperCase()
+                                  )
+                                }
+                                checked={thirdPartyCheckboxSelected.includes(
+                                  item.integrationType
+                                )}
+                              />
+                            </div>
+                          </>
+                        ))}
                     {thirdPartyIntegrations.length === 0 && (
                       <>
                         <div className="flex mt-3 justify-center flex-col items-center w-full">

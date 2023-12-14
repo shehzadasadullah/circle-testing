@@ -74,7 +74,7 @@ const FAQSection = () => {
   return (
     <div>
       <div className="w-full h-full">
-        <Header type="light" page="about" />
+        <Header type="light" />
       </div>
       <div className="w-full h-full px-2 sm:px-4 md:px-12 lg:px-20 xl:px-32 py-2 sm:py-4 md:py-8 lg:py-12 relative">
         <div className="w-full bg-white flex flex-col lg:flex-col lg:gap-10 xl:gap-16 justify-center lg:justify-center items-center lg:items-start my-4 sm:my-8 lg:my-12">
