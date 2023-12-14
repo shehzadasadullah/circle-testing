@@ -916,7 +916,7 @@ function Dashboard() {
                         </div>
                         <div className="flex justify-between text-[#292D32] flex-row w-full h-auto mt-4">
                           <div className="text-[#F9F9F9] text-xl font-bold">
-                            Google Outlook (Coming Soon)
+                            Microsoft Outlook (Coming Soon)
                           </div>
                         </div>
                       </div>
