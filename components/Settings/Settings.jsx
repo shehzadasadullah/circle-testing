@@ -268,19 +268,23 @@ function Dashboard() {
       requestOptions
     )
       .then((response) => response.json())
-      .then((result) => {
-        if (result.data.length > 0) {
-          result.data.map((item) => {
-            if (item.integrationType === "EVENTBRITE") {
-              setEventBriteLoader(false);
-              setIsIntegratedEventBrite(true);
+      .then((res) => {
+        if (res.result) {
+          const tempArrayThirdParty = res?.data.reduce((acc, fl) => {
+            if (fl.Type === "THIRD_PARTY") {
+              acc = acc.concat(fl.Integration);
             }
+            return acc;
+          }, []);
 
-            if (item.integrationType === "MEETUP") {
-              setMeetUpLoader(false);
-              setIsIntegratedMeetUp(true);
+          const tempArrayCalendars = res?.data.reduce((acc, fl) => {
+            if (fl.Type === "CALENDAR") {
+              acc = acc.concat(fl.Integration);
             }
+            return acc;
+          }, []);
 
+          tempArrayCalendars.map((item) => {
             if (item.integrationType === "GOOGLECALENDAR") {
               setGoogleCalenderLoader(false);
               setIsIntegratedGC(true);
@@ -291,6 +295,20 @@ function Dashboard() {
               setIsIntegratedIC(true);
             }
           });
+
+          tempArrayThirdParty.map((item) => {
+            if (item.integrationType === "EVENTBRITE") {
+              setEventBriteLoader(false);
+              setIsIntegratedEventBrite(true);
+            }
+
+            if (item.integrationType === "MEETUP") {
+              setMeetUpLoader(false);
+              setIsIntegratedMeetUp(true);
+            }
+          });
+        } else {
+          toast.error("Something went wrong with the integrations!");
         }
         setThirdPartLoader(false);
       })

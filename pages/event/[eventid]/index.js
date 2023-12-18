@@ -68,6 +68,7 @@ const EventDetails = () => {
   const [cohostList, setCohostlist] = useState({});
   const [user] = useAuthState(auth);
   const [loading, setLoading] = useState(false);
+  const [emailLoading, setEmailLoading] = useState(false);
   const [showMobileScreen, setShowMobileScreen] = useState(false);
   const [showNoIntegrationScreen, setShowNoIntegrationScreen] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -355,7 +356,7 @@ const EventDetails = () => {
 
   const EmailMe = async () => {
     // Set loading state to true
-    // setLoading(true);
+    setEmailLoading(true);
 
     const eventId = EventData?.uid;
     const circleId = CircleData?.id || "JfHpj2gfm4viA7RBPJ8z";
@@ -395,21 +396,26 @@ const EventDetails = () => {
         };
 
         // Make the API call to send the email
-        await axios.post("/api/ticket/", {
+        const res = await axios.post("/api/ticket/", {
           usersdata: email,
           bodymessage: msgbody,
         });
 
         // Email sent successfully, set loading state to false
-        setLoading(false);
 
+        if (res.data.statusCode === 200) {
+          toast.success("Email sent Successfully!");
+        } else {
+          toast.error("Error sending Email!");
+        }
         // Optionally, perform any success actions or display a success message
         console.log("Email sent successfully!");
+        setEmailLoading(false);
       }
     } catch (error) {
       // Error occurred, set loading state to false
-      setLoading(false);
-
+      setEmailLoading(false);
+      toast.error("Error sending Email!");
       // Display or handle the error as needed
       console.error("An error occurred while sending the email:", error);
     }
@@ -570,9 +576,16 @@ const EventDetails = () => {
     )
       .then((response) => response.json())
       .then((result) => {
-        if (result.data.length > 0) {
-          console.log("Third party integrations: ", result);
-          setThirdPartyIntegrations(result.data);
+        if (result) {
+          const tempArrayCalendars = result?.data.reduce((acc, fl) => {
+            if (fl.Type === "CALENDAR") {
+              acc = acc.concat(fl.Integration);
+            }
+            return acc;
+          }, []);
+          setThirdPartyIntegrations(tempArrayCalendars);
+        } else {
+          toast.error("Something went wrong with the integrations!");
         }
       })
       .catch((error) => console.log("error", error));
@@ -617,20 +630,82 @@ const EventDetails = () => {
         "https://api.circle.ooo/api/circle/third-party/calendar/add-event",
         requestOptions
       )
-        .then((response) => response.text())
-        .then((result) => {
-          console.log("ADD TO CALENDER RESULT: ", result);
+        .then((response) => response.json())
+        .then((res) => {
+          res.map((item) => {
+            if (item.result) {
+              toast.success(item?.message?.toUpperCase());
+              if (item.integration === "ICAL" && item.result === true) {
+                try {
+                  var myHeaders = new Headers();
+                  myHeaders.append("accessToken", circleAccessToken);
+
+                  var requestOptions = {
+                    method: "GET",
+                    headers: myHeaders,
+                    redirect: "follow",
+                  };
+
+                  fetch(
+                    `https://api.circle.ooo/api/circle/third-party/calendar/ical-event-file?eventId=${EventData.uid}`,
+                    requestOptions
+                  )
+                    .then((response) => response.text())
+                    .then((result) => {
+                      // Parse the API response to get the calendar data
+                      const calendarData = new Blob([result], {
+                        type: "text/calendar",
+                      });
+
+                      // Create a download link
+                      const downloadLink = document.createElement("a");
+                      downloadLink.href = URL.createObjectURL(calendarData);
+                      downloadLink.download = "calendar.ics";
+
+                      // Append the link to the body and trigger a click event
+                      document.body.appendChild(downloadLink);
+                      downloadLink.click();
+
+                      // Clean up: remove the download link from the body if it's a child
+                      if (downloadLink.parentNode) {
+                        document.body.removeChild(downloadLink);
+                      }
+                    })
+                    .catch((error) => {
+                      console.log("error", error);
+                      toast.error("Error downloading iCal file!");
+                    });
+                } catch (error) {
+                  console.error("Error:", error);
+                  toast.error("Error downloading iCal file!");
+                }
+              }
+            } else {
+              toast.error(item?.message?.toUpperCase());
+            }
+          });
           setAddToCalenderLoader(false);
-          toast.success("Event Added to Calendar Successfully!");
         })
         .catch((error) => {
           setAddToCalenderLoader(false);
-          toast.error("Something went wrong!");
+          console.log("ERRRRRROR: ", error);
+          toast.error("Something went wrong 1!");
         });
     } catch (error) {
       setAddToCalenderLoader(false);
-      toast.error("Something went wrong!");
+      toast.error("Something went wrong 2!");
     }
+  };
+
+  const copyToClipboard = () => {
+    const tempTextarea = document.createElement("textarea");
+    tempTextarea.value = window.location.href;
+    document.body.appendChild(tempTextarea);
+    tempTextarea.select();
+    tempTextarea.setSelectionRange(0, 99999);
+    document.execCommand("copy");
+    document.body.removeChild(tempTextarea);
+    toast.success("URL copied to clipboard!");
   };
 
   return (
@@ -956,7 +1031,10 @@ const EventDetails = () => {
                 </div>
 
                 <div className="flex w-full mt-4 flex-col xl:flex-row justify-center items-center p-6 bg-[#012432] rounded-xl">
-                  <button className="flex justify-center items-center flex-row rounded-xl text-lg px-5 py-4 w-full font-semibold bg-[#fff] hover:bg-transparent border-[#fff] border-2 text-[#000] hover:text-[#fff]">
+                  <button
+                    onClick={copyToClipboard}
+                    className="flex justify-center items-center flex-row rounded-xl text-lg px-5 py-4 w-full font-semibold bg-[#fff] hover:bg-transparent border-[#fff] border-2 text-[#000] hover:text-[#fff]"
+                  >
                     <LiaShareAltSolid size={28} /> <p className="ml-2">Share</p>
                   </button>
                 </div>
@@ -1644,9 +1722,10 @@ const EventDetails = () => {
                                         </div>
                                       </button>
                                       <button
-                                        // onClick={() => {
-                                        //   EmailMe();
-                                        // }}
+                                        onClick={() => {
+                                          EmailMe();
+                                        }}
+                                        disabled={emailLoading}
                                         className="mt-3 rounded-xl px-5 flex flex-row justify-between items-center w-full py-4 bg-[#007BAB] border-2 border-[#007BAB] hover:bg-transparent font-semibold text-[#fff]"
                                       >
                                         <div className="flex flex-row justify-center items-center">
@@ -1656,10 +1735,29 @@ const EventDetails = () => {
                                           </p>
                                         </div>
                                         <div>
-                                          <IoIosArrowForward
-                                            size={20}
-                                            color="#fff"
-                                          />
+                                          {emailLoading ? (
+                                            <>
+                                              <div>
+                                                <ThreeDots
+                                                  height="20"
+                                                  color="#fff"
+                                                  width="60"
+                                                  radius="9"
+                                                  ariaLabel="three-dots-loading"
+                                                  visible={true}
+                                                />
+                                              </div>
+                                            </>
+                                          ) : (
+                                            <>
+                                              <div>
+                                                <IoIosArrowForward
+                                                  size={20}
+                                                  color="#fff"
+                                                />
+                                              </div>
+                                            </>
+                                          )}
                                         </div>
                                       </button>
                                     </div>
