@@ -30,7 +30,6 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import QRCode from "qrcode";
 import axios from "axios";
 import Loading from "@/components/Loading";
-import Cards from "react-credit-cards";
 import Register from "@/components/Home/Register";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
