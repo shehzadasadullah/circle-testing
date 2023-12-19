@@ -53,9 +53,9 @@ const HomePage = () => {
         <>
           <div className="w-full h-full relative">
             <HeroSection />
+            <EventTabs />
             <ProfileComp />
             <Features />
-            <EventTabs />
             <Testimonial />
             {/* <EventsNearMe /> */}
             {/* <PremiumEvents />
