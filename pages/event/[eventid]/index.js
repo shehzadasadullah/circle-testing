@@ -571,7 +571,7 @@ const EventDetails = () => {
     };
 
     await fetch(
-      "https://api.circle.ooo/api/circle/third-party/get",
+      "https://api.circle.ooo/api/circle/third-party/get-by-type",
       requestOptions
     )
       .then((response) => response.json())

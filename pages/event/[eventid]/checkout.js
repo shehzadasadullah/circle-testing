@@ -250,6 +250,18 @@ const MyForm = () => {
 
     if (checkEmail() === true) {
       if (checkPhone() === true) {
+        try {
+          const userRef = doc(db, "Users", user?.uid);
+          const userDoc = await getDoc(userRef);
+          // Document already exists, update the additional fields
+          await updateDoc(userRef, {
+            checkoutemail: checkoutEmail,
+            checkoutmobilenumber: checkoutPhoneNumber,
+          });
+        } catch (error) {
+          console.error(error);
+        }
+
         let userName = user?.displayName || "";
         let userEmail = user?.email || "";
         let eventName = EventData?.name;
