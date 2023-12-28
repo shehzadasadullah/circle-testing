@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { IoIosArrowForward } from "react-icons/io";
@@ -8,7 +8,6 @@ import img from "./Profile_Picture.png";
 import { useMediaQuery } from "react-responsive";
 import AOS from "aos";
 import "aos/dist/aos.css";
-AOS.init();
 
 const testimonials = [
   {
@@ -39,6 +38,25 @@ const testimonials = [
 ];
 
 const Testimonial = () => {
+  useEffect(() => {
+    console.log("Initializing AOS");
+    AOS.init({
+      duration: 800,
+      once: true,
+    });
+
+    const handleScroll = () => {
+      // console.log("Scrolling...");
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    // Cleanup the event listener
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   const breakpoints = {
     sm: "(max-width: 640px)",
     md: "(max-width: 768px)",
@@ -60,7 +78,7 @@ const Testimonial = () => {
     <div
       data-aos="fade-up"
       data-aos-delay="50"
-      data-aos-duration="1000"
+      data-aos-duration="4000"
       data-aos-easing="ease-in-out"
       data-aos-mirror="false"
       data-aos-once="true"

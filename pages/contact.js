@@ -11,6 +11,7 @@ import Footer from "@/components/Common/Footer";
 import { useRouter } from "next/router";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { MdEmail } from "react-icons/md";
 
 const contact = () => {
   const router = useRouter();
@@ -25,15 +26,16 @@ const contact = () => {
 
     const nameRegex = /^[A-Za-z]+$/;
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-    const numberRegex = /^\d+$/;
+    const numberRegex =
+      /^(\+\d{1,2}\s?)?(\()?[2-9]\d{2}(\))?[-.\s]?[2-9]\d{2}[-.\s]?\d{4}$/;
 
-    if (!nameRegex.test(firstName) || firstName.length < 3) {
+    if (!nameRegex.test(firstName)) {
       toast.error("Please enter a valid first name!");
-    } else if (!nameRegex.test(lastName) || lastName.length < 3) {
+    } else if (!nameRegex.test(lastName)) {
       toast.error("Please enter a valid last name!");
     } else if (!emailRegex.test(email)) {
       toast.error("Please enter valid email!");
-    } else if (!numberRegex.test(phoneNumber) || phoneNumber.length < 10) {
+    } else if (!numberRegex.test(phoneNumber)) {
       toast.error("Please enter valid phone number!");
     } else {
       console.log("FORM DATA: ", {
@@ -43,7 +45,9 @@ const contact = () => {
         phone: phoneNumber,
         message: message,
       });
-      toast.success("Submitted Successfully!");
+      toast.success(
+        "Form submitted successfully, we will be in touch with you soon!"
+      );
       setFirstName("");
       setLastName("");
       setPhoneNumber("");
@@ -98,14 +102,54 @@ const contact = () => {
             <div className="w-full lg:mt-[-15%] z-10 h-auto lg:px-20 py-5 lg:py-0 flex flex-col lg:flex-row justify-center lg:justify-between items-center gap-5 lg:gap-0">
               <div className="flex border-[1px] lg:border-0 border-[#C0E3F1] flex-col h-52 w-full lg:w-[30%] justify-center lg:justify-start justify-center lg:items-start p-5 bg-[#fff] lg:shadow-lg rounded-xl">
                 <div className="w-full flex justify-center lg:justify-start items-center">
-                  <div className="h-12 w-12 flex justify-center items-center rounded-full bg-[#007BAB]">
+                  <div
+                    onClick={() => {
+                      const generateGoogleMapsUrl = (locationText) => {
+                        const encodedLocation =
+                          encodeURIComponent(locationText);
+                        return `https://www.google.com/maps/place/${encodedLocation}`;
+                      };
+
+                      const locationText =
+                        "3233 W. Dallas St, Suite 1107 Houston, Tx 77019";
+                      const googleMapsUrl = generateGoogleMapsUrl(locationText);
+                      window.open(googleMapsUrl, "_blank");
+                    }}
+                    className="h-12 w-12 cursor-pointer flex justify-center items-center rounded-full bg-[#007BAB]"
+                  >
                     <BiSolidNavigation size={25} color="#fff" />
                   </div>
                 </div>
-                <p className="text-[#170F49] w-full text-center lg:text-start font-bold text-lg mt-5">
+                <p
+                  onClick={() => {
+                    const generateGoogleMapsUrl = (locationText) => {
+                      const encodedLocation = encodeURIComponent(locationText);
+                      return `https://www.google.com/maps/place/${encodedLocation}`;
+                    };
+
+                    const locationText =
+                      "3233 W. Dallas St, Suite 1107 Houston, Tx 77019";
+                    const googleMapsUrl = generateGoogleMapsUrl(locationText);
+                    window.open(googleMapsUrl, "_blank");
+                  }}
+                  className="text-[#170F49] cursor-pointer w-full text-center lg:text-start font-bold text-lg mt-5"
+                >
                   Address
                 </p>
-                <p className="text-[#6F6C90] w-full text-center lg:text-start mt-4">
+                <p
+                  onClick={() => {
+                    const generateGoogleMapsUrl = (locationText) => {
+                      const encodedLocation = encodeURIComponent(locationText);
+                      return `https://www.google.com/maps/place/${encodedLocation}`;
+                    };
+
+                    const locationText =
+                      "3233 W. Dallas St, Suite 1107 Houston, Tx 77019";
+                    const googleMapsUrl = generateGoogleMapsUrl(locationText);
+                    window.open(googleMapsUrl, "_blank");
+                  }}
+                  className="text-[#6F6C90] cursor-pointer w-full text-center lg:text-start mt-4"
+                >
                   3233 W. Dallas St, Suite 1107 Houston, Tx 77019
                 </p>
               </div>
@@ -113,7 +157,7 @@ const contact = () => {
               <div className="flex border-[1px] lg:border-0 border-[#C0E3F1] flex-col h-52 w-full lg:w-[30%] justify-center lg:justify-start justify-center lg:items-start p-5 bg-[#fff] lg:shadow-lg rounded-xl">
                 <div className="w-full flex justify-center lg:justify-start items-center">
                   <div className="h-12 w-12 flex justify-center items-center rounded-full bg-[#007BAB]">
-                    <IoCall size={25} color="#fff" />
+                    <MdEmail size={25} color="#fff" />
                   </div>
                 </div>
                 <p className="text-[#170F49] w-full text-center lg:text-start font-bold text-lg mt-5">
@@ -137,7 +181,10 @@ const contact = () => {
                 <div className="flex flex-row justify-center lg:justify-start items-center lg:items-start gap-x-5 mt-4">
                   <div
                     onClick={() =>
-                      router.push("https://www.facebook.com/Circledot.ooo")
+                      window.open(
+                        "https://www.facebook.com/Circledot.ooo",
+                        "_blank"
+                      )
                     }
                     className="h-12 cursor-pointer w-12 rounded-full bg-[#F5F5F7] flex items-center justify-center"
                   >
@@ -145,8 +192,9 @@ const contact = () => {
                   </div>
                   <div
                     onClick={() =>
-                      router.push(
-                        "https://www.linkedin.com/company/circledotooo/"
+                      window.open(
+                        "https://www.linkedin.com/company/circledotooo/",
+                        "_blank"
                       )
                     }
                     className="h-12 cursor-pointer w-12 rounded-full bg-[#F5F5F7] flex items-center justify-center"
@@ -155,7 +203,10 @@ const contact = () => {
                   </div>
                   <div
                     onClick={() =>
-                      router.push("https://www.instagram.com/circledot.ooo/")
+                      window.open(
+                        "https://www.instagram.com/circledot.ooo/",
+                        "_blank"
+                      )
                     }
                     className="h-12 cursor-pointer w-12 rounded-full bg-[#F5F5F7] flex items-center justify-center"
                   >

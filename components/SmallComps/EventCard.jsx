@@ -422,9 +422,7 @@ const EventCard = ({
               {title}
             </div>
             <div className="w-full flex justify-start items-start truncate font16 lg:font12 text-[#828282]">
-              {type === ""
-                ? moment(time?.seconds * 1000).format("MMMM Do YYYY, h:mm:ss a")
-                : time}
+              {moment(time?.seconds * 1000).format("MMMM Do YYYY, h:mm:ss a")}
             </div>
           </div>
         </div>
@@ -433,13 +431,19 @@ const EventCard = ({
           {description}
         </div>
         <div className="w-full truncate font18 font-semibold text-[#007BAB]">
-          $ {price == 0 ? "Free" : price}
+          {type !== "" ? (price === "" ? "Free" : price) : "Free"}
         </div>
         <div className="w-full flex justify-start items-center gap-1 font16 lg:font12 text-[#828282]">
           {type === "" ? (
             <>
               <AttendeIcon className="w-3 h-3" />
-              <div className="">{`${attend} Followers`}</div>
+              <div className="">
+                {attend === 0
+                  ? attend + " " + "Follower"
+                  : attend === 1
+                  ? attend + " " + "Follower"
+                  : attend + " " + "Followers"}
+              </div>
             </>
           ) : (
             <>

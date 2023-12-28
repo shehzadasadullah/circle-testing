@@ -2,20 +2,21 @@ import React, { useContext, useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import { Create_Event_Popup } from "@/context/context";
 import CreateEventPopup from "../Common/CreateEventPopup";
-const HeroSection = dynamic(import("./HeroSection"), { ssr: false });
-const InviteToApp = dynamic(import("./InviteToApp"), { ssr: false });
-const EventTabs = dynamic(import("./EventTabs"), { ssr: false });
-const Testimonial = dynamic(import("./Testimonials"), { ssr: false });
-const ProfileComp = dynamic(import("./ProfileComp"), { ssr: false });
-const Features = dynamic(import("./Features"), { ssr: false });
-const EventsNearMe = dynamic(import("./Events/EventsNearMe"), { ssr: false });
-const PremiumEvents = dynamic(import("./Events/PremiumEvents"), { ssr: false });
-const RestEvents = dynamic(import("./Events/RestEvents"), { ssr: false });
-const Footer = dynamic(import("../Common/Footer"), { ssr: false });
+import HeroSection from "./HeroSection";
+import InviteToApp from "./InviteToApp";
+import EventTabs from "./EventTabs";
+import Testimonial from "./Testimonials";
+import ProfileComp from "./ProfileComp";
+import Features from "./Features";
+import EventsNearMe from "./Events/EventsNearMe";
+import PremiumEvents from "./Events/PremiumEvents";
+import RestEvents from "./Events/RestEvents";
+import Footer from "../Common/Footer";
 import { ThreeCircles } from "react-loader-spinner";
 import loaderGif from "../../public/events/Loader.gif";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import ScrollToTopButton from "../ScrollToTop/ScrollToTopButton";
 
 //Main Container Component to contain all the sections of the homepage
 const HomePage = () => {
@@ -24,7 +25,7 @@ const HomePage = () => {
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
-    }, 4000);
+    }, 2000);
   }, []);
   //context
   const [createEventPopup, setCreateEventPopup] =
@@ -68,6 +69,7 @@ const HomePage = () => {
                 setCreateEventPopup={setCreateEventPopup}
               />
             )}
+            <ScrollToTopButton />
           </div>
         </>
       )}

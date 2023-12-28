@@ -114,7 +114,7 @@ const EventDetails = () => {
     if (id?.length > 0) {
       // Reference of event
       if (type) {
-        const eventRef = doc(db, "ScrapedEvents", id);
+        const eventRef = doc(db, "dev_events", id);
 
         return onSnapshot(eventRef, async (docquery) => {
           if (docquery.exists()) {
@@ -776,7 +776,7 @@ const EventDetails = () => {
 
                   {activeTab === "tab1" ? (
                     <div className="text-[#F9F9F9] mt-6 w-full flex justify-start items-start">
-                      {EventData?.description || EventData?.summary || ""}{" "}
+                      {EventData?.description || ""}
                     </div>
                   ) : (
                     activeTab === "tab2" && (
@@ -875,8 +875,10 @@ const EventDetails = () => {
                       <div className="rounded-full bg-white border-2 w-20 h-20">
                         <img
                           src={
-                            creatorData?.photo_url
-                              ? creatorData?.photo_url
+                            creatorData?.photo_url ||
+                            EventData?.creator?.creatorimage
+                              ? creatorData?.photo_url ||
+                                EventData?.creator?.creatorimage
                               : img.src
                           }
                           className="rounded-full w-full h-full object-cover"
@@ -889,6 +891,7 @@ const EventDetails = () => {
                           {creatorData?.full_name ||
                             creatorData?.display_name ||
                             EventData?.organizer ||
+                            EventData?.creator?.creator ||
                             "Anonymous"}
                         </p>
                       </div>
@@ -999,7 +1002,9 @@ const EventDetails = () => {
                     <FaTag size={30} />
                     <p className="font-Montserrat ml-3">
                       {type
-                        ? "TODO YET"
+                        ? EventData?.ticketprice === ""
+                          ? "Free"
+                          : EventData?.ticketprice
                         : EventData?.ticketPrice === "0.00"
                         ? "FREE"
                         : "PAID"}
@@ -1010,8 +1015,10 @@ const EventDetails = () => {
                     <div className="rounded-full bg-white border-2 w-20 h-20 mt-5">
                       <img
                         src={
-                          creatorData?.photo_url
-                            ? creatorData?.photo_url
+                          creatorData?.photo_url ||
+                          EventData?.creator?.creatorimage
+                            ? creatorData?.photo_url ||
+                              EventData?.creator?.creatorimage
                             : img.src
                         }
                         className="rounded-full w-full h-full object-cover"
@@ -1024,6 +1031,7 @@ const EventDetails = () => {
                         {creatorData?.full_name ||
                           creatorData?.display_name ||
                           EventData?.organizer ||
+                          EventData?.creator?.creator ||
                           "Anonymous"}
                       </p>
                     </div>
@@ -1043,7 +1051,7 @@ const EventDetails = () => {
                   {type ? (
                     <button
                       onClick={(e) => {
-                        router.push(EventData?.link);
+                        window.open(EventData?.hyperlink, "_blank");
                       }}
                       className={`rounded-xl text-lg py-5 px-5 w-full font-bold bg-[#007BAB] hover:bg-transparent border-[#007BAB] border-2 text-[#fff]`}
                     >
@@ -1586,8 +1594,11 @@ const EventDetails = () => {
                                         <div className="rounded-full bg-white border-2 w-20 h-20">
                                           <img
                                             src={
-                                              creatorData?.photo_url
-                                                ? creatorData?.photo_url
+                                              creatorData?.photo_url ||
+                                              EventData?.creator?.creatorimage
+                                                ? creatorData?.photo_url ||
+                                                  EventData?.creator
+                                                    ?.creatorimage
                                                 : img.src
                                             }
                                             className="rounded-full w-full h-full object-cover"
@@ -1601,6 +1612,8 @@ const EventDetails = () => {
                                           <p className="font-bold text-[#F2F2F2]">
                                             {creatorData?.full_name ||
                                               creatorData?.display_name ||
+                                              EventData?.organizer ||
+                                              EventData?.creator?.creator ||
                                               "Anonymous"}
                                           </p>
                                         </div>

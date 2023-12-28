@@ -32,11 +32,13 @@ const About = () => {
                   After talking to hundreds of Event Hosts and Attendees, we
                   learned that almost all shared the same concerns
                 </p>
-                <img
-                  src={img.src}
-                  alt=""
-                  className="mt-10 text-center w-full ml-6 lg:ml-0 lg:mt-[10%]"
-                />
+                <div className="w-full text-center flex justify-center items-center">
+                  <img
+                    src={img.src}
+                    alt=""
+                    className="mt-10 text-center h-96 lg:h-[400pt] ml-[-2%] lg:ml-[-12%] lg:mt-[8%]"
+                  />
+                </div>
               </div>
               <div className="w-full lg:w-1/2 flex flex-col justify-center items-center mt-8 lg:mt-0 gap-y-5">
                 <div className="flex p-5 flex-col lg:flex-row justify-center lg:justify-start items-center w-full border-[1px] border-[#E0E0E0] rounded-xl">

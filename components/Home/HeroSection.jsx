@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import Image from "next/image";
 import { FindContact, InstaBizCard, SocialMedaiIcon } from "../SvgIcons";
 import Header from "../Common/Header";
@@ -15,9 +15,27 @@ import { auth, db } from "@/firebase";
 import Register from "./Register";
 import AOS from "aos";
 import "aos/dist/aos.css";
-AOS.init();
 
 const HeroSection = () => {
+  useEffect(() => {
+    console.log("Initializing AOS");
+    AOS.init({
+      duration: 800,
+      once: true,
+    });
+
+    const handleScroll = () => {
+      // console.log("Scrolling...");
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    // Cleanup the event listener
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   const router = useRouter();
   const [user] = useAuthState(auth);
   const [showModal, setShowModal] = useState(false);
@@ -46,9 +64,8 @@ const HeroSection = () => {
       </div>
       <div
         data-aos="fade-up"
-        data-aos-offset="500"
         data-aos-delay="50"
-        data-aos-duration="1000"
+        data-aos-duration="4000"
         data-aos-easing="ease-in-out"
         data-aos-mirror="false"
         data-aos-once="true"
@@ -101,7 +118,17 @@ const HeroSection = () => {
           </div>
         </div>
         <div className="w-full lg:w-[50%] flex flex-col justify-start items-center h-auto">
-          <img src={img.src} className="object-contain hidden lg:flex" alt="" />
+          <img
+            data-aos="fade-up"
+            data-aos-delay="50"
+            data-aos-duration="4000"
+            data-aos-easing="ease-in-out"
+            data-aos-mirror="true"
+            data-aos-once="false"
+            src={img.src}
+            className="object-contain hidden lg:flex"
+            alt=""
+          />
           <button
             onClick={() => {
               if (user?.email === undefined) {
@@ -121,14 +148,14 @@ const HeroSection = () => {
           </button>
         </div>
       </div>
-      <div className="flex w-full mt-2 lg:mt-0 justify-center items-center">
+      {/* <div className="flex w-full mt-2 lg:mt-0 justify-center items-center">
         <div
           style={{ width: "30pt", height: "30pt" }}
           className="rounded-full bg-[#085675] flex justify-center items-center mb-5"
         >
           <MdOutlineKeyboardArrowDown size={40} color="white" />
         </div>
-      </div>
+      </div> */}
       {/* <div className="w-full ">
         <div className="w-full bg-white py-6 md:py-8 lg:py-10 xl:py-12 2xl:py-14 px-4 md:px-6 lg:px-8 flex justify-center items-start gap-2 md:gap-4 lg:gap-8 xl:gap-10 2xl:gap-12 z-10">
           <div

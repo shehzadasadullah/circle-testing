@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import dynamic from "next/dynamic";
 import EventCard from "../SmallComps/EventCard";
 import { RandomNdigitnumber } from "@/utils/function";
@@ -20,12 +20,49 @@ import { LocationMarkerIcon, SearchIcon } from "@heroicons/react/outline";
 import axios from "axios";
 import LocationIcon from "@/icons/LocationIcon";
 import { RotatingLines } from "react-loader-spinner";
+import AOS from "aos";
+import "aos/dist/aos.css";
+import "intersection-observer";
 
 const EventTabs = () => {
   const [activeTab, setActiveTab] = useState(1);
   const router = useRouter();
   const handleTabClick = (tabNumber) => {
     setActiveTab(tabNumber);
+  };
+
+  const eventsRef = useRef(null);
+
+  useEffect(() => {
+    const options = {
+      root: null, // Use the viewport as the root
+      rootMargin: "0px", // No margin around the root
+      threshold: 0.2, // Trigger when 20% of the component is visible
+    };
+
+    const observer = new IntersectionObserver(handleIntersection, options);
+
+    if (eventsRef.current) {
+      observer.observe(eventsRef.current);
+    }
+
+    // Cleanup the observer on component unmount
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
+  const handleIntersection = (entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        // The component is in focus
+        AOS.init({
+          duration: 800,
+          once: true,
+        });
+        AOS.refresh(); // Refresh AOS to apply animations immediately
+      }
+    });
   };
 
   // All Events
@@ -64,13 +101,14 @@ const EventTabs = () => {
   const getOtherEventsData = async (limitNum) => {
     setOtherEventsLoader(true);
     // reference to the events collection
-    const eventsCollectionRef = collection(db, "ScrapedEvents");
+    const eventsCollectionRef = collection(db, "dev_events");
     //current time stamp
-    // let curtimestamp = Timestamp.now();
+    let curtimestamp = Timestamp.now();
+    console.log("CURRENT TIMESTAMP: ", curtimestamp);
     //compound query - any event which start from now in future
     const q = query(
       eventsCollectionRef,
-      // where("timefrom", ">=", curtimestamp),
+      where("timefrom", ">=", curtimestamp),
       limit(limitNum)
     );
     //reading the live data from firestore
@@ -79,6 +117,7 @@ const EventTabs = () => {
       querySnapshot.forEach((doc) => {
         Docs.push({ ...doc.data(), eventsDocId: doc?.id });
       });
+      console.log("OTHER EVENTS: ", Docs);
       setOtherEventsData(Docs || []);
       setOtherEventsLoader(false);
     });
@@ -408,7 +447,16 @@ const EventTabs = () => {
   }, [locationInput]);
 
   return (
-    <div className="flex flex-col items-center w-full h-auto justify-center">
+    <div
+      ref={eventsRef}
+      data-aos="fade-up"
+      data-aos-delay="50"
+      data-aos-duration="4000"
+      data-aos-easing="ease-in-out"
+      data-aos-mirror="false"
+      data-aos-once="true"
+      className="flex flex-col items-center w-full h-auto justify-center"
+    >
       <h3 className="font48 font-semibold mt-20 text-center font-Montserrat">
         Events related to your interests
       </h3>
@@ -1108,13 +1156,13 @@ const EventTabs = () => {
                       // }}
                     >
                       <EventCard
-                        image={item.large_image || item.largeimage || ""}
-                        title={item.name || item.title || ""}
-                        time={item.timefrom || item.datetime || ""}
-                        description={item.description || item.summary || ""}
+                        image={item.large_image || ""}
+                        title={item.name || ""}
+                        time={item.timefrom}
+                        description={item.description || ""}
                         attend={item.attendees?.length || 0}
-                        price={item.ticketPrice || 0}
-                        id={item?.eventsDocId || item.id || ""}
+                        price={item.ticketPrice || item.ticketprice || ""}
+                        id={item?.eventsDocId || ""}
                         location={item?.location || ""}
                         type={item.type || ""}
                       />

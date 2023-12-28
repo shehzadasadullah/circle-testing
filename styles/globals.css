@@ -2,6 +2,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+/* styles.css */
+@import 'aos/dist/aos.css';
+
 
 body {}
 
@@ -79,4 +82,67 @@ body {}
   /* Replace 'line-pattern.png' with your actual image path */
   background-repeat: repeat-x;
   background-position: center;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-up-enter {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.fade-up-enter-active {
+  animation: fadeInUp 0.5s ease-in-out;
+  transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.fade-enter {
+  opacity: 0;
+}
+
+.fade-enter-active {
+  animation: fadeIn 0.5s ease-in-out;
+  transition: opacity 0.5s ease-in-out;
+}
+
+@keyframes zoomIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.zoom-enter {
+  opacity: 0;
+  transform: scale(0.8);
+}
+
+.zoom-enter-active {
+  animation: zoomIn 0.5s ease-in-out;
+  transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
 }

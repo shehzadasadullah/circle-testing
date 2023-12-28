@@ -11,9 +11,27 @@ import SavesTime from "../../public/savestime.png";
 import Wishlist from "../../public/wishlist.png";
 import AOS from "aos";
 import "aos/dist/aos.css";
-AOS.init();
 
 const ProfileComp = () => {
+  useEffect(() => {
+    console.log("Initializing AOS");
+    AOS.init({
+      duration: 800,
+      once: true,
+    });
+
+    const handleScroll = () => {
+      // console.log("Scrolling...");
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    // Cleanup the event listener
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   const [selectedDropdown, setSelectedDropdown] = useState("Organize");
   const [selectedOption, setSelectedOption] = useState({
     id: 1,
@@ -111,17 +129,16 @@ const ProfileComp = () => {
   }, [selectedDropdown, selectedOption]);
   return (
     <>
-      <div
-        data-aos="fade-up"
-        data-aos-offset="200"
-        data-aos-delay="50"
-        data-aos-duration="1000"
-        data-aos-easing="ease-in-out"
-        data-aos-mirror="false"
-        data-aos-once="true"
-        className="flex bg-[#F8F9FD] justify-center items-center w-full h-auto"
-      >
-        <div className="hidden lg:flex w-1/2 justify-center items-center flex-col p-6">
+      <div className="flex bg-[#F8F9FD] justify-center items-center w-full h-auto">
+        <div
+          data-aos="fade-up"
+          data-aos-delay="50"
+          data-aos-duration="4000"
+          data-aos-easing="ease-in-out"
+          data-aos-mirror="false"
+          data-aos-once="true"
+          className="hidden lg:flex w-1/2 justify-center items-center flex-col p-6"
+        >
           <h3 className="font48 font-semibold mt-20 text-[#14183E] font-Montserrat">
             One Profile for All Events
           </h3>
@@ -144,7 +161,15 @@ const ProfileComp = () => {
             />
           </div>
         </div>
-        <div className="w-full lg:w-1/2 justify-center items-center flex flex-col p-4">
+        <div
+          data-aos="fade-up"
+          data-aos-delay="50"
+          data-aos-duration="4000"
+          data-aos-easing="ease-in-out"
+          data-aos-mirror="false"
+          data-aos-once="true"
+          className="w-full lg:w-1/2 justify-center items-center flex flex-col p-4"
+        >
           <h3 className="font48 font-semibold text-center mt-10 text-[#14183E] flex lg:hidden font-Montserrat">
             One Profile for All Events
           </h3>

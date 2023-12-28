@@ -1,24 +1,35 @@
-import React from "react";
+import React, { useEffect } from "react";
 import mobile from "../../public/mobilebg.png";
 import pentagon from "../../public/imgpentagon.png";
 import { AiFillApple } from "react-icons/ai";
 import { IoLogoGooglePlaystore } from "react-icons/io5";
 import AOS from "aos";
 import "aos/dist/aos.css";
-AOS.init();
 import { useRouter } from "next/router";
 
 const InviteToApp = () => {
+  useEffect(() => {
+    console.log("Initializing AOS");
+    AOS.init({
+      duration: 800,
+      once: true,
+    });
+
+    const handleScroll = () => {
+      // console.log("Scrolling...");
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    // Cleanup the event listener
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
   const router = useRouter();
   return (
     <>
       <div
-        data-aos="fade-up"
-        data-aos-delay="50"
-        data-aos-duration="1000"
-        data-aos-easing="ease-in-out"
-        data-aos-mirror="false"
-        data-aos-once="true"
         style={{
           background: "rgba(17, 129, 172, 1)",
           //   background:
@@ -27,7 +38,15 @@ const InviteToApp = () => {
         className="flex justify-center items-center w-full h-auto p-2 lg:p-10"
       >
         <div className="w-full flex-col lg:flex-row flex justify-center items-center text-white">
-          <div className="flex flex-col justify-center lg:items-start items-center mb-6">
+          <div
+            data-aos="fade-up"
+            data-aos-delay="50"
+            data-aos-duration="4000"
+            data-aos-easing="ease-in-out"
+            data-aos-mirror="false"
+            data-aos-once="true"
+            className="flex flex-col justify-center lg:items-start items-center mb-6"
+          >
             <img src={mobile.src} alt="" className="flex lg:hidden p-6" />
             <h3 className="font48 hidden mt-10 lg:mt-0 lg:flex font-semibold font-Montserrat text-center lg:text-left">
               Want to See Who's Coming?
@@ -72,7 +91,17 @@ const InviteToApp = () => {
             </div>
           </div>
 
-          <img src={mobile.src} alt="" className="hidden lg:flex ml-20" />
+          <img
+            data-aos="fade-up"
+            data-aos-delay="50"
+            data-aos-duration="4000"
+            data-aos-easing="ease-in-out"
+            data-aos-mirror="false"
+            data-aos-once="true"
+            src={mobile.src}
+            alt=""
+            className="hidden lg:flex ml-20"
+          />
         </div>
       </div>
     </>
