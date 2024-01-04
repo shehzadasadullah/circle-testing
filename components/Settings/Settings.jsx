@@ -18,6 +18,12 @@ import { ThreeDots } from "react-loader-spinner";
 import { Dialog } from "@headlessui/react";
 import loaderGif from "../../public/events/Loader.gif";
 import Header from "../Common/Header";
+import { SiEventbrite } from "react-icons/si";
+import { FaMeetup } from "react-icons/fa";
+import { ImLinkedin } from "react-icons/im";
+import iCal from "./iCal.png";
+import gCal from "./gCal.png";
+import mCal from "./mCal.png";
 
 function Dashboard() {
   const [user] = useAuthState(auth);
@@ -597,7 +603,7 @@ function Dashboard() {
         </div>
       </Dialog>
       <div className="flex flex-col w-full h-auto bg-[#00384F]">
-        <Header type="dark" page="attend" />
+        <Header type="dark" />
         {/* Sidebar Menu */}
         {/* {showSideBar && (
           <div className="w-64 flex flex-col border-2 text-[#091E42] p-4">
@@ -678,7 +684,7 @@ function Dashboard() {
                   if (user?.email === undefined) {
                     handleClick();
                   } else {
-                    router.push("/CreateEvent");
+                    router.push(create-event);
                   }
                 }}
                 className={`hidden md:flex font14 font-medium rounded-full py-4 px-5 font-Montserrat text-[#fff] hover:text-[#007BAB] border-2 border-[#007BAB] hover:bg-transparent bg-[#007BAB]`}
@@ -732,8 +738,9 @@ function Dashboard() {
                       </p>
                       <div className="flex w-full h-auto flex-col justify-start items-start rounded-lg mt-5">
                         <div className="flex justify-between text-[#292D32] flex-row w-full h-auto mt-2">
-                          <div className="text-[#F9F9F9] text-xl font-bold">
-                            EventBrite
+                          <div className="text-[#F9F9F9] flex flex-row justify-center items-center text-xl font-bold">
+                            <SiEventbrite size={25} color="#F05537" />{" "}
+                            <p className="ml-2">EventBrite</p>
                           </div>
                           <div>
                             {eventBriteLoader ? (
@@ -778,8 +785,9 @@ function Dashboard() {
                           </div>
                         </div>
                         <div className="flex justify-between text-[#292D32] flex-row w-full h-auto mt-4">
-                          <div className="text-[#F9F9F9] text-xl font-bold">
-                            MeetUp
+                          <div className="text-[#F9F9F9] flex flex-row justify-center items-center text-xl font-bold">
+                            <FaMeetup size={25} color="#F65858" />{" "}
+                            <p className="ml-2">MeetUp</p>
                           </div>
                           <div>
                             {meetUpLoader ? (
@@ -824,8 +832,9 @@ function Dashboard() {
                           </div>
                         </div>
                         <div className="flex justify-between text-[#292D32] flex-row w-full h-auto mt-4">
-                          <div className="text-[#F9F9F9] text-xl font-bold">
-                            LinkedIn (Coming Soon)
+                          <div className="text-[#F9F9F9] flex flex-row justify-center items-center text-xl font-bold">
+                            <ImLinkedin size={25} color="#007BAB" />{" "}
+                            <p className="ml-2">LinkedIn (Coming Soon)</p>
                           </div>
                         </div>
                       </div>
@@ -841,8 +850,9 @@ function Dashboard() {
                       </p>
                       <div className="flex w-full h-auto flex-col justify-start items-start rounded-lg mt-5">
                         <div className="flex justify-between text-[#292D32] flex-row w-full h-auto mt-2">
-                          <div className="text-[#F9F9F9] text-xl font-bold">
-                            Google Calendar
+                          <div className="text-[#F9F9F9] flex flex-row justify-center items-center text-xl font-bold">
+                            <img src={gCal.src} className="h-7" alt="" />
+                            <p className="ml-2">Google Calendar</p>
                           </div>
                           <div>
                             {googleCalenderLoader ? (
@@ -887,9 +897,11 @@ function Dashboard() {
                           </div>
                         </div>
                         <div className="flex justify-between text-[#292D32] flex-row w-full h-auto mt-4">
-                          <div className="text-[#F9F9F9] text-xl font-bold">
-                            iCal
+                          <div className="text-[#F9F9F9] flex flex-row justify-center items-center text-xl font-bold">
+                            <img src={iCal.src} className="h-7" alt="" />
+                            <p className="ml-2">iCal</p>
                           </div>
+
                           <div>
                             {iCalLoader ? (
                               <>
@@ -933,8 +945,11 @@ function Dashboard() {
                           </div>
                         </div>
                         <div className="flex justify-between text-[#292D32] flex-row w-full h-auto mt-4">
-                          <div className="text-[#F9F9F9] text-xl font-bold">
-                            Microsoft Outlook (Coming Soon)
+                          <div className="text-[#F9F9F9] flex flex-row justify-center items-center text-xl font-bold">
+                            <img src={mCal.src} className="h-7" alt="" />
+                            <p className="ml-2">
+                              Microsoft Outlook (Coming Soon)
+                            </p>
                           </div>
                         </div>
                       </div>

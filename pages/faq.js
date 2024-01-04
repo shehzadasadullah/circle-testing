@@ -10,15 +10,13 @@ import { useRouter } from "next/router";
 
 const FaqItem = ({ question, answer, isActive, onToggle }) => (
   <div
-    className={`rounded-xl p-5 flex flex-col justify-center items-center w-full text-start border-[#E0E0E0] border-[1px] ${
+    onClick={onToggle}
+    className={`rounded-xl p-5 flex cursor-pointer flex-col justify-center items-center w-full text-start border-[#E0E0E0] border-[1px] ${
       isActive ? "bg-[#007BAB] text-[#fff]" : "text-[#000]"
     } transition-all duration-500 ease-in-out`}
   >
     <div className="w-full flex justify-center items-center">
-      <button
-        className="w-full justify-between items-center flex"
-        onClick={onToggle}
-      >
+      <button className="w-full justify-between items-center flex">
         <div className="text-lg w-full text-start">{question}</div>
         <div className="text-end ml-5 lg:ml-0 text-2xl">
           {isActive ? "-" : "+"}

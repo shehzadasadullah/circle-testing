@@ -338,7 +338,7 @@ const Header = ({ type = "", page = "" }) => {
                           if (user?.email === undefined) {
                             handleClick();
                           } else {
-                            router.push("/CreateEvent");
+                            router.push("/create-event");
                           }
                         }}
                         className={`ml-5 font14 font-medium rounded-full p-4 font-Montserrat text-[#fff] hover:text-[#007BAB] border-2 border-[#007BAB] hover:bg-[#fff] bg-[#007BAB]`}
@@ -573,7 +573,7 @@ const Header = ({ type = "", page = "" }) => {
                             if (user?.email === undefined) {
                               handleClick();
                             } else {
-                              router.push("/CreateEvent");
+                              router.push("/create-event");
                             }
                           }}
                           className={`font14 font-medium rounded-full p-4 font-Montserrat text-[#fff] hover:text-[#007BAB] border-2 border-[#007BAB] hover:bg-[#fff] bg-[#007BAB]`}
@@ -883,7 +883,7 @@ const Header = ({ type = "", page = "" }) => {
                           >
                             <button
                               onClick={() => {
-                                router.push("/CreateEvent");
+                                router.push(create-event);
                               }}
                               className={`font14 font-medium rounded-full p-4 font-Montserrat text-[#fff] hover:text-[#007BAB] border-2 border-[#007BAB] hover:bg-[#fff] bg-[#007BAB]`}
                             >
@@ -973,7 +973,7 @@ const Header = ({ type = "", page = "" }) => {
                         </button>
                         <button
                           onClick={() => {
-                            router.push("/CreateEvent");
+                            router.push(create-event);
                           }}
                           className={`ml-5 font14 font-medium rounded-full p-4 font-Montserrat text-[#fff] hover:text-[#007BAB] border-2 border-[#007BAB] hover:bg-[#fff] bg-[#007BAB]`}
                         >
@@ -1162,7 +1162,7 @@ const Header = ({ type = "", page = "" }) => {
                       <div className="ml-5">
                         <button
                           onClick={() => {
-                            router.push("/CreateEvent");
+                            router.push(create-event);
                           }}
                           className={`font14 font-medium rounded-full p-4 font-Montserrat text-[#fff] hover:text-[#007BAB] border-2 border-[#007BAB] hover:bg-[#fff] bg-[#007BAB]`}
                         >

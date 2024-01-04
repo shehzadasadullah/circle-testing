@@ -103,7 +103,7 @@ const HeroSection = () => {
                 if (user?.email === undefined) {
                   handleClick();
                 } else {
-                  router.push("/CreateEvent");
+                  router.push("/create-event");
                 }
               }}
               className={`w-[50%] mt-10 font14 font-medium rounded-full py-5 font-Montserrat text-[#fff] hover:text-[#007BAB] border-2 border-[#007BAB] hover:bg-transparent bg-[#007BAB]`}
@@ -134,10 +134,10 @@ const HeroSection = () => {
               if (user?.email === undefined) {
                 handleClick();
               } else {
-                router.push("/CreateEvent");
+                router.push("/create-event");
               }
             }}
-            className={`flex lg:hidden px-10 mt-5 lg:mt-[-102pt] lg:ml-[-65%] font16 md:font14 font-medium rounded-full py-5 font-Montserrat text-[#fff] hover:text-[#007BAB] border-2 border-[#007BAB] hover:bg-transparent bg-[#007BAB]`}
+            className={`flex lg:hidden px-10 mt-5 mb-5 lg:mt-[-102pt] lg:ml-[-65%] font16 md:font14 font-medium rounded-full py-5 font-Montserrat text-[#fff] hover:text-[#007BAB] border-2 border-[#007BAB] hover:bg-transparent bg-[#007BAB]`}
           >
             <div className="flex justify-center items-center">
               Create an Event

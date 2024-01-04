@@ -60,7 +60,7 @@ const Footer = () => {
                   if (user?.email === undefined) {
                     handleClick();
                   } else {
-                    router.push("/CreateEvent");
+                    router.push("/create-event");
                   }
                 }}
               >

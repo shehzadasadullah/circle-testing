@@ -484,7 +484,7 @@ const Register = ({ showModal, setShowModal }) => {
     //                   Agree to the{" "}
     //                   <u>
     //                     <Link
-    //                       href="/terms-and-conditions"
+    //                       href="/terms"
     //                       className="underline"
     //                     >
     //                       Terms &amp; Conditions
@@ -811,7 +811,7 @@ const Register = ({ showModal, setShowModal }) => {
     //                       Agree to the{" "}
     //                       <u>
     //                         <Link
-    //                           href="/terms-and-conditions"
+    //                           href="/terms"
     //                           className="underline"
     //                         >
     //                           Terms &amp; Conditions
@@ -981,7 +981,7 @@ const Register = ({ showModal, setShowModal }) => {
                     <div className="mt-6 mb-4">
                       <button
                         type="submit"
-                        className="bg-[#123B79] text-white font-Inter font-semibold text-[16px] w-full py-3 rounded focus:outline-none focus:shadow-outline"
+                        className="bg-[#007BAB] text-white font-Inter font-semibold text-[16px] w-full py-3 rounded focus:outline-none focus:shadow-outline"
                       >
                         Sign in
                       </button>
@@ -1062,10 +1062,7 @@ const Register = ({ showModal, setShowModal }) => {
                       >
                         Agree to the{" "}
                         <u>
-                          <Link
-                            href="/terms-and-conditions"
-                            className="underline"
-                          >
+                          <Link href="/terms" className="underline">
                             Terms &amp; Conditions
                           </Link>
                         </u>{" "}
@@ -1156,7 +1153,7 @@ const Register = ({ showModal, setShowModal }) => {
                     <div className="mt-6 mb-4">
                       <button
                         type="submit"
-                        className="bg-[#123B79] text-white font-Inter font-semibold text-[16px] w-full py-3 rounded focus:outline-none focus:shadow-outline"
+                        className="bg-[#007BAB] text-white font-Inter font-semibold text-[16px] w-full py-3 rounded focus:outline-none focus:shadow-outline"
                       >
                         Sign in
                       </button>
@@ -1168,14 +1165,14 @@ const Register = ({ showModal, setShowModal }) => {
                       >
                         Other sign in options
                       </p>
-                      <p
+                      {/* <p
                         onClick={() => {
                           setLoginWithNumber(true);
                         }}
                         className="font-Inter text-[#123B79] text-[16px] mt-4 cursor-pointer hover:underline font-semibold"
                       >
                         Sign in using Phone Number
-                      </p>
+                      </p> */}
                     </div>
                     <div className="w-full flex items-center justify-center flex-col gap-4 mt-8">
                       <div className="flex flex-row justify-center items-center gap-4">
@@ -1237,10 +1234,7 @@ const Register = ({ showModal, setShowModal }) => {
                       >
                         Agree to the{" "}
                         <u>
-                          <Link
-                            href="/terms-and-conditions"
-                            className="underline"
-                          >
+                          <Link href="/terms" className="underline">
                             Terms &amp; Conditions
                           </Link>
                         </u>{" "}
@@ -1262,7 +1256,7 @@ const Register = ({ showModal, setShowModal }) => {
                     {!resetPasswordSent ? (
                       // reset password form
                       <form className="w-full" onSubmit={handleResetPassword}>
-                        <div className="mt-12 w-full">
+                        <div className="mt-5 w-full">
                           <div>
                             <label
                               className="block text-left text-[#000000] text-[14px] font-normal font-Inter mb-2"
@@ -1282,7 +1276,7 @@ const Register = ({ showModal, setShowModal }) => {
                         </div>
                         <button
                           type="submit"
-                          className="mt-12 bg-[#123B79] text-white font-Inter font-semibold text-[16px] w-full py-3 rounded focus:outline-none focus:shadow-outline"
+                          className="mt-5 bg-[#007BAB] text-white font-Inter font-semibold text-[16px] w-full py-3 rounded focus:outline-none focus:shadow-outline"
                         >
                           Reset Password
                         </button>
@@ -1541,10 +1535,7 @@ const Register = ({ showModal, setShowModal }) => {
                         >
                           Agree to the{" "}
                           <u>
-                            <Link
-                              href="/terms-and-conditions"
-                              className="underline"
-                            >
+                            <Link href="/terms" className="underline">
                               Terms &amp; Conditions
                             </Link>
                           </u>{" "}
@@ -1699,7 +1690,7 @@ const Register = ({ showModal, setShowModal }) => {
                       <div className="mt-6 mb-2">
                         <button
                           type="submit"
-                          className="bg-[#123B79] text-white font-Inter font-semibold text-[16px] w-full py-3 rounded focus:outline-none focus:shadow-outline"
+                          className="bg-[#007BAB] text-white font-Inter font-semibold text-[16px] w-full py-3 rounded focus:outline-none focus:shadow-outline"
                         >
                           Register
                         </button>
@@ -1716,14 +1707,14 @@ const Register = ({ showModal, setShowModal }) => {
                         >
                           Other sign in options
                         </p>
-                        <p
+                        {/* <p
                           onClick={() => {
                             setRegisterWithNumber(true);
                           }}
                           className="font-Inter text-[#123B79] text-[16px] mt-4 cursor-pointer hover:underline font-semibold"
                         >
                           Sign Up using Phone Number
-                        </p>
+                        </p> */}
                       </div>
                       <div className="w-full flex items-center justify-center flex-col gap-4 mt-8">
                         <div className="flex flex-row justify-center items-center gap-4">
@@ -1785,10 +1776,7 @@ const Register = ({ showModal, setShowModal }) => {
                         >
                           Agree to the{" "}
                           <u>
-                            <Link
-                              href="/terms-and-conditions"
-                              className="underline"
-                            >
+                            <Link href="/terms" className="underline">
                               Terms &amp; Conditions
                             </Link>
                           </u>{" "}

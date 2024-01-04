@@ -22,6 +22,10 @@ import { Dialog } from "@headlessui/react";
 import { ThreeDots } from "react-loader-spinner";
 import loaderGif from "../../public/events/Loader.gif";
 import { useRouter } from "next/router";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
+import dayjs from "dayjs";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -29,6 +33,7 @@ function classNames(...classes) {
 
 const CreateEvent = () => {
   const router = useRouter();
+  const todayDate = dayjs();
   const fonts = [
     "Abril Fatface",
     "Aclonica",
@@ -101,16 +106,8 @@ const CreateEvent = () => {
   const [deviceLocation, setDeviceLocation] = useState("");
   const [eventTicketPrice, setEventTicketPrice] = useState("");
   const [eventMaximumTickets, setEventMaximumTickets] = useState("");
-  const [startDateTime, setStartDateTime] = useState(
-    DateTime.local()
-      .set({ second: 0, millisecond: 0 })
-      .toISO({ includeOffset: false })
-  );
-  const [endDateTime, setEndDateTime] = useState(
-    DateTime.local()
-      .set({ second: 0, millisecond: 0 })
-      .toISO({ includeOffset: false })
-  );
+  const [startDateTime, setStartDateTime] = useState(null);
+  const [endDateTime, setEndDateTime] = useState(null);
   const [outputFormattedStartDateTime, setOutputFormattedStartDateTime] =
     useState("");
   const [outputStartDateTimeTimestamp, setOutputStartDateTimeTimestamp] =
@@ -276,7 +273,8 @@ const CreateEvent = () => {
   };
 
   const convertToTimestampStartDateTime = () => {
-    const inputDateObj = DateTime.fromISO(startDateTime);
+    const formattedString = dayjs(startDateTime.$d).format("YYYY-MM-DDTHH:mm");
+    const inputDateObj = DateTime.fromISO(formattedString);
 
     if (inputDateObj.isValid) {
       // Determine the user's locale and timezone
@@ -307,6 +305,10 @@ const CreateEvent = () => {
       const nanoseconds = (inputDateObj.toMillis() % 1000) * 1000000;
 
       // Create and return a Firestore Timestamp object
+      console.log(
+        "START DATE TIMESTAMP: ",
+        new Timestamp(seconds, nanoseconds)
+      );
       return new Timestamp(seconds, nanoseconds);
     } else {
       toast.error("Invalid Date!", {
@@ -320,7 +322,8 @@ const CreateEvent = () => {
   };
 
   const convertToTimestampEndDateTime = () => {
-    const inputDateObj = DateTime.fromISO(endDateTime);
+    const formattedString = dayjs(endDateTime.$d).format("YYYY-MM-DDTHH:mm");
+    const inputDateObj = DateTime.fromISO(formattedString);
 
     if (inputDateObj.isValid) {
       // Determine the user's locale and timezone
@@ -350,6 +353,7 @@ const CreateEvent = () => {
       const nanoseconds = (inputDateObj.toMillis() % 1000) * 1000000;
 
       // Create and return a Firestore Timestamp object
+      console.log("END DATE TIMESTAMP: ", new Timestamp(seconds, nanoseconds));
       return new Timestamp(seconds, nanoseconds);
       // return formattedDate;
     } else {
@@ -364,8 +368,12 @@ const CreateEvent = () => {
   };
 
   const checkStartAndEndDateTime = () => {
-    const startObj = DateTime.fromISO(startDateTime);
-    const endObj = DateTime.fromISO(endDateTime);
+    const formattedStringStart = dayjs(startDateTime.$d).format(
+      "YYYY-MM-DDTHH:mm"
+    );
+    const formattedStringEnd = dayjs(endDateTime.$d).format("YYYY-MM-DDTHH:mm");
+    const startObj = DateTime.fromISO(formattedStringStart);
+    const endObj = DateTime.fromISO(formattedStringEnd);
 
     if (startObj.isValid && endObj.isValid) {
       if (startObj.equals(endObj)) {
@@ -417,6 +425,36 @@ const CreateEvent = () => {
       }
     } else {
       return true;
+    }
+  };
+
+  const paidPriceCheck = () => {
+    if (isOnPrice) {
+      if (eventTicketPrice === "" || eventMaximumTickets === "") {
+        // console.log("Called 5");
+        toast.error("Price data is missing!", {
+          position: "top-right",
+          autoClose: 3000, // Time in milliseconds
+        });
+        setCreateEventLoader(false);
+        return false;
+      } else if (Number(eventMaximumTickets) < 1) {
+        toast.error("Maximum Tickets can't be less than 1", {
+          position: "top-right",
+          autoClose: 3000, // Time in milliseconds
+        });
+        setCreateEventLoader(false);
+        return false;
+      } else if (Number(eventTicketPrice) < 1) {
+        toast.error("Ticket Price can't be less than $1", {
+          position: "top-right",
+          autoClose: 3000, // Time in milliseconds
+        });
+        setCreateEventLoader(false);
+        return false;
+      } else {
+        return true;
+      }
     }
   };
 
@@ -602,17 +640,7 @@ const CreateEvent = () => {
             // console.log("Called 3");
             if (validateWebsite() === true) {
               // console.log("Called 4");
-              if (
-                isOnPrice &&
-                (eventTicketPrice === "" || eventMaximumTickets === "")
-              ) {
-                // console.log("Called 5");
-                toast.error("Price data is missing!", {
-                  position: "top-right",
-                  autoClose: 3000, // Time in milliseconds
-                });
-                setCreateEventLoader(false);
-              } else {
+              if (paidPriceCheck() === true) {
                 let userRefPath = null;
                 if (user) {
                   const userUID = user.uid;
@@ -727,6 +755,7 @@ const CreateEvent = () => {
                     console.log("Document successfully updated");
                     toast.success("Event Created Successfully!");
                     setCreateEventLoader(false);
+                    router.push(`/events/${docRef.id}`);
                   } catch (error) {
                     console.error("Error updating document: ", error);
                     toast.error("Something went wrong!");
@@ -1099,7 +1128,7 @@ const CreateEvent = () => {
                 </div>
               </div>
             </Dialog>
-            <Header type="light" page="home" />
+            <Header type="light" />
             <div className="w-full h-auto p-4">
               <div className="flex justify-center lg:justify-start items-center lg:items-start flex-col p-2 lg:p-10">
                 <h3 className="font-bold font48 text-[#17191C] mt-5">
@@ -1139,8 +1168,8 @@ const CreateEvent = () => {
                         className="block text-[#292D32] font-bold text-[16px] ml-1"
                       >
                         {circleData.length > 0
-                          ? "Your Circle - TODO (i) button"
-                          : "You haven't created any circle, please create circle to continue - TODO (i) button"}
+                          ? "Your Circle"
+                          : "You haven't created any circle, please create circle to continue"}
                         <span className="text-red-600"> *</span>
                       </label>
                       {circleData.length > 0 ? (
@@ -1339,7 +1368,7 @@ const CreateEvent = () => {
                           Event Start Date & Time
                           <span className="text-red-600"> *</span>
                         </label>
-                        <input
+                        {/* <input
                           type="datetime-local"
                           value={startDateTime}
                           onChange={(e) => setStartDateTime(e.target.value)}
@@ -1349,7 +1378,20 @@ const CreateEvent = () => {
                           min={DateTime.local()
                             .set({ second: 0, millisecond: 0 })
                             .toISO({ includeOffset: false })}
-                        />
+                        /> */}
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                          <DateTimePicker
+                            sx={{
+                              color: "#8392AF",
+                              marginTop: 1,
+                              width: "100%",
+                            }}
+                            value={startDateTime}
+                            defaultValue={todayDate}
+                            onChange={(newValue) => setStartDateTime(newValue)}
+                            disablePast
+                          />
+                        </LocalizationProvider>
                       </div>
                       <div className="w-full">
                         <label
@@ -1359,7 +1401,7 @@ const CreateEvent = () => {
                           Event End Date & Time
                           <span className="text-red-600"> *</span>
                         </label>
-                        <input
+                        {/* <input
                           type="datetime-local"
                           value={endDateTime}
                           onChange={(e) => setEndDateTime(e.target.value)}
@@ -1369,9 +1411,31 @@ const CreateEvent = () => {
                           min={DateTime.local()
                             .set({ second: 0, millisecond: 0 })
                             .toISO({ includeOffset: false })}
-                        />
+                        /> */}
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                          <DateTimePicker
+                            defaultValue={todayDate}
+                            value={endDateTime}
+                            sx={{
+                              color: "#8392AF",
+                              marginTop: 1,
+                              width: "100%",
+                            }}
+                            onChange={(newValue) => setEndDateTime(newValue)}
+                            disablePast
+                          />
+                        </LocalizationProvider>
                       </div>
                     </div>
+                    {/* <button
+                      onClick={() => {
+                        checkStartAndEndDateTime();
+                        convertToTimestampEndDateTime();
+                        convertToTimestampStartDateTime();
+                      }}
+                    >
+                      CLICK ME BRO
+                    </button> */}
                     <div className="mb-4 w-full lg:w-[90%] h-auto">
                       <label
                         htmlFor="location"
@@ -1453,7 +1517,7 @@ const CreateEvent = () => {
                       <div>
                         <label
                           className={`${
-                            isOnExhibitors ? "bg-[#7367F0]" : "bg-[#E2E2E2]"
+                            isOnExhibitors ? "bg-[#007BAB]" : "bg-[#E2E2E2]"
                           } relative inline-flex items-center h-6 rounded-full w-11 cursor-pointer`}
                         >
                           <input
@@ -1475,7 +1539,7 @@ const CreateEvent = () => {
                       <div>
                         <label
                           className={`${
-                            isOnSponsorship ? "bg-[#7367F0]" : "bg-[#E2E2E2]"
+                            isOnSponsorship ? "bg-[#007BAB]" : "bg-[#E2E2E2]"
                           } relative inline-flex items-center h-6 rounded-full w-11 cursor-pointer`}
                         >
                           <input
@@ -1515,7 +1579,7 @@ const CreateEvent = () => {
                       <div>
                         <label
                           className={`${
-                            isOnPrice ? "bg-[#7367F0]" : "bg-[#E2E2E2]"
+                            isOnPrice ? "bg-[#007BAB]" : "bg-[#E2E2E2]"
                           } relative inline-flex items-center h-6 rounded-full w-11 cursor-pointer`}
                         >
                           <input

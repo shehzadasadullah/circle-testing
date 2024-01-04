@@ -55,8 +55,38 @@ import img9 from "./9.png";
 import { AiFillApple } from "react-icons/ai";
 import { IoLogoGooglePlaystore } from "react-icons/io5";
 import loaderGif from "../../../public/events/Loader.gif";
+import {
+  FacebookIcon,
+  FacebookShareButton,
+  FacebookShareCount,
+  LinkedinIcon,
+  LinkedinShareButton,
+  TelegramIcon,
+  TelegramShareButton,
+  TwitterShareButton,
+  WhatsappIcon,
+  WhatsappShareButton,
+  XIcon,
+} from "react-share";
+import { useMediaQuery } from "react-responsive";
+import calendarImage from "./schedule.png";
 
 const EventDetails = () => {
+  const breakpoints = {
+    sm: "(max-width: 640px)",
+    md: "(max-width: 768px)",
+    lg: "(max-width: 1024px)",
+    xl: "(max-width: 1280px)",
+  };
+  const isLgScreen = useMediaQuery({ query: breakpoints.lg });
+  const [shareUrl, setShareUrl] = useState("");
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setShareUrl(window.location.href);
+    }
+  }, []);
+  const title = "Hey, Join me by attending this Event!";
   const [createEventPopup, setCreateEventPopup] =
     useContext(Create_Event_Popup);
   //state
@@ -75,6 +105,7 @@ const EventDetails = () => {
   const [showFreeModal, setShowFreeModal] = useState(false);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [showticketModal, setShowTicketModal] = useState(false);
+  const [showShareModal, setShowShareModal] = useState(false);
   const [showsuccessModal, setShowSuccessModal] = useState(false);
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const [isCheckedIn, setIsCheckedIn] = useState(false);
@@ -492,7 +523,7 @@ const EventDetails = () => {
 
   const tabs = [
     { id: "tab1", label: "About Event", paddingLeft: 0 },
-    { id: "tab2", label: "Attendees & Who I Meet", paddingLeft: 4 },
+    { id: "tab2", label: "Attendees", paddingLeft: 4 },
   ];
 
   const otherTabs = [{ id: "tab1", label: "About Event", paddingLeft: 0 }];
@@ -705,7 +736,7 @@ const EventDetails = () => {
     tempTextarea.setSelectionRange(0, 99999);
     document.execCommand("copy");
     document.body.removeChild(tempTextarea);
-    toast.success("URL copied to clipboard!");
+    toast.success("Link copied to clipboard!");
   };
 
   return (
@@ -860,6 +891,14 @@ const EventDetails = () => {
                                 </>
                               );
                             })}
+                          {filteredAttendeesDataList.length === 0 && (
+                            <>
+                              <div className="flex w-full justify-center items-center flex-col bg-[#012432] rounded-xl p-2">
+                                No Attendees Yet, Click Attend Event to be the
+                                first one!
+                              </div>
+                            </>
+                          )}
                         </div>
                       </div>
                     )
@@ -993,7 +1032,21 @@ const EventDetails = () => {
 
                   <div className="flex flex-row text-[#F9F9F9] mt-3 justify-start w-full items-center">
                     <FaLocationDot size={30} />
-                    <p className="font-Montserrat ml-3">
+                    <p
+                      onClick={() => {
+                        const generateGoogleMapsUrl = (locationText) => {
+                          const encodedLocation =
+                            encodeURIComponent(locationText);
+                          return `https://www.google.com/maps/place/${encodedLocation}`;
+                        };
+
+                        const locationText = EventData?.location;
+                        const googleMapsUrl =
+                          generateGoogleMapsUrl(locationText);
+                        window.open(googleMapsUrl, "_blank");
+                      }}
+                      className="font-Montserrat ml-3 cursor-pointer"
+                    >
                       {EventData?.location}
                     </p>
                   </div>
@@ -1040,7 +1093,7 @@ const EventDetails = () => {
 
                 <div className="flex w-full mt-4 flex-col xl:flex-row justify-center items-center p-6 bg-[#012432] rounded-xl">
                   <button
-                    onClick={copyToClipboard}
+                    onClick={() => setShowShareModal(true)}
                     className="flex justify-center items-center flex-row rounded-xl text-lg px-5 py-4 w-full font-semibold bg-[#fff] hover:bg-transparent border-[#fff] border-2 text-[#000] hover:text-[#fff]"
                   >
                     <LiaShareAltSolid size={28} /> <p className="ml-2">Share</p>
@@ -1075,7 +1128,7 @@ const EventDetails = () => {
                         <p>
                           {Array.isArray(attendeList) &&
                           attendeList.includes(user?.uid)
-                            ? "Check In"
+                            ? "View Ticket Details"
                             : "Attend Event"}
                         </p>
                         <p>
@@ -1428,7 +1481,7 @@ const EventDetails = () => {
                                   <div>
                                     <IoIosArrowBack
                                       size={30}
-                                      className="border-2 cursor-pointer"
+                                      className="border-2 cursor-pointer rounded-full"
                                       onClick={() => setShowMobileScreen(false)}
                                     />
                                   </div>
@@ -1441,7 +1494,7 @@ const EventDetails = () => {
                                   <div>
                                     <IoIosArrowBack
                                       size={30}
-                                      className="border-2 cursor-pointer"
+                                      className="border-2 rounded-full cursor-pointer"
                                       onClick={() =>
                                         setShowNoIntegrationScreen(false)
                                       }
@@ -1722,7 +1775,12 @@ const EventDetails = () => {
                               </div>
                             )} */}
 
-                                      <button className="mt-3 rounded-xl px-5 flex flex-row justify-between items-center w-full py-4 bg-[#007BAB] border-2 border-[#007BAB] hover:bg-transparent font-semibold text-[#fff]">
+                                      <button
+                                        onClick={() =>
+                                          setShowMobileScreen(true)
+                                        }
+                                        className="mt-3 rounded-xl px-5 flex flex-row justify-between items-center w-full py-4 bg-[#007BAB] border-2 border-[#007BAB] hover:bg-transparent font-semibold text-[#fff]"
+                                      >
                                         <div className="flex flex-row justify-center items-center">
                                           <FaWallet size={20} color="#fff" />
                                           <p className="ml-2">Add to Wallet</p>
@@ -1885,7 +1943,12 @@ const EventDetails = () => {
                           <>
                             <div className="w-full h-auto flex justify-center items-center flex-col gap-10 p-6">
                               <div className="w-full h-auto bg-[#012432] rounded-xl flex justify-center items-center flex-col p-10">
-                                <p className="text-[#F9F9F9] text-3xl font-bold">
+                                <img
+                                  src={calendarImage.src}
+                                  alt=""
+                                  className="h-40"
+                                />
+                                <p className="text-[#F9F9F9] text-3xl mt-4 font-bold">
                                   “Oops, No Calendar Integration Found”
                                 </p>
                                 <p className="text-[#BDBDBD] w-full lg:w-3/4 mt-4">
@@ -1912,6 +1975,156 @@ const EventDetails = () => {
                             </div>
                           </>
                         )}
+                      </div>
+                    </div>
+                  </div>
+                )}
+                {showShareModal && (
+                  <div className="fixed z-10 inset-0 overflow-y-auto">
+                    <div className="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                      <div
+                        className="fixed inset-0 transition-opacity"
+                        aria-hidden="true"
+                      >
+                        <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
+                      </div>
+
+                      <span
+                        className="hidden sm:inline-block sm:align-middle sm:h-screen"
+                        aria-hidden="true"
+                      >
+                        &#8203;
+                      </span>
+
+                      <div
+                        className={`inline-block w-full lg:w-[50%] align-middle bg-[#00384F] rounded-lg shadow-xl transform transition-all`}
+                      >
+                        <div className="w-full flex justify-between border-[#F9F9F9] text-[#F9F9F9] border-b-2 items-center px-6 py-3">
+                          <p className="font-semibold text-xl">
+                            Share Event Details
+                          </p>
+                          <button
+                            type="button"
+                            className="box-content rounded-none border-none hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none"
+                            onClick={() => {
+                              setShowMobileScreen(false);
+                              setShowNoIntegrationScreen(false);
+                              setShowTicketModal(false);
+                              setShowShareModal(false);
+                            }}
+                          >
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke-width="1.5"
+                              stroke="currentColor"
+                              className="h-6 w-6"
+                            >
+                              <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M6 18L18 6M6 6l12 12"
+                              />
+                            </svg>
+                          </button>
+                        </div>
+
+                        <div className="w-full h-auto flex justify-center items-center flex-col p-6">
+                          <div className="flex w-full h-auto justify-center items-center flex-col">
+                            <div className="flex w-full justify-center items-center flex-col gap-4">
+                              <div className="bg-[#012432] flex justify-center items-center flex-col rounded-xl w-full p-6">
+                                <div className="w-full h-auto bg-[#012432] rounded-xl flex justify-center items-center flex-col lg:p-6">
+                                  <p className="text-[#F9F9F9] text-3xl w-full font-bold">
+                                    “Share & Invite others to Join You!”
+                                  </p>
+
+                                  <div className="flex w-full mt-6 justify-center lg:justify-between items-center flex-col lg:flex-row">
+                                    <input
+                                      type="text"
+                                      name="copyLink"
+                                      id="copyLink"
+                                      value={window.location.href}
+                                      disabled={true}
+                                      className="w-full rounded-xl border-2 border-[#F2F2F2] p-4 text-[#000]"
+                                    />
+
+                                    <button
+                                      onClick={copyToClipboard}
+                                      className={`px-5 lg:ml-2 mt-2 lg:mt-0 rounded-xl py-4 bg-[#007BAB] hover:bg-transparent border-[#007BAB] border-2 text-[#fff]`}
+                                    >
+                                      {isLgScreen ? "Copy Link" : "Copy"}
+                                    </button>
+                                  </div>
+
+                                  <p className="text-[#F9F9F9] mt-6 text-xl font-bold">
+                                    Or
+                                  </p>
+
+                                  <div className="flex gap-x-2 justify-center items-center flex-wrap mt-6 w-full">
+                                    <div className="">
+                                      <FacebookShareButton
+                                        url={shareUrl}
+                                        className=""
+                                      >
+                                        <FacebookIcon size={50} round />
+                                      </FacebookShareButton>
+
+                                      <div>
+                                        <FacebookShareCount
+                                          url={shareUrl}
+                                          className=""
+                                        >
+                                          {(count) => count}
+                                        </FacebookShareCount>
+                                      </div>
+                                    </div>
+
+                                    <div className="">
+                                      <TwitterShareButton
+                                        url={shareUrl}
+                                        title={title}
+                                        className=""
+                                      >
+                                        <XIcon size={50} round />
+                                      </TwitterShareButton>
+                                    </div>
+
+                                    <div className="">
+                                      <TelegramShareButton
+                                        url={shareUrl}
+                                        title={title}
+                                        className=""
+                                      >
+                                        <TelegramIcon size={50} round />
+                                      </TelegramShareButton>
+                                    </div>
+
+                                    <div className="">
+                                      <WhatsappShareButton
+                                        url={shareUrl}
+                                        title={title}
+                                        separator=" :: "
+                                        className=""
+                                      >
+                                        <WhatsappIcon size={50} round />
+                                      </WhatsappShareButton>
+                                    </div>
+
+                                    <div className="">
+                                      <LinkedinShareButton
+                                        url={shareUrl}
+                                        className=""
+                                      >
+                                        <LinkedinIcon size={50} round />
+                                      </LinkedinShareButton>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>

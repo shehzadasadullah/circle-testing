@@ -42,7 +42,7 @@ const Favorites = () => {
   return (
     <div>
       <div className="w-full h-full">
-        <Header type="light" page="about" />
+        <Header type="light" />
       </div>
 
       <div className="bg-[#E9EDF5] px-2 sm:px-8 md:px-12 lg:px-16 xl:px-24 2xl:px-32 py-2 sm:py-4 lg:py-8 w-full h-full flex flex-col justify-center items-center ">
