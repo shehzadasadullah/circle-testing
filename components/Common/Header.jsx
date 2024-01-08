@@ -39,6 +39,7 @@ const Header = ({ type = "", page = "" }) => {
   const router = useRouter();
   const { pathname } = router;
   const [user] = useAuthState(auth);
+
   const { accessToken, errorval, error_description } = router.query;
   //useEffect
 
@@ -134,7 +135,7 @@ const Header = ({ type = "", page = "" }) => {
           company_name: "",
           companyaddress: "",
           uid: user.uid || "",
-          display_name: lnfirstName + " " + lnlastName || "",
+          full_name: lnfirstName + " " + lnlastName || "",
           email: user.email || "",
           full_name: lnfirstName + " " + lnlastName || "",
           full_name_insensitive:
@@ -380,10 +381,9 @@ const Header = ({ type = "", page = "" }) => {
                                 Hi,{" "}
                                 {user?.displayName
                                   ? user?.displayName
-                                  : user?.email.slice(
-                                      0,
-                                      user?.email.indexOf("@")
-                                    )}
+                                  : user?.email
+                                      .slice(0, user?.email.indexOf("@"))
+                                      .toUpperCase()}
                                 !
                               </div>
                               <div className="hidden lg:flex">
@@ -1006,8 +1006,8 @@ const Header = ({ type = "", page = "" }) => {
                                 className={`ml-2 font16 text-[#007BAB] font-semibold font-Montserrat`}
                               >
                                 Hi,{" "}
-                                {user?.displayName
-                                  ? user?.displayName
+                                {user?.full_name
+                                  ? user?.full_name
                                   : user?.email.slice(
                                       0,
                                       user?.email.indexOf("@")
@@ -1062,7 +1062,7 @@ const Header = ({ type = "", page = "" }) => {
                                       </div>
                                       <div className="flex p-2 flex-col justify-start items-start">
                                         <div className="font-bold">
-                                          {user?.displayName}
+                                          {user?.full_name}
                                         </div>
                                         <div>{user?.email}</div>
                                       </div>

@@ -39,7 +39,7 @@ const testimonials = [
 
 const Testimonial = () => {
   useEffect(() => {
-    console.log("Initializing AOS");
+    // console.log("Initializing AOS");
     AOS.init({
       duration: 800,
       once: true,
@@ -68,7 +68,7 @@ const Testimonial = () => {
     sm: 100,
     md: 100, // Default value for medium-sized screens
     lg: 100,
-    xl: 40,
+    xl: 80,
   };
   const isLgScreen = useMediaQuery({ query: breakpoints.lg });
   const centerSlidePercentage = isLgScreen
@@ -142,7 +142,7 @@ const Testimonial = () => {
       >
         {testimonials.map((item) => (
           <div
-            className="border-[#EFF0F6] my-4 h-96 cursor-pointer border-2 flex justify-center items-start flex-col gap-4 p-10 rounded-xl mr-10 ml-10 lg:ml-0"
+            className="border-[#EFF0F6] my-4 h-auto lg:h-96 border-2 flex justify-center items-start flex-col gap-4 p-10 rounded-xl mr-10 ml-10 lg:ml-0"
             key={item.id}
           >
             <h4 className="font24 w-full font-bold text-center md:text-start">

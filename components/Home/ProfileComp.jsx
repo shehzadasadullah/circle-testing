@@ -14,7 +14,7 @@ import "aos/dist/aos.css";
 
 const ProfileComp = () => {
   useEffect(() => {
-    console.log("Initializing AOS");
+    // console.log("Initializing AOS");
     AOS.init({
       duration: 800,
       once: true,

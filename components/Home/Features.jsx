@@ -6,7 +6,7 @@ import "aos/dist/aos.css";
 
 const Features = () => {
   useEffect(() => {
-    console.log("Initializing AOS");
+    // console.log("Initializing AOS");
     AOS.init({
       duration: 800,
       once: true,

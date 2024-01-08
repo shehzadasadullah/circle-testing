@@ -385,6 +385,10 @@ const EventDetails = () => {
     setShowModal(true);
   };
 
+  useEffect(() => {
+    if (user) console.log("USER DATA: ", user);
+  }, [user]);
+
   const EmailMe = async () => {
     // Set loading state to true
     setEmailLoading(true);
@@ -400,8 +404,7 @@ const EventDetails = () => {
       .format("LLLL");
     const price =
       EventData?.ticketPrice >= "0.00" ? EventData?.ticketPrice : "Free";
-    const name =
-      creatorData?.full_name || creatorData?.display_name || "Anonymous";
+    const name = user?.displayName;
     const eventtime = formattedTime;
     const email = user?.email;
 

@@ -360,7 +360,7 @@ const EventTabs = () => {
               message: "Events Found!",
             });
             setBsEventsFoundState(bsEventsFound);
-            console.log(bsEventsFound[0].message, filtered);
+            // console.log(bsEventsFound[0].message, filtered);
           } else {
             setBySearchEvents(Docs);
             bsEventsFound.push({
@@ -368,7 +368,7 @@ const EventTabs = () => {
               message: "No Events Found!",
             });
             setBsEventsFoundState(bsEventsFound);
-            console.log(bsEventsFound[0].message, Docs);
+            // console.log(bsEventsFound[0].message, Docs);
           }
         } else {
           // If the search query is empty, reset the filtered events to the original data
@@ -378,7 +378,7 @@ const EventTabs = () => {
             message: "Search Your Desired Event By Location Search!",
           });
           setBsEventsFoundState(bsEventsFound);
-          console.log(bsEventsFound[0].message, Docs);
+          // console.log(bsEventsFound[0].message, Docs);
         }
       };
 

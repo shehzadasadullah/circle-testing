@@ -18,7 +18,7 @@ import "aos/dist/aos.css";
 
 const HeroSection = () => {
   useEffect(() => {
-    console.log("Initializing AOS");
+    // console.log("Initializing AOS");
     AOS.init({
       duration: 800,
       once: true,
