@@ -1,6 +1,10 @@
 import HomePage from "@/components/Home/HomePage";
 import Head from "next/head";
 
+console.log = () => {};
+console.error = () => {};
+console.debug = () => {};
+
 export default function Home() {
   return (
     <>

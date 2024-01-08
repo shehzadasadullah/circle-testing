@@ -135,7 +135,7 @@ const Header = ({ type = "", page = "" }) => {
           company_name: "",
           companyaddress: "",
           uid: user.uid || "",
-          full_name: lnfirstName + " " + lnlastName || "",
+          display_name: lnfirstName + " " + lnlastName || "",
           email: user.email || "",
           full_name: lnfirstName + " " + lnlastName || "",
           full_name_insensitive:

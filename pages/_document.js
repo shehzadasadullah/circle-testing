@@ -2,6 +2,10 @@
 
 import Document, { Html, Head, Main, NextScript } from "next/document";
 
+console.log = () => {};
+console.error = () => {};
+console.debug = () => {};
+
 export default class MyDocument extends Document {
   render() {
     return (
