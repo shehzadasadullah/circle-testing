@@ -850,7 +850,7 @@ const EventDetails = () => {
                               return (
                                 <>
                                   <div className="flex w-full justify-start items-center flex-col bg-[#012432] rounded-xl p-2">
-                                    <div className="flex text-base w-full justify-between items-center flex-col md:flex-row p-2">
+                                    <div className="flex text-base w-full justify-start items-center flex-col md:flex-row p-2">
                                       <div className="flex w-full justify-start items-center">
                                         <div className="rounded-full border-2">
                                           {key?.photo_url ? (
@@ -871,7 +871,7 @@ const EventDetails = () => {
                                             </>
                                           )}
                                         </div>
-                                        <div className="flex ml-2 flex-col justify-start items-start">
+                                        <div className="flex ml-2 flex-col justify-start items-center">
                                           <p className="font-bold">
                                             {key?.full_name
                                               ? key?.full_name?.toUpperCase()
@@ -884,11 +884,11 @@ const EventDetails = () => {
                                           </p> */}
                                         </div>
                                       </div>
-                                      <div className="flex w-full mt-3 md:mt-0 justify-center md:justify-end items-center">
+                                      {/* <div className="flex w-full mt-3 md:mt-0 justify-center md:justify-end items-center">
                                         <button className="rounded-xl py-3 font-semibold px-6 bg-[#007BAB] hover:bg-transparent border-[#007BAB] border-2 text-white">
                                           Follow
                                         </button>
-                                      </div>
+                                      </div> */}
                                     </div>
                                   </div>
                                 </>
@@ -897,7 +897,7 @@ const EventDetails = () => {
                           {filteredAttendeesDataList.length === 0 && (
                             <>
                               <div className="flex w-full justify-center items-center flex-col bg-[#012432] rounded-xl p-2">
-                                No Attendees Yet, Click Attend Event to be the
+                                No Attendees Found, Click Attend Event to be the
                                 first one!
                               </div>
                             </>
