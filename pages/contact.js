@@ -107,7 +107,7 @@ const contact = () => {
                       const generateGoogleMapsUrl = (locationText) => {
                         const encodedLocation =
                           encodeURIComponent(locationText);
-                        return `https://www.google.com/maps/place/${encodedLocation}`;
+                        return `https://www.google.com/maps/search/?api=1&query=${encodedLocation}`;
                       };
 
                       const locationText =
@@ -124,7 +124,7 @@ const contact = () => {
                   onClick={() => {
                     const generateGoogleMapsUrl = (locationText) => {
                       const encodedLocation = encodeURIComponent(locationText);
-                      return `https://www.google.com/maps/place/${encodedLocation}`;
+                      return `https://www.google.com/maps/search/?api=1&query=${encodedLocation}`;
                     };
 
                     const locationText =
@@ -140,7 +140,7 @@ const contact = () => {
                   onClick={() => {
                     const generateGoogleMapsUrl = (locationText) => {
                       const encodedLocation = encodeURIComponent(locationText);
-                      return `https://www.google.com/maps/place/${encodedLocation}`;
+                      return `https://www.google.com/maps/search/?api=1&query=${encodedLocation}`;
                     };
 
                     const locationText =

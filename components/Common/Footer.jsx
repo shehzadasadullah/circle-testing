@@ -155,9 +155,22 @@ const Footer = () => {
 
             <div className="w-full lg:w-1/3 flex flex-col justify-center mt-5 lg:mt-0 lg:justify-start items-center lg:items-start h-full gap-3 font16 font-medium font-Montserrat py-2 ">
               <div className="text-[#D9D9D9] text-lg font-bold">Location</div>
-              <div className="text-[#D9D9D9] whitespace-pre-line text-center lg:text-left">{`3233 W. Dallas St,
-          Suite 1107 Houston,
-           TX 77019`}</div>
+              <div
+                className="text-[#D9D9D9] cursor-pointer whitespace-pre-line text-center lg:text-left"
+                onClick={() => {
+                  const generateGoogleMapsUrl = (locationText) => {
+                    const encodedLocation = encodeURIComponent(locationText);
+                    return `https://www.google.com/maps/search/?api=1&query=${encodedLocation}`;
+                  };
+
+                  const locationText =
+                    "3233 W. Dallas St, Suite 1107 Houston, Tx 77019";
+                  const googleMapsUrl = generateGoogleMapsUrl(locationText);
+                  window.open(googleMapsUrl, "_blank");
+                }}
+              >
+                3233 W. Dallas St, Suite 1107 Houston, TX 77019
+              </div>
               <div className="flex flex-col mt-5 lg:mt-3">
                 <button
                   onClick={() => {
