@@ -341,9 +341,51 @@ const EventDetails = () => {
       //   setShowSuccessPopup(false); // Set the flag to false after showing the success popup once
       // } else {
       setShowTicketModal(true); // Show the ticket modal for subsequent times
+      // Event Mail
+
+      try {
+        var myHeaders = new Headers();
+        myHeaders.append("accessToken", circleAccessToken);
+
+        var requestOptions = {
+          method: "GET",
+          headers: myHeaders,
+          redirect: "follow",
+        };
+
+        fetch(
+          `https://api.circle.ooo/api/circle/email/event?eventId=${id}&emailType=ATTEND-EVENT-MAIL`,
+          requestOptions
+        )
+          .then((response) => response.text())
+          .then((result) => console.log("MAIL RESULT:", result))
+          .catch((error) => console.log("error", error));
+      } catch (error) {
+        console.log(error);
+      }
       // }
     } else if (Array.isArray(attendeList) && attendeList.includes(user?.uid)) {
       setShowTicketModal(true);
+      try {
+        var myHeaders = new Headers();
+        myHeaders.append("accessToken", circleAccessToken);
+
+        var requestOptions = {
+          method: "GET",
+          headers: myHeaders,
+          redirect: "follow",
+        };
+
+        fetch(
+          `https://api.circle.ooo/api/circle/email/event?eventId=${id}&emailType=ATTEND-EVENT-MAIL`,
+          requestOptions
+        )
+          .then((response) => response.text())
+          .then((result) => console.log("MAIL RESULT:", result))
+          .catch((error) => console.log("error", error));
+      } catch (error) {
+        console.log(error);
+      }
       // Add your routing logic here for checked-in users, e.g., router.push('/checked-in');
     } else {
       router.push(`/event/${id}/checkout`);

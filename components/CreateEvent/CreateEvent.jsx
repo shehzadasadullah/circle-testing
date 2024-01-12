@@ -455,6 +455,8 @@ const CreateEvent = () => {
       } else {
         return true;
       }
+    } else {
+      return true;
     }
   };
 
@@ -618,6 +620,7 @@ const CreateEvent = () => {
     if (circleData.length === 0) {
       toast.error("Please create circle in order to create event!");
     } else {
+      console.log("ELSE CALLED");
       if (
         startDateTime &&
         endDateTime &&
@@ -626,21 +629,23 @@ const CreateEvent = () => {
         eventDescription !== "" &&
         eventLocation !== ""
       ) {
-        // console.log("Called 1");
+        console.log("Called 0");
         if (isOnSponsorship && eventSponsorShip === "") {
           toast.error("Sponsorship package is missing!", {
             position: "top-right",
             autoClose: 3000, // Time in milliseconds
           });
           setCreateEventLoader(false);
-          // console.log("Called 1");
+          console.log("Called 1");
         } else {
-          // console.log("Called 2");
+          console.log("Called 2");
           if (checkStartAndEndDateTime() === true) {
-            // console.log("Called 3");
+            console.log("Called 3");
             if (validateWebsite() === true) {
-              // console.log("Called 4");
+              console.log("Called 4");
+              console.log("Check: ", paidPriceCheck());
               if (paidPriceCheck() === true) {
+                console.log("Called 5");
                 let userRefPath = null;
                 if (user) {
                   const userUID = user.uid;
@@ -688,6 +693,29 @@ const CreateEvent = () => {
                     // Include the fields you want to update and their new values
                     uid: docRef.id,
                   };
+
+                  // Event Mail
+
+                  try {
+                    var myHeaders = new Headers();
+                    myHeaders.append("accessToken", circleAccessToken);
+
+                    var requestOptions = {
+                      method: "GET",
+                      headers: myHeaders,
+                      redirect: "follow",
+                    };
+
+                    fetch(
+                      `https://api.circle.ooo/api/circle/email/event?eventId=${docRef.id}&emailType=CREATE-EVENT-MAIL`,
+                      requestOptions
+                    )
+                      .then((response) => response.text())
+                      .then((result) => console.log("MAIL RESULT:", result))
+                      .catch((error) => console.log("error", error));
+                  } catch (error) {
+                    console.log(error);
+                  }
 
                   // Post event to third party platforms
 
