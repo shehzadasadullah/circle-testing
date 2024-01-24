@@ -126,6 +126,8 @@ const EventDetails = () => {
   const [loaderTwo, setLoaderTwo] = useState(true);
   const [loaderThree, setLoaderThree] = useState(true);
   const [attendeesDataList, setAttendeesDataList] = useState(null);
+  const [showDownloadMobileAppModal, setShowDownloadMobileAppModal] =
+    useState(false);
   const [filteredAttendeesDataList, setFilteredAttendeesDataList] =
     useState(null);
   const [searchAttendees, setSearchAttendees] = useState("");
@@ -179,6 +181,7 @@ const EventDetails = () => {
             }
 
             setCohostlist(cohosts_list_temp_array || []);
+            console.log("CO HOSTS: ", cohosts_list_temp_array);
 
             const attendesData = docquery?.data()?.attendees || [];
             let attendees_list_temp_array = [];
@@ -225,7 +228,9 @@ const EventDetails = () => {
               }
             }
           }
-          setLoaderOne(false);
+          setTimeout(() => {
+            setLoaderOne(false);
+          }, 2000);
         });
       }
     }
@@ -786,13 +791,7 @@ const EventDetails = () => {
 
   return (
     <>
-      {loaderOne && loaderTwo && loaderThree ? (
-        <>
-          <div className="flex w-screen h-screen justify-center items-center">
-            <img src={loaderGif.src} alt="Loader" className="mt-[-5%]" />
-          </div>
-        </>
-      ) : (
+      {loaderOne === false && loaderTwo === false && loaderThree === false ? (
         <>
           <ToastContainer />
           <div className="w-full h-full p-4 lg:p-10">
@@ -801,7 +800,7 @@ const EventDetails = () => {
               <div className="w-full lg:w-[70%] flex-col flex items-center justify-center">
                 <div className="h-auto w-full rounded-xl">
                   <img
-                    className="w-full h-full object-contain rounded-xl "
+                    className="object-contain rounded-xl lg:h-96"
                     alt="event large image"
                     src={
                       EventData?.large_image || EventData.largeimage
@@ -858,41 +857,48 @@ const EventDetails = () => {
                     activeTab === "tab2" && (
                       <div className="text-[#F9F9F9] mt-6 w-full flex justify-start items-center">
                         <div className="flex w-full flex-col flex-nowrap lg:flex-wrap lg:flex-row items-center justify-start gap-y-4">
-                          <div className="relative w-full">
-                            <div className="absolute w-full inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                              <svg
-                                className="w-4 h-4 text-[#fff]"
-                                aria-hidden="true"
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 20 20"
-                              >
-                                <path
-                                  stroke="currentColor"
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                  stroke-width="2"
-                                  d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-                                />
-                              </svg>
-                            </div>
-                            <input
-                              type="search"
-                              id="default-search"
-                              className="block w-full p-4 pl-10 text-[#fff] bg-[#1D5369] border-2 border-[#1D5369] focus:border-[#fff] text-sm rounded-xl focus:outline-none"
-                              placeholder="Search Attendees"
-                              value={searchAttendees}
-                              onChange={(e) => {
-                                setSearchAttendees(e.target.value);
-                              }}
-                            />
-                          </div>
+                          {/* <div className="relative w-full">
+                         <div className="absolute w-full inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                           <svg
+                             className="w-4 h-4 text-[#fff]"
+                             aria-hidden="true"
+                             xmlns="http://www.w3.org/2000/svg"
+                             fill="none"
+                             viewBox="0 0 20 20"
+                           >
+                             <path
+                               stroke="currentColor"
+                               stroke-linecap="round"
+                               stroke-linejoin="round"
+                               stroke-width="2"
+                               d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+                             />
+                           </svg>
+                         </div>
+                         <input
+                           type="search"
+                           id="default-search"
+                           className="block w-full p-4 pl-10 text-[#fff] bg-[#1D5369] border-2 border-[#1D5369] focus:border-[#fff] text-sm rounded-xl focus:outline-none"
+                           placeholder="Search Attendees"
+                           value={searchAttendees}
+                           onChange={(e) => {
+                             setSearchAttendees(e.target.value);
+                           }}
+                         />
+                       </div> */}
                           {filteredAttendeesDataList.length > 0 &&
                             filteredAttendeesDataList.map((key) => {
                               return (
                                 <>
                                   <div className="flex w-full justify-start items-center flex-col bg-[#012432] rounded-xl p-2">
-                                    <div className="flex text-base w-full justify-start items-center flex-col md:flex-row p-2">
+                                    <div
+                                      style={{
+                                        filter: "blur(3px)",
+                                        opacity: "0.8",
+                                        transition: "filter 0.5s, opacity 0.5s",
+                                      }}
+                                      className="flex text-base w-full justify-start items-center flex-col md:flex-row p-2"
+                                    >
                                       <div className="flex w-full justify-start items-center">
                                         <div className="rounded-full border-2">
                                           {key?.photo_url ? (
@@ -919,34 +925,164 @@ const EventDetails = () => {
                                               ? key?.full_name?.toUpperCase()
                                               : key?.display_name?.toUpperCase()}
                                           </p>
+
                                           {/* <p>
-                                            {key?.email
-                                              ? key?.email?.toUpperCase()
-                                              : user?.email?.toUpperCase()}
-                                          </p> */}
+                                         {key?.email
+                                           ? key?.email?.toUpperCase()
+                                           : user?.email?.toUpperCase()}
+                                       </p> */}
                                         </div>
                                       </div>
                                       {/* <div className="flex w-full mt-3 md:mt-0 justify-center md:justify-end items-center">
-                                        <button className="rounded-xl py-3 font-semibold px-6 bg-[#007BAB] hover:bg-transparent border-[#007BAB] border-2 text-white">
-                                          Follow
-                                        </button>
-                                      </div> */}
+                                     <button className="rounded-xl py-3 font-semibold px-6 bg-[#007BAB] hover:bg-transparent border-[#007BAB] border-2 text-white">
+                                       Follow
+                                     </button>
+                                   </div> */}
                                     </div>
                                   </div>
                                 </>
                               );
                             })}
+                          {filteredAttendeesDataList.length > 0 && (
+                            <>
+                              <div className="flex text-base w-full justify-center items-center flex-col p-2">
+                                <div className="flex w-full justify-center items-center">
+                                  <button
+                                    onClick={() => {
+                                      setShowDownloadMobileAppModal(true);
+                                    }}
+                                    className={`rounded-xl text-lg py-2 px-5 w-full lg:w-auto font-semibold bg-[#007BAB] hover:bg-transparent border-[#007BAB] border-2 text-[#fff]`}
+                                  >
+                                    Download the App to See & Connect With
+                                    Attendees!
+                                  </button>
+                                </div>
+                              </div>
+                            </>
+                          )}
+
                           {filteredAttendeesDataList.length === 0 && (
                             <>
-                              <div className="flex w-full justify-center items-center flex-col bg-[#012432] rounded-xl p-2">
-                                No Attendees Found, Click Attend Event to be the
-                                first one!
+                              <div className="flex w-full justify-center items-center flex-col bg-[#012432] rounded-xl p-5">
+                                <button
+                                  onClick={() => {
+                                    setShowDownloadMobileAppModal(true);
+                                  }}
+                                  className={`rounded-xl text-lg py-2 px-5 font-semibold bg-[#007BAB] hover:bg-transparent border-[#007BAB] border-2 text-[#fff]`}
+                                >
+                                  Download the App to See & Connect With
+                                  Attendees!
+                                </button>
                               </div>
                             </>
                           )}
                         </div>
                       </div>
                     )
+                  )}
+
+                  {showDownloadMobileAppModal && (
+                    <div className="fixed z-10 inset-0 overflow-y-auto">
+                      <div className="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                        <div
+                          className="fixed inset-0 transition-opacity"
+                          aria-hidden="true"
+                        >
+                          <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
+                        </div>
+
+                        <span
+                          className="hidden sm:inline-block sm:align-middle sm:h-screen"
+                          aria-hidden="true"
+                        >
+                          &#8203;
+                        </span>
+
+                        <div
+                          className={`inline-block w-full lg:w-[50%] align-middle bg-[#00384F] rounded-lg shadow-xl transform transition-all`}
+                        >
+                          <div className="w-full flex justify-between border-[#F9F9F9] text-[#F9F9F9] border-b-2 items-center px-6 py-3">
+                            <p className="font-semibold text-xl w-full">
+                              <div className="flex flex-row justify-start items-centre">
+                                <p className="ml-2">Download Mobile App</p>
+                              </div>
+                            </p>
+                            <button
+                              type="button"
+                              className="box-content rounded-none border-none hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none"
+                              onClick={() => {
+                                setShowDownloadMobileAppModal(false);
+                              }}
+                            >
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke-width="1.5"
+                                stroke="currentColor"
+                                className="h-6 w-6"
+                              >
+                                <path
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                  d="M6 18L18 6M6 6l12 12"
+                                />
+                              </svg>
+                            </button>
+                          </div>
+                          <div className="w-full h-auto flex justify-center items-center flex-col gap-10 p-6">
+                            <div className="w-full h-auto bg-[#012432] rounded-xl flex justify-center items-center flex-col p-10">
+                              <p className="text-[#F9F9F9] text-3xl font-bold">
+                                “Circle Is Available For All Devices”
+                              </p>
+                              <p className="text-[#BDBDBD] w-full lg:w-3/4 mt-4">
+                                Connect effortlessly at the event with a
+                                personalized digital business card. Register now
+                                to explore who else will be there and use
+                                Circle, the user-friendly app for all devices.
+                                Sign up today for a free digital business card
+                                and unlock networking success!
+                              </p>
+                              <div className="flex justify-center items-center flex-row mt-10 w-full">
+                                <button
+                                  onClick={() => {
+                                    router.push(
+                                      "https://apps.apple.com/pk/app/circle-ooo/id1611956542"
+                                    );
+                                  }}
+                                  className={`px-5 font14 font-medium rounded-full py-3 font-Montserrat text-[#000] hover:text-[#fff] border-2 border-[#F2F2F2] hover:bg-transparent bg-[#F2F2F2]`}
+                                >
+                                  <div className="flex justify-center items-center">
+                                    <span>
+                                      <AiFillApple className="mr-1" size={30} />
+                                    </span>
+                                    App Store
+                                  </div>
+                                </button>
+                                <button
+                                  onClick={() => {
+                                    router.push(
+                                      "https://play.google.com/store/apps/details?id=com.circle.ooo&hl=en&gl=US"
+                                    );
+                                  }}
+                                  className={`px-5 ml-5 font14 font-medium rounded-full py-3 font-Montserrat text-[#000] hover:text-[#fff] border-2 border-[#F2F2F2] hover:bg-transparent bg-[#F2F2F2]`}
+                                >
+                                  <div className="flex justify-center items-center">
+                                    <span>
+                                      <IoLogoGooglePlaystore
+                                        className="mr-1"
+                                        size={30}
+                                      />
+                                    </span>
+                                    Play Store
+                                  </div>
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   )}
                 </div>
 
@@ -986,12 +1122,7 @@ const EventDetails = () => {
                 {cohostList.length > 0 && (
                   <>
                     <div className="flex w-full text-[#F2F2F2] flex-col items-start justify-start mt-8 border-dashed border-t-2 border-[#596A73]">
-                      <div
-                        onClick={() => {
-                          console.log(cohostList);
-                        }}
-                        className="mt-6 font-bold text-[#F2F2F2] text-3xl"
-                      >
+                      <div className="mt-6 font-bold text-[#F2F2F2] text-3xl">
                         About Co Hosts
                       </div>
                       {cohostList?.length > 0 && (
@@ -1006,11 +1137,11 @@ const EventDetails = () => {
                                         <>
                                           <img
                                             src={
-                                              key?.photo_url
+                                              key?.photo_url !== ""
                                                 ? key?.photo_url
                                                 : img.src
                                             }
-                                            className="rounded-full w-full h-full object-cover"
+                                            className="rounded-full h-20 object-cover"
                                             alt=""
                                           />
                                         </>
@@ -1076,7 +1207,22 @@ const EventDetails = () => {
                   )}
 
                   <div className="flex flex-row text-[#F9F9F9] mt-3 justify-start w-full items-center">
-                    <FaLocationDot size={30} />
+                    <FaLocationDot
+                      onClick={() => {
+                        const generateGoogleMapsUrl = (locationText) => {
+                          const encodedLocation =
+                            encodeURIComponent(locationText);
+                          return `https://www.google.com/maps/search/?api=1&query=${encodedLocation}`;
+                        };
+
+                        const locationText = EventData?.location;
+                        const googleMapsUrl =
+                          generateGoogleMapsUrl(locationText);
+                        window.open(googleMapsUrl, "_blank");
+                      }}
+                      className="cursor-pointer"
+                      size={30}
+                    />
                     <p
                       onClick={() => {
                         const generateGoogleMapsUrl = (locationText) => {
@@ -1404,120 +1550,120 @@ const EventDetails = () => {
                         } align-middle bg-[#00384F] rounded-lg shadow-xl transform transition-all`}
                       >
                         {/* <div
-                      className="fixed inset-0 transition-opacity"
-                      aria-hidden="true"
-                    >
-                      <div className="flex justify-between items-center xl:mt-2">
-                        <div className="w-full flex items-center  ml-12 justify-center text-[20px] font-semibold  text-[#17161A]">
-                          Your Coupon
-                        </div>
+                   className="fixed inset-0 transition-opacity"
+                   aria-hidden="true"
+                 >
+                   <div className="flex justify-between items-center xl:mt-2">
+                     <div className="w-full flex items-center  ml-12 justify-center text-[20px] font-semibold  text-[#17161A]">
+                       Your Coupon
+                     </div>
 
-                        <button
-                          onClick={() => {
-                            setShowTicketModal(false);
-                          }}
-                          className="xl:mr-6"
-                        >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="text-[#17161A] cursor-pointer w-6 h-6"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
-                          >
-                            <path
-                              fillRule="evenodd"
-                              d="M11.414 10l4.293-4.293a1 1 0 0 0-1.414-1.414L10 8.586 5.707 4.293a1 1 0 1 0-1.414 1.414L8.586 10l-4.293 4.293a1 1 0 1 0 1.414 1.414L10 11.414l4.293 4.293a1 1 0 0 0 1.414-1.414L11.414 10z"
-                              clipRule="evenodd"
-                            />
-                          </svg>
-                        </button>
-                      </div>
-                    </div>
-                    <div className="w-full h-full flex flex-col items-center justify-start -mt-6">
-                      <div className="mt-3 text-center sm:mt-12">
-                        <div
-                          style={{ width: "342px", height: "230px" }}
-                          className="shadow-xl shadow=[#C4C4C4]"
-                        >
-                          <div className="flex flex-row items-start justify-around mt-6">
-                            <div style={{ width: "84px", height: "87px" }}>
-                              <img
-                                src={"/nowwlogo.svg"}
-                                className="w-full h-full "
-                              />
-                            </div>
-                           
-                            <div className="h-24 w-24">
-                              {qrCodeBase64 ? (
-                                <img src={qrCodeBase64} alt="QR Code w-8 h-8" />
-                              ) : (
-                                <p>Loading QR code...</p>
-                              )}
-                            </div>
-                          </div>
-                          <div className="w-full truncate flex items-start justify-start font-normal text-[20px] text-[#000] px-4 py-4">
-                            {EventData.name}
-                          </div>
+                     <button
+                       onClick={() => {
+                         setShowTicketModal(false);
+                       }}
+                       className="xl:mr-6"
+                     >
+                       <svg
+                         xmlns="http://www.w3.org/2000/svg"
+                         className="text-[#17161A] cursor-pointer w-6 h-6"
+                         viewBox="0 0 20 20"
+                         fill="currentColor"
+                       >
+                         <path
+                           fillRule="evenodd"
+                           d="M11.414 10l4.293-4.293a1 1 0 0 0-1.414-1.414L10 8.586 5.707 4.293a1 1 0 1 0-1.414 1.414L8.586 10l-4.293 4.293a1 1 0 1 0 1.414 1.414L10 11.414l4.293 4.293a1 1 0 0 0 1.414-1.414L11.414 10z"
+                           clipRule="evenodd"
+                         />
+                       </svg>
+                     </button>
+                   </div>
+                 </div>
+                 <div className="w-full h-full flex flex-col items-center justify-start -mt-6">
+                   <div className="mt-3 text-center sm:mt-12">
+                     <div
+                       style={{ width: "342px", height: "230px" }}
+                       className="shadow-xl shadow=[#C4C4C4]"
+                     >
+                       <div className="flex flex-row items-start justify-around mt-6">
+                         <div style={{ width: "84px", height: "87px" }}>
+                           <img
+                             src={"/nowwlogo.svg"}
+                             className="w-full h-full "
+                           />
+                         </div>
+                        
+                         <div className="h-24 w-24">
+                           {qrCodeBase64 ? (
+                             <img src={qrCodeBase64} alt="QR Code w-8 h-8" />
+                           ) : (
+                             <p>Loading QR code...</p>
+                           )}
+                         </div>
+                       </div>
+                       <div className="w-full truncate flex items-start justify-start font-normal text-[20px] text-[#000] px-4 py-4">
+                         {EventData.name}
+                       </div>
 
-                          <div className="w-full flex items-start justify-start  truncate text-[18px] text-[#000] px-4">
-                            {EventData?.description}
-                          </div>
-                          
-                        </div>
-                        <div className="w-full my-4">
-                          <hr className="custom-dotted-line" />
-                        </div>
-                        <div
-                          style={{ width: "342px", height: "200px" }}
-                          className="w-full flex flex-col items-center justify-center shadow-xl shadow=[#C4C4C4]"
-                        >
-                          <div className="w-full flex flex-row items-start justify-between">
-                            <div className="w-full flex flex-col items-start justify-start font-medium text-[15px] text-[#8391A1] xl:ml-6 xl:mt-6">
-                              Event Date{" "}
-                              <p className="text-[15px] font-bold text-[#17161A] whitespace-nowrap">
-                                {moment(
-                                  new Date(EventData?.timefrom?.seconds * 1000)
-                                ).format("dddd, MMM D")}
-                              </p>
-                            </div>
-                            <div className="w-full flex flex-col items-center justify-center font-medium text-[15px] text-[#8391A1] xl:ml-6 xl:mt-6">
-                              Price{" "}
-                              <p className="ml-2 text-[15px] font-bold text-[#17161A] whitespace-nowrap">
-                                {EventData.ticketPrice == null
-                                  ? "Free"
-                                  : EventData.ticketPrice}
-                              </p>
-                            </div>
-                          </div>
-                          
-                          <div className="w-full flex flex-row items-start justify-between">
-                            <div className="w-full flex flex-col items-start justify-start font-medium text-[15px] text-[#8391A1] xl:ml-6 xl:mt-6">
-                              Name{" "}
-                              <p className="text-[15px] font-bold text-[#17161A] whitespace-nowrap">
-                                {creatorData?.full_name}
-                              </p>
-                            </div>
-                            <div className="w-full flex flex-col items-center justify-center font-medium text-[15px] text-[#8391A1] xl:ml-6 xl:mt-6">
-                              Gate Closes{" "}
-                              <p className="ml-2 text-[15px] font-bold text-[#17161A] whitespace-nowrap">
-                                {formattedTime}
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                       <div className="w-full flex items-start justify-start  truncate text-[18px] text-[#000] px-4">
+                         {EventData?.description}
+                       </div>
+                       
+                     </div>
+                     <div className="w-full my-4">
+                       <hr className="custom-dotted-line" />
+                     </div>
+                     <div
+                       style={{ width: "342px", height: "200px" }}
+                       className="w-full flex flex-col items-center justify-center shadow-xl shadow=[#C4C4C4]"
+                     >
+                       <div className="w-full flex flex-row items-start justify-between">
+                         <div className="w-full flex flex-col items-start justify-start font-medium text-[15px] text-[#8391A1] xl:ml-6 xl:mt-6">
+                           Event Date{" "}
+                           <p className="text-[15px] font-bold text-[#17161A] whitespace-nowrap">
+                             {moment(
+                               new Date(EventData?.timefrom?.seconds * 1000)
+                             ).format("dddd, MMM D")}
+                           </p>
+                         </div>
+                         <div className="w-full flex flex-col items-center justify-center font-medium text-[15px] text-[#8391A1] xl:ml-6 xl:mt-6">
+                           Price{" "}
+                           <p className="ml-2 text-[15px] font-bold text-[#17161A] whitespace-nowrap">
+                             {EventData.ticketPrice == null
+                               ? "Free"
+                               : EventData.ticketPrice}
+                           </p>
+                         </div>
+                       </div>
+                       
+                       <div className="w-full flex flex-row items-start justify-between">
+                         <div className="w-full flex flex-col items-start justify-start font-medium text-[15px] text-[#8391A1] xl:ml-6 xl:mt-6">
+                           Name{" "}
+                           <p className="text-[15px] font-bold text-[#17161A] whitespace-nowrap">
+                             {creatorData?.full_name}
+                           </p>
+                         </div>
+                         <div className="w-full flex flex-col items-center justify-center font-medium text-[15px] text-[#8391A1] xl:ml-6 xl:mt-6">
+                           Gate Closes{" "}
+                           <p className="ml-2 text-[15px] font-bold text-[#17161A] whitespace-nowrap">
+                             {formattedTime}
+                           </p>
+                         </div>
+                       </div>
+                     </div>
+                   </div>
 
-                      <button
-                        className="z-10 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-10"
-                        onClick={() => {
-                          user?.uid != undefined
-                            ? EmailMe()
-                            : setShowModal(true);
-                        }}
-                      >
-                        Email me
-                      </button>
-                    </div> */}
+                   <button
+                     className="z-10 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-10"
+                     onClick={() => {
+                       user?.uid != undefined
+                         ? EmailMe()
+                         : setShowModal(true);
+                     }}
+                   >
+                     Email me
+                   </button>
+                 </div> */}
                         <div className="w-full flex justify-between border-[#F9F9F9] text-[#F9F9F9] border-b-2 items-center px-6 py-3">
                           <p className="font-semibold text-xl w-full">
                             {showMobileScreen === true ? (
@@ -1790,35 +1936,35 @@ const EventDetails = () => {
                                         )}
                                       </button>
                                       {/* {showOptions && (
-                              <div>
-                                <AddToCalendarButton
-                                  className="rounded-xl w-full py-4 bg-[#007BAB] border-2 border-[#007BAB] hover:bg-transparent font-semibold text-[#fff]"
-                                  name={EventData.name}
-                                  buttonLabel="Add to My Calendar"
-                                  startDate={
-                                    EventData?.timefrom
-                                      ? new Date(
-                                          EventData?.timefrom * 1000
-                                        ).toISOString()
-                                      : undefined
-                                  }
-                                  endDate={
-                                    EventData?.timeto
-                                      ? new Date(
-                                          EventData.timeto * 1000
-                                        ).toISOString()
-                                      : undefined
-                                  }
-                                  options={[
-                                    "Apple",
-                                    "Google",
-                                    "Yahoo",
-                                    "iCal",
-                                    "Outlook.com",
-                                  ]}
-                                />
-                              </div>
-                            )} */}
+                           <div>
+                             <AddToCalendarButton
+                               className="rounded-xl w-full py-4 bg-[#007BAB] border-2 border-[#007BAB] hover:bg-transparent font-semibold text-[#fff]"
+                               name={EventData.name}
+                               buttonLabel="Add to My Calendar"
+                               startDate={
+                                 EventData?.timefrom
+                                   ? new Date(
+                                       EventData?.timefrom * 1000
+                                     ).toISOString()
+                                   : undefined
+                               }
+                               endDate={
+                                 EventData?.timeto
+                                   ? new Date(
+                                       EventData.timeto * 1000
+                                     ).toISOString()
+                                   : undefined
+                               }
+                               options={[
+                                 "Apple",
+                                 "Google",
+                                 "Yahoo",
+                                 "iCal",
+                                 "Outlook.com",
+                               ]}
+                             />
+                           </div>
+                         )} */}
 
                                       <button
                                         onClick={() =>
@@ -2216,6 +2362,12 @@ const EventDetails = () => {
                 )}
               </div>
             </div>
+          </div>
+        </>
+      ) : (
+        <>
+          <div className="flex w-screen h-screen justify-center items-center">
+            <img src={loaderGif.src} alt="Loader" className="mt-[-5%]" />
           </div>
         </>
       )}

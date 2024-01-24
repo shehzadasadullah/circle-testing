@@ -253,7 +253,7 @@ const Footer = () => {
       </div>
       <div className="w-full flex justify-center text-center items-center">
         <p className="font18 text-[#D9D9D9] text-base mt-5">
-          © Copyrights 2023 Circle.ooo All Rights Reserved.
+          © Copyrights 2024 Circle.ooo All Rights Reserved.
         </p>
       </div>
       {showModal && (

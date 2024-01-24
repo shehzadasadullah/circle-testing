@@ -191,11 +191,11 @@ const MyForm = () => {
         AttendeesData();
         setShowFreeModal(true);
         console.log("state", "Transaction Successful");
-
+        toast.success("Transaction Successful!");
         // Navigate to another screen after a delay
         setTimeout(() => {
           router.push(`/events/${eventid}`);
-        }, 30000); // Delay of 30 seconds (adjust as needed)
+        }, 1000); // Delay of 30 seconds (adjust as needed)
       }
 
       setIsLoading(false); // Hide loader after API call is complete

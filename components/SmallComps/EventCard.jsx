@@ -31,6 +31,7 @@ const EventCard = ({
   id = "",
   type = "",
   location,
+  setRemoveFromFav = () => {},
 }) => {
   //state
   const [isFavorite, setIsFavorite] = React.useState(false);
@@ -181,6 +182,7 @@ const EventCard = ({
             setDoc(docRef, existingFavorites)
               .then(() => {
                 toast("Successfully removed from favorites");
+                setRemoveFromFav(true);
               })
               .catch((error) => {
                 console.log("Error removing from favorites:", error);

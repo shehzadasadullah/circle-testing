@@ -30,7 +30,14 @@ const About = () => {
                 </p>
                 <p className="text-[#0E0E11] w-full text-center lg:text-start lg:w-[90%] text-lg mt-8 lg:mt-5">
                   After talking to hundreds of Event Hosts and Attendees, we
-                  learned that almost all shared the same concerns
+                  learned that almost all shared the same concerns.
+                </p>
+                <p className="text-[#0E0E11] mt-2 w-full text-center lg:text-start lg:w-[90%] text-lg mt-8 lg:mt-5">
+                  Circle was born to thrill All Event Participants!
+                </p>
+                <p className="text-[#0E0E11] mt-2 w-full text-center lg:text-start lg:w-[90%] text-lg mt-8 lg:mt-5">
+                  OOO: The Last App, Digicard, Event tech Account and Conference
+                  App you’ll ever need….
                 </p>
                 <div className="w-full text-center flex justify-center items-center">
                   <img

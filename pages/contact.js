@@ -27,7 +27,7 @@ const contact = () => {
     const nameRegex = /^[A-Za-z]+$/;
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
     const numberRegex =
-      /^(\+\d{1,2}\s?)?(\()?[2-9]\d{2}(\))?[-.\s]?[2-9]\d{2}[-.\s]?\d{4}$/;
+      /^(?:\+1)?(?:\(?([2-9]\d{2})\)?[-.\s]?)?\d{3}[-.\s]?\d{4}$/;
 
     if (!nameRegex.test(firstName)) {
       toast.error("Please enter a valid first name!");
@@ -276,7 +276,7 @@ const contact = () => {
                   onChange={(e) => {
                     setPhoneNumber(e.target.value);
                   }}
-                  placeholder="Phone Number"
+                  placeholder="5555551212"
                   required
                 />
               </div>

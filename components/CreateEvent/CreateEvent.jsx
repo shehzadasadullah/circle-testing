@@ -26,6 +26,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import dayjs from "dayjs";
+import { FaCheckCircle } from "react-icons/fa";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -615,10 +616,44 @@ const CreateEvent = () => {
     setCircleCreationLoader(false);
   };
 
+  const [selectedCircleId, setSelectedCircleId] = useState(null);
+
+  const handleCircleSelection = async (circleId) => {
+    setSelectedCircleId(circleId);
+    console.log("Selected Circle: ", circleId);
+    const circleCollectionRef = collection(db, "circles");
+    const q = query(circleCollectionRef, where("id", "==", circleId));
+
+    try {
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+        console.log("CIRCLE DATAAAAA: ", doc.data());
+        // return doc.ref;
+      });
+    } catch (error) {
+      console.error("Error fetching documents:", error);
+    }
+  };
+
   const handleCreateEvent = async () => {
     setCreateEventLoader(true);
+    const specialCharacterRegex = /[!@#$%^&*(),.?":{}|<>]/;
     if (circleData.length === 0) {
       toast.error("Please create circle in order to create event!");
+    } else if (!selectedLogo) {
+      toast.error("Please Upload Event Photo!");
+    } else if (selectedCircleId === null) {
+      toast.error("Please Select Circle!");
+    } else if (eventTitle === "") {
+      toast.error("Please Input Event Title!");
+    } else if (eventDescription === "") {
+      toast.error("Please Input Event Description!");
+    } else if (startDateTime === null) {
+      toast.error("Please Select Event Start Time!");
+    } else if (endDateTime === null) {
+      toast.error("Please Select Event End Time!");
+    } else if (eventLocation === "") {
+      toast.error("Please Input Event Location!");
     } else {
       console.log("ELSE CALLED");
       if (
@@ -629,170 +664,180 @@ const CreateEvent = () => {
         eventDescription !== "" &&
         eventLocation !== ""
       ) {
-        console.log("Called 0");
-        if (isOnSponsorship && eventSponsorShip === "") {
-          toast.error("Sponsorship package is missing!", {
-            position: "top-right",
-            autoClose: 3000, // Time in milliseconds
-          });
+        if (specialCharacterRegex.test(eventTitle)) {
+          toast.error("Please Enter a Valid Event Title!");
           setCreateEventLoader(false);
-          console.log("Called 1");
         } else {
-          console.log("Called 2");
-          if (checkStartAndEndDateTime() === true) {
-            console.log("Called 3");
-            if (validateWebsite() === true) {
-              console.log("Called 4");
-              console.log("Check: ", paidPriceCheck());
-              if (paidPriceCheck() === true) {
-                console.log("Called 5");
-                let userRefPath = null;
-                if (user) {
-                  const userUID = user.uid;
-                  const userRef = doc(db, "Users", userUID);
-                  userRefPath = userRef;
-                  console.log("User document reference: ", userRef);
-                }
-                const coHostsData = await fetchUserReferencesForCoHosts(
-                  selectedCoHosts
-                );
-                const eventData = {
-                  name: eventTitle,
-                  search_name: eventTitle.toLowerCase(),
-                  description: eventDescription,
-                  hyperlink: eventWebsite,
-                  location: eventLocation,
-                  timefrom: convertToTimestampStartDateTime(),
-                  timeto: convertToTimestampEndDateTime(),
-                  small_image: selectedLogoURL !== null && selectedLogoURL,
-                  large_image: selectedLogoURL !== null && selectedLogoURL,
-                  coords: [
-                    deviceLocation[0] ? deviceLocation[0] : "",
-                    deviceLocation[1] ? deviceLocation[1] : "",
-                  ],
-                  attendees: [],
-                  checkedin: [],
-                  maxTicket: isOnPrice ? Number(eventMaximumTickets) : 0,
-                  ticketPrice: isOnPrice ? eventTicketPrice : "0.00",
-                  isexhibitionallowed: isOnExhibitors ? "true" : "false",
-                  sponsorship: eventSponsorShip,
-                  creator: userRefPath,
-                  circle_id: circleDataRef,
-                  co_host: coHostsData,
-                };
-                console.log(eventData);
-                try {
-                  const eventsCollectionRef = collection(db, "events"); // 'events' is the name of your Firestore collection
-                  const docRef = await addDoc(eventsCollectionRef, eventData);
-                  console.log("Event added with ID: ", docRef.id);
-                  setEventID(docRef.id);
-                  // Assuming you have a reference to your Firestore document using a docRef
-                  const docRefUpdate = doc(db, "events", docRef.id); // Replace with your actual document ID
-                  // Create an object with the fields you want to update
-                  const updatedData = {
-                    // Include the fields you want to update and their new values
-                    uid: docRef.id,
+          console.log("Called 0");
+          if (isOnSponsorship && eventSponsorShip === "") {
+            toast.error("Sponsorship package is missing!", {
+              position: "top-right",
+              autoClose: 3000, // Time in milliseconds
+            });
+            setCreateEventLoader(false);
+            console.log("Called 1");
+          } else {
+            console.log("Called 2");
+            if (checkStartAndEndDateTime() === true) {
+              console.log("Called 3");
+              if (validateWebsite() === true) {
+                console.log("Called 4");
+                console.log("Check: ", paidPriceCheck());
+                if (paidPriceCheck() === true) {
+                  console.log("Called 5");
+                  let userRefPath = null;
+                  if (user) {
+                    const userUID = user.uid;
+                    const userRef = doc(db, "Users", userUID);
+                    userRefPath = userRef;
+                    console.log("User document reference: ", userRef);
+                  }
+                  const coHostsData = await fetchUserReferencesForCoHosts(
+                    selectedCoHosts
+                  );
+                  const circleRef = await fetchUserReferencesForCircle(
+                    selectedCircleId
+                  );
+                  const eventData = {
+                    name: eventTitle,
+                    search_name: eventTitle.toLowerCase(),
+                    description: eventDescription,
+                    hyperlink: eventWebsite,
+                    location: eventLocation,
+                    timefrom: convertToTimestampStartDateTime(),
+                    timeto: convertToTimestampEndDateTime(),
+                    small_image: selectedLogoURL !== null && selectedLogoURL,
+                    large_image: selectedLogoURL !== null && selectedLogoURL,
+                    coords: [
+                      deviceLocation[0] ? deviceLocation[0] : "",
+                      deviceLocation[1] ? deviceLocation[1] : "",
+                    ],
+                    attendees: [],
+                    checkedin: [],
+                    maxTicket: isOnPrice ? Number(eventMaximumTickets) : 0,
+                    ticketPrice: isOnPrice ? eventTicketPrice : "0.00",
+                    isexhibitionallowed: isOnExhibitors ? "true" : "false",
+                    sponsorship: eventSponsorShip,
+                    creator: userRefPath,
+                    circle_id: circleRef,
+                    co_host: coHostsData,
                   };
-
-                  // Event Mail
-
+                  console.log(eventData);
                   try {
-                    var myHeaders = new Headers();
-                    myHeaders.append("accessToken", circleAccessToken);
-
-                    var requestOptions = {
-                      method: "GET",
-                      headers: myHeaders,
-                      redirect: "follow",
+                    const eventsCollectionRef = collection(db, "events"); // 'events' is the name of your Firestore collection
+                    const docRef = await addDoc(eventsCollectionRef, eventData);
+                    console.log("Event added with ID: ", docRef.id);
+                    setEventID(docRef.id);
+                    // Assuming you have a reference to your Firestore document using a docRef
+                    const docRefUpdate = doc(db, "events", docRef.id); // Replace with your actual document ID
+                    // Create an object with the fields you want to update
+                    const updatedData = {
+                      // Include the fields you want to update and their new values
+                      uid: docRef.id,
                     };
 
-                    fetch(
-                      `https://api.circle.ooo/api/circle/email/event?eventId=${docRef.id}&emailType=CREATE-EVENT-MAIL`,
-                      requestOptions
-                    )
-                      .then((response) => response.text())
-                      .then((result) => console.log("MAIL RESULT:", result))
-                      .catch((error) => console.log("error", error));
-                  } catch (error) {
-                    console.log(error);
-                  }
+                    // Event Mail
 
-                  // Post event to third party platforms
-
-                  if (thirdPartyCheckboxSelected.length > 0) {
                     try {
-                      const myHeaders = new Headers();
-                      myHeaders.append("Content-Type", "application/json");
-                      myHeaders.append("accessToken", circleAccessToken); // Include accessToken in the headers
+                      var myHeaders = new Headers();
+                      myHeaders.append("accessToken", circleAccessToken);
 
-                      const dataToPost = {
-                        eventId: docRef.id,
-                        platforms: thirdPartyCheckboxSelected,
-                      };
-
-                      const requestOptions = {
-                        method: "POST",
+                      var requestOptions = {
+                        method: "GET",
                         headers: myHeaders,
-                        body: JSON.stringify(dataToPost),
                         redirect: "follow",
                       };
 
-                      const response = await fetch(
-                        "https://api.circle.ooo/api/circle/third-party/publish",
+                      fetch(
+                        `https://api.circle.ooo/api/circle/email/event?eventId=${docRef.id}&emailType=CREATE-EVENT-MAIL`,
                         requestOptions
-                      );
+                      )
+                        .then((response) => response.text())
+                        .then((result) => console.log("MAIL RESULT:", result))
+                        .catch((error) => console.log("error", error));
+                    } catch (error) {
+                      console.log(error);
+                    }
 
-                      if (!response.ok) {
-                        throw new Error(
-                          `HTTP error! Status: ${response.status}`
+                    // Post event to third party platforms
+
+                    if (thirdPartyCheckboxSelected.length > 0) {
+                      try {
+                        const myHeaders = new Headers();
+                        myHeaders.append("Content-Type", "application/json");
+                        myHeaders.append("accessToken", circleAccessToken); // Include accessToken in the headers
+
+                        const dataToPost = {
+                          eventId: docRef.id,
+                          platforms: thirdPartyCheckboxSelected,
+                        };
+
+                        const requestOptions = {
+                          method: "POST",
+                          headers: myHeaders,
+                          body: JSON.stringify(dataToPost),
+                          redirect: "follow",
+                        };
+
+                        const response = await fetch(
+                          "https://api.circle.ooo/api/circle/third-party/publish",
+                          requestOptions
+                        );
+
+                        if (!response.ok) {
+                          throw new Error(
+                            `HTTP error! Status: ${response.status}`
+                          );
+                        }
+
+                        const result = await response.json();
+                        if (result) {
+                          result
+                            .filter((items) => items.result === true)
+                            .map((item) => {
+                              toast.success(
+                                `${item?.integration?.toUpperCase()} - ${item?.message?.toUpperCase()}`
+                              );
+                            });
+                          result
+                            .filter((items) => items.result === false)
+                            .map((item) => {
+                              toast.error(
+                                `${item?.integration?.toUpperCase()} - ${item?.message?.toUpperCase()}`
+                              );
+                            });
+                        }
+                        // console.log("THIRD PARTY RESULT", result);
+                      } catch (error) {
+                        console.error(
+                          "Error posting event to third-party platforms:",
+                          error
+                        );
+                        toast.error(
+                          "Error posting event to third-party platforms!"
                         );
                       }
-
-                      const result = await response.json();
-                      if (result) {
-                        result
-                          .filter((items) => items.result === true)
-                          .map((item) => {
-                            toast.success(
-                              `${item?.integration?.toUpperCase()} - ${item?.message?.toUpperCase()}`
-                            );
-                          });
-                        result
-                          .filter((items) => items.result === false)
-                          .map((item) => {
-                            toast.error(
-                              `${item?.integration?.toUpperCase()} - ${item?.message?.toUpperCase()}`
-                            );
-                          });
-                      }
-                      // console.log("THIRD PARTY RESULT", result);
-                    } catch (error) {
-                      console.error(
-                        "Error posting event to third-party platforms:",
-                        error
-                      );
-                      toast.error(
-                        "Error posting event to third-party platforms!"
-                      );
                     }
-                  }
 
-                  // Update the document
-                  try {
-                    await updateDoc(docRefUpdate, updatedData);
-                    console.log("Document successfully updated");
-                    toast.success("Event Created Successfully!");
-                    setCreateEventLoader(false);
-                    router.push(`/events/${docRef.id}`);
+                    // Update the document
+                    try {
+                      await updateDoc(docRefUpdate, updatedData);
+                      console.log("Document successfully updated");
+                      toast.success("Event Created Successfully!");
+                      setCreateEventLoader(false);
+                      setTimeout(() => {
+                        router.push(`/events/${docRef.id}`);
+                      }, 2000);
+                    } catch (error) {
+                      console.error("Error updating document: ", error);
+                      toast.error("Something went wrong!");
+                      setCreateEventLoader(false);
+                    }
                   } catch (error) {
-                    console.error("Error updating document: ", error);
+                    console.error("Error adding event: ", error);
                     toast.error("Something went wrong!");
                     setCreateEventLoader(false);
                   }
-                } catch (error) {
-                  console.error("Error adding event: ", error);
-                  toast.error("Something went wrong!");
-                  setCreateEventLoader(false);
                 }
               }
             }
@@ -873,6 +918,23 @@ const CreateEvent = () => {
 
     const userReferences = Array.from(userReferencesMap.values());
     return userReferences;
+  };
+
+  const fetchUserReferencesForCircle = async (circleId) => {
+    const circleCollectionRef = collection(db, "circles");
+    const q = query(circleCollectionRef, where("id", "==", circleId));
+    let ref = "";
+    try {
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+        console.log("CIRCLE DATAAAAA: ", doc.ref);
+        ref = doc.ref;
+      });
+    } catch (error) {
+      console.error("Error fetching documents:", error);
+    }
+
+    return ref;
   };
 
   // const handleThirdPartyPost = (platform) => {
@@ -1170,16 +1232,15 @@ const CreateEvent = () => {
               <div className="flex flex-col w-full h-auto lg:flex-row justify-start items-start">
                 <div className="w-full lg:w-8/12 h-auto pt-10 p-2 lg:p-10 lg:pt-5">
                   <div className="flex justify-start items-start flex-col">
-                    <div className="flex items-center w-full">
+                    <div className="flex md:flex-row flex-col justify-center md:justify-start items-center w-full">
                       {selectedLogo && (
                         <img
                           src={URL.createObjectURL(selectedLogo)}
                           alt="Selected Logo"
-                          style={{ height: "50pt" }}
-                          className="border-2 rounded-full mr-5"
+                          className=" rounded-xl h-48 md:mr-5"
                         />
                       )}
-                      <label className="text-[#0E2354] font-bold py-2 px-4 cursor-pointer border-2 border-[#E6E7EC]">
+                      <label className="text-[#0E2354] font-bold mt-3 md:mt-0 py-2 px-4 cursor-pointer border-2 border-[#E6E7EC]">
                         Upload Event Photo{" "}
                         <span className="text-red-600 mr-1"> *</span>
                         <input
@@ -1202,12 +1263,45 @@ const CreateEvent = () => {
                       </label>
                       {circleData.length > 0 ? (
                         <>
-                          <div className="rounded-full border-2 w-20 h-20">
-                            <img
-                              src={circleData[0].logo_url}
-                              className="rounded-full w-full h-full object-cover"
-                              alt="Logo Image"
-                            />
+                          <div className="flex justify-start mt-2 items-center flex-wrap gap-x-2 w-full">
+                            {circleData.map((item) => {
+                              const isSelected = item.id === selectedCircleId;
+
+                              return (
+                                <div
+                                  key={item.id}
+                                  className="rounded-full border-2 w-20 h-20 relative"
+                                >
+                                  <img
+                                    src={item.logo_url}
+                                    className="rounded-full w-full h-full object-cover"
+                                    alt="Logo Image"
+                                    onClick={() =>
+                                      handleCircleSelection(item.id)
+                                    }
+                                    style={{ cursor: "pointer" }}
+                                  />
+                                  {isSelected && (
+                                    <span className="success-icon border-none absolute top-0 right-0 font-bold">
+                                      <FaCheckCircle
+                                        className="bg-[#fff] border-none rounded-full"
+                                        color="#007BAB"
+                                        size={25}
+                                      />
+                                    </span>
+                                  )}
+                                  <input
+                                    type="radio"
+                                    value={item.id}
+                                    checked={isSelected}
+                                    onChange={() =>
+                                      handleCircleSelection(item.id)
+                                    }
+                                    className="hidden"
+                                  />
+                                </div>
+                              );
+                            })}
                           </div>
                         </>
                       ) : (
@@ -1316,53 +1410,72 @@ const CreateEvent = () => {
                                     items.full_name_insensitive !== undefined &&
                                     items.full_name_insensitive !== ""
                                 )
+                                .sort((a, b) =>
+                                  a.full_name_insensitive.localeCompare(
+                                    b.full_name_insensitive
+                                  )
+                                )
                                 .map((item, index) => (
-                                  <Menu.Item key={index}>
-                                    {({ active }) => (
-                                      <>
-                                        <div className="flex justify-between items-center flex-row">
+                                  <div className="py-1">
+                                    <Menu.Item key={index}>
+                                      {({ active }) => (
+                                        <>
                                           <div
-                                            className={classNames(
-                                              active
-                                                ? "bg-gray-100 text-gray-900"
-                                                : "text-gray-700",
-                                              "block px-4 py-2 text-sm cursor-pointer"
-                                            )}
+                                            className={`${
+                                              selectedCoHosts.length > 0 &&
+                                              selectedCoHosts.includes(
+                                                item.full_name_insensitive
+                                              )
+                                                ? "bg-[#007BAB]"
+                                                : "bg-transparent"
+                                            } flex justify-between items-center flex-row`}
                                           >
-                                            {item?.full_name_insensitive
-                                              ? item?.full_name_insensitive?.toUpperCase()
-                                              : item?.full_name?.toUpperCase()}
+                                            <div
+                                              className={classNames(
+                                                selectedCoHosts.length > 0 &&
+                                                  selectedCoHosts.includes(
+                                                    item.full_name_insensitive
+                                                  )
+                                                  ? "text-white font-semibold"
+                                                  : "text-gray-700",
+                                                "block px-4 py-2 text-sm cursor-pointer"
+                                              )}
+                                            >
+                                              {item?.full_name_insensitive
+                                                ? item?.full_name_insensitive?.toUpperCase()
+                                                : item?.full_name?.toUpperCase()}
+                                            </div>
+                                            {selectedCoHosts.length > 0 &&
+                                            selectedCoHosts.includes(
+                                              item.full_name_insensitive
+                                            ) ? (
+                                              <div
+                                                className="rounded-full mr-10 bg-white px-3 text-[#ff3333] cursor-pointer"
+                                                onClick={() =>
+                                                  toggleCoHostSelection(
+                                                    item.full_name_insensitive
+                                                  )
+                                                }
+                                              >
+                                                Remove
+                                              </div>
+                                            ) : (
+                                              <div
+                                                className="rounded-full mr-10 text-white px-3 bg-[#007BAB] cursor-pointer"
+                                                onClick={() =>
+                                                  toggleCoHostSelection(
+                                                    item.full_name_insensitive
+                                                  )
+                                                }
+                                              >
+                                                Add
+                                              </div>
+                                            )}
                                           </div>
-                                          {selectedCoHosts.length > 0 &&
-                                          selectedCoHosts.includes(
-                                            item.full_name_insensitive
-                                          ) ? (
-                                            <div
-                                              className="rounded-full mr-10 text-[green] text-[20px] cursor-pointer"
-                                              onClick={() =>
-                                                toggleCoHostSelection(
-                                                  item.full_name_insensitive
-                                                )
-                                              }
-                                            >
-                                              ✓
-                                            </div>
-                                          ) : (
-                                            <div
-                                              className="rounded-full mr-10 text-[green] text-[20px] cursor-pointer"
-                                              onClick={() =>
-                                                toggleCoHostSelection(
-                                                  item.full_name_insensitive
-                                                )
-                                              }
-                                            >
-                                              +
-                                            </div>
-                                          )}
-                                        </div>
-                                      </>
-                                    )}
-                                  </Menu.Item>
+                                        </>
+                                      )}
+                                    </Menu.Item>
+                                  </div>
                                 ))}
                             </div>
                           </Menu.Items>

@@ -9,18 +9,24 @@ const Header = dynamic(() => import("../Common/Header"), { ssr: false });
 
 const AttendEventMain = () => {
   return (
-    <div className="w-full h-full bg-[#00384F]">
-      <div className="w-full h-full  flex flex-col justify-start items-start relative bg-[#00384F]">
-        <div className="w-full h-full">
-          <Header type="dark" />
-        </div>
-        <div className="w-full h-full">
-          <EventDetails />
+    <>
+      <div className="w-full h-full bg-[#00384F]">
+        <Header type="dark" />
+      </div>
+
+      <div className="w-full h-full bg-[#00384F]">
+        <div className="w-full h-full  flex flex-col justify-start items-start relative bg-[#00384F]">
+          <div className="w-full h-full">
+            <EventDetails />
+          </div>
         </div>
       </div>
       <InviteToApp />
-      <Footer />
-    </div>
+
+      <div className="w-full h-full">
+        <Footer />
+      </div>
+    </>
   );
 };
 
