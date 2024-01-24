@@ -107,8 +107,8 @@ const CreateEvent = () => {
   const [deviceLocation, setDeviceLocation] = useState("");
   const [eventTicketPrice, setEventTicketPrice] = useState("");
   const [eventMaximumTickets, setEventMaximumTickets] = useState("");
-  const [startDateTime, setStartDateTime] = useState(null);
-  const [endDateTime, setEndDateTime] = useState(null);
+  const [startDateTime, setStartDateTime] = useState(dayjs().add(7, "second"));
+  const [endDateTime, setEndDateTime] = useState(dayjs().add(7, "second"));
   const [outputFormattedStartDateTime, setOutputFormattedStartDateTime] =
     useState("");
   const [outputStartDateTimeTimestamp, setOutputStartDateTimeTimestamp] =
@@ -1528,7 +1528,6 @@ const CreateEvent = () => {
                               width: "100%",
                             }}
                             value={startDateTime}
-                            defaultValue={todayDate}
                             onChange={(newValue) => setStartDateTime(newValue)}
                             disablePast
                           />
@@ -1555,7 +1554,6 @@ const CreateEvent = () => {
                         /> */}
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                           <DateTimePicker
-                            defaultValue={todayDate}
                             value={endDateTime}
                             sx={{
                               color: "#8392AF",
