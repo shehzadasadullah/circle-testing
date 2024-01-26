@@ -107,8 +107,8 @@ const CreateEvent = () => {
   const [deviceLocation, setDeviceLocation] = useState("");
   const [eventTicketPrice, setEventTicketPrice] = useState("");
   const [eventMaximumTickets, setEventMaximumTickets] = useState("");
-  const [startDateTime, setStartDateTime] = useState(dayjs().add(7, "second"));
-  const [endDateTime, setEndDateTime] = useState(dayjs().add(7, "second"));
+  const [startDateTime, setStartDateTime] = useState(dayjs().add(20, "minute"));
+  const [endDateTime, setEndDateTime] = useState(dayjs().add(20, "minute"));
   const [outputFormattedStartDateTime, setOutputFormattedStartDateTime] =
     useState("");
   const [outputStartDateTimeTimestamp, setOutputStartDateTimeTimestamp] =
@@ -827,7 +827,7 @@ const CreateEvent = () => {
                       setCreateEventLoader(false);
                       setTimeout(() => {
                         router.push(`/events/${docRef.id}`);
-                      }, 2000);
+                      }, 5000);
                     } catch (error) {
                       console.error("Error updating document: ", error);
                       toast.error("Something went wrong!");

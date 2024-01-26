@@ -1282,6 +1282,59 @@ const EventDetails = () => {
                   </div>
                 </div>
 
+                {Array.isArray(attendeList) &&
+                  attendeList.includes(user?.uid) && (
+                    <>
+                      <div className="flex w-full mt-4 flex-col xl:flex-row justify-center items-center p-6 bg-[#012432] rounded-xl">
+                        <button
+                          disabled={addToCalenderLoader}
+                          onClick={() => {
+                            const hasValidIntegration =
+                              thirdPartyIntegrations.some((fl) => {
+                                return (
+                                  fl.integrationType === "GOOGLECALENDAR" ||
+                                  fl.integrationType === "ICAL"
+                                );
+                              });
+
+                            if (!hasValidIntegration) {
+                              setShowNoIntegrationScreen(true);
+                            } else {
+                              setShowNoIntegrationScreen(false);
+                              handleAddToCalendar();
+                            }
+                          }}
+                          className="rounded-xl px-5 flex flex-row justify-between items-center w-full py-4 bg-[#007BAB] border-2 border-[#007BAB] hover:bg-transparent font-semibold text-[#fff]"
+                        >
+                          <div className="flex flex-row justify-center items-center">
+                            <FaCalendarAlt size={20} color="#fff" />
+                            <p className="ml-2">Add to Calendar</p>
+                          </div>
+                          {addToCalenderLoader ? (
+                            <>
+                              <div>
+                                <ThreeDots
+                                  height="20"
+                                  color="#fff"
+                                  width="60"
+                                  radius="9"
+                                  ariaLabel="three-dots-loading"
+                                  visible={true}
+                                />
+                              </div>
+                            </>
+                          ) : (
+                            <>
+                              <div>
+                                <IoIosArrowForward size={20} color="#fff" />
+                              </div>
+                            </>
+                          )}
+                        </button>
+                      </div>
+                    </>
+                  )}
+
                 <div className="flex w-full mt-4 flex-col xl:flex-row justify-center items-center p-6 bg-[#012432] rounded-xl">
                   <button
                     onClick={() => setShowShareModal(true)}

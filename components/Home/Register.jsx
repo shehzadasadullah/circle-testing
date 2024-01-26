@@ -188,7 +188,11 @@ const Register = ({ showModal, setShowModal }) => {
   const register = async (e) => {
     setRegisterLoader(true);
     e.preventDefault();
-    if (phone === "") {
+    const specialCharacterRegex = /[!@#$%^&*(),.?":{}|<>]/;
+    if (specialCharacterRegex.test(name)) {
+      toast.error("Please Enter a Valid Full Name!");
+      setRegisterLoader(false);
+    } else if (phone === "") {
       toast.error("Please enter phone number!");
       setRegisterLoader(false);
     } else if (password !== confirmPassword) {
@@ -226,10 +230,23 @@ const Register = ({ showModal, setShowModal }) => {
         setActiveTab("signin");
         setRegisterLoader(false);
       } catch (error) {
-        toast.error(error.message, {
-          position: "top-right",
-          autoClose: 3000, // Time in milliseconds
-        });
+        console.log(error.message);
+        if (
+          error.message ===
+          "Firebase: Password should be at least 6 characters (auth/weak-password)."
+        ) {
+          toast.error("Password should be at least 6 characters!", {
+            position: "top-right",
+            autoClose: 3000, // Time in milliseconds
+          });
+        } else if (
+          error.message === "Firebase: Error (auth/email-already-in-use)."
+        ) {
+          toast.error("Email already in use!", {
+            position: "top-right",
+            autoClose: 3000, // Time in milliseconds
+          });
+        }
         setRegisterError(error.message);
         setRegisterLoader(false);
       }
@@ -257,10 +274,20 @@ const Register = ({ showModal, setShowModal }) => {
         handleCloseModal();
         setSignInLoader(false);
       } catch (error) {
-        toast.error(error.message, {
-          position: "top-right",
-          autoClose: 3000, // Time in milliseconds
-        });
+        console.log(error.message);
+        if (
+          error.message === "Firebase: Error (auth/invalid-login-credentials)."
+        ) {
+          toast.error("Invalid Login Credentials!", {
+            position: "top-right",
+            autoClose: 3000, // Time in milliseconds
+          });
+        } else {
+          toast.error(error.message, {
+            position: "top-right",
+            autoClose: 3000, // Time in milliseconds
+          });
+        }
         setSignInError(error.message);
         setSignInLoader(false);
       }

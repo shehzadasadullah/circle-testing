@@ -12,6 +12,7 @@ import { useRouter } from "next/router";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { MdEmail } from "react-icons/md";
+import { ThreeDots } from "react-loader-spinner";
 
 const contact = () => {
   const router = useRouter();
@@ -20,8 +21,10 @@ const contact = () => {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [emailLoader, setEmailLoader] = useState(false);
 
   const handleSubmit = (e) => {
+    setEmailLoader(true);
     e.preventDefault();
 
     const nameRegex = /^[A-Za-z]+$/;
@@ -38,21 +41,60 @@ const contact = () => {
     } else if (!numberRegex.test(phoneNumber)) {
       toast.error("Please enter valid phone number!");
     } else {
-      console.log("FORM DATA: ", {
-        firstName: firstName,
-        lastName: lastName,
-        email: email,
-        phone: phoneNumber,
-        message: message,
-      });
-      toast.success(
-        "Form submitted successfully, we will be in touch with you soon!"
-      );
-      setFirstName("");
-      setLastName("");
-      setPhoneNumber("");
-      setMessage("");
-      setEmail("");
+      // console.log("FORM DATA: ", {
+      //   firstName: firstName,
+      //   lastName: lastName,
+      //   email: email,
+      //   phone: phoneNumber,
+      //   message: message,
+      // });
+      try {
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+
+        var raw = JSON.stringify({
+          firstName: firstName,
+          lastName: lastName,
+          email: email,
+          phoneNumber: phoneNumber,
+          message: message,
+        });
+
+        var requestOptions = {
+          method: "POST",
+          headers: myHeaders,
+          body: raw,
+          redirect: "follow",
+        };
+
+        fetch("https://api.circle.ooo/contact-us", requestOptions)
+          .then((response) => response.json())
+          .then((result) => {
+            console.log(result);
+            if (result.result === true) {
+              toast.success(
+                "Form submitted successfully, we will be in touch with you soon!"
+              );
+              setFirstName("");
+              setLastName("");
+              setPhoneNumber("");
+              setMessage("");
+              setEmail("");
+            } else {
+              toast.error(result.message);
+            }
+            setEmailLoader(false);
+          })
+          .catch((error) => {
+            console.log("error", error);
+            toast.error(error.message);
+            setEmailLoader(false);
+          });
+      } catch (error) {
+        console.log(error);
+        toast.error(error.message);
+        setEmailLoader(false);
+      }
     }
   };
   return (
@@ -295,11 +337,27 @@ const contact = () => {
               </div>
               <div className="mb-4 w-full flex justify-center items-center">
                 <button
-                  className="w-full py-3 rounded-full bg-[#007BAB] text-white border border-2 border-[#007BAB] font-semibold hover:border-[#007BAB] hover:text-[#007BAB] hover:bg-transparent"
+                  disabled={emailLoader}
+                  className="w-full py-3 rounded-full bg-[#007BAB] text-white border border-2 border-[#007BAB] font-semibold"
                   id="button"
                   type="submit"
                 >
-                  Submit
+                  {emailLoader === true ? (
+                    <>
+                      <div className="flex justify-center items-center w-full">
+                        <ThreeDots
+                          height="25"
+                          color="#fff"
+                          width="50"
+                          radius="9"
+                          ariaLabel="three-dots-loading"
+                          visible={true}
+                        />
+                      </div>
+                    </>
+                  ) : (
+                    "Submit"
+                  )}
                 </button>
               </div>
             </form>
