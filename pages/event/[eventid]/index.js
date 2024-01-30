@@ -39,6 +39,7 @@ import { FaQrcode } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FaCalendarAlt } from "react-icons/fa";
+import { FaPencil } from "react-icons/fa6";
 import { FaWallet } from "react-icons/fa";
 import { FaMobile } from "react-icons/fa";
 import { IoIosArrowForward } from "react-icons/io";
@@ -109,7 +110,7 @@ const EventDetails = () => {
   const [showsuccessModal, setShowSuccessModal] = useState(false);
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const [isCheckedIn, setIsCheckedIn] = useState(false);
-  const timestamp = EventData?.timeto?.seconds * 1000;
+  const timestamp = EventData?.timefrom?.seconds * 1000;
   const formattedTime = moment(timestamp).local().format("LT");
   const [qrCodeBase64, setQRCodeBase64] = useState(null);
   const currentTime = new Date();
@@ -450,7 +451,7 @@ const EventDetails = () => {
       .local()
       .format("LLLL");
     const price =
-      EventData?.ticketPrice >= "0.00" ? EventData?.ticketPrice : "Free";
+      EventData?.ticketPrice !== "0.00" ? EventData?.ticketPrice : "Free";
     const name = user?.displayName;
     const eventtime = formattedTime;
     const email = user?.email;
@@ -477,15 +478,15 @@ const EventDetails = () => {
         };
 
         // Make the API call to send the email
-        const res = await axios.post("/api/ticket/", {
+        const res = await axios.post("https://api.circle.ooo/ticket", {
           usersdata: email,
           bodymessage: msgbody,
         });
 
         // Email sent successfully, set loading state to false
 
-        if (res.data.statusCode === 200) {
-          toast.success("Email sent Successfully!");
+        if (res.data.result === true && res.data.code === 5001) {
+          toast.success("Email Sent Successfully!");
         } else {
           toast.error("Error sending Email!");
         }
@@ -582,11 +583,6 @@ const EventDetails = () => {
   const handleTabClick = (tabId) => {
     setActiveTab(tabId);
   };
-
-  useEffect(() => {
-    console.log("ATTENDEES: ", EventData?.attendees);
-    console.log("CREATOR DATA: ", creatorData);
-  }, [EventData, creatorData]);
 
   // useEffect(() => {
   //   if (searchAttendees !== "") {
@@ -1185,6 +1181,10 @@ const EventDetails = () => {
                         ? EventData?.datetime
                         : moment(EventData?.timefrom?.seconds * 1000)
                             .local()
+                            .format("LL") +
+                          " - " +
+                          moment(EventData?.timeto?.seconds * 1000)
+                            .local()
                             .format("LL")}
                     </p>
                   </div>
@@ -1282,10 +1282,32 @@ const EventDetails = () => {
                   </div>
                 </div>
 
+                {user.uid === creatorData.uid && (
+                  <>
+                    <div className="flex w-full mt-4 gap-y-4 flex-col justify-center items-center p-6 bg-[#012432] rounded-xl">
+                      <button
+                        onClick={() => {
+                          router.push(`/event/${id}/edit-event`);
+                        }}
+                        className="rounded-xl px-5 flex flex-row justify-between items-center w-full py-4 bg-[#007BAB] border-2 border-[#007BAB] hover:bg-transparent font-semibold text-[#fff]"
+                      >
+                        <div className="flex flex-row justify-center items-center">
+                          <FaPencil size={20} color="#fff" />
+                          <p className="ml-2">Edit Event</p>
+                        </div>
+
+                        <div>
+                          <IoIosArrowForward size={20} color="#fff" />
+                        </div>
+                      </button>
+                    </div>
+                  </>
+                )}
+
                 {Array.isArray(attendeList) &&
                   attendeList.includes(user?.uid) && (
                     <>
-                      <div className="flex w-full mt-4 flex-col xl:flex-row justify-center items-center p-6 bg-[#012432] rounded-xl">
+                      <div className="flex w-full mt-4 gap-y-4 flex-col justify-center items-center p-6 bg-[#012432] rounded-xl">
                         <button
                           disabled={addToCalenderLoader}
                           onClick={() => {
@@ -1579,7 +1601,7 @@ const EventDetails = () => {
                   </div>
                 )}
                 {showticketModal && (
-                  <div className="fixed z-10 inset-0 overflow-y-auto">
+                  <div className="fixed z-50 inset-0 overflow-y-auto">
                     <div className="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
                       <div
                         className="fixed inset-0 transition-opacity"
@@ -1602,121 +1624,6 @@ const EventDetails = () => {
                             : "lg:w-[90%]"
                         } align-middle bg-[#00384F] rounded-lg shadow-xl transform transition-all`}
                       >
-                        {/* <div
-                   className="fixed inset-0 transition-opacity"
-                   aria-hidden="true"
-                 >
-                   <div className="flex justify-between items-center xl:mt-2">
-                     <div className="w-full flex items-center  ml-12 justify-center text-[20px] font-semibold  text-[#17161A]">
-                       Your Coupon
-                     </div>
-
-                     <button
-                       onClick={() => {
-                         setShowTicketModal(false);
-                       }}
-                       className="xl:mr-6"
-                     >
-                       <svg
-                         xmlns="http://www.w3.org/2000/svg"
-                         className="text-[#17161A] cursor-pointer w-6 h-6"
-                         viewBox="0 0 20 20"
-                         fill="currentColor"
-                       >
-                         <path
-                           fillRule="evenodd"
-                           d="M11.414 10l4.293-4.293a1 1 0 0 0-1.414-1.414L10 8.586 5.707 4.293a1 1 0 1 0-1.414 1.414L8.586 10l-4.293 4.293a1 1 0 1 0 1.414 1.414L10 11.414l4.293 4.293a1 1 0 0 0 1.414-1.414L11.414 10z"
-                           clipRule="evenodd"
-                         />
-                       </svg>
-                     </button>
-                   </div>
-                 </div>
-                 <div className="w-full h-full flex flex-col items-center justify-start -mt-6">
-                   <div className="mt-3 text-center sm:mt-12">
-                     <div
-                       style={{ width: "342px", height: "230px" }}
-                       className="shadow-xl shadow=[#C4C4C4]"
-                     >
-                       <div className="flex flex-row items-start justify-around mt-6">
-                         <div style={{ width: "84px", height: "87px" }}>
-                           <img
-                             src={"/nowwlogo.svg"}
-                             className="w-full h-full "
-                           />
-                         </div>
-                        
-                         <div className="h-24 w-24">
-                           {qrCodeBase64 ? (
-                             <img src={qrCodeBase64} alt="QR Code w-8 h-8" />
-                           ) : (
-                             <p>Loading QR code...</p>
-                           )}
-                         </div>
-                       </div>
-                       <div className="w-full truncate flex items-start justify-start font-normal text-[20px] text-[#000] px-4 py-4">
-                         {EventData.name}
-                       </div>
-
-                       <div className="w-full flex items-start justify-start  truncate text-[18px] text-[#000] px-4">
-                         {EventData?.description}
-                       </div>
-                       
-                     </div>
-                     <div className="w-full my-4">
-                       <hr className="custom-dotted-line" />
-                     </div>
-                     <div
-                       style={{ width: "342px", height: "200px" }}
-                       className="w-full flex flex-col items-center justify-center shadow-xl shadow=[#C4C4C4]"
-                     >
-                       <div className="w-full flex flex-row items-start justify-between">
-                         <div className="w-full flex flex-col items-start justify-start font-medium text-[15px] text-[#8391A1] xl:ml-6 xl:mt-6">
-                           Event Date{" "}
-                           <p className="text-[15px] font-bold text-[#17161A] whitespace-nowrap">
-                             {moment(
-                               new Date(EventData?.timefrom?.seconds * 1000)
-                             ).format("dddd, MMM D")}
-                           </p>
-                         </div>
-                         <div className="w-full flex flex-col items-center justify-center font-medium text-[15px] text-[#8391A1] xl:ml-6 xl:mt-6">
-                           Price{" "}
-                           <p className="ml-2 text-[15px] font-bold text-[#17161A] whitespace-nowrap">
-                             {EventData.ticketPrice == null
-                               ? "Free"
-                               : EventData.ticketPrice}
-                           </p>
-                         </div>
-                       </div>
-                       
-                       <div className="w-full flex flex-row items-start justify-between">
-                         <div className="w-full flex flex-col items-start justify-start font-medium text-[15px] text-[#8391A1] xl:ml-6 xl:mt-6">
-                           Name{" "}
-                           <p className="text-[15px] font-bold text-[#17161A] whitespace-nowrap">
-                             {creatorData?.full_name}
-                           </p>
-                         </div>
-                         <div className="w-full flex flex-col items-center justify-center font-medium text-[15px] text-[#8391A1] xl:ml-6 xl:mt-6">
-                           Gate Closes{" "}
-                           <p className="ml-2 text-[15px] font-bold text-[#17161A] whitespace-nowrap">
-                             {formattedTime}
-                           </p>
-                         </div>
-                       </div>
-                     </div>
-                   </div>
-
-                   <button
-                     className="z-10 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-10"
-                     onClick={() => {
-                       user?.uid != undefined
-                         ? EmailMe()
-                         : setShowModal(true);
-                     }}
-                   >
-                     Email me
-                   </button>
-                 </div> */}
                         <div className="w-full flex justify-between border-[#F9F9F9] text-[#F9F9F9] border-b-2 items-center px-6 py-3">
                           <p className="font-semibold text-xl w-full">
                             {showMobileScreen === true ? (
@@ -1818,6 +1725,12 @@ const EventDetails = () => {
                                             {moment(
                                               EventData?.timefrom?.seconds *
                                                 1000
+                                            )
+                                              .local()
+                                              .format("LL")}
+                                            {" - "}{" "}
+                                            {moment(
+                                              EventData?.timeto?.seconds * 1000
                                             )
                                               .local()
                                               .format("LL")}

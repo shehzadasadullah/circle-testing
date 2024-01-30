@@ -360,7 +360,7 @@ const MyForm = () => {
       .local()
       .format("LLLL");
     const price =
-      EventData?.ticketPrice >= "0.00" ? EventData?.ticketPrice : "Free";
+      EventData?.ticketPrice !== "0.00" ? EventData?.ticketPrice : "Free";
     const name =
       creatorData?.full_name || creatorData?.display_name || "Anonymous";
     const eventtime = formattedTime;
@@ -388,7 +388,7 @@ const MyForm = () => {
         };
 
         // Make the API call to send the email
-        await axios.post("/api/ticket/", {
+        await axios.post("https://api.circle.ooo/ticket/", {
           usersdata: email,
           bodymessage: msgbody,
         });
