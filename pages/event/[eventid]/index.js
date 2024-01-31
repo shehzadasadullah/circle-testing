@@ -1282,7 +1282,7 @@ const EventDetails = () => {
                   </div>
                 </div>
 
-                {user.uid === creatorData.uid && (
+                {user && user?.uid && user?.uid === creatorData.uid && (
                   <>
                     <div className="flex w-full mt-4 gap-y-4 flex-col justify-center items-center p-6 bg-[#012432] rounded-xl">
                       <button

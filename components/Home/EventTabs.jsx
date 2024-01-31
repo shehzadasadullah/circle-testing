@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import dynamic from "next/dynamic";
 import EventCard from "../SmallComps/EventCard";
 import { RandomNdigitnumber } from "@/utils/function";
+import Geocode from "react-geocode";
 import {
   Timestamp,
   collection,
@@ -128,32 +129,20 @@ const EventTabs = () => {
   const [eventsNearMeLimit, setEventsNearMeLimit] = useState(8);
   const [eventsNearMeLoader, setEventsNearMeLoader] = useState(false);
   const [deviceLocation, setDeviceLocation] = useState(null);
+  const [userLocation, setUserLocation] = useState({});
 
-  // Assuming events is an array of objects with 'location' property in string format
-  const userLocation = {
-    latitude: deviceLocation?.latitude,
-    longitude: deviceLocation?.longitude,
-  };
-
-  async function geoCodeLocation(location) {
-    const apiKey = "AIzaSyA_2dI8vYCq13R5i-__U6oIog1Xon63jhA";
-    const response = await fetch(
-      `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
-        location
-      )}&key=${apiKey}`
-    );
-    const data = await response.json();
-
-    if (data.results && data.results.length > 0) {
-      const { lat, lng } = data.results[0].geometry.location;
-      return { latitude: lat, longitude: lng };
+  useEffect(() => {
+    if (deviceLocation !== null) {
+      setUserLocation({
+        latitude: deviceLocation[0],
+        longitude: deviceLocation[1],
+      });
     }
-
-    return null;
-  }
+  }, [deviceLocation]);
 
   // Function to calculate distance between two coordinates using Haversine formula
   function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
+    console.log(lat1, lon1, lat2, lon2);
     const R = 6371; // Radius of the earth in km
     const dLat = deg2rad(lat2 - lat1);
     const dLon = deg2rad(lon2 - lon1);
@@ -191,17 +180,17 @@ const EventTabs = () => {
 
       const nearMeEvents = await Promise.all(
         Docs.map(async (item) => {
-          const eventLocation = await geoCodeLocation(item.location);
-          if (eventLocation) {
+          if (item?.coords?.length > 0) {
             const distance = getDistanceFromLatLonInKm(
               userLocation.latitude,
               userLocation.longitude,
-              eventLocation.latitude,
-              eventLocation.longitude
+              item.coords[0],
+              item.coords[1]
             );
             return distance <= 10 ? item : null;
+          } else {
+            return null;
           }
-          return null;
         })
       );
 
@@ -419,46 +408,41 @@ const EventTabs = () => {
 
   // Get Location Data
   const [locationData, setLocationData] = useState([]);
-  const getLocationData = () => {
+  const getLocationData = async () => {
     try {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
           async (position) => {
             const { latitude, longitude } = position.coords;
-            setDeviceLocation({ latitude, longitude });
+            console.log("USER LAT LONG: ", latitude, longitude);
+            setDeviceLocation([latitude, longitude]);
 
             // Reverse geocoding
             const nominatimUrl = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`;
-            await fetch(nominatimUrl)
-              .then((data) => {
-                return data.json();
-              })
-              .then((response) => {
-                const { address } = response;
-                const location = [
-                  {
-                    city: address.city || "",
-                    town: address.town || "",
-                    village: address.village || "",
-                    country: address.country || "",
-                    state: address.state || "",
-                  },
-                ];
-                setLocationData(location);
-              })
-              .catch((error) => {
-                console.log("Error retrieving device location:", error);
-              });
+            const response = await fetch(nominatimUrl);
+            const data = await response.json();
+
+            const { address } = data;
+            const location = {
+              city: address.city || "",
+              town: address.town || "",
+              village: address.village || "",
+              country: address.country || "",
+              state: address.state || "",
+            };
+            setLocationData(location);
+            console.log("USER LOCATION: ", location);
           },
           (error) => {
-            console.log("Error retrieving device location:", error);
+            console.error("Error while fetching user location:", error);
           }
         );
       } else {
-        console.log("Geolocation is not supported by this browser.");
+        console.error("Geolocation is not supported by this browser.");
       }
     } catch (error) {
-      console.log(error);
+      console.log("Error retrieving device location:", error);
+      // Provide feedback to the user about the error
     }
   };
 

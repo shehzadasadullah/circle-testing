@@ -142,11 +142,13 @@ const CreateEvent = () => {
   const [thirdPartyCheckboxSelected, setThirdPartyCheckboxSelected] = useState(
     []
   );
+  const [locationCords, setLocationCords] = useState(null);
 
   const handleSelect = (address, latLng) => {
     console.log("Selected address:", address);
     console.log("Selected coordinates:", latLng);
     setEventLocation(address);
+    setLocationCords(latLng);
   };
 
   useEffect(() => {
@@ -717,8 +719,8 @@ const CreateEvent = () => {
                     small_image: selectedLogoURL !== null && selectedLogoURL,
                     large_image: selectedLogoURL !== null && selectedLogoURL,
                     coords: [
-                      deviceLocation[0] ? deviceLocation[0] : "",
-                      deviceLocation[1] ? deviceLocation[1] : "",
+                      locationCords ? locationCords.lat : "",
+                      locationCords ? locationCords.lng : "",
                     ],
                     attendees: [],
                     checkedin: [],

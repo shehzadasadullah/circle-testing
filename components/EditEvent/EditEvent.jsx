@@ -144,11 +144,13 @@ const EditEvent = () => {
     []
   );
   const [imageUploadLoader, setImageUploadLoader] = useState(false);
+  const [locationCords, setLocationCords] = useState(null);
 
   const handleSelect = (address, latLng) => {
     console.log("Selected address:", address);
     console.log("Selected coordinates:", latLng);
     setEventLocation(address);
+    setLocationCords(latLng);
   };
 
   useEffect(() => {
@@ -886,8 +888,8 @@ const EditEvent = () => {
                       small_image: selectedLogoURL !== null && selectedLogoURL,
                       large_image: selectedLogoURL !== null && selectedLogoURL,
                       coords: [
-                        deviceLocation[0] ? deviceLocation[0] : "",
-                        deviceLocation[1] ? deviceLocation[1] : "",
+                        locationCords ? locationCords.lat : "",
+                        locationCords ? locationCords.lng : "",
                       ],
                       maxTicket: isOnPrice ? Number(eventMaximumTickets) : 0,
                       ticketPrice: isOnPrice ? eventTicketPrice : "0.00",
