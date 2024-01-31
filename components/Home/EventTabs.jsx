@@ -129,42 +129,73 @@ const EventTabs = () => {
   const [eventsNearMeLoader, setEventsNearMeLoader] = useState(false);
   const [deviceLocation, setDeviceLocation] = useState(null);
 
+  // Assuming events is an array of objects with 'location' property in string format
+  const userLocation = {
+    latitude: deviceLocation?.latitude,
+    longitude: deviceLocation?.longitude,
+  };
+
+  async function geoCodeLocation(location) {
+    const apiKey = "AIzaSyA_2dI8vYCq13R5i-__U6oIog1Xon63jhA";
+    const response = await fetch(
+      `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
+        location
+      )}&key=${apiKey}`
+    );
+    const data = await response.json();
+
+    if (data.results && data.results.length > 0) {
+      const { lat, lng } = data.results[0].geometry.location;
+      return { latitude: lat, longitude: lng };
+    }
+
+    return null;
+  }
+
   //function to get events Data from firestore
   const getEventsNearMeData = async (limitNum) => {
     setEventsNearMeLoader(true);
-    // reference to the events collection
     const eventsCollectionRef = collection(db, "events");
-    //current time stamp
-    let curtimestamp = Timestamp.now();
-    //compound query - any event which start from now in future
+    const curtimestamp = Timestamp.now();
     const q = query(
       eventsCollectionRef,
       where("timefrom", ">=", curtimestamp),
       limit(limitNum)
     );
-    //reading the live data from firestore
-    return onSnapshot(q, (querySnapshot) => {
+
+    onSnapshot(q, async (querySnapshot) => {
       const Docs = [];
       querySnapshot.forEach((doc) => {
         Docs.push({ ...doc.data(), eventsDocId: doc?.id });
       });
-      Docs.filter((item) => {
-        const distance = calculateDistance(
-          item?.Coords?._lat,
-          item?.Coords?._long,
-          deviceLocation?.latitude,
-          deviceLocation?.longitude
-        );
-        const maxDistance = 10; // Set the desired radius for nearby events (e.g., 10 kilometers)
-        return distance <= maxDistance;
-      }).map((item) => setEventsNearMe(item || []));
+
+      const nearMeEvents = await Promise.all(
+        Docs.map(async (item) => {
+          const eventLocation = await geoCodeLocation(item.location);
+          if (eventLocation) {
+            const distance = getDistanceFromLatLonInKm(
+              userLocation.latitude,
+              userLocation.longitude,
+              eventLocation.latitude,
+              eventLocation.longitude
+            );
+            return distance <= 10 ? item : null;
+          }
+          return null;
+        })
+      );
+
+      // Filter out null values (events that are not near the user)
+      const filteredNearMeEvents = nearMeEvents.filter((item) => item !== null);
+
+      setEventsNearMe(filteredNearMeEvents);
       setEventsNearMeLoader(false);
     });
   };
 
   // Function to calculate distance between two coordinates using Haversine formula
-  const calculateDistance = (lat1, lon1, lat2, lon2) => {
-    const R = 6371; // Radius of the earth in kilometers
+  function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
+    const R = 6371; // Radius of the earth in km
     const dLat = deg2rad(lat2 - lat1);
     const dLon = deg2rad(lon2 - lon1);
     const a =
@@ -174,14 +205,13 @@ const EventTabs = () => {
         Math.sin(dLon / 2) *
         Math.sin(dLon / 2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    const distance = R * c;
+    const distance = R * c; // Distance in km
     return distance;
-  };
+  }
 
-  // Function to convert degrees to radians
-  const deg2rad = (deg) => {
+  function deg2rad(deg) {
     return deg * (Math.PI / 180);
-  };
+  }
 
   // Paid Events - Premium
   const [paidEvents, setPaidEvents] = useState([]);

@@ -17,6 +17,8 @@ export default class MyDocument extends Document {
               __html: `(function(c,l,a,r,i,t,y){ c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)}; t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i; y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y); })(window, document, "clarity", "script", "gqp2vn24r1");`,
             }}
           /> */}
+
+          <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA_2dI8vYCq13R5i-__U6oIog1Xon63jhA&libraries=places"></script>
         </Head>
         <body>
           <Main />
