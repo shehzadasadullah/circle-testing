@@ -411,31 +411,32 @@ const EventTabs = () => {
   const getLocationData = async () => {
     try {
       if (navigator.geolocation) {
-        const position = await new Promise((resolve, reject) => {
-          navigator.geolocation.getCurrentPosition(resolve, reject, {
-            enableHighAccuracy: true,
-          });
-        });
+        navigator.geolocation.getCurrentPosition(
+          async (position) => {
+            const { latitude, longitude } = position.coords;
+            console.log("USER LAT LONG: ", latitude, longitude);
+            setDeviceLocation([latitude, longitude]);
 
-        const { latitude, longitude } = position.coords;
-        console.log("USER LAT LONG: ", latitude, longitude);
-        setDeviceLocation([latitude, longitude]);
+            // Reverse geocoding
+            const nominatimUrl = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`;
+            const response = await fetch(nominatimUrl);
+            const data = await response.json();
 
-        // Reverse geocoding
-        const nominatimUrl = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`;
-        const response = await fetch(nominatimUrl);
-        const data = await response.json();
-
-        const { address } = data;
-        const location = {
-          city: address.city || "",
-          town: address.town || "",
-          village: address.village || "",
-          country: address.country || "",
-          state: address.state || "",
-        };
-        setLocationData(location);
-        console.log("USER LOCATION: ", location);
+            const { address } = data;
+            const location = {
+              city: address.city || "",
+              town: address.town || "",
+              village: address.village || "",
+              country: address.country || "",
+              state: address.state || "",
+            };
+            setLocationData(location);
+            console.log("USER LOCATION: ", location);
+          },
+          (error) => {
+            console.error("Error while fetching user location:", error);
+          }
+        );
       } else {
         console.error("Geolocation is not supported by this browser.");
       }
