@@ -28,6 +28,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import dayjs from "dayjs";
 import { FaCheckCircle } from "react-icons/fa";
+import LocationSearchInput from "../Location/LocationSearchInput";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -143,6 +144,12 @@ const EditEvent = () => {
     []
   );
   const [imageUploadLoader, setImageUploadLoader] = useState(false);
+
+  const handleSelect = (address, latLng) => {
+    console.log("Selected address:", address);
+    console.log("Selected coordinates:", latLng);
+    setEventLocation(address);
+  };
 
   useEffect(() => {
     const getIdTokenForUser = async () => {
@@ -1745,16 +1752,11 @@ const EditEvent = () => {
                         Location/Address
                         <span className="text-red-600"> *</span>
                       </label>
-                      <input
-                        type="text"
-                        id="location"
-                        className="border-2 text-[#8392AF] border-[#E6E7EC] mt-2 p-3 w-full rounded-lg focus:border-[#007BAB] focus:outline-none"
-                        placeholder="Add event location/address here"
-                        value={eventLocation}
-                        onChange={(e) => {
-                          setEventLocation(e.target.value);
-                        }}
-                      ></input>
+                      <LocationSearchInput
+                        onSelect={handleSelect}
+                        location={eventLocation}
+                        setEventLocation={setEventLocation}
+                      />
                     </div>
                   </div>
                 </div>

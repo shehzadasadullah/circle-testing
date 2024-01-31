@@ -35,11 +35,6 @@ function classNames(...classes) {
 }
 
 const CreateEvent = () => {
-  const handleSelect = (address, latLng) => {
-    console.log("Selected address:", address);
-    console.log("Selected coordinates:", latLng);
-    setEventLocation(address);
-  };
   const router = useRouter();
   const todayDate = dayjs();
   const fonts = [
@@ -147,6 +142,12 @@ const CreateEvent = () => {
   const [thirdPartyCheckboxSelected, setThirdPartyCheckboxSelected] = useState(
     []
   );
+
+  const handleSelect = (address, latLng) => {
+    console.log("Selected address:", address);
+    console.log("Selected coordinates:", latLng);
+    setEventLocation(address);
+  };
 
   useEffect(() => {
     const getIdTokenForUser = async () => {
