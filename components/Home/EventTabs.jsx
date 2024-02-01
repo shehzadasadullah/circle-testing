@@ -69,7 +69,7 @@ const EventTabs = () => {
   // All Events
   const [EventsData, setEventsData] = useState([]);
   const [allEventsLimit, setAllEventsLimit] = useState(8);
-  const [allEventsLoader, setAllEventsLoader] = useState(false);
+  const [allEventsLoader, setAllEventsLoader] = useState(true);
 
   const getEventsData = async (limitNum) => {
     setAllEventsLoader(true);
@@ -126,8 +126,9 @@ const EventTabs = () => {
 
   // Events Near Me
   const [eventsNearMe, setEventsNearMe] = useState([]);
-  const [eventsNearMeLimit, setEventsNearMeLimit] = useState(8);
-  const [eventsNearMeLoader, setEventsNearMeLoader] = useState(false);
+  const [allEventsNearMe, setAllEventsNearMe] = useState([]);
+  const [eventsNearMeLimit, setEventsNearMeLimit] = useState(30);
+  const [eventsNearMeLoader, setEventsNearMeLoader] = useState(true);
   const [deviceLocation, setDeviceLocation] = useState(null);
   const [userLocation, setUserLocation] = useState({});
 
@@ -142,7 +143,6 @@ const EventTabs = () => {
 
   // Function to calculate distance between two coordinates using Haversine formula
   function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
-    console.log(lat1, lon1, lat2, lon2);
     const R = 6371; // Radius of the earth in km
     const dLat = deg2rad(lat2 - lat1);
     const dLon = deg2rad(lon2 - lon1);
@@ -182,12 +182,14 @@ const EventTabs = () => {
         Docs.map(async (item) => {
           if (item?.coords?.length > 0) {
             const distance = getDistanceFromLatLonInKm(
-              userLocation.latitude,
-              userLocation.longitude,
-              item.coords[0],
-              item.coords[1]
+              userLocation?.latitude,
+              userLocation?.longitude,
+              item?.coords[0],
+              item?.coords[1]
             );
-            return distance <= 10 ? item : null;
+            console.log("DISTANCE: ", distance);
+            console.log("ITEM: ", distance <= 10 ? item : null);
+            return distance >= 0 && distance <= 10 ? item : null;
           } else {
             return null;
           }
@@ -196,7 +198,7 @@ const EventTabs = () => {
 
       // Filter out null values (events that are not near the user)
       const filteredNearMeEvents = nearMeEvents.filter((item) => item !== null);
-
+      setAllEventsNearMe(Docs || []);
       setEventsNearMe(filteredNearMeEvents);
       setEventsNearMeLoader(false);
     });
@@ -449,12 +451,14 @@ const EventTabs = () => {
   // UseEffect to call functions
   useEffect(() => {
     getLocationData();
-    getEventsData(allEventsLimit);
-    getEventsNearMeData(eventsNearMeLimit);
-    getPaidEventsData(paidEventsLimit);
-    getFreeEventsData(freeEventsLimit);
-    getExtraEventsData(TTLimit);
-  }, []);
+    if (deviceLocation !== null) {
+      getEventsData(allEventsLimit);
+      getEventsNearMeData(eventsNearMeLimit);
+      getPaidEventsData(paidEventsLimit);
+      getFreeEventsData(freeEventsLimit);
+      getExtraEventsData(TTLimit);
+    }
+  }, [deviceLocation]);
 
   useEffect(() => {
     getBSEventsData(bsLimit, locationInput);
@@ -681,9 +685,9 @@ const EventTabs = () => {
                 </div>
               )}
             </div>
-            {eventsNearMe.length > 0 &&
+            {allEventsNearMe.length > 0 &&
               !eventsNearMeLoader &&
-              eventsNearMe.length >= eventsNearMeLimit && (
+              allEventsNearMe.length >= eventsNearMeLimit && (
                 <button
                   onClick={() => {
                     setEventsNearMeLimit(eventsNearMeLimit + 8);
