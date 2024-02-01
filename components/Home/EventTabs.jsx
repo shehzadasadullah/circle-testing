@@ -449,16 +449,21 @@ const EventTabs = () => {
   };
 
   // UseEffect to call functions
+  const [hasLocationEffectRun, setHasLocationEffectRun] = useState(false);
+
   useEffect(() => {
     getLocationData();
-    if (deviceLocation !== null) {
+    if (deviceLocation !== null && !hasLocationEffectRun) {
       getEventsData(allEventsLimit);
       getEventsNearMeData(eventsNearMeLimit);
       getPaidEventsData(paidEventsLimit);
       getFreeEventsData(freeEventsLimit);
       getExtraEventsData(TTLimit);
+
+      // Set the state to indicate that the effect has run
+      setHasLocationEffectRun(true);
     }
-  }, [deviceLocation]);
+  }, [deviceLocation, hasLocationEffectRun]);
 
   useEffect(() => {
     getBSEventsData(bsLimit, locationInput);
