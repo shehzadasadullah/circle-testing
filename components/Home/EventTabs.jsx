@@ -164,44 +164,61 @@ const EventTabs = () => {
   //function to get events Data from firestore
   const getEventsNearMeData = async (limitNum) => {
     setEventsNearMeLoader(true);
-    const eventsCollectionRef = collection(db, "events");
-    const curtimestamp = Timestamp.now();
-    const q = query(
-      eventsCollectionRef,
-      where("timefrom", ">=", curtimestamp),
-      limit(limitNum)
-    );
 
-    onSnapshot(q, async (querySnapshot) => {
-      const Docs = [];
-      querySnapshot.forEach((doc) => {
-        Docs.push({ ...doc.data(), eventsDocId: doc?.id });
-      });
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          const { latitude, longitude } = position.coords;
+          const array = [latitude, longitude]; // Define and populate array here
+          console.log("Array", array); // Move the console.log here
 
-      const nearMeEvents = await Promise.all(
-        Docs.map(async (item) => {
-          if (item?.coords?.length > 0) {
-            const distance = getDistanceFromLatLonInKm(
-              userLocation?.latitude,
-              userLocation?.longitude,
-              item?.coords[0],
-              item?.coords[1]
+          // Proceed with the logic that relies on array
+          const eventsCollectionRef = collection(db, "events");
+          const curtimestamp = Timestamp.now();
+          const q = query(
+            eventsCollectionRef,
+            where("timefrom", ">=", curtimestamp),
+            limit(limitNum)
+          );
+
+          onSnapshot(q, async (querySnapshot) => {
+            const Docs = [];
+            querySnapshot.forEach((doc) => {
+              Docs.push({ ...doc.data(), eventsDocId: doc?.id });
+            });
+
+            const nearMeEvents = await Promise.all(
+              Docs.map(async (item) => {
+                if (item?.coords?.length > 0) {
+                  const distance = getDistanceFromLatLonInKm(
+                    array[0],
+                    array[1],
+                    item?.coords[0],
+                    item?.coords[1]
+                  );
+                  return distance >= 0 && distance <= 10 ? item : null;
+                } else {
+                  return null;
+                }
+              })
             );
-            console.log("DISTANCE: ", distance);
-            console.log("ITEM: ", distance <= 10 ? item : null);
-            return distance >= 0 && distance <= 10 ? item : null;
-          } else {
-            return null;
-          }
-        })
-      );
 
-      // Filter out null values (events that are not near the user)
-      const filteredNearMeEvents = nearMeEvents.filter((item) => item !== null);
-      setAllEventsNearMe(Docs || []);
-      setEventsNearMe(filteredNearMeEvents);
-      setEventsNearMeLoader(false);
-    });
+            // Filter out null values (events that are not near the user)
+            const filteredNearMeEvents = nearMeEvents.filter(
+              (item) => item !== null
+            );
+            setAllEventsNearMe(Docs || []);
+            setEventsNearMe(filteredNearMeEvents);
+            setEventsNearMeLoader(false);
+          });
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    } else {
+      console.error("Geolocation is not supported by this browser.");
+    }
   };
 
   // Paid Events - Premium
@@ -410,60 +427,55 @@ const EventTabs = () => {
 
   // Get Location Data
   const [locationData, setLocationData] = useState([]);
-  const getLocationData = async () => {
-    try {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          async (position) => {
-            const { latitude, longitude } = position.coords;
-            console.log("USER LAT LONG: ", latitude, longitude);
-            setDeviceLocation([latitude, longitude]);
+  // const getLocationData = async () => {
+  //   try {
+  //     if (navigator.geolocation) {
+  //       navigator.geolocation.getCurrentPosition(
+  //         async (position) => {
+  //           const { latitude, longitude } = position.coords;
+  //           console.log("USER LAT LONG: ", latitude, longitude);
+  //           setDeviceLocation([latitude, longitude]);
 
-            // Reverse geocoding
-            const nominatimUrl = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`;
-            const response = await fetch(nominatimUrl);
-            const data = await response.json();
+  //           // Reverse geocoding
+  //           const nominatimUrl = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`;
+  //           const response = await fetch(nominatimUrl);
+  //           const data = await response.json();
 
-            const { address } = data;
-            const location = {
-              city: address.city || "",
-              town: address.town || "",
-              village: address.village || "",
-              country: address.country || "",
-              state: address.state || "",
-            };
-            setLocationData(location);
-            console.log("USER LOCATION: ", location);
-          },
-          (error) => {
-            console.error("Error while fetching user location:", error);
-          }
-        );
-      } else {
-        console.error("Geolocation is not supported by this browser.");
-      }
-    } catch (error) {
-      console.log("Error retrieving device location:", error);
-      // Provide feedback to the user about the error
-    }
-  };
+  //           const { address } = data;
+  //           const location = {
+  //             city: address.city || "",
+  //             town: address.town || "",
+  //             village: address.village || "",
+  //             country: address.country || "",
+  //             state: address.state || "",
+  //           };
+  //           setLocationData(location);
+  //           console.log("USER LOCATION: ", location);
+  //         },
+  //         (error) => {
+  //           console.error("Error while fetching user location:", error);
+  //         }
+  //       );
+  //     } else {
+  //       console.error("Geolocation is not supported by this browser.");
+  //     }
+  //   } catch (error) {
+  //     console.log("Error retrieving device location:", error);
+  //     // Provide feedback to the user about the error
+  //   }
+  // };
 
   // UseEffect to call functions
   const [hasLocationEffectRun, setHasLocationEffectRun] = useState(false);
 
   useEffect(() => {
-    getLocationData();
-    if (deviceLocation !== null && !hasLocationEffectRun) {
-      getEventsData(allEventsLimit);
-      getEventsNearMeData(eventsNearMeLimit);
-      getPaidEventsData(paidEventsLimit);
-      getFreeEventsData(freeEventsLimit);
-      getExtraEventsData(TTLimit);
-
-      // Set the state to indicate that the effect has run
-      setHasLocationEffectRun(true);
-    }
-  }, [deviceLocation, hasLocationEffectRun]);
+    // getLocationData();
+    getEventsData(allEventsLimit);
+    getEventsNearMeData(eventsNearMeLimit);
+    getPaidEventsData(paidEventsLimit);
+    getFreeEventsData(freeEventsLimit);
+    getExtraEventsData(TTLimit);
+  }, []);
 
   useEffect(() => {
     getBSEventsData(bsLimit, locationInput);

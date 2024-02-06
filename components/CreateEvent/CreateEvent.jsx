@@ -3,7 +3,13 @@ import Header from "../Common/Header";
 import Footer from "../Common/Footer";
 import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/solid";
-import { getFirestore, doc, setDoc, updateDoc } from "firebase/firestore";
+import {
+  getFirestore,
+  doc,
+  setDoc,
+  updateDoc,
+  arrayUnion,
+} from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { addDoc } from "firebase/firestore";
 import { collection, query, where, getDocs } from "firebase/firestore";
@@ -722,7 +728,7 @@ const CreateEvent = () => {
                       locationCords ? locationCords.lat : "",
                       locationCords ? locationCords.lng : "",
                     ],
-                    attendees: [],
+                    attendees: arrayUnion(userRefPath),
                     checkedin: [],
                     maxTicket: isOnPrice ? Number(eventMaximumTickets) : 0,
                     ticketPrice: isOnPrice ? eventTicketPrice : "0.00",
