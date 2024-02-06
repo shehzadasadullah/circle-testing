@@ -1386,7 +1386,7 @@ const EditEvent = () => {
             <div className="w-full h-auto p-4">
               <div className="flex justify-center lg:justify-start items-center lg:items-start flex-col p-2 lg:p-10">
                 <h3 className="font-bold font48 text-[#17191C] mt-5">
-                  Save Changes
+                  Edit Event
                 </h3>
                 <p className="font24 text-[#8392AF] text-center lg:text-left font-normal text-base mt-2">
                   Edit all your event details, create new tickets, and set up
@@ -1964,7 +1964,7 @@ const EditEvent = () => {
                             </div>
                           </>
                         ) : (
-                          "Edit Event"
+                          "Save Changes"
                         )}
                       </button>
                     </div>
