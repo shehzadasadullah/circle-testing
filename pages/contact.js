@@ -34,12 +34,16 @@ const contact = () => {
 
     if (!nameRegex.test(firstName)) {
       toast.error("Please enter a valid first name!");
+      setEmailLoader(false);
     } else if (!nameRegex.test(lastName)) {
       toast.error("Please enter a valid last name!");
+      setEmailLoader(false);
     } else if (!emailRegex.test(email)) {
       toast.error("Please enter valid email!");
+      setEmailLoader(false);
     } else if (!numberRegex.test(phoneNumber)) {
       toast.error("Please enter valid phone number!");
+      setEmailLoader(false);
     } else {
       // console.log("FORM DATA: ", {
       //   firstName: firstName,
