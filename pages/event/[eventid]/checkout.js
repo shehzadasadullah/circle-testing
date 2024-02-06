@@ -35,6 +35,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ThreeDots } from "react-loader-spinner";
 import loaderGif from "../../../public/events/Loader.gif";
+import { getIdToken } from "firebase/auth";
 
 // Initialize Stripe
 const stripePromise = loadStripe(
@@ -101,6 +102,7 @@ const MyForm = () => {
   const [loader4, setLoader4] = useState(true);
   const [loader5, setLoader5] = useState(true);
   const [loader6, setLoader6] = useState(true);
+  const [circleAccessToken, setCircleAccessToken] = useState("");
 
   ///getting event details
   useEffect(() => {
@@ -164,6 +166,22 @@ const MyForm = () => {
     }
   };
 
+  useEffect(() => {
+    const getIdTokenForUser = async () => {
+      if (user) {
+        try {
+          const idToken = await getIdToken(user);
+          setCircleAccessToken(idToken);
+          console.log("ACCESS TOKEN: ", idToken);
+        } catch (error) {
+          console.error("Error getting ID token:", error);
+        }
+      }
+    };
+    console.log("USER DATA", user);
+    getIdTokenForUser();
+  }, [user]);
+
   const MakePayment = async (body) => {
     const headers = {
       "Content-Type": "application/json",
@@ -192,10 +210,30 @@ const MyForm = () => {
         setShowFreeModal(true);
         console.log("state", "Transaction Successful");
         toast.success("Transaction Successful!");
+        try {
+          var myHeaders = new Headers();
+          myHeaders.append("accessToken", circleAccessToken);
+
+          var requestOptions = {
+            method: "GET",
+            headers: myHeaders,
+            redirect: "follow",
+          };
+
+          fetch(
+            `https://api.circle.ooo/api/circle/email/event?eventId=${eventid}&emailType=ATTEND-EVENT-MAIL`,
+            requestOptions
+          )
+            .then((response) => response.text())
+            .then((result) => console.log("MAIL RESULT:", result))
+            .catch((error) => console.log("error", error));
+        } catch (error) {
+          console.log(error);
+        }
         // Navigate to another screen after a delay
         setTimeout(() => {
           router.push(`/events/${eventid}`);
-        }, 1000); // Delay of 30 seconds (adjust as needed)
+        }, 5000); // Delay of 30 seconds (adjust as needed)
       }
 
       setIsLoading(false); // Hide loader after API call is complete

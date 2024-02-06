@@ -433,7 +433,11 @@ const EventCard = ({
           {description}
         </div>
         <div className="w-full truncate font18 font-semibold text-[#007BAB]">
-          {type !== "" ? (price === "" ? "Free" : price) : "Free"}
+          {type === "" && Number(price) === 0.0
+            ? "Free"
+            : type === "" && Number(price) !== 0.0
+            ? "$" + price
+            : price}
         </div>
         <div className="w-full flex justify-start items-center gap-1 font16 lg:font12 text-[#828282]">
           {type === "" ? (
