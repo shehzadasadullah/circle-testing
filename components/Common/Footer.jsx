@@ -125,7 +125,7 @@ const Footer = () => {
                   target="_blank"
                 >{` support@circle.ooo`}</Link>
               </div>
-              <div className="text-[#D9D9D9] text-lg font-bold mt-8 lg:mt-10">
+              <div className="text-[#D9D9D9] text-lg font-bold mt-8 lg:mt-3">
                 Social Media
               </div>
               <div className="flex justify-center items-center gap-4 z-10">
