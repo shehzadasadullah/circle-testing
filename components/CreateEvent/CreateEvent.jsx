@@ -1279,42 +1279,51 @@ const CreateEvent = () => {
                       </label>
                       {circleData.length > 0 ? (
                         <>
-                          <div className="flex justify-start mt-2 items-center flex-wrap gap-x-2 w-full">
+                          <div className="flex justify-start mt-2 items-center flex-wrap gap-2 w-full">
                             {circleData.map((item) => {
                               const isSelected = item.id === selectedCircleId;
 
                               return (
                                 <div
                                   key={item.id}
-                                  className="rounded-full border-2 w-20 h-20 relative"
+                                  className="flex justify-center items-center flex-col"
                                 >
-                                  <img
-                                    src={item.logo_url}
-                                    className="rounded-full w-full h-full object-cover"
-                                    alt="Logo Image"
-                                    onClick={() =>
-                                      handleCircleSelection(item.id)
-                                    }
-                                    style={{ cursor: "pointer" }}
-                                  />
-                                  {isSelected && (
-                                    <span className="success-icon border-none absolute top-0 right-0 font-bold">
-                                      <FaCheckCircle
-                                        className="bg-[#fff] border-none rounded-full"
-                                        color="#007BAB"
-                                        size={25}
-                                      />
-                                    </span>
-                                  )}
-                                  <input
-                                    type="radio"
-                                    value={item.id}
-                                    checked={isSelected}
-                                    onChange={() =>
-                                      handleCircleSelection(item.id)
-                                    }
-                                    className="hidden"
-                                  />
+                                  <div className="rounded-full border-2 w-20 h-20 relative">
+                                    <img
+                                      src={item.logo_url}
+                                      className="rounded-full w-full h-full object-cover"
+                                      alt="Logo Image"
+                                      onClick={() =>
+                                        handleCircleSelection(item.id)
+                                      }
+                                      style={{ cursor: "pointer" }}
+                                    />
+
+                                    {isSelected && (
+                                      <span className="success-icon border-none absolute top-0 right-0 font-bold">
+                                        <FaCheckCircle
+                                          className="bg-[#fff] border-none rounded-full"
+                                          color="#007BAB"
+                                          size={25}
+                                        />
+                                      </span>
+                                    )}
+
+                                    <input
+                                      type="radio"
+                                      value={item.id}
+                                      checked={isSelected}
+                                      onChange={() =>
+                                        handleCircleSelection(item.id)
+                                      }
+                                      className="hidden"
+                                    />
+                                  </div>
+                                  <div>
+                                    <h2 className="text-[#292D32]">
+                                      {item.circle_name}
+                                    </h2>
+                                  </div>
                                 </div>
                               );
                             })}
