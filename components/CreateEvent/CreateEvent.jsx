@@ -1296,6 +1296,7 @@ const CreateEvent = () => {
                                       handleCircleSelection(item.id)
                                     }
                                     style={{ cursor: "pointer" }}
+                                    title={item.circle_name}
                                   />
                                   {isSelected && (
                                     <span className="success-icon border-none absolute top-0 right-0 font-bold">

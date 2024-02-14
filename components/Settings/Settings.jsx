@@ -32,18 +32,25 @@ function Dashboard() {
   const [showSideBar, setShowSideBar] = useState(true);
   const [circleAccessToken, setCircleAccessToken] = useState("");
   const [showModal, setShowModal] = useState(false);
+  // loader states
   const [eventBriteLoader, setEventBriteLoader] = useState(false);
   const [meetUpLoader, setMeetUpLoader] = useState(false);
   const [googleCalenderLoader, setGoogleCalenderLoader] = useState(false);
   const [iCalLoader, setICalLoader] = useState(false);
+  const [moLoader, setMoLoader] = useState(false);
+  // is integrated states
   const [isIntegratedEventBrite, setIsIntegratedEventBrite] = useState(false);
   const [isIntegratedMeetUp, setIsIntegratedMeetUp] = useState(false);
   const [isIntegratedGC, setIsIntegratedGC] = useState(false);
   const [isIntegratedIC, setIsIntegratedIC] = useState(false);
+  const [isIntegratedMO, setIsIntegratedMO] = useState(false);
+  // access codes states
   const [eventBriteAccessCode, setEventBriteAccessCode] = useState("");
   const [meetUpAccessCode, setMeetUpAccessCode] = useState("");
   const [GCAccessCode, setGCAccessCode] = useState("");
   const [ICAccessCode, setICAccessCode] = useState("");
+  const [MOAccessCode, setMOAccessCode] = useState("");
+  // others
   let [isOpen, setIsOpen] = useState(false);
   const [groupURL, setGroupURL] = useState("");
   const [groupURLLoader, setGroupURLLoader] = useState(false);
@@ -106,8 +113,12 @@ function Dashboard() {
     if (codeParam && integration === "GC") {
       setGCAccessCode(codeParam);
     }
+    if (codeParam && integration === "MO") {
+      setMOAccessCode(codeParam);
+    }
   }, [user, circleAccessToken]);
 
+  // integrate event brite
   useEffect(() => {
     const integration = localStorage.getItem("integration");
     const loader = localStorage.getItem("loader");
@@ -159,6 +170,7 @@ function Dashboard() {
     }
   }, [eventBriteAccessCode, circleAccessToken]);
 
+  // integrate meetup
   useEffect(() => {
     const integration = localStorage.getItem("integration");
     const loader = localStorage.getItem("loader");
@@ -206,6 +218,7 @@ function Dashboard() {
     }
   }, [meetUpAccessCode, circleAccessToken]);
 
+  // integrate google calendar
   useEffect(() => {
     const integration = localStorage.getItem("integration");
     const loader = localStorage.getItem("loader");
@@ -259,6 +272,58 @@ function Dashboard() {
     }
   }, [GCAccessCode, circleAccessToken]);
 
+  // integrate outlook calendar
+  useEffect(() => {
+    const integration = localStorage.getItem("integration");
+    const loader = localStorage.getItem("loader");
+    if (circleAccessToken && integration && integration === "MO") {
+      if (loader && loader === "true") {
+        setMoLoader(true);
+        if (MOAccessCode !== "") {
+          var myHeaders = new Headers();
+          myHeaders.append("accessToken", circleAccessToken);
+          var requestOptions = {
+            method: "GET",
+            headers: myHeaders,
+            redirect: "follow",
+          };
+
+          fetch(
+            `https://api.circle.ooo/api/circle/third-party/calendar/outlook-integrate?accessCode=${MOAccessCode}`,
+            requestOptions
+          )
+            .then((response) => response.json())
+            .then((result) => {
+              if (result.result === true) {
+                if (result.message === "outlook integrated successfully") {
+                  setMoLoader(false);
+                  setIsIntegratedMO(true);
+                  toast.success("Outlook integrated successfully!");
+                  localStorage.removeItem("integration");
+                  localStorage.removeItem("loader");
+                }
+              } else {
+                setMoLoader(false);
+                toast.error(
+                  "Integration error from third party, Please try again!"
+                );
+                localStorage.removeItem("integration");
+                localStorage.removeItem("loader");
+              }
+            })
+            .catch((error) => {
+              setMoLoader(false);
+              toast.error(
+                "Integration error from third party, Please try again!"
+              );
+              localStorage.removeItem("integration");
+              localStorage.removeItem("loader");
+            });
+        }
+      }
+    }
+  }, [MOAccessCode, circleAccessToken]);
+
   const getThirdPartyIntegrations = async () => {
     var myHeaders = new Headers();
     myHeaders.append("accessToken", circleAccessToken);
@@ -300,6 +365,11 @@ function Dashboard() {
               setICalLoader(false);
               setIsIntegratedIC(true);
             }
+
+            if (item.integrationType === "OUTLOOK") {
+              setMoLoader(false);
+              setIsIntegratedMO(true);
+            }
           });
 
           tempArrayThirdParty.map((item) => {
@@ -324,6 +394,7 @@ function Dashboard() {
       });
   };
 
+  // fetch access token of user upon access code
   useEffect(() => {
     if (circleAccessToken !== "") getThirdPartyIntegrations();
   }, [
@@ -332,6 +403,7 @@ function Dashboard() {
     circleAccessToken,
     meetUpAccessCode,
     GCAccessCode,
+    MOAccessCode,
   ]);
 
   const logout = async () => {
@@ -349,6 +421,7 @@ function Dashboard() {
     }
   };
 
+  // handle integrations functions
   const handleEventBriteIntegration = () => {
     setEventBriteLoader(true);
     var myHeaders = new Headers();
@@ -504,6 +577,34 @@ function Dashboard() {
           toast.error("Invalid Group URL, or Third Party Error!");
         });
     }
+  };
+
+  const handleMOIntegration = () => {
+    setMoLoader(true);
+    var myHeaders = new Headers();
+    myHeaders.append("accessToken", circleAccessToken);
+
+    var requestOptions = {
+      method: "GET",
+      headers: myHeaders,
+      redirect: "follow",
+    };
+
+    fetch(
+      "https://api.circle.ooo/api/circle/third-party/calendar/outlook-oauth-url",
+      requestOptions
+    )
+      .then((response) => response.json())
+      .then((result) => {
+        if (result.result) {
+          localStorage.setItem("integration", "MO");
+          localStorage.setItem("loader", "true");
+          router.push(result.data);
+        } else {
+          toast.error("Something went wrong!");
+        }
+      })
+      .catch((error) => console.log("error", error));
   };
 
   return (
@@ -947,9 +1048,49 @@ function Dashboard() {
                         <div className="flex justify-between text-[#292D32] flex-row w-full h-auto mt-4">
                           <div className="text-[#F9F9F9] flex flex-row justify-center items-center text-xl font-bold">
                             <img src={mCal.src} className="h-7" alt="" />
-                            <p className="ml-2">
-                              Microsoft Outlook (Coming Soon)
-                            </p>
+                            <p className="ml-2">Microsoft Outlook</p>
+                          </div>
+
+                          <div>
+                            {moLoader ? (
+                              <>
+                                <div className="flex justify-center items-center w-full p-4">
+                                  <ThreeDots
+                                    height="20"
+                                    color="#007BAB"
+                                    width="60"
+                                    radius="9"
+                                    ariaLabel="three-dots-loading"
+                                    visible={true}
+                                  />
+                                </div>
+                              </>
+                            ) : isIntegratedMO ? (
+                              <>
+                                <button
+                                  disabled={true}
+                                  className={`font14 font-medium rounded-xl sm:py-2 px-4 font-Montserrat text-[#fff] border-2 border-[#007BAB] bg-[#007BAB]`}
+                                >
+                                  <div className="flex justify-center font-bold text-[20pt] items-center">
+                                    ✓
+                                  </div>
+                                </button>
+                              </>
+                            ) : (
+                              <>
+                                <button
+                                  onClick={() => {
+                                    handleMOIntegration();
+                                  }}
+                                  disabled={moLoader}
+                                  className={`font14 font-medium rounded-xl py-3 px-5 font-Montserrat text-[#fff] hover:text-[#fff] border-2 border-[#007BAB] hover:bg-transparent bg-[#007BAB]`}
+                                >
+                                  <div className="flex justify-center items-center">
+                                    Integrate
+                                  </div>
+                                </button>
+                              </>
+                            )}
                           </div>
                         </div>
                       </div>
