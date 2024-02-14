@@ -664,6 +664,7 @@ const EventDetails = () => {
         .filter(
           (fl) =>
             fl.integrationType === "GOOGLECALENDAR" ||
+            fl.integrationType === "OUTLOOK" ||
             fl.integrationType === "ICAL"
         )
         .map((item) => {
@@ -1294,6 +1295,7 @@ const EventDetails = () => {
                               thirdPartyIntegrations.some((fl) => {
                                 return (
                                   fl.integrationType === "GOOGLECALENDAR" ||
+                                  fl.integrationType === "OUTLOOK" ||
                                   fl.integrationType === "ICAL"
                                 );
                               });
@@ -1833,6 +1835,8 @@ const EventDetails = () => {
                                                 return (
                                                   fl.integrationType ===
                                                     "GOOGLECALENDAR" ||
+                                                  fl.integrationType ===
+                                                    "OUTLOOK" ||
                                                   fl.integrationType === "ICAL"
                                                 );
                                               }
