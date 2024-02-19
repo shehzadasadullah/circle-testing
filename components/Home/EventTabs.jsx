@@ -189,12 +189,12 @@ const EventTabs = () => {
 
             const nearMeEvents = await Promise.all(
               Docs.map(async (item) => {
-                if (item?.coords?.length > 0) {
+                if (item?.Coords) {
                   const distance = getDistanceFromLatLonInKm(
                     array[0],
                     array[1],
-                    item?.coords[0],
-                    item?.coords[1]
+                    item?.Coords._lat,
+                    item?.Coords._long
                   );
                   return distance >= 0 && distance <= 10 ? item : null;
                 } else {
@@ -223,7 +223,7 @@ const EventTabs = () => {
 
   // Paid Events - Premium
   const [paidEvents, setPaidEvents] = useState([]);
-  const [paidEventsLimit, setPaidEventsLimit] = useState(8);
+  const [paidEventsLimit, setPaidEventsLimit] = useState(9999);
   const [paidEventsLoader, setPaidEventsLoader] = useState(false);
 
   const getPaidEventsData = async (limitNum) => {
@@ -268,7 +268,7 @@ const EventTabs = () => {
 
   // Free Events
   const [freeEvents, setFreeEvents] = useState([]);
-  const [freeEventsLimit, setFreeEventsLimit] = useState(8);
+  const [freeEventsLimit, setFreeEventsLimit] = useState(9999);
   const [freeEventsLoader, setFreeEventsLoader] = useState(false);
 
   const getFreeEventsData = async (limitNum) => {

@@ -3,7 +3,7 @@ import Header from "../Common/Header";
 import Footer from "../Common/Footer";
 import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/solid";
-import { getFirestore, setDoc, updateDoc } from "firebase/firestore";
+import { getFirestore, setDoc, updateDoc, GeoPoint } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { addDoc, getDoc } from "firebase/firestore";
 import { collection, query, where, getDocs } from "firebase/firestore";
@@ -148,9 +148,9 @@ const EditEvent = () => {
 
   const handleSelect = (address, latLng) => {
     console.log("Selected address:", address);
-    console.log("Selected coordinates:", latLng);
+    console.log("Selected coordinates:", new GeoPoint(latLng.lat, latLng.lng));
     setEventLocation(address);
-    setLocationCords(latLng);
+    setLocationCords(new GeoPoint(latLng.lat, latLng.lng));
   };
 
   useEffect(() => {
@@ -887,10 +887,7 @@ const EditEvent = () => {
                       timeto: convertToTimestampEndDateTime(),
                       small_image: selectedLogoURL !== null && selectedLogoURL,
                       large_image: selectedLogoURL !== null && selectedLogoURL,
-                      coords: [
-                        locationCords ? locationCords.lat : "",
-                        locationCords ? locationCords.lng : "",
-                      ],
+                      Coords: locationCords || new GeoPoint("0.0", "0.0"),
                       maxTicket: isOnPrice ? Number(eventMaximumTickets) : 0,
                       ticketPrice: isOnPrice ? eventTicketPrice : "0.00",
                       isexhibitionallowed: isOnExhibitors ? "true" : "false",

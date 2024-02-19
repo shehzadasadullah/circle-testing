@@ -9,6 +9,7 @@ import {
   setDoc,
   updateDoc,
   arrayUnion,
+  GeoPoint,
 } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { addDoc } from "firebase/firestore";
@@ -152,9 +153,9 @@ const CreateEvent = () => {
 
   const handleSelect = (address, latLng) => {
     console.log("Selected address:", address);
-    console.log("Selected coordinates:", latLng);
+    console.log("Selected coordinates:", new GeoPoint(latLng.lat, latLng.lng));
     setEventLocation(address);
-    setLocationCords(latLng);
+    setLocationCords(new GeoPoint(latLng.lat, latLng.lng));
   };
 
   useEffect(() => {
@@ -724,10 +725,7 @@ const CreateEvent = () => {
                     timeto: convertToTimestampEndDateTime(),
                     small_image: selectedLogoURL !== null && selectedLogoURL,
                     large_image: selectedLogoURL !== null && selectedLogoURL,
-                    coords: [
-                      locationCords ? locationCords.lat : "",
-                      locationCords ? locationCords.lng : "",
-                    ],
+                    Coords: locationCords || new GeoPoint("0.0", "0.0"),
                     attendees: arrayUnion(userRefPath),
                     checkedin: [],
                     maxTicket: isOnPrice ? Number(eventMaximumTickets) : 0,

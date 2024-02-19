@@ -354,7 +354,7 @@ const EventCard = ({
             <img
               src="https://cdnspicyfy.azureedge.net/images/8400a5e7-639e-4e1a-bd5e-41c689de93a5.jpg"
               alt={title}
-              className="w-full h-[full] object-fit rounded-[25px]"
+              className="w-full h-[175px] object-fit rounded-[25px]"
             />
             <div className="absolute p-2 mt-2 flex w-full justify-end">
               {user?.uid ? (
