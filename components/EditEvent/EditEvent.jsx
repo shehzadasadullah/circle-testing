@@ -955,7 +955,7 @@ const EditEvent = () => {
                       setCreateEventLoader(false);
                       setTimeout(() => {
                         router.push(`/events/${eventid}`);
-                      }, 5000);
+                      }, 3000);
                     } catch (error) {
                       console.error("Error updating document: ", error);
                       toast("Something went wrong!");

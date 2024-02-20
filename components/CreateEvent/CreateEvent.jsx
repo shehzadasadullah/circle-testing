@@ -808,7 +808,7 @@ const CreateEvent = () => {
                       setCreateEventLoader(false);
                       setTimeout(() => {
                         router.push(`/events/${docRef.id}`);
-                      }, 5000);
+                      }, 3000);
                     } catch (error) {
                       console.error("Error updating document: ", error);
                       toast("Something went wrong!");

@@ -232,7 +232,7 @@ const MyForm = () => {
         // Navigate to another screen after a delay
         setTimeout(() => {
           router.push(`/events/${eventid}`);
-        }, 5000); // Delay of 30 seconds (adjust as needed)
+        }, 3000); // Delay of 30 seconds (adjust as needed)
       }
 
       setIsLoading(false); // Hide loader after API call is complete
