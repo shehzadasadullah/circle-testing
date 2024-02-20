@@ -21,9 +21,9 @@ import { LocationMarkerIcon, SearchIcon } from "@heroicons/react/outline";
 import axios from "axios";
 import LocationIcon from "@/icons/LocationIcon";
 import { RotatingLines } from "react-loader-spinner";
-import AOS from "aos";
-import "aos/dist/aos.css";
-import "intersection-observer";
+// import AOS from "aos";
+// import "aos/dist/aos.css";
+// import "intersection-observer";
 
 const EventTabs = () => {
   const [activeTab, setActiveTab] = useState(1);
@@ -32,39 +32,39 @@ const EventTabs = () => {
     setActiveTab(tabNumber);
   };
 
-  const eventsRef = useRef(null);
+  // const eventsRef = useRef(null);
 
-  useEffect(() => {
-    const options = {
-      root: null, // Use the viewport as the root
-      rootMargin: "0px", // No margin around the root
-      threshold: 0.2, // Trigger when 20% of the component is visible
-    };
+  // useEffect(() => {
+  //   const options = {
+  //     root: null, // Use the viewport as the root
+  //     rootMargin: "0px", // No margin around the root
+  //     threshold: 0.2, // Trigger when 20% of the component is visible
+  //   };
 
-    const observer = new IntersectionObserver(handleIntersection, options);
+  //   const observer = new IntersectionObserver(handleIntersection, options);
 
-    if (eventsRef.current) {
-      observer.observe(eventsRef.current);
-    }
+  //   if (eventsRef.current) {
+  //     observer.observe(eventsRef.current);
+  //   }
 
-    // Cleanup the observer on component unmount
-    return () => {
-      observer.disconnect();
-    };
-  }, []);
+  //   // Cleanup the observer on component unmount
+  //   return () => {
+  //     observer.disconnect();
+  //   };
+  // }, []);
 
-  const handleIntersection = (entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        // The component is in focus
-        AOS.init({
-          duration: 800,
-          once: true,
-        });
-        AOS.refresh(); // Refresh AOS to apply animations immediately
-      }
-    });
-  };
+  // const handleIntersection = (entries) => {
+  //   entries.forEach((entry) => {
+  //     if (entry.isIntersecting) {
+  //       // The component is in focus
+  //       AOS.init({
+  //         duration: 800,
+  //         once: true,
+  //       });
+  //       AOS.refresh(); // Refresh AOS to apply animations immediately
+  //     }
+  //   });
+  // };
 
   // All Events
   const [EventsData, setEventsData] = useState([]);
@@ -127,7 +127,7 @@ const EventTabs = () => {
   // Events Near Me
   const [eventsNearMe, setEventsNearMe] = useState([]);
   const [allEventsNearMe, setAllEventsNearMe] = useState([]);
-  const [eventsNearMeLimit, setEventsNearMeLimit] = useState(30);
+  const [eventsNearMeLimit, setEventsNearMeLimit] = useState(9999);
   const [eventsNearMeLoader, setEventsNearMeLoader] = useState(true);
   const [deviceLocation, setDeviceLocation] = useState(null);
   const [userLocation, setUserLocation] = useState({});
@@ -483,13 +483,13 @@ const EventTabs = () => {
 
   return (
     <div
-      ref={eventsRef}
-      data-aos="fade-up"
-      data-aos-delay="50"
-      data-aos-duration="4000"
-      data-aos-easing="ease-in-out"
-      data-aos-mirror="false"
-      data-aos-once="true"
+      // ref={eventsRef}
+      // data-aos="fade-up"
+      // data-aos-delay="50"
+      // data-aos-duration="4000"
+      // data-aos-easing="ease-in-out"
+      // data-aos-mirror="false"
+      // data-aos-once="true"
       className="flex flex-col items-center w-full h-auto justify-center"
     >
       <h3 className="font48 font-semibold mt-20 text-center font-Montserrat">

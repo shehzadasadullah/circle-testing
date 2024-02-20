@@ -6,8 +6,11 @@ const AttendEvent = () => {
   return (
     <>
       <Head>
-        <title>CIRCLE</title>
-        <meta name="description" content="Simple Description of Circle app" />
+        <title>CIRCLE - Events</title>
+        <meta
+          name="description"
+          content="Circle.ooo ❤️'s our customers! Events: beautiful, fast & simple for all."
+        />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>

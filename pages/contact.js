@@ -9,8 +9,7 @@ import ins from "@/public/InstagramFill.svg";
 import Header from "@/components/Common/Header";
 import Footer from "@/components/Common/Footer";
 import { useRouter } from "next/router";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import toast from "react-simple-toasts";
 import { MdEmail } from "react-icons/md";
 import { ThreeDots } from "react-loader-spinner";
 
@@ -33,16 +32,16 @@ const contact = () => {
       /^(?:\+1)?(?:\(?([2-9]\d{2})\)?[-.\s]?)?\d{3}[-.\s]?\d{4}$/;
 
     if (!nameRegex.test(firstName)) {
-      toast.error("Please enter a valid first name!");
+      toast("Please enter a valid first name!");
       setEmailLoader(false);
     } else if (!nameRegex.test(lastName)) {
-      toast.error("Please enter a valid last name!");
+      toast("Please enter a valid last name!");
       setEmailLoader(false);
     } else if (!emailRegex.test(email)) {
-      toast.error("Please enter valid email!");
+      toast("Please enter valid email!");
       setEmailLoader(false);
     } else if (!numberRegex.test(phoneNumber)) {
-      toast.error("Please enter valid phone number!");
+      toast("Please enter valid phone number!");
       setEmailLoader(false);
     } else {
       // console.log("FORM DATA: ", {
@@ -76,7 +75,7 @@ const contact = () => {
           .then((result) => {
             console.log(result);
             if (result.result === true) {
-              toast.success(
+              toast(
                 "Form submitted successfully, we will be in touch with you soon!"
               );
               setFirstName("");
@@ -85,28 +84,30 @@ const contact = () => {
               setMessage("");
               setEmail("");
             } else {
-              toast.error(result.message);
+              toast(result.message);
             }
             setEmailLoader(false);
           })
           .catch((error) => {
             console.log("error", error);
-            toast.error(error.message);
+            toast(error.message);
             setEmailLoader(false);
           });
       } catch (error) {
         console.log(error);
-        toast.error(error.message);
+        toast(error.message);
         setEmailLoader(false);
       }
     }
   };
   return (
     <>
-      <ToastContainer />
       <Head>
         <title>CIRCLE - Contact Us</title>
-        <meta name="description" content="Simple Description of Circle app" />
+        <meta
+          name="description"
+          content="Circle.ooo ❤️'s our customers! Events: beautiful, fast & simple for all."
+        />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -224,7 +225,7 @@ const contact = () => {
                   Follow Us
                 </p>
 
-                <div className="flex flex-row justify-center lg:justify-start items-center lg:items-start gap-x-5 mt-4">
+                <div className="flex flex-row justify-center lg:justify-start items-center lg:items-start gap-x-2 mt-4">
                   <div
                     onClick={() =>
                       window.open(
@@ -234,7 +235,7 @@ const contact = () => {
                     }
                     className="h-12 cursor-pointer w-12 rounded-full bg-[#F5F5F7] flex items-center justify-center"
                   >
-                    <img src={fb.src} alt="" />
+                    <img src="/facebook.png" alt="" className="h-6 w-6" />
                   </div>
                   <div
                     onClick={() =>
@@ -245,7 +246,7 @@ const contact = () => {
                     }
                     className="h-12 cursor-pointer w-12 rounded-full bg-[#F5F5F7] flex items-center justify-center"
                   >
-                    <img src={ln.src} alt="" />
+                    <img src="/linkedin.png" alt="" className="h-6 w-6" />
                   </div>
                   <div
                     onClick={() =>
@@ -256,7 +257,7 @@ const contact = () => {
                     }
                     className="h-12 cursor-pointer w-12 rounded-full bg-[#F5F5F7] flex items-center justify-center"
                   >
-                    <img src={ins.src} alt="" />
+                    <img src="/instagram.png" alt="" className="h-6 w-6" />
                   </div>
                 </div>
               </div>

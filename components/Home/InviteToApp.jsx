@@ -3,29 +3,29 @@ import mobile from "../../public/mobilebg.png";
 import pentagon from "../../public/imgpentagon.png";
 import { AiFillApple } from "react-icons/ai";
 import { IoLogoGooglePlaystore } from "react-icons/io5";
-import AOS from "aos";
-import "aos/dist/aos.css";
+// import AOS from "aos";
+// import "aos/dist/aos.css";
 import { useRouter } from "next/router";
 
 const InviteToApp = () => {
-  useEffect(() => {
-    // console.log("Initializing AOS");
-    AOS.init({
-      duration: 800,
-      once: true,
-    });
+  // useEffect(() => {
+  //   // console.log("Initializing AOS");
+  //   AOS.init({
+  //     duration: 800,
+  //     once: true,
+  //   });
 
-    const handleScroll = () => {
-      // console.log("Scrolling...");
-    };
+  //   const handleScroll = () => {
+  //     // console.log("Scrolling...");
+  //   };
 
-    window.addEventListener("scroll", handleScroll);
+  //   window.addEventListener("scroll", handleScroll);
 
-    // Cleanup the event listener
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
+  //   // Cleanup the event listener
+  //   return () => {
+  //     window.removeEventListener("scroll", handleScroll);
+  //   };
+  // }, []);
   const router = useRouter();
   return (
     <>
@@ -39,12 +39,12 @@ const InviteToApp = () => {
       >
         <div className="w-full flex-col lg:flex-row flex justify-center items-center text-white">
           <div
-            data-aos="fade-up"
-            data-aos-delay="50"
-            data-aos-duration="4000"
-            data-aos-easing="ease-in-out"
-            data-aos-mirror="false"
-            data-aos-once="true"
+            // data-aos="fade-up"
+            // data-aos-delay="50"
+            // data-aos-duration="4000"
+            // data-aos-easing="ease-in-out"
+            // data-aos-mirror="false"
+            // data-aos-once="true"
             className="flex flex-col justify-center lg:items-start items-center mb-6"
           >
             <img src={mobile.src} alt="" className="flex lg:hidden p-6" />
@@ -92,12 +92,12 @@ const InviteToApp = () => {
           </div>
 
           <img
-            data-aos="fade-up"
-            data-aos-delay="50"
-            data-aos-duration="4000"
-            data-aos-easing="ease-in-out"
-            data-aos-mirror="false"
-            data-aos-once="true"
+            // data-aos="fade-up"
+            // data-aos-delay="50"
+            // data-aos-duration="4000"
+            // data-aos-easing="ease-in-out"
+            // data-aos-mirror="false"
+            // data-aos-once="true"
             src={mobile.src}
             alt=""
             className="hidden lg:flex ml-20"

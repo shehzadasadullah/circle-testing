@@ -21,8 +21,7 @@ import { useRouter } from "next/router";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import Link from "next/link";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import toast from "react-simple-toasts";
 import { ThreeDots } from "react-loader-spinner";
 
 //modal for login/restring user to firebase
@@ -107,16 +106,10 @@ const Register = ({ showModal, setShowModal }) => {
           // add additional user data here
         });
       }
-      toast.success("Logged In Successfully!", {
-        position: "top-right",
-        autoClose: 3000, // Time in milliseconds
-      });
+      toast("Logged In Successfully!");
       handleCloseModal();
     } catch (error) {
-      toast.error("Error!", {
-        position: "top-right",
-        autoClose: 3000, // Time in milliseconds
-      });
+      toast("Error!");
       console.error(error);
       // Add any additional error handling or logging here
     }
@@ -127,15 +120,21 @@ const Register = ({ showModal, setShowModal }) => {
   const handleResetPassword = async (e) => {
     setResetPasswordLoader(true);
     e.preventDefault();
-    try {
-      await sendPasswordResetEmail(auth, resetEmail);
-      setResetPasswordSent(true);
-      toast.success("Reset Password Email Sent!");
-      setResetPasswordLoader(false);
-    } catch (error) {
-      setResetError(error.message);
-      toast.error(error.message);
-      setResetPasswordLoader(false);
+    let emailRegex =
+      /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (emailRegex.test(resetEmail)) {
+      try {
+        await sendPasswordResetEmail(auth, resetEmail);
+        setResetPasswordSent(true);
+        toast("Reset Password Email Sent!");
+        setResetPasswordLoader(false);
+      } catch (error) {
+        setResetError(error.message);
+        toast(error.message);
+        setResetPasswordLoader(false);
+      }
+    } else {
+      toast("Invalid Email!");
     }
   };
 
@@ -165,17 +164,11 @@ const Register = ({ showModal, setShowModal }) => {
         },
         { merge: true }
       );
-      toast.success("Logged In Successfully!", {
-        position: "top-right",
-        autoClose: 3000, // Time in milliseconds
-      });
+      toast("Logged In Successfully!");
       handleCloseModal();
     } catch (error) {
       console.error(error);
-      toast.error("Error!", {
-        position: "top-right",
-        autoClose: 3000, // Time in milliseconds
-      });
+      toast("Error!");
     }
   };
 
@@ -190,14 +183,14 @@ const Register = ({ showModal, setShowModal }) => {
     e.preventDefault();
     const specialCharacterRegex = /[!@#$%^&*(),.?":{}|<>]/;
     if (specialCharacterRegex.test(name)) {
-      toast.error("Please Enter a Valid Full Name!");
+      toast("Please Enter a Valid Full Name!");
       setRegisterLoader(false);
     } else if (phone === "") {
-      toast.error("Please enter phone number!");
+      toast("Please enter phone number!");
       setRegisterLoader(false);
     } else if (password !== confirmPassword) {
       setRegisterError("Passwords do not match");
-      toast.error("Passwords do not match!");
+      toast("Passwords do not match!");
       setRegisterLoader(false);
     } else {
       try {
@@ -223,10 +216,8 @@ const Register = ({ showModal, setShowModal }) => {
           who_i_met: {},
           // add additional user data here
         });
-        toast.success("Registration Successful!", {
-          position: "top-right",
-          autoClose: 3000, // Time in milliseconds
-        });
+        toast("Registration Successful!");
+        handleCloseModal();
         setActiveTab("signin");
         setRegisterLoader(false);
       } catch (error) {
@@ -235,17 +226,11 @@ const Register = ({ showModal, setShowModal }) => {
           error.message ===
           "Firebase: Password should be at least 6 characters (auth/weak-password)."
         ) {
-          toast.error("Password should be at least 6 characters!", {
-            position: "top-right",
-            autoClose: 3000, // Time in milliseconds
-          });
+          toast("Password should be at least 6 characters!");
         } else if (
           error.message === "Firebase: Error (auth/email-already-in-use)."
         ) {
-          toast.error("Email already in use!", {
-            position: "top-right",
-            autoClose: 3000, // Time in milliseconds
-          });
+          toast("Email already in use!");
         }
         setRegisterError(error.message);
         setRegisterLoader(false);
@@ -259,18 +244,15 @@ const Register = ({ showModal, setShowModal }) => {
     setSignInLoader(true);
     e.preventDefault();
     if (email === "") {
-      toast.error("Please Enter Email!");
+      toast("Please Enter Email!");
       setSignInLoader(false);
     } else if (password === "") {
-      toast.error("Please Enter Password!");
+      toast("Please Enter Password!");
       setSignInLoader(false);
     } else {
       try {
         await signInWithEmailAndPassword(auth, email, password);
-        toast.success("Logged In Successfully!", {
-          position: "top-right",
-          autoClose: 3000, // Time in milliseconds
-        });
+        toast("Logged In Successfully!");
         handleCloseModal();
         setSignInLoader(false);
       } catch (error) {
@@ -278,15 +260,9 @@ const Register = ({ showModal, setShowModal }) => {
         if (
           error.message === "Firebase: Error (auth/invalid-login-credentials)."
         ) {
-          toast.error("Invalid Login Credentials!", {
-            position: "top-right",
-            autoClose: 3000, // Time in milliseconds
-          });
+          toast("Invalid Login Credentials!");
         } else {
-          toast.error(error.message, {
-            position: "top-right",
-            autoClose: 3000, // Time in milliseconds
-          });
+          toast(error.message);
         }
         setSignInError(error.message);
         setSignInLoader(false);
@@ -368,8 +344,8 @@ const Register = ({ showModal, setShowModal }) => {
               </button>
             </div>
 
-            {activeTab === "signin" ? (
-              loginWithNumber ? (
+            {activeTab === "signin" ? ( // signin
+              loginWithNumber ? ( // login with number
                 <>
                   <form className="w-full p-8" onSubmit={handleSubmit}>
                     <div className="mb-4">
@@ -542,6 +518,7 @@ const Register = ({ showModal, setShowModal }) => {
                   </form>
                 </>
               ) : (
+                // login with email address
                 <>
                   <form className="w-full p-8" onSubmit={handleSubmit}>
                     <div className="mb-4">
@@ -667,7 +644,7 @@ const Register = ({ showModal, setShowModal }) => {
                             }}
                           >
                             <img
-                              src="/linkedin.svg"
+                              src="/linkedin.png"
                               alt="Social Media Icon"
                               className="w-full h-auto"
                             />
@@ -732,6 +709,7 @@ const Register = ({ showModal, setShowModal }) => {
                 </>
               )
             ) : (
+              // forgot tab
               <div className="w-full">
                 {activeTab == "forgot" ? (
                   <div>
@@ -795,7 +773,7 @@ const Register = ({ showModal, setShowModal }) => {
                         <div className="w-full text-lg">
                           A mail regarding your request to reset your password
                           has been sent to{" "}
-                          <span className="font-semibold">{resetEmail}</span>!
+                          <span className="font-semibold">{resetEmail}</span>
                         </div>
                         <button
                           className="px-5 py-3 mt-5 rounded-xl border-0 bg-[#007BAB] text-white"
@@ -814,7 +792,7 @@ const Register = ({ showModal, setShowModal }) => {
                       </div>
                     )}
                   </div>
-                ) : registerWithNumber ? (
+                ) : registerWithNumber ? ( // register with number
                   <>
                     <form className="p-8 w-full" onSubmit={register}>
                       <div className="mb-4">
@@ -1038,6 +1016,7 @@ const Register = ({ showModal, setShowModal }) => {
                     </form>
                   </>
                 ) : (
+                  // register with email address
                   <>
                     <form className="p-8 w-full" onSubmit={register}>
                       <div className="mb-4">
@@ -1236,7 +1215,7 @@ const Register = ({ showModal, setShowModal }) => {
                               }}
                             >
                               <img
-                                src="/linkedin.svg"
+                                src="/linkedin.png"
                                 alt="Social Media Icon"
                                 className="w-full h-auto"
                               />
@@ -1285,13 +1264,21 @@ const Register = ({ showModal, setShowModal }) => {
                         >
                           Agree to the{" "}
                           <u>
-                            <Link href="/terms" className="underline">
+                            <Link
+                              href="/terms"
+                              target="_blank"
+                              className="underline"
+                            >
                               Terms &amp; Conditions
                             </Link>
                           </u>{" "}
                           &amp;{" "}
                           <u>
-                            <Link href="/privacy-policy" className="underline">
+                            <Link
+                              href="/privacy-policy"
+                              target="_blank"
+                              className="underline"
+                            >
                               Privacy Policy
                             </Link>
                           </u>

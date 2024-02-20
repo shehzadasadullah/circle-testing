@@ -10,8 +10,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { signOut } from "firebase/auth";
 import { auth } from "../../firebase";
 import { getAuth, getIdToken } from "firebase/auth";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import toast from "react-simple-toasts";
 import Register from "../Home/Register";
 import { IoIosArrowForward } from "react-icons/io";
 import { ThreeDots } from "react-loader-spinner";
@@ -144,24 +143,20 @@ function Dashboard() {
                 if (result.message === "eventbrite integrated successfully") {
                   setEventBriteLoader(false);
                   setIsIntegratedEventBrite(true);
-                  toast.success("Eventbrite integrated successfully!");
+                  toast("Eventbrite integrated successfully!");
                   localStorage.removeItem("integration");
                   localStorage.removeItem("loader");
                 }
               } else {
                 setEventBriteLoader(false);
-                toast.error(
-                  "Integration error from third party, Please try again!"
-                );
+                toast("Integration error from third party, Please try again!");
                 localStorage.removeItem("integration");
                 localStorage.removeItem("loader");
               }
             })
             .catch((error) => {
               setEventBriteLoader(false);
-              toast.error(
-                "Integration error from third party, Please try again!"
-              );
+              toast("Integration error from third party, Please try again!");
               localStorage.removeItem("integration");
               localStorage.removeItem("loader");
             });
@@ -198,18 +193,14 @@ function Dashboard() {
                 }
               } else {
                 setMeetUpLoader(false);
-                toast.error(
-                  "Integration error from third party, Please try again!"
-                );
+                toast("Integration error from third party, Please try again!");
                 localStorage.removeItem("integration");
                 localStorage.removeItem("loader");
               }
             })
             .catch((error) => {
               setMeetUpLoader(false);
-              toast.error(
-                "Integration error from third party, Please try again!"
-              );
+              toast("Integration error from third party, Please try again!");
               localStorage.removeItem("integration");
               localStorage.removeItem("loader");
             });
@@ -246,24 +237,20 @@ function Dashboard() {
                 ) {
                   setGoogleCalenderLoader(false);
                   setIsIntegratedGC(true);
-                  toast.success("Google Calender integrated successfully!");
+                  toast("Google Calender integrated successfully!");
                   localStorage.removeItem("integration");
                   localStorage.removeItem("loader");
                 }
               } else {
                 setGoogleCalenderLoader(false);
-                toast.error(
-                  "Integration error from third party, Please try again!"
-                );
+                toast("Integration error from third party, Please try again!");
                 localStorage.removeItem("integration");
                 localStorage.removeItem("loader");
               }
             })
             .catch((error) => {
               setGoogleCalenderLoader(false);
-              toast.error(
-                "Integration error from third party, Please try again!"
-              );
+              toast("Integration error from third party, Please try again!");
               localStorage.removeItem("integration");
               localStorage.removeItem("loader");
             });
@@ -298,24 +285,20 @@ function Dashboard() {
                 if (result.message === "outlook integrated successfully") {
                   setMoLoader(false);
                   setIsIntegratedMO(true);
-                  toast.success("Outlook integrated successfully!");
+                  toast("Outlook integrated successfully!");
                   localStorage.removeItem("integration");
                   localStorage.removeItem("loader");
                 }
               } else {
                 setMoLoader(false);
-                toast.error(
-                  "Integration error from third party, Please try again!"
-                );
+                toast("Integration error from third party, Please try again!");
                 localStorage.removeItem("integration");
                 localStorage.removeItem("loader");
               }
             })
             .catch((error) => {
               setMoLoader(false);
-              toast.error(
-                "Integration error from third party, Please try again!"
-              );
+              toast("Integration error from third party, Please try again!");
               localStorage.removeItem("integration");
               localStorage.removeItem("loader");
             });
@@ -384,7 +367,7 @@ function Dashboard() {
             }
           });
         } else {
-          toast.error("Something went wrong with the integrations!");
+          toast("Something went wrong with the integrations!");
         }
         setThirdPartLoader(false);
       })
@@ -409,10 +392,7 @@ function Dashboard() {
   const logout = async () => {
     try {
       await signOut(auth);
-      toast.success("Logged Out Successfully!", {
-        position: "top-right",
-        autoClose: 3000, // Time in milliseconds
-      });
+      toast("Logged Out Successfully!");
       router.push("/");
       // Additional cleanup or state updates can be done here
       console.log("User logged out successfully");
@@ -444,7 +424,7 @@ function Dashboard() {
           localStorage.setItem("loader", "true");
           router.push(result.data);
         } else {
-          toast.error("Something went wrong!");
+          toast("Something went wrong!");
         }
       })
       .catch((error) => console.log("error", error));
@@ -473,7 +453,7 @@ function Dashboard() {
           localStorage.setItem("loader", "true");
           router.push(result.data);
         } else {
-          toast.error("Something went wrong!");
+          toast("Something went wrong!");
         }
       })
       .catch((error) => console.log("error", error));
@@ -500,10 +480,10 @@ function Dashboard() {
           if (result.message === "ical integrated successfully") {
             setICalLoader(false);
             setIsIntegratedIC(true);
-            toast.success("iCal Integrated Successfully!");
+            toast("iCal Integrated Successfully!");
           }
         } else {
-          toast.error("Something went wrong!");
+          toast("Something went wrong!");
         }
       })
       .catch((error) => console.log("error", error));
@@ -531,7 +511,7 @@ function Dashboard() {
           localStorage.setItem("loader", "true");
           router.push(result.data);
         } else {
-          toast.error("Something went wrong!");
+          toast("Something went wrong!");
         }
       })
       .catch((error) => console.log("error", error));
@@ -539,7 +519,7 @@ function Dashboard() {
 
   const handleIntegrateMeetup = () => {
     if (groupURL === "") {
-      toast.error("Please add group url!");
+      toast("Please add group url!");
     } else {
       setGroupURLLoader(true);
       var myHeaders = new Headers();
@@ -563,18 +543,18 @@ function Dashboard() {
               setIsOpen(false);
               setMeetUpLoader(false);
               setIsIntegratedMeetUp(true);
-              toast.success("Meetup Integrated Successfully!");
+              toast("Meetup Integrated Successfully!");
               localStorage.removeItem("integration");
               localStorage.removeItem("loader");
             }
           } else {
             setGroupURLLoader(false);
-            toast.error("Invalid Group URL, or Third Party Error!");
+            toast("Invalid Group URL, or Third Party Error!");
           }
         })
         .catch((error) => {
           setGroupURLLoader(false);
-          toast.error("Invalid Group URL, or Third Party Error!");
+          toast("Invalid Group URL, or Third Party Error!");
         });
     }
   };
@@ -601,7 +581,7 @@ function Dashboard() {
           localStorage.setItem("loader", "true");
           router.push(result.data);
         } else {
-          toast.error("Something went wrong!");
+          toast("Something went wrong!");
         }
       })
       .catch((error) => console.log("error", error));
@@ -609,7 +589,6 @@ function Dashboard() {
 
   return (
     <>
-      <ToastContainer />
       <Dialog
         open={isOpen}
         onClose={() => setIsOpen(false)}
@@ -748,10 +727,7 @@ function Dashboard() {
                         logout();
                       })
                       .catch((error) => {
-                        toast.error("Error!", {
-                          position: "top-right",
-                          autoClose: 3000, // Time in milliseconds
-                        });
+                        toast("Error!");
                       });
                   }}
                 >
@@ -819,7 +795,7 @@ function Dashboard() {
           <div className="p-6 w-full h-auto">
             {activeView === "integrations" && (
               <>
-                {thirdPartLoader ? (
+                {/* {thirdPartLoader ? (
                   <>
                     <>
                       <div className="flex mt-50 justify-center items-center">
@@ -828,275 +804,275 @@ function Dashboard() {
                     </>
                   </>
                 ) : (
-                  <>
-                    <div className="p-6 lg:p-20 bg-[#012432] rounded-xl">
-                      <h1 className="text-4xl text-[#F9F9F9] font-bold mb-4">
-                        Third Party Integrations
-                      </h1>
-                      <p className="text-[#BDBDBD]">
-                        Add all third party event integrations here -
-                        (EventBrite, Meetup, LinkedIn etc.)
-                      </p>
-                      <div className="flex w-full h-auto flex-col justify-start items-start rounded-lg mt-5">
-                        <div className="flex justify-between text-[#292D32] flex-row w-full h-auto mt-2">
-                          <div className="text-[#F9F9F9] flex flex-row justify-center items-center text-xl font-bold">
-                            <SiEventbrite size={25} color="#F05537" />{" "}
-                            <p className="ml-2">EventBrite</p>
-                          </div>
-                          <div>
-                            {eventBriteLoader ? (
-                              <>
-                                <div className="flex justify-center items-center w-full p-4">
-                                  <ThreeDots
-                                    height="20"
-                                    color="#007BAB"
-                                    width="60"
-                                    radius="9"
-                                    ariaLabel="three-dots-loading"
-                                    visible={true}
-                                  />
-                                </div>
-                              </>
-                            ) : isIntegratedEventBrite ? (
-                              <>
-                                <button
-                                  disabled={true}
-                                  className={`font14 font-medium rounded-xl sm:py-2 px-4 font-Montserrat text-[#fff] border-2 border-[#007BAB] bg-[#007BAB]`}
-                                >
-                                  <div className="flex justify-center font-bold text-[20pt] items-center">
-                                    ✓
-                                  </div>
-                                </button>
-                              </>
-                            ) : (
-                              <>
-                                <button
-                                  onClick={() => {
-                                    handleEventBriteIntegration();
-                                  }}
-                                  disabled={eventBriteLoader}
-                                  className={`font14 font-medium rounded-xl py-3 px-5 font-Montserrat text-[#fff] hover:text-[#fff] border-2 border-[#007BAB] hover:bg-transparent bg-[#007BAB]`}
-                                >
-                                  <div className="flex justify-center items-center">
-                                    Integrate
-                                  </div>
-                                </button>
-                              </>
-                            )}
-                          </div>
-                        </div>
-                        <div className="flex justify-between text-[#292D32] flex-row w-full h-auto mt-4">
-                          <div className="text-[#F9F9F9] flex flex-row justify-center items-center text-xl font-bold">
-                            <FaMeetup size={25} color="#F65858" />{" "}
-                            <p className="ml-2">MeetUp</p>
-                          </div>
-                          <div>
-                            {meetUpLoader ? (
-                              <>
-                                <div className="flex justify-center items-center w-full p-4">
-                                  <ThreeDots
-                                    height="20"
-                                    color="#007BAB"
-                                    width="60"
-                                    radius="9"
-                                    ariaLabel="three-dots-loading"
-                                    visible={true}
-                                  />
-                                </div>
-                              </>
-                            ) : isIntegratedMeetUp ? (
-                              <>
-                                <button
-                                  disabled={true}
-                                  className={`font14 font-medium rounded-xl sm:py-2 px-4 font-Montserrat text-[#fff] border-2 border-[#007BAB] bg-[#007BAB]`}
-                                >
-                                  <div className="flex justify-center font-bold text-[20pt] items-center">
-                                    ✓
-                                  </div>
-                                </button>
-                              </>
-                            ) : (
-                              <>
-                                <button
-                                  onClick={() => {
-                                    handleMeetUpIntegration();
-                                  }}
-                                  disabled={meetUpLoader}
-                                  className={`font14 font-medium rounded-xl py-3 px-5 font-Montserrat text-[#fff] hover:text-[#fff] border-2 border-[#007BAB] hover:bg-transparent bg-[#007BAB]`}
-                                >
-                                  <div className="flex justify-center items-center">
-                                    Integrate
-                                  </div>
-                                </button>
-                              </>
-                            )}
-                          </div>
-                        </div>
-                        <div className="flex justify-between text-[#292D32] flex-row w-full h-auto mt-4">
-                          <div className="text-[#F9F9F9] flex flex-row justify-center items-center text-xl font-bold">
-                            <ImLinkedin size={25} color="#007BAB" />{" "}
-                            <p className="ml-2">LinkedIn (Coming Soon)</p>
-                          </div>
-                        </div>
+                  <> */}
+                <div className="p-6 lg:p-20 bg-[#012432] rounded-xl">
+                  <h1 className="text-4xl text-[#F9F9F9] font-bold mb-4">
+                    Third Party Integrations
+                  </h1>
+                  <p className="text-[#BDBDBD]">
+                    Add all third party event integrations here - (EventBrite,
+                    Meetup, LinkedIn etc.)
+                  </p>
+                  <div className="flex w-full h-auto flex-col justify-start items-start rounded-lg mt-5">
+                    <div className="flex justify-between text-[#292D32] flex-row w-full h-auto mt-2">
+                      <div className="text-[#F9F9F9] flex flex-row justify-center items-center text-xl font-bold">
+                        <SiEventbrite size={25} color="#F05537" />{" "}
+                        <p className="ml-2">EventBrite</p>
+                      </div>
+                      <div>
+                        {eventBriteLoader ? (
+                          <>
+                            <div className="flex justify-center items-center w-full p-4">
+                              <ThreeDots
+                                height="20"
+                                color="#007BAB"
+                                width="60"
+                                radius="9"
+                                ariaLabel="three-dots-loading"
+                                visible={true}
+                              />
+                            </div>
+                          </>
+                        ) : isIntegratedEventBrite ? (
+                          <>
+                            <button
+                              disabled={true}
+                              className={`font14 font-medium rounded-xl sm:py-2 px-4 font-Montserrat text-[#fff] border-2 border-[#007BAB] bg-[#007BAB]`}
+                            >
+                              <div className="flex justify-center font-bold text-[20pt] items-center">
+                                ✓
+                              </div>
+                            </button>
+                          </>
+                        ) : (
+                          <>
+                            <button
+                              onClick={() => {
+                                handleEventBriteIntegration();
+                              }}
+                              disabled={eventBriteLoader}
+                              className={`font14 font-medium rounded-xl py-3 px-5 font-Montserrat text-[#fff] hover:text-[#fff] border-2 border-[#007BAB] hover:bg-transparent bg-[#007BAB]`}
+                            >
+                              <div className="flex justify-center items-center">
+                                Integrate
+                              </div>
+                            </button>
+                          </>
+                        )}
                       </div>
                     </div>
-
-                    <div className="p-6 mt-10 lg:p-20 bg-[#012432] rounded-xl">
-                      <h1 className="text-4xl text-[#F9F9F9] font-bold mb-4">
-                        Calendars Integration
-                      </h1>
-                      <p className="text-[#BDBDBD]">
-                        Add all calendars integrations here - (Google Calendar,
-                        iCal, Outlook etc.)
-                      </p>
-                      <div className="flex w-full h-auto flex-col justify-start items-start rounded-lg mt-5">
-                        <div className="flex justify-between text-[#292D32] flex-row w-full h-auto mt-2">
-                          <div className="text-[#F9F9F9] flex flex-row justify-center items-center text-xl font-bold">
-                            <img src={gCal.src} className="h-7" alt="" />
-                            <p className="ml-2">Google Calendar</p>
-                          </div>
-                          <div>
-                            {googleCalenderLoader ? (
-                              <>
-                                <div className="flex justify-center items-center w-full p-4">
-                                  <ThreeDots
-                                    height="20"
-                                    color="#007BAB"
-                                    width="60"
-                                    radius="9"
-                                    ariaLabel="three-dots-loading"
-                                    visible={true}
-                                  />
-                                </div>
-                              </>
-                            ) : isIntegratedGC ? (
-                              <>
-                                <button
-                                  disabled={true}
-                                  className={`font14 font-medium rounded-xl sm:py-2 px-4 font-Montserrat text-[#fff] border-2 border-[#007BAB] bg-[#007BAB]`}
-                                >
-                                  <div className="flex justify-center font-bold text-[20pt] items-center">
-                                    ✓
-                                  </div>
-                                </button>
-                              </>
-                            ) : (
-                              <>
-                                <button
-                                  onClick={() => {
-                                    handleGCIntegration();
-                                  }}
-                                  disabled={googleCalenderLoader}
-                                  className={`font14 font-medium rounded-xl py-3 px-5 font-Montserrat text-[#fff] hover:text-[#fff] border-2 border-[#007BAB] hover:bg-transparent bg-[#007BAB]`}
-                                >
-                                  <div className="flex justify-center items-center">
-                                    Integrate
-                                  </div>
-                                </button>
-                              </>
-                            )}
-                          </div>
-                        </div>
-                        <div className="flex justify-between text-[#292D32] flex-row w-full h-auto mt-4">
-                          <div className="text-[#F9F9F9] flex flex-row justify-center items-center text-xl font-bold">
-                            <img src={iCal.src} className="h-7" alt="" />
-                            <p className="ml-2">iCal</p>
-                          </div>
-
-                          <div>
-                            {iCalLoader ? (
-                              <>
-                                <div className="flex justify-center items-center w-full p-4">
-                                  <ThreeDots
-                                    height="20"
-                                    color="#007BAB"
-                                    width="60"
-                                    radius="9"
-                                    ariaLabel="three-dots-loading"
-                                    visible={true}
-                                  />
-                                </div>
-                              </>
-                            ) : isIntegratedIC ? (
-                              <>
-                                <button
-                                  disabled={true}
-                                  className={`font14 font-medium rounded-xl sm:py-2 px-4 font-Montserrat text-[#fff] border-2 border-[#007BAB] bg-[#007BAB]`}
-                                >
-                                  <div className="flex justify-center font-bold text-[20pt] items-center">
-                                    ✓
-                                  </div>
-                                </button>
-                              </>
-                            ) : (
-                              <>
-                                <button
-                                  onClick={() => {
-                                    handleICIntegration();
-                                  }}
-                                  disabled={iCalLoader}
-                                  className={`font14 font-medium rounded-xl py-3 px-5 font-Montserrat text-[#fff] hover:text-[#fff] border-2 border-[#007BAB] hover:bg-transparent bg-[#007BAB]`}
-                                >
-                                  <div className="flex justify-center items-center">
-                                    Integrate
-                                  </div>
-                                </button>
-                              </>
-                            )}
-                          </div>
-                        </div>
-                        <div className="flex justify-between text-[#292D32] flex-row w-full h-auto mt-4">
-                          <div className="text-[#F9F9F9] flex flex-row justify-center items-center text-xl font-bold">
-                            <img src={mCal.src} className="h-7" alt="" />
-                            <p className="ml-2">Microsoft Outlook</p>
-                          </div>
-
-                          <div>
-                            {moLoader ? (
-                              <>
-                                <div className="flex justify-center items-center w-full p-4">
-                                  <ThreeDots
-                                    height="20"
-                                    color="#007BAB"
-                                    width="60"
-                                    radius="9"
-                                    ariaLabel="three-dots-loading"
-                                    visible={true}
-                                  />
-                                </div>
-                              </>
-                            ) : isIntegratedMO ? (
-                              <>
-                                <button
-                                  disabled={true}
-                                  className={`font14 font-medium rounded-xl sm:py-2 px-4 font-Montserrat text-[#fff] border-2 border-[#007BAB] bg-[#007BAB]`}
-                                >
-                                  <div className="flex justify-center font-bold text-[20pt] items-center">
-                                    ✓
-                                  </div>
-                                </button>
-                              </>
-                            ) : (
-                              <>
-                                <button
-                                  onClick={() => {
-                                    handleMOIntegration();
-                                  }}
-                                  disabled={moLoader}
-                                  className={`font14 font-medium rounded-xl py-3 px-5 font-Montserrat text-[#fff] hover:text-[#fff] border-2 border-[#007BAB] hover:bg-transparent bg-[#007BAB]`}
-                                >
-                                  <div className="flex justify-center items-center">
-                                    Integrate
-                                  </div>
-                                </button>
-                              </>
-                            )}
-                          </div>
-                        </div>
+                    <div className="flex justify-between text-[#292D32] flex-row w-full h-auto mt-4">
+                      <div className="text-[#F9F9F9] flex flex-row justify-center items-center text-xl font-bold">
+                        <FaMeetup size={25} color="#F65858" />{" "}
+                        <p className="ml-2">MeetUp</p>
+                      </div>
+                      <div>
+                        {meetUpLoader ? (
+                          <>
+                            <div className="flex justify-center items-center w-full p-4">
+                              <ThreeDots
+                                height="20"
+                                color="#007BAB"
+                                width="60"
+                                radius="9"
+                                ariaLabel="three-dots-loading"
+                                visible={true}
+                              />
+                            </div>
+                          </>
+                        ) : isIntegratedMeetUp ? (
+                          <>
+                            <button
+                              disabled={true}
+                              className={`font14 font-medium rounded-xl sm:py-2 px-4 font-Montserrat text-[#fff] border-2 border-[#007BAB] bg-[#007BAB]`}
+                            >
+                              <div className="flex justify-center font-bold text-[20pt] items-center">
+                                ✓
+                              </div>
+                            </button>
+                          </>
+                        ) : (
+                          <>
+                            <button
+                              onClick={() => {
+                                handleMeetUpIntegration();
+                              }}
+                              disabled={meetUpLoader}
+                              className={`font14 font-medium rounded-xl py-3 px-5 font-Montserrat text-[#fff] hover:text-[#fff] border-2 border-[#007BAB] hover:bg-transparent bg-[#007BAB]`}
+                            >
+                              <div className="flex justify-center items-center">
+                                Integrate
+                              </div>
+                            </button>
+                          </>
+                        )}
                       </div>
                     </div>
-                  </>
-                )}
+                    <div className="flex justify-between text-[#292D32] flex-row w-full h-auto mt-4">
+                      <div className="text-[#F9F9F9] flex flex-row justify-center items-center text-xl font-bold">
+                        <ImLinkedin size={25} color="#007BAB" />{" "}
+                        <p className="ml-2">LinkedIn (Coming Soon)</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="p-6 mt-10 lg:p-20 bg-[#012432] rounded-xl">
+                  <h1 className="text-4xl text-[#F9F9F9] font-bold mb-4">
+                    Calendars Integration
+                  </h1>
+                  <p className="text-[#BDBDBD]">
+                    Add all calendars integrations here - (Google Calendar,
+                    iCal, Outlook etc.)
+                  </p>
+                  <div className="flex w-full h-auto flex-col justify-start items-start rounded-lg mt-5">
+                    <div className="flex justify-between text-[#292D32] flex-row w-full h-auto mt-2">
+                      <div className="text-[#F9F9F9] flex flex-row justify-center items-center text-xl font-bold">
+                        <img src={gCal.src} className="h-7" alt="" />
+                        <p className="ml-2">Google Calendar</p>
+                      </div>
+                      <div>
+                        {googleCalenderLoader ? (
+                          <>
+                            <div className="flex justify-center items-center w-full p-4">
+                              <ThreeDots
+                                height="20"
+                                color="#007BAB"
+                                width="60"
+                                radius="9"
+                                ariaLabel="three-dots-loading"
+                                visible={true}
+                              />
+                            </div>
+                          </>
+                        ) : isIntegratedGC ? (
+                          <>
+                            <button
+                              disabled={true}
+                              className={`font14 font-medium rounded-xl sm:py-2 px-4 font-Montserrat text-[#fff] border-2 border-[#007BAB] bg-[#007BAB]`}
+                            >
+                              <div className="flex justify-center font-bold text-[20pt] items-center">
+                                ✓
+                              </div>
+                            </button>
+                          </>
+                        ) : (
+                          <>
+                            <button
+                              onClick={() => {
+                                handleGCIntegration();
+                              }}
+                              disabled={googleCalenderLoader}
+                              className={`font14 font-medium rounded-xl py-3 px-5 font-Montserrat text-[#fff] hover:text-[#fff] border-2 border-[#007BAB] hover:bg-transparent bg-[#007BAB]`}
+                            >
+                              <div className="flex justify-center items-center">
+                                Integrate
+                              </div>
+                            </button>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                    <div className="flex justify-between text-[#292D32] flex-row w-full h-auto mt-4">
+                      <div className="text-[#F9F9F9] flex flex-row justify-center items-center text-xl font-bold">
+                        <img src={iCal.src} className="h-7" alt="" />
+                        <p className="ml-2">iCal</p>
+                      </div>
+
+                      <div>
+                        {iCalLoader ? (
+                          <>
+                            <div className="flex justify-center items-center w-full p-4">
+                              <ThreeDots
+                                height="20"
+                                color="#007BAB"
+                                width="60"
+                                radius="9"
+                                ariaLabel="three-dots-loading"
+                                visible={true}
+                              />
+                            </div>
+                          </>
+                        ) : isIntegratedIC ? (
+                          <>
+                            <button
+                              disabled={true}
+                              className={`font14 font-medium rounded-xl sm:py-2 px-4 font-Montserrat text-[#fff] border-2 border-[#007BAB] bg-[#007BAB]`}
+                            >
+                              <div className="flex justify-center font-bold text-[20pt] items-center">
+                                ✓
+                              </div>
+                            </button>
+                          </>
+                        ) : (
+                          <>
+                            <button
+                              onClick={() => {
+                                handleICIntegration();
+                              }}
+                              disabled={iCalLoader}
+                              className={`font14 font-medium rounded-xl py-3 px-5 font-Montserrat text-[#fff] hover:text-[#fff] border-2 border-[#007BAB] hover:bg-transparent bg-[#007BAB]`}
+                            >
+                              <div className="flex justify-center items-center">
+                                Integrate
+                              </div>
+                            </button>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                    <div className="flex justify-between text-[#292D32] flex-row w-full h-auto mt-4">
+                      <div className="text-[#F9F9F9] flex flex-row justify-center items-center text-xl font-bold">
+                        <img src={mCal.src} className="h-7" alt="" />
+                        <p className="ml-2">Microsoft Outlook</p>
+                      </div>
+
+                      <div>
+                        {moLoader ? (
+                          <>
+                            <div className="flex justify-center items-center w-full p-4">
+                              <ThreeDots
+                                height="20"
+                                color="#007BAB"
+                                width="60"
+                                radius="9"
+                                ariaLabel="three-dots-loading"
+                                visible={true}
+                              />
+                            </div>
+                          </>
+                        ) : isIntegratedMO ? (
+                          <>
+                            <button
+                              disabled={true}
+                              className={`font14 font-medium rounded-xl sm:py-2 px-4 font-Montserrat text-[#fff] border-2 border-[#007BAB] bg-[#007BAB]`}
+                            >
+                              <div className="flex justify-center font-bold text-[20pt] items-center">
+                                ✓
+                              </div>
+                            </button>
+                          </>
+                        ) : (
+                          <>
+                            <button
+                              onClick={() => {
+                                handleMOIntegration();
+                              }}
+                              disabled={moLoader}
+                              className={`font14 font-medium rounded-xl py-3 px-5 font-Montserrat text-[#fff] hover:text-[#fff] border-2 border-[#007BAB] hover:bg-transparent bg-[#007BAB]`}
+                            >
+                              <div className="flex justify-center items-center">
+                                Integrate
+                              </div>
+                            </button>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {/* </>
+                )} */}
               </>
             )}
           </div>

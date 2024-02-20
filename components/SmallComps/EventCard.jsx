@@ -130,6 +130,8 @@ const EventCard = ({
       ticketPrice: price,
       uid: uid,
       small_image: image,
+      large_image: image,
+      type: type,
       attend: attend,
       timefrom: time,
     };

@@ -31,8 +31,7 @@ import QRCode from "qrcode";
 import axios from "axios";
 import Loading from "@/components/Loading";
 import Register from "@/components/Home/Register";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import toast from "react-simple-toasts";
 import { ThreeDots } from "react-loader-spinner";
 import loaderGif from "../../../public/events/Loader.gif";
 import { getIdToken } from "firebase/auth";
@@ -209,7 +208,7 @@ const MyForm = () => {
         AttendeesData();
         setShowFreeModal(true);
         console.log("state", "Transaction Successful");
-        toast.success("Transaction Successful!");
+        toast("Transaction Successful!");
         try {
           var myHeaders = new Headers();
           myHeaders.append("accessToken", circleAccessToken);
@@ -251,12 +250,12 @@ const MyForm = () => {
       if (isValidEmail) {
         return true;
       } else {
-        toast.error("Please Enter Valid Checkout Email!");
+        toast("Please Enter Valid Checkout Email!");
         setPaymentLoader(false);
         return false;
       }
     } else {
-      toast.error("Please Enter Checkout Email!");
+      toast("Please Enter Checkout Email!");
       setPaymentLoader(false);
       return false;
     }
@@ -271,12 +270,12 @@ const MyForm = () => {
       if (isValidPhoneNumber) {
         return true;
       } else {
-        toast.error("Please Enter Valid Checkout Phone Number!");
+        toast("Please Enter Valid Checkout Phone Number!");
         setPaymentLoader(false);
         return false;
       }
     } else {
-      toast.error("Please Enter Checkout Phone Number!");
+      toast("Please Enter Checkout Phone Number!");
       setPaymentLoader(false);
       return false;
     }
@@ -310,17 +309,17 @@ const MyForm = () => {
         const card = elements.getElement(CardNumberElement);
 
         if (!stripe || !elements) {
-          toast.error("Stripe Error, Please try again!");
+          toast("Stripe Error, Please try again!");
           setPaymentLoader(false);
           return;
         }
         if (elements == null) {
-          toast.error("Stripe Error, Please try again!");
+          toast("Stripe Error, Please try again!");
           setPaymentLoader(false);
           return;
         }
         if (card == null) {
-          toast.error("Stripe Card Error, Please try again!");
+          toast("Stripe Card Error, Please try again!");
           setPaymentLoader(false);
           return;
         }
@@ -336,7 +335,7 @@ const MyForm = () => {
         });
 
         if (error) {
-          toast.error("Error:" + " " + error.message);
+          toast("Error:" + " " + error.message);
           setPaymentLoader(false);
         } else {
           let paymentDetails = {
@@ -400,7 +399,10 @@ const MyForm = () => {
     const price =
       EventData?.ticketPrice !== "0.00" ? EventData?.ticketPrice : "Free";
     const name =
-      creatorData?.full_name || creatorData?.display_name || "Anonymous";
+      creatorData?.full_name ||
+      creatorData?.display_name ||
+      creatorData?.displayName ||
+      "Anonymous";
     const eventtime = formattedTime;
     const email = user?.email;
 
@@ -572,54 +574,54 @@ const MyForm = () => {
 
   return (
     <>
-      {loader1 === false &&
+      {/* {loader1 === false &&
       loader2 === false &&
       loader3 === false &&
       loader4 === false &&
       loader5 === false &&
       loader6 === false ? (
-        <>
-          <div className="w-full h-auto flex gap-10 flex-col lg:flex-row justify-start items-start p-5 lg:p-20">
-            {/* Left */}
-            <div className="w-full lg:w-2/3 flex flex-col justify-center items-center rounded-xl">
-              <div className="flex flex-col justify-center items-center w-full rounded-xl">
-                <div
-                  style={{
-                    boxShadow: "rgba(149, 157, 165, 0.2) 0px 8px 24px",
+        <> */}
+      <div className="w-full h-auto flex gap-10 flex-col lg:flex-row justify-start items-start p-5 lg:p-20">
+        {/* Left */}
+        <div className="w-full lg:w-2/3 flex flex-col justify-center items-center rounded-xl">
+          <div className="flex flex-col justify-center items-center w-full rounded-xl">
+            <div
+              style={{
+                boxShadow: "rgba(149, 157, 165, 0.2) 0px 8px 24px",
+              }}
+              className="w-full flex flex-col rounded-xl justify-center rounded-xl items-center bg-white"
+            >
+              <div className="flex w-full justify-between p-4 bg-[#F9F9F9] rounded-t-xl items-center">
+                <h1 className="font-semibold text-xl text-[#242424]">
+                  Checkout Details
+                </h1>
+                <ChevronDown className="w-4 h-4 text-[#000] font-bold" />
+              </div>
+              <div className="flex w-full gap-5 flex-col lg:flex-row justify-center lg:justify-between items-center px-4 py-6">
+                <input
+                  className="w-full py-3 px-5 rounded-xl border border-[#D9DBDF] border-[1px] focus:border-[#007BAB] focus:border-[1px] outline-none"
+                  id="email"
+                  type="email"
+                  value={checkoutEmail}
+                  onChange={(e) => {
+                    setCheckoutEmail(e.target.value);
                   }}
-                  className="w-full flex flex-col rounded-xl justify-center rounded-xl items-center bg-white"
-                >
-                  <div className="flex w-full justify-between p-4 bg-[#F9F9F9] rounded-t-xl items-center">
-                    <h1 className="font-semibold text-xl text-[#242424]">
-                      Checkout Details
-                    </h1>
-                    <ChevronDown className="w-4 h-4 text-[#000] font-bold" />
-                  </div>
-                  <div className="flex w-full gap-5 flex-col lg:flex-row justify-center lg:justify-between items-center px-4 py-6">
-                    <input
-                      className="w-full py-3 px-5 rounded-xl border border-[#D9DBDF] border-[1px] focus:border-[#007BAB] focus:border-[1px] outline-none"
-                      id="email"
-                      type="email"
-                      value={checkoutEmail}
-                      onChange={(e) => {
-                        setCheckoutEmail(e.target.value);
-                      }}
-                      placeholder="Checkout Email"
-                      required
-                    />
-                    <input
-                      className="w-full py-3 px-5 rounded-xl border border-[#D9DBDF] border-[1px] focus:border-[#007BAB] focus:border-[1px] outline-none"
-                      id="number"
-                      type="text"
-                      value={checkoutPhoneNumber}
-                      onChange={(e) => {
-                        setCheckoutPhoneNumber(e.target.value);
-                      }}
-                      placeholder="Checkout Phone Number"
-                      required
-                    />
-                  </div>
-                  {/* <div className="w-full px-4 pb-6 flex justify-center items-center">
+                  placeholder="Checkout Email"
+                  required
+                />
+                <input
+                  className="w-full py-3 px-5 rounded-xl border border-[#D9DBDF] border-[1px] focus:border-[#007BAB] focus:border-[1px] outline-none"
+                  id="number"
+                  type="text"
+                  value={checkoutPhoneNumber}
+                  onChange={(e) => {
+                    setCheckoutPhoneNumber(e.target.value);
+                  }}
+                  placeholder="Checkout Phone Number"
+                  required
+                />
+              </div>
+              {/* <div className="w-full px-4 pb-6 flex justify-center items-center">
               <button
                 className="w-full py-2 rounded-full bg-[#007BAB] text-white border border-2 border-[#007BAB] font-semibold hover:border-[#007BAB] hover:text-[#007BAB] hover:bg-transparent"
                 id="button"
@@ -628,183 +630,181 @@ const MyForm = () => {
                 Continue
               </button>
             </div> */}
-                </div>
-
-                <div
-                  style={{
-                    boxShadow: "rgba(149, 157, 165, 0.2) 0px 8px 24px",
-                  }}
-                  className="w-full flex mt-8 flex-col rounded-xl justify-center rounded-xl items-center bg-white"
-                >
-                  <div className="flex w-full justify-between p-4 bg-[#F9F9F9] rounded-t-xl items-center">
-                    <h1 className="font-semibold text-xl text-[#242424]">
-                      Payment Options
-                    </h1>
-                    <ChevronDown className="w-4 h-4 text-[#000] font-bold" />
-                  </div>
-                  <div className="flex w-full gap-5 flex-col justify-center items-center px-4 py-6">
-                    <div className="w-full flex justify-center lg:justify-start items-center flex-col">
-                      <p className="font-semibold text-[18px] w-full">
-                        Debit/Credit Card
-                      </p>
-                      <p className="text-[#828282] text-[14px] w-full">
-                        Enter Your Card Detail
-                      </p>
-                    </div>
-                    <CardNumberElement
-                      type="text"
-                      id="cardNumber"
-                      name="cardNumber"
-                      className="w-full mt-6 py-3 px-5 rounded-xl border border-[#D9DBDF] border-[1px] focus:border-[#007BAB] focus:border-[1px] outline-none"
-                      value={cardNumber}
-                      onChange={handleCardNumberChangeNew}
-                      maxLength={19}
-                      placeholder="Card Number"
-                    />
-
-                    <input
-                      type="text"
-                      id="cardName"
-                      className="w-full py-2 px-5 rounded-xl border border-[#D9DBDF] border-[1px] focus:border-[#007BAB] focus:border-[1px] outline-none"
-                      name="cardName"
-                      value={cardName}
-                      onChange={handleCardNameChange}
-                      placeholder="Name on Card (Optional)"
-                    />
-
-                    <div className="flex gap-x-5 mb-5 flex-col lg:flex-row justify-center lg:justify-between items-center w-full">
-                      <CardExpiryElement
-                        type="text"
-                        className="w-full py-3 px-5 rounded-xl border border-[#D9DBDF] border-[1px] focus:border-[#007BAB] focus:border-[1px] outline-none"
-                        id="expiry"
-                        name="expiryDate"
-                        value={expiryDate}
-                        onChange={handleExpiryDateChange}
-                        maxLength={5}
-                        placeholder="Expiry (MM/YY)"
-                      />
-
-                      <CardCvcElement
-                        type="text"
-                        id="cvc"
-                        className="w-full py-3 mt-5 lg:mt-0 px-5 rounded-xl border border-[#D9DBDF] border-[1px] focus:border-[#007BAB] focus:border-[1px] outline-none"
-                        name="cvc"
-                        value={cvc}
-                        onChange={handleCvcChange}
-                        maxLength={3}
-                        placeholder="CVV"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
             </div>
 
-            {/* Right */}
-            <div className="w-full lg:w-1/3 flex flex-col justify-start h-full items-center">
-              <div className="flex flex-col justify-center items-center w-full rounded-xl">
-                <div
-                  style={{
-                    boxShadow: "rgba(149, 157, 165, 0.2) 0px 8px 24px",
-                  }}
-                  className="w-full flex flex-col rounded-xl justify-center rounded-xl items-center bg-white"
-                >
-                  <div className="flex w-full justify-start p-4 bg-[#F9F9F9] rounded-t-xl items-center">
-                    <h1 className="font-semibold w-full text-xl text-[#242424]">
-                      Order Summary
-                    </h1>
-                  </div>
-                  <div className="flex w-full gap-5 flex-col justify-start items-center px-6 py-6">
-                    <div className="flex justify-start w-full items-center rounded-xl">
-                      <img
-                        src={EventData.large_image}
-                        alt=""
-                        className="object-contain rounded-xl lg:h-40"
-                      />
-                    </div>
-                    <p className="text-[#007BAB] w-full text-xl font-semibold">
-                      {EventData.name}
-                    </p>
-                    <div className="flex flex-row text-[#BDBDBD] justify-start w-full items-center">
-                      <LuCalendarDays size={20} />
-                      <p className="font-Montserrat ml-3">
-                        {moment(EventData?.timefrom?.seconds * 1000)
-                          .local()
-                          .format("LL")}
-                      </p>
-                    </div>
+            <div
+              style={{
+                boxShadow: "rgba(149, 157, 165, 0.2) 0px 8px 24px",
+              }}
+              className="w-full flex mt-8 flex-col rounded-xl justify-center rounded-xl items-center bg-white"
+            >
+              <div className="flex w-full justify-between p-4 bg-[#F9F9F9] rounded-t-xl items-center">
+                <h1 className="font-semibold text-xl text-[#242424]">
+                  Payment Options
+                </h1>
+                <ChevronDown className="w-4 h-4 text-[#000] font-bold" />
+              </div>
+              <div className="flex w-full gap-5 flex-col justify-center items-center px-4 py-6">
+                <div className="w-full flex justify-center lg:justify-start items-center flex-col">
+                  <p className="font-semibold text-[18px] w-full">
+                    Debit/Credit Card
+                  </p>
+                  <p className="text-[#828282] text-[14px] w-full">
+                    Enter Your Card Detail
+                  </p>
+                </div>
+                <CardNumberElement
+                  type="text"
+                  id="cardNumber"
+                  name="cardNumber"
+                  className="w-full mt-6 py-3 px-5 rounded-xl border border-[#D9DBDF] border-[1px] focus:border-[#007BAB] focus:border-[1px] outline-none"
+                  value={cardNumber}
+                  onChange={handleCardNumberChangeNew}
+                  maxLength={19}
+                  placeholder="Card Number"
+                />
 
-                    <div className="flex flex-row text-[#BDBDBD] justify-start w-full items-center">
-                      <FaClock size={20} />
-                      <p className="font-Montserrat ml-3">
-                        {moment(EventData?.timefrom?.seconds * 1000)
-                          .local()
-                          .format("LT")}{" "}
-                        -{" "}
-                        {moment(EventData?.timeto?.seconds * 1000)
-                          .local()
-                          .format("LT")}
-                      </p>
-                    </div>
+                <input
+                  type="text"
+                  id="cardName"
+                  className="w-full py-2 px-5 rounded-xl border border-[#D9DBDF] border-[1px] focus:border-[#007BAB] focus:border-[1px] outline-none"
+                  name="cardName"
+                  value={cardName}
+                  onChange={handleCardNameChange}
+                  placeholder="Name on Card (Optional)"
+                />
 
-                    <div className="flex flex-row text-[#BDBDBD] justify-start w-full items-center">
-                      <FaLocationDot size={20} />
-                      <p className="font-Montserrat ml-3">
-                        {EventData?.location}
-                      </p>
-                    </div>
+                <div className="flex gap-x-5 mb-5 flex-col lg:flex-row justify-center lg:justify-between items-center w-full">
+                  <CardExpiryElement
+                    type="text"
+                    className="w-full py-3 px-5 rounded-xl border border-[#D9DBDF] border-[1px] focus:border-[#007BAB] focus:border-[1px] outline-none"
+                    id="expiry"
+                    name="expiryDate"
+                    value={expiryDate}
+                    onChange={handleExpiryDateChange}
+                    maxLength={5}
+                    placeholder="Expiry (MM/YY)"
+                  />
 
-                    <div className="flex flex-row text-[#BDBDBD] justify-start w-full items-center">
-                      <FaTag size={20} />
-                      <p className="font-Montserrat ml-3">
-                        {EventData?.ticketPrice === "0.00" ? "FREE" : "PAID"}
-                      </p>
-                    </div>
-
-                    <p className="w-full border-[#D9DBDF] border-b-2"></p>
-
-                    <div className="w-full flex justify-center items-center">
-                      <button
-                        onClick={handleSubmit}
-                        disabled={paymentLoader === true}
-                        className="w-full py-2 rounded-full bg-[#23C55E] text-white border border-2 border-[#23C55E] font-semibold"
-                        id="button"
-                        type="submit"
-                      >
-                        {paymentLoader === true ? (
-                          <>
-                            <div className="flex justify-center items-center w-full">
-                              <ThreeDots
-                                height="25"
-                                color="#fff"
-                                width="50"
-                                radius="9"
-                                ariaLabel="three-dots-loading"
-                                visible={true}
-                              />
-                            </div>
-                          </>
-                        ) : (
-                          <>
-                            <p>Make Payment - ${EventData.ticketPrice}</p>
-                          </>
-                        )}
-                      </button>
-                    </div>
-                  </div>
-                  {/*  */}
+                  <CardCvcElement
+                    type="text"
+                    id="cvc"
+                    className="w-full py-3 mt-5 lg:mt-0 px-5 rounded-xl border border-[#D9DBDF] border-[1px] focus:border-[#007BAB] focus:border-[1px] outline-none"
+                    name="cvc"
+                    value={cvc}
+                    onChange={handleCvcChange}
+                    maxLength={3}
+                    placeholder="CVV"
+                  />
                 </div>
               </div>
             </div>
           </div>
-        </>
+        </div>
+
+        {/* Right */}
+        <div className="w-full lg:w-1/3 flex flex-col justify-start h-full items-center">
+          <div className="flex flex-col justify-center items-center w-full rounded-xl">
+            <div
+              style={{
+                boxShadow: "rgba(149, 157, 165, 0.2) 0px 8px 24px",
+              }}
+              className="w-full flex flex-col rounded-xl justify-center rounded-xl items-center bg-white"
+            >
+              <div className="flex w-full justify-start p-4 bg-[#F9F9F9] rounded-t-xl items-center">
+                <h1 className="font-semibold w-full text-xl text-[#242424]">
+                  Order Summary
+                </h1>
+              </div>
+              <div className="flex w-full gap-5 flex-col justify-start items-center px-6 py-6">
+                <div className="flex justify-start w-full items-center rounded-xl">
+                  <img
+                    src={EventData.large_image}
+                    alt=""
+                    className="object-contain rounded-xl lg:h-40"
+                  />
+                </div>
+                <p className="text-[#007BAB] w-full text-xl font-semibold">
+                  {EventData.name}
+                </p>
+                <div className="flex flex-row text-[#BDBDBD] justify-start w-full items-center">
+                  <LuCalendarDays size={20} />
+                  <p className="font-Montserrat ml-3">
+                    {moment(EventData?.timefrom?.seconds * 1000)
+                      .local()
+                      .format("LL")}
+                  </p>
+                </div>
+
+                <div className="flex flex-row text-[#BDBDBD] justify-start w-full items-center">
+                  <FaClock size={20} />
+                  <p className="font-Montserrat ml-3">
+                    {moment(EventData?.timefrom?.seconds * 1000)
+                      .local()
+                      .format("LT")}{" "}
+                    -{" "}
+                    {moment(EventData?.timeto?.seconds * 1000)
+                      .local()
+                      .format("LT")}
+                  </p>
+                </div>
+
+                <div className="flex flex-row text-[#BDBDBD] justify-start w-full items-center">
+                  <FaLocationDot size={20} />
+                  <p className="font-Montserrat ml-3">{EventData?.location}</p>
+                </div>
+
+                <div className="flex flex-row text-[#BDBDBD] justify-start w-full items-center">
+                  <FaTag size={20} />
+                  <p className="font-Montserrat ml-3">
+                    {EventData?.ticketPrice === "0.00" ? "FREE" : "PAID"}
+                  </p>
+                </div>
+
+                <p className="w-full border-[#D9DBDF] border-b-2"></p>
+
+                <div className="w-full flex justify-center items-center">
+                  <button
+                    onClick={handleSubmit}
+                    disabled={paymentLoader === true}
+                    className="w-full py-2 rounded-full bg-[#23C55E] text-white border border-2 border-[#23C55E] font-semibold"
+                    id="button"
+                    type="submit"
+                  >
+                    {paymentLoader === true ? (
+                      <>
+                        <div className="flex justify-center items-center w-full">
+                          <ThreeDots
+                            height="25"
+                            color="#fff"
+                            width="50"
+                            radius="9"
+                            ariaLabel="three-dots-loading"
+                            visible={true}
+                          />
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <p>Make Payment - ${EventData.ticketPrice}</p>
+                      </>
+                    )}
+                  </button>
+                </div>
+              </div>
+              {/*  */}
+            </div>
+          </div>
+        </div>
+      </div>
+      {/* </>
       ) : (
         <>
           <div className="flex w-screen h-screen justify-center items-center">
             <img src={loaderGif.src} alt="Loader" className="mt-[-10%]" />
           </div>
         </>
-      )}
+      )} */}
     </>
   );
 };
@@ -814,7 +814,6 @@ const Checkout = () => {
     <>
       <div>
         <div className="flex flex-col bg-[#F8F9FD]">
-          <ToastContainer />
           <div className="w-full h-full bg-[#fff]">
             <Header type="light" />
           </div>

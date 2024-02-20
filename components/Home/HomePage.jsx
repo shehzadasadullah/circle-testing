@@ -14,8 +14,6 @@ import RestEvents from "./Events/RestEvents";
 import Footer from "../Common/Footer";
 import { ThreeCircles } from "react-loader-spinner";
 import loaderGif from "../../public/events/Loader.gif";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import ScrollToTopButton from "../ScrollToTop/ScrollToTopButton";
 
 //Main Container Component to contain all the sections of the homepage
@@ -25,7 +23,7 @@ const HomePage = () => {
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
-    }, 2000);
+    }, 1000);
   }, []);
   //context
   const [createEventPopup, setCreateEventPopup] =
@@ -33,21 +31,8 @@ const HomePage = () => {
 
   return (
     <>
-      <ToastContainer />
       {loading ? (
         <div className="flex w-screen h-screen justify-center items-center">
-          {/* <ThreeCircles
-            height="100"
-            width="100"
-            color="#4fa94d"
-            wrapperStyle={{}}
-            wrapperClass=""
-            visible={true}
-            ariaLabel="three-circles-rotating"
-            outerCircleColor="#7592FF"
-            innerCircleColor="#5BEEDC"
-            middleCircleColor="#D6DEFF"
-          /> */}
           <img src={loaderGif.src} alt="Loader" />
         </div>
       ) : (

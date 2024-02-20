@@ -28,8 +28,7 @@ import { FaSignInAlt } from "react-icons/fa";
 import { FcAbout, FcContacts, FcUnlock } from "react-icons/fc";
 import { AiFillHome } from "react-icons/ai";
 import { IoIosArrowForward } from "react-icons/io";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import toast from "react-simple-toasts";
 import { AiOutlineMenu } from "react-icons/ai";
 
 const Header = ({ type = "", page = "" }) => {
@@ -231,7 +230,6 @@ const Header = ({ type = "", page = "" }) => {
 
   return (
     <>
-      <ToastContainer />
       <div>
         <div className="w-full h-auto md:px-12 md:py-5">
           <div className="hidden md:flex md:justify-center md:items-center md:w-full md:h-auto">
@@ -380,10 +378,25 @@ const Header = ({ type = "", page = "" }) => {
                               >
                                 Hi,{" "}
                                 {user?.displayName
-                                  ? user?.displayName
+                                  ? user.displayName
+                                      .toLowerCase()
+                                      .split(" ")
+                                      .map(
+                                        (word) =>
+                                          word.charAt(0).toUpperCase() +
+                                          word.slice(1)
+                                      )
+                                      .join(" ")
                                   : user?.email
                                       .slice(0, user?.email.indexOf("@"))
-                                      .toUpperCase()}
+                                      .toLowerCase()
+                                      .split(" ")
+                                      .map(
+                                        (word) =>
+                                          word.charAt(0).toUpperCase() +
+                                          word.slice(1)
+                                      )
+                                      .join(" ")}
                                 !
                               </div>
                               <div className="hidden lg:flex">
@@ -534,22 +547,13 @@ const Header = ({ type = "", page = "" }) => {
                                           .then(() => {
                                             logout();
                                             setUserDropdown(false);
-                                            toast.success(
-                                              "Logged Out Successfully!",
-                                              {
-                                                position: "top-right",
-                                                autoClose: 3000, // Time in milliseconds
-                                              }
-                                            );
+                                            toast("Logged Out Successfully!");
                                             setTimeout(() => {
                                               router.push("/");
                                             }, 2000);
                                           })
                                           .catch((error) => {
-                                            toast.error("Error!", {
-                                              position: "top-right",
-                                              autoClose: 3000, // Time in milliseconds
-                                            });
+                                            toast("Error!");
                                           });
                                       }}
                                     >
@@ -840,22 +844,13 @@ const Header = ({ type = "", page = "" }) => {
                                       .then(() => {
                                         logout();
                                         setUserDropdown(false);
-                                        toast.success(
-                                          "Logged Out Successfully!",
-                                          {
-                                            position: "top-right",
-                                            autoClose: 3000, // Time in milliseconds
-                                          }
-                                        );
+                                        toast("Logged Out Successfully!");
                                         setTimeout(() => {
                                           router.push("/");
                                         }, 2000);
                                       })
                                       .catch((error) => {
-                                        toast.error("Error!", {
-                                          position: "top-right",
-                                          autoClose: 3000, // Time in milliseconds
-                                        });
+                                        toast("Error!");
                                       });
                                   }}
                                 >
@@ -1129,7 +1124,7 @@ const Header = ({ type = "", page = "" }) => {
                                           .then(() => {
                                             logout();
                                             setUserDropdown(false);
-                                            toast.success(
+                                            toast(
                                               "Logged Out Successfully!",
                                               {
                                                 position: "top-right",
@@ -1138,7 +1133,7 @@ const Header = ({ type = "", page = "" }) => {
                                             );
                                           })
                                           .catch((error) => {
-                                            toast.error("Error!", {
+                                            toast("Error!", {
                                               position: "top-right",
                                               autoClose: 3000, // Time in milliseconds
                                             });

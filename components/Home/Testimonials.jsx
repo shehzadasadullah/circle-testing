@@ -6,8 +6,8 @@ import { IoIosArrowBack } from "react-icons/io";
 import girlImage from "./girl-img.png";
 import img from "./Profile_Picture.png";
 import { useMediaQuery } from "react-responsive";
-import AOS from "aos";
-import "aos/dist/aos.css";
+// import AOS from "aos";
+// import "aos/dist/aos.css";
 
 const testimonials = [
   {
@@ -38,24 +38,24 @@ const testimonials = [
 ];
 
 const Testimonial = () => {
-  useEffect(() => {
-    // console.log("Initializing AOS");
-    AOS.init({
-      duration: 800,
-      once: true,
-    });
+  // useEffect(() => {
+  //   // console.log("Initializing AOS");
+  //   AOS.init({
+  //     duration: 800,
+  //     once: true,
+  //   });
 
-    const handleScroll = () => {
-      // console.log("Scrolling...");
-    };
+  //   const handleScroll = () => {
+  //     // console.log("Scrolling...");
+  //   };
 
-    window.addEventListener("scroll", handleScroll);
+  //   window.addEventListener("scroll", handleScroll);
 
-    // Cleanup the event listener
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
+  //   // Cleanup the event listener
+  //   return () => {
+  //     window.removeEventListener("scroll", handleScroll);
+  //   };
+  // }, []);
 
   const breakpoints = {
     sm: "(max-width: 640px)",
@@ -76,12 +76,12 @@ const Testimonial = () => {
     : centerSlidePercentageOptions.xl;
   return (
     <div
-      data-aos="fade-up"
-      data-aos-delay="50"
-      data-aos-duration="4000"
-      data-aos-easing="ease-in-out"
-      data-aos-mirror="false"
-      data-aos-once="true"
+      // data-aos="fade-up"
+      // data-aos-delay="50"
+      // data-aos-duration="4000"
+      // data-aos-easing="ease-in-out"
+      // data-aos-mirror="false"
+      // data-aos-once="true"
       className="bg-white w-full h-auto pt-0 p-5 lg:p-20"
     >
       <h3 className="font48 font-semibold mt-10 lg:mt-0 font-Montserrat text-center pb-10">

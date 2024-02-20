@@ -4,16 +4,16 @@ import dynamic from "next/dynamic";
 import Header from "@/components/Common/Header";
 import Footer from "@/components/Common/Footer";
 import img from "@/public/21.png";
-const AboutMain = dynamic(() => import("@/components/About/AboutMain"), {
-  ssr: false,
-});
 
 const About = () => {
   return (
     <>
       <Head>
         <title>CIRCLE - About Us</title>
-        <meta name="description" content="Simple Description of Circle app" />
+        <meta
+          name="description"
+          content="Circle.ooo ❤️'s our customers! Events: beautiful, fast & simple for all."
+        />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>

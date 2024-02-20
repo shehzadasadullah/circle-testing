@@ -13,28 +13,28 @@ import { useRouter } from "next/router";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db } from "@/firebase";
 import Register from "./Register";
-import AOS from "aos";
-import "aos/dist/aos.css";
+// import AOS from "aos";
+// import "aos/dist/aos.css";
 
 const HeroSection = () => {
-  useEffect(() => {
-    // console.log("Initializing AOS");
-    AOS.init({
-      duration: 800,
-      once: true,
-    });
+  // useEffect(() => {
+  //   // console.log("Initializing AOS");
+  //   AOS.init({
+  //     duration: 800,
+  //     once: true,
+  //   });
 
-    const handleScroll = () => {
-      // console.log("Scrolling...");
-    };
+  //   const handleScroll = () => {
+  //     // console.log("Scrolling...");
+  //   };
 
-    window.addEventListener("scroll", handleScroll);
+  //   window.addEventListener("scroll", handleScroll);
 
-    // Cleanup the event listener
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
+  //   // Cleanup the event listener
+  //   return () => {
+  //     window.removeEventListener("scroll", handleScroll);
+  //   };
+  // }, []);
 
   const router = useRouter();
   const [user] = useAuthState(auth);
@@ -63,12 +63,12 @@ const HeroSection = () => {
         <Header type="light" page="home" />
       </div>
       <div
-        data-aos="fade-up"
-        data-aos-delay="50"
-        data-aos-duration="4000"
-        data-aos-easing="ease-in-out"
-        data-aos-mirror="false"
-        data-aos-once="true"
+        // data-aos="fade-up"
+        // data-aos-delay="50"
+        // data-aos-duration="4000"
+        // data-aos-easing="ease-in-out"
+        // data-aos-mirror="false"
+        // data-aos-once="true"
         className="w-full flex flex-col lg:flex-row h-full py-2 sm:py-4 lg:py-8 xl:py-12 2xl:py-16 z-0"
       >
         <div className="w-full lg:w-[50%] h-full pl-5 pr-5 lg:pl-16 xl:pl-20 2xl:pl-24 gap-2 lg:pr-8">
@@ -119,12 +119,12 @@ const HeroSection = () => {
         </div>
         <div className="w-full lg:w-[50%] flex flex-col justify-start items-center h-auto">
           <img
-            data-aos="fade-up"
-            data-aos-delay="50"
-            data-aos-duration="4000"
-            data-aos-easing="ease-in-out"
-            data-aos-mirror="true"
-            data-aos-once="false"
+            // data-aos="fade-up"
+            // data-aos-delay="50"
+            // data-aos-duration="4000"
+            // data-aos-easing="ease-in-out"
+            // data-aos-mirror="true"
+            // data-aos-once="false"
             src={img.src}
             className="object-contain hidden lg:flex"
             alt=""

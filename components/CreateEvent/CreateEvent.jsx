@@ -20,8 +20,7 @@ import { getAuth, getIdToken } from "firebase/auth";
 import { Timestamp } from "firebase/firestore";
 import moment from "moment";
 import { DateTime } from "luxon";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import toast from "react-simple-toasts";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { SketchPicker } from "react-color";
 import Modal from "react-modal";
@@ -198,7 +197,7 @@ const CreateEvent = () => {
           }, []);
           setThirdPartyIntegrations(tempArray);
         } else {
-          toast.error("Something went wrong with the integrations!");
+          toast("Something went wrong with the integrations!");
         }
       })
       .catch((error) => console.log("error", error));
@@ -329,10 +328,7 @@ const CreateEvent = () => {
       );
       return new Timestamp(seconds, nanoseconds);
     } else {
-      toast.error("Invalid Date!", {
-        position: "top-right",
-        autoClose: 3000, // Time in milliseconds
-      });
+      toast("Invalid Date!");
       setOutputFormattedStartDateTime("Invalid Date");
       setOutputStartDateTimeTimestamp("");
       return false;
@@ -375,10 +371,7 @@ const CreateEvent = () => {
       return new Timestamp(seconds, nanoseconds);
       // return formattedDate;
     } else {
-      toast.error("Invalid Date!", {
-        position: "top-right",
-        autoClose: 3000, // Time in milliseconds
-      });
+      toast("Invalid Date!");
       setOutputFormattedEndDateTime("Invalid Date");
       setOutputEndDateTimeTimestamp("");
       return false;
@@ -396,30 +389,21 @@ const CreateEvent = () => {
     if (startObj.isValid && endObj.isValid) {
       if (startObj.equals(endObj)) {
         if (startObj <= endObj) {
-          toast.error("Start and end time cannot be the same!", {
-            position: "top-right",
-            autoClose: 3000, // Time in milliseconds
-          });
+          toast("Start and end time cannot be the same!");
           setCreateEventLoader(false);
           return false;
         } else {
           return true;
         }
       } else if (startObj > endObj) {
-        toast.error("Start time must be earlier than end time!", {
-          position: "top-right",
-          autoClose: 3000, // Time in milliseconds
-        });
+        toast("Start time must be earlier than end time!");
         setCreateEventLoader(false);
         return false;
       } else {
         return true;
       }
     } else {
-      toast.error("Invalid Date!", {
-        position: "top-right",
-        autoClose: 3000, // Time in milliseconds
-      });
+      toast("Invalid Date!");
       setCreateEventLoader(false);
       return false;
     }
@@ -432,10 +416,7 @@ const CreateEvent = () => {
         /^(?:(?:(?:https?|ftp):)?\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z0-9\u00a1-\uffff][a-z0-9\u00a1-\uffff_-]{0,62})?[a-z0-9\u00a1-\uffff]\.)+(?:[a-z\u00a1-\uffff]{2,}\.?))(?::\d{2,5})?(?:[/?#]\S*)?$/i;
 
       if (!urlPattern.test(eventWebsite)) {
-        toast.error("Website URL is Invalid!", {
-          position: "top-right",
-          autoClose: 3000,
-        });
+        toast("Website URL is Invalid!");
         setCreateEventLoader(false);
         return false;
       } else {
@@ -450,24 +431,15 @@ const CreateEvent = () => {
     if (isOnPrice) {
       if (eventTicketPrice === "" || eventMaximumTickets === "") {
         // console.log("Called 5");
-        toast.error("Price data is missing!", {
-          position: "top-right",
-          autoClose: 3000, // Time in milliseconds
-        });
+        toast("Price data is missing!");
         setCreateEventLoader(false);
         return false;
       } else if (Number(eventMaximumTickets) < 1) {
-        toast.error("Maximum Tickets can't be less than 1", {
-          position: "top-right",
-          autoClose: 3000, // Time in milliseconds
-        });
+        toast("Maximum Tickets can't be less than 1");
         setCreateEventLoader(false);
         return false;
       } else if (Number(eventTicketPrice) < 1) {
-        toast.error("Ticket Price can't be less than $1", {
-          position: "top-right",
-          autoClose: 3000, // Time in milliseconds
-        });
+        toast("Ticket Price can't be less than $1");
         setCreateEventLoader(false);
         return false;
       } else {
@@ -528,7 +500,7 @@ const CreateEvent = () => {
       } catch (error) {
         console.error("Error fetching documents:", error);
         setFetchCircleDataLoader(false);
-        toast.error("Error fetching circle data!");
+        toast("Error fetching circle data!");
       }
     }
   };
@@ -538,7 +510,7 @@ const CreateEvent = () => {
   }, [user, isOpen]);
 
   const handleColorChange = (selectedColor) => {
-    toast.success(
+    toast(
       <div style={{ color: selectedColor.hex }}>
         Color Selected: {selectedColor.hex}
       </div>
@@ -575,15 +547,15 @@ const CreateEvent = () => {
   const handleCircleCreation = async () => {
     setCircleCreationLoader(true);
     if (circleLogo === "") {
-      toast.error("Please Choose Circle Logo!");
+      toast("Please Choose Circle Logo!");
     } else if (circleName === "") {
-      toast.error("Please Enter Circle Name!");
+      toast("Please Enter Circle Name!");
     } else if (circleDescription === "") {
-      toast.error("Please Enter Circle Description!");
+      toast("Please Enter Circle Description!");
     } else if (circleFont === "") {
-      toast.error("Please Select Circle Font!");
+      toast("Please Select Circle Font!");
     } else if (circleColor === "") {
-      toast.error("Please Select Circle Color!");
+      toast("Please Select Circle Color!");
     } else {
       let userRefPath = null;
       if (user) {
@@ -614,19 +586,19 @@ const CreateEvent = () => {
         try {
           await updateDoc(docRefUpdate, updatedData);
           console.log("Document successfully updated");
-          toast.success("Circle Added Successfully!");
+          toast("Circle Added Successfully!");
           setCircleCreationLoader(false);
           setIsOpen(false);
         } catch (error) {
           console.error("Error updating document: ", error);
-          toast.error("Something went wrong!");
+          toast("Something went wrong!");
           setCircleCreationLoader(false);
         }
         setCircleCreationLoader(false);
         setIsOpen(false);
       } catch (error) {
         console.error("Error adding event: ", error);
-        toast.error("Something went wrong!");
+        toast("Something went wrong!");
         setCircleCreationLoader(false);
       }
     }
@@ -656,21 +628,21 @@ const CreateEvent = () => {
     setCreateEventLoader(true);
     const specialCharacterRegex = /[!@#$%^&*(),.?":{}|<>]/;
     if (circleData.length === 0) {
-      toast.error("Please create circle in order to create event!");
+      toast("Please create circle in order to create event!");
     } else if (!selectedLogo) {
-      toast.error("Please Upload Event Photo!");
+      toast("Please Upload Event Photo!");
     } else if (selectedCircleId === null) {
-      toast.error("Please Select Circle!");
+      toast("Please Select Circle!");
     } else if (eventTitle === "") {
-      toast.error("Please Input Event Title!");
+      toast("Please Input Event Title!");
     } else if (eventDescription === "") {
-      toast.error("Please Input Event Description!");
+      toast("Please Input Event Description!");
     } else if (startDateTime === null) {
-      toast.error("Please Select Event Start Time!");
+      toast("Please Select Event Start Time!");
     } else if (endDateTime === null) {
-      toast.error("Please Select Event End Time!");
+      toast("Please Select Event End Time!");
     } else if (eventLocation === "") {
-      toast.error("Please Input Event Location!");
+      toast("Please Input Event Location!");
     } else {
       console.log("ELSE CALLED");
       if (
@@ -682,15 +654,12 @@ const CreateEvent = () => {
         eventLocation !== ""
       ) {
         if (specialCharacterRegex.test(eventTitle)) {
-          toast.error("Please Enter a Valid Event Title!");
+          toast("Please Enter a Valid Event Title!");
           setCreateEventLoader(false);
         } else {
           console.log("Called 0");
           if (isOnSponsorship && eventSponsorShip === "") {
-            toast.error("Sponsorship package is missing!", {
-              position: "top-right",
-              autoClose: 3000, // Time in milliseconds
-            });
+            toast("Sponsorship package is missing!");
             setCreateEventLoader(false);
             console.log("Called 1");
           } else {
@@ -699,7 +668,7 @@ const CreateEvent = () => {
               console.log("Called 3");
               if (validateWebsite() === true) {
                 console.log("Called 4");
-                console.log("Check: ", paidPriceCheck());
+
                 if (paidPriceCheck() === true) {
                   console.log("Called 5");
                   let userRefPath = null;
@@ -809,14 +778,14 @@ const CreateEvent = () => {
                           result
                             .filter((items) => items.result === true)
                             .map((item) => {
-                              toast.success(
+                              toast(
                                 `${item?.integration?.toUpperCase()} - ${item?.message?.toUpperCase()}`
                               );
                             });
                           result
                             .filter((items) => items.result === false)
                             .map((item) => {
-                              toast.error(
+                              toast(
                                 `${item?.integration?.toUpperCase()} - ${item?.message?.toUpperCase()}`
                               );
                             });
@@ -827,9 +796,7 @@ const CreateEvent = () => {
                           "Error posting event to third-party platforms:",
                           error
                         );
-                        toast.error(
-                          "Error posting event to third-party platforms!"
-                        );
+                        toast("Error posting event to third-party platforms!");
                       }
                     }
 
@@ -837,19 +804,19 @@ const CreateEvent = () => {
                     try {
                       await updateDoc(docRefUpdate, updatedData);
                       console.log("Document successfully updated");
-                      toast.success("Event Created Successfully!");
+                      toast("Event Created Successfully!");
                       setCreateEventLoader(false);
                       setTimeout(() => {
                         router.push(`/events/${docRef.id}`);
                       }, 5000);
                     } catch (error) {
                       console.error("Error updating document: ", error);
-                      toast.error("Something went wrong!");
+                      toast("Something went wrong!");
                       setCreateEventLoader(false);
                     }
                   } catch (error) {
                     console.error("Error adding event: ", error);
-                    toast.error("Something went wrong!");
+                    toast("Something went wrong!");
                     setCreateEventLoader(false);
                   }
                 }
@@ -859,10 +826,7 @@ const CreateEvent = () => {
         }
       } else {
         setCreateEventLoader(false);
-        toast.error("Input Fields Missing!", {
-          position: "top-right",
-          autoClose: 3000, // Time in milliseconds
-        });
+        toast("Input Fields Missing!");
       }
     }
     setCreateEventLoader(false);
@@ -884,7 +848,7 @@ const CreateEvent = () => {
     } catch (error) {
       console.error("Error fetching user documents:", error);
       setFetchAllUserLoader(false);
-      toast.error("Error fetching all users data!");
+      toast("Error fetching all users data!");
     }
   };
 
@@ -953,7 +917,7 @@ const CreateEvent = () => {
 
   // const handleThirdPartyPost = (platform) => {
   //   if (eventID === "") {
-  //     toast.error("Event is not created yet, Please create an event first!");
+  //     toast("Event is not created yet, Please create an event first!");
   //   } else {
   //     setThirdPartyLoader(true);
   //     console.log("PLATfORM: ", platform);
@@ -976,11 +940,11 @@ const CreateEvent = () => {
   //         .then((result) => {
   //           console.log(result);
   //           if (result.result) {
-  //             toast.success(`Event Published on ${platform} Successfully!`);
+  //             toast(`Event Published on ${platform} Successfully!`);
   //             setThirdPartyLoader(false);
   //             setIsThirdPartyEventPosted(platform);
   //           } else {
-  //             toast.error("Something went wrong while publishing event");
+  //             toast("Something went wrong while publishing event");
   //             setThirdPartyLoader(false);
   //             setIsThirdPartyEventPosted("");
   //           }
@@ -988,12 +952,12 @@ const CreateEvent = () => {
   //         .catch((error) => {
   //           setThirdPartyLoader(false);
   //           setIsThirdPartyEventPosted("");
-  //           toast.error("Something went wrong while publishing event");
+  //           toast("Something went wrong while publishing event");
   //         });
   //     } catch (error) {
   //       setThirdPartyLoader(false);
   //       setIsThirdPartyEventPosted("");
-  //       toast.error("Something went wrong while publishing event");
+  //       toast("Something went wrong while publishing event");
   //     }
   //   }
   // };
@@ -1016,515 +980,511 @@ const CreateEvent = () => {
 
   return (
     <>
-      {fetchAllUserLoader === false &&
+      {/* {fetchAllUserLoader === false &&
       fetchCircleDataLoader === false &&
-      fetchCoHostsLoader === false ? (
-        <>
-          <ToastContainer />
-          <div className="w-full h-full">
-            <Dialog
-              open={isOpen}
-              onClose={() => setIsOpen(false)}
-              className="relative z-50"
-            >
-              <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
-              <div className="fixed inset-0 w-screen overflow-y-auto">
-                <div className="flex min-h-full items-center justify-center p-4">
-                  <Dialog.Panel className="w-full md:w-1/2 xl:w-1/3 h-auto rounded-xl shadow-xl bg-white">
-                    <Dialog.Title
-                      className={`flex w-full items-center justify-between p-3 flex-row border-b-2`}
+      fetchCoHostsLoader === false ? ( */}
+      {/* <> */}
+      {/* <ToastContainer /> */}
+      <div className="w-full h-full">
+        <Dialog
+          open={isOpen}
+          onClose={() => setIsOpen(false)}
+          className="relative z-50"
+        >
+          <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
+          <div className="fixed inset-0 w-screen overflow-y-auto">
+            <div className="flex min-h-full items-center justify-center p-4">
+              <Dialog.Panel className="w-full md:w-1/2 xl:w-1/3 h-auto rounded-xl shadow-xl bg-white">
+                <Dialog.Title
+                  className={`flex w-full items-center justify-between p-3 flex-row border-b-2`}
+                >
+                  <p className="font-bold text-lg">Create Circle</p>
+                  <button
+                    type="button"
+                    className="box-content rounded-none border-none hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke-width="1.5"
+                      stroke="currentColor"
+                      className="h-6 w-6"
                     >
-                      <p className="font-bold text-lg">Create Circle</p>
-                      <button
-                        type="button"
-                        className="box-content rounded-none border-none hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none"
-                        onClick={() => setIsOpen(false)}
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke-width="1.5"
-                          stroke="currentColor"
-                          className="h-6 w-6"
-                        >
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            d="M6 18L18 6M6 6l12 12"
-                          />
-                        </svg>
-                      </button>
-                    </Dialog.Title>
-                    <div className="relative p-4 flex flex-col w-full">
-                      <div className="flex items-center w-full">
-                        {circleLogo && (
-                          <img
-                            src={URL.createObjectURL(circleLogo)}
-                            alt="Selected Logo"
-                            style={{ height: "50pt" }}
-                            className="border-2 rounded-full mr-5"
-                          />
-                        )}
-                        <label className="text-[#0E2354] font-bold py-2 px-4 cursor-pointer border-2 border-[#E6E7EC]">
-                          Upload Circle Logo{" "}
-                          <span className="text-red-600 mr-1"> *</span>
-                          <input
-                            type="file"
-                            accept=".png, .jpg, .jpeg, .gif"
-                            className="hidden"
-                            onChange={handleLogoChangeCircle}
-                          />
-                        </label>
-                      </div>
-                      <div className="mb-4 mt-4 w-full h-auto">
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M6 18L18 6M6 6l12 12"
+                      />
+                    </svg>
+                  </button>
+                </Dialog.Title>
+                <div className="relative p-4 flex flex-col w-full">
+                  <div className="flex items-center w-full">
+                    {circleLogo && (
+                      <img
+                        src={URL.createObjectURL(circleLogo)}
+                        alt="Selected Logo"
+                        style={{ height: "50pt" }}
+                        className="border-2 rounded-full mr-5"
+                      />
+                    )}
+                    <label className="text-[#0E2354] font-bold py-2 px-4 cursor-pointer border-2 border-[#E6E7EC]">
+                      Upload Circle Logo{" "}
+                      <span className="text-red-600 mr-1"> *</span>
+                      <input
+                        type="file"
+                        accept=".png, .jpg, .jpeg, .gif"
+                        className="hidden"
+                        onChange={handleLogoChangeCircle}
+                      />
+                    </label>
+                  </div>
+                  <div className="mb-4 mt-4 w-full h-auto">
+                    <label
+                      htmlFor="circleName"
+                      className="block text-[#292D32] font-bold text-[16px] ml-1"
+                    >
+                      Circle Name
+                      <span className="text-red-600"> *</span>
+                    </label>
+                    <input
+                      type="text"
+                      id="circleName"
+                      className="border-2 text-[#8392AF] border-[#E6E7EC] mt-2 p-3 w-full rounded-lg focus:border-[#007BAB] focus:outline-none"
+                      placeholder="Enter your circle name"
+                      value={circleName}
+                      onChange={(e) => {
+                        setCircleName(e.target.value);
+                      }}
+                    />
+                  </div>
+                  <div className="mb-4 w-full h-auto">
+                    <label
+                      htmlFor="circleDescription"
+                      className="block text-[#292D32] font-bold text-[16px] ml-1"
+                    >
+                      Circle Description
+                      <span className="text-red-600"> *</span>
+                    </label>
+                    <textarea
+                      id="circleDescription"
+                      className="border-2 h-[80pt] text-[#8392AF] border-[#E6E7EC] mt-2 p-3 w-full rounded-lg focus:border-[#007BAB] focus:outline-none"
+                      placeholder="Add your circle description here"
+                      value={circleDescription}
+                      onChange={(e) => {
+                        setCircleDescription(e.target.value);
+                      }}
+                    ></textarea>
+                  </div>
+                  <div className="mb-4 w-full h-auto">
+                    <Menu
+                      as="div"
+                      className="relative inline-block text-left w-full"
+                    >
+                      <div>
                         <label
-                          htmlFor="circleName"
+                          htmlFor="circleFonts"
                           className="block text-[#292D32] font-bold text-[16px] ml-1"
                         >
-                          Circle Name
+                          Circle Font
                           <span className="text-red-600"> *</span>
                         </label>
-                        <input
-                          type="text"
-                          id="circleName"
-                          className="border-2 text-[#8392AF] border-[#E6E7EC] mt-2 p-3 w-full rounded-lg focus:border-[#007BAB] focus:outline-none"
-                          placeholder="Enter your circle name"
-                          value={circleName}
-                          onChange={(e) => {
-                            setCircleName(e.target.value);
-                          }}
-                        />
-                      </div>
-                      <div className="mb-4 w-full h-auto">
-                        <label
-                          htmlFor="circleDescription"
-                          className="block text-[#292D32] font-bold text-[16px] ml-1"
+                        <Menu.Button
+                          id="circleFonts"
+                          className="inline-flex w-full justify-between mt-2 gap-x-1.5 rounded-md bg-white px-3 py-4 text-sm text-[#888888] shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
                         >
-                          Circle Description
-                          <span className="text-red-600"> *</span>
-                        </label>
-                        <textarea
-                          id="circleDescription"
-                          className="border-2 h-[80pt] text-[#8392AF] border-[#E6E7EC] mt-2 p-3 w-full rounded-lg focus:border-[#007BAB] focus:outline-none"
-                          placeholder="Add your circle description here"
-                          value={circleDescription}
-                          onChange={(e) => {
-                            setCircleDescription(e.target.value);
-                          }}
-                        ></textarea>
-                      </div>
-                      <div className="mb-4 w-full h-auto">
-                        <Menu
-                          as="div"
-                          className="relative inline-block text-left w-full"
-                        >
-                          <div>
-                            <label
-                              htmlFor="circleFonts"
-                              className="block text-[#292D32] font-bold text-[16px] ml-1"
-                            >
-                              Circle Font
-                              <span className="text-red-600"> *</span>
-                            </label>
-                            <Menu.Button
-                              id="circleFonts"
-                              className="inline-flex w-full justify-between mt-2 gap-x-1.5 rounded-md bg-white px-3 py-4 text-sm text-[#888888] shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-                            >
-                              {circleFont === "" ? "Select Font" : circleFont}
+                          {circleFont === "" ? "Select Font" : circleFont}
 
-                              <ChevronDownIcon
-                                className="-mr-1 h-5 w-5 text-gray-400"
-                                aria-hidden="true"
+                          <ChevronDownIcon
+                            className="-mr-1 h-5 w-5 text-gray-400"
+                            aria-hidden="true"
+                          />
+                        </Menu.Button>
+                      </div>
+
+                      <Transition
+                        as={Fragment}
+                        enter="transition ease-out duration-100"
+                        enterFrom="transform opacity-0 scale-95"
+                        enterTo="transform opacity-100 scale-100"
+                        leave="transition ease-in duration-75"
+                        leaveFrom="transform opacity-100 scale-100"
+                        leaveTo="transform opacity-0 scale-95"
+                      >
+                        <Menu.Items className="absolute h-60 overflow-auto w-full left-0 z-10 mt-2 w-full origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                          <div className="py-1">
+                            <div className="px-4 py-2">
+                              <input
+                                type="text"
+                                placeholder="Search Fonts"
+                                className="border-2 text-[#8392AF] border-[#E6E7EC] mt-2 p-3 w-full rounded-lg focus:border-[#007BAB] focus:outline-none"
+                                value={searchText}
+                                onChange={(e) => {
+                                  handleSearch(e);
+                                }}
+                                onKeyDown={preventSpaceKeyPropagation}
                               />
-                            </Menu.Button>
-                          </div>
-
-                          <Transition
-                            as={Fragment}
-                            enter="transition ease-out duration-100"
-                            enterFrom="transform opacity-0 scale-95"
-                            enterTo="transform opacity-100 scale-100"
-                            leave="transition ease-in duration-75"
-                            leaveFrom="transform opacity-100 scale-100"
-                            leaveTo="transform opacity-0 scale-95"
-                          >
-                            <Menu.Items className="absolute h-60 overflow-auto w-full left-0 z-10 mt-2 w-full origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                              <div className="py-1">
-                                <div className="px-4 py-2">
-                                  <input
-                                    type="text"
-                                    placeholder="Search Fonts"
-                                    className="border-2 text-[#8392AF] border-[#E6E7EC] mt-2 p-3 w-full rounded-lg focus:border-[#007BAB] focus:outline-none"
-                                    value={searchText}
-                                    onChange={(e) => {
-                                      handleSearch(e);
-                                    }}
-                                    onKeyDown={preventSpaceKeyPropagation}
-                                  />
-                                </div>
-                                {filteredFonts.map((item, index) => (
-                                  <Menu.Item key={index}>
-                                    {({ active }) => (
-                                      <a
-                                        onClick={() =>
-                                          handleOptionSelectFonts(item)
-                                        }
-                                        className={classNames(
-                                          active
-                                            ? "bg-gray-100 text-gray-900"
-                                            : "text-gray-700",
-                                          "block px-4 py-2 text-sm cursor-pointer"
-                                        )}
-                                      >
-                                        {item}
-                                      </a>
+                            </div>
+                            {filteredFonts.map((item, index) => (
+                              <Menu.Item key={index}>
+                                {({ active }) => (
+                                  <a
+                                    onClick={() =>
+                                      handleOptionSelectFonts(item)
+                                    }
+                                    className={classNames(
+                                      active
+                                        ? "bg-gray-100 text-gray-900"
+                                        : "text-gray-700",
+                                      "block px-4 py-2 text-sm cursor-pointer"
                                     )}
-                                  </Menu.Item>
-                                ))}
-                              </div>
-                            </Menu.Items>
-                          </Transition>
-                        </Menu>
-                      </div>
-                      <div className="mb-4 w-full h-auto flex flex-col">
-                        <label
-                          htmlFor="circleColor"
-                          className="block text-[#292D32] font-bold text-[16px] ml-1"
-                        >
-                          Circle Color
-                          <span className="text-red-600"> *</span>
-                        </label>
-                        <SketchPicker
-                          className="mt-2"
-                          color={circleColor}
-                          onChange={handleColorChange}
-                          styles={{
-                            default: {
-                              picker: {
-                                width: "96%",
-                              },
-                            },
-                          }}
-                        />
-                      </div>
-                    </div>
-                    <Dialog.Title
-                      className={`flex w-full items-center justify-end p-3 flex-row border-t-2`}
+                                  >
+                                    {item}
+                                  </a>
+                                )}
+                              </Menu.Item>
+                            ))}
+                          </div>
+                        </Menu.Items>
+                      </Transition>
+                    </Menu>
+                  </div>
+                  <div className="mb-4 w-full h-auto flex flex-col">
+                    <label
+                      htmlFor="circleColor"
+                      className="block text-[#292D32] font-bold text-[16px] ml-1"
                     >
+                      Circle Color
+                      <span className="text-red-600"> *</span>
+                    </label>
+                    <SketchPicker
+                      className="mt-2"
+                      color={circleColor}
+                      onChange={handleColorChange}
+                      styles={{
+                        default: {
+                          picker: {
+                            width: "96%",
+                          },
+                        },
+                      }}
+                    />
+                  </div>
+                </div>
+                <Dialog.Title
+                  className={`flex w-full items-center justify-end p-3 flex-row border-t-2`}
+                >
+                  <button
+                    type="button"
+                    onClick={() => setIsOpen(false)}
+                    className={`bg-[red] border-2 border-[red] text-white hover:border-2 hover:border-[red] hover:bg-transparent hover:text-[red] py-2 px-4 rounded-lg`}
+                  >
+                    Close
+                  </button>
+                  <button
+                    type="button"
+                    disabled={circleCreationLoader === true}
+                    onClick={handleCircleCreation}
+                    className={`bg-[#007BAB] ml-2 border-2 border-[#007BAB] text-white hover:border-2 hover:border-[#007BAB] hover:bg-transparent hover:text-[#00384F] py-2 px-4 rounded-lg`}
+                  >
+                    Create Circle
+                  </button>
+                </Dialog.Title>
+              </Dialog.Panel>
+            </div>
+          </div>
+        </Dialog>
+        <Header type="light" />
+        <div className="w-full h-auto p-4">
+          <div className="flex justify-center lg:justify-start items-center lg:items-start flex-col p-2 lg:p-10">
+            <h3 className="font-bold font48 text-[#17191C] mt-5">
+              Create Event
+            </h3>
+            <p className="font24 text-[#8392AF] text-center lg:text-left font-normal text-base mt-2">
+              Add all your event details, create new tickets, and set up
+              recurring events
+            </p>
+          </div>
+          <div className="flex flex-col w-full h-auto lg:flex-row justify-start items-start">
+            <div className="w-full lg:w-8/12 h-auto pt-10 p-2 lg:p-10 lg:pt-5">
+              <div className="flex justify-start items-start flex-col">
+                <div className="flex md:flex-row flex-col justify-center md:justify-start items-center w-full">
+                  {selectedLogo && (
+                    <img
+                      src={URL.createObjectURL(selectedLogo)}
+                      alt="Selected Logo"
+                      className=" rounded-xl h-48 md:mr-5"
+                    />
+                  )}
+                  <label className="text-[#0E2354] font-bold mt-3 md:mt-0 py-2 px-4 cursor-pointer border-2 border-[#E6E7EC]">
+                    Upload Event Photo{" "}
+                    <span className="text-red-600 mr-1"> *</span>
+                    <input
+                      type="file"
+                      accept=".png, .jpg, .jpeg, .gif"
+                      className="hidden"
+                      onChange={handleLogoChange}
+                    />
+                  </label>
+                </div>
+                <div className="mb-4 mt-10 w-full lg:w-[90%] h-auto">
+                  <label
+                    htmlFor="eventTitle"
+                    className="block text-[#292D32] font-bold text-[16px] ml-1"
+                  >
+                    {circleData.length > 0
+                      ? "Your Circle"
+                      : "You haven't created any circle, please create circle to continue"}
+                    <span className="text-red-600"> *</span>
+                  </label>
+                  {circleData.length > 0 ? (
+                    <>
+                      <div className="flex justify-start mt-2 items-center flex-wrap gap-x-2 w-full">
+                        {circleData.map((item) => {
+                          const isSelected = item.id === selectedCircleId;
+
+                          return (
+                            <div
+                              key={item.id}
+                              className="rounded-full border-2 w-20 h-20 relative"
+                            >
+                              <img
+                                src={item.logo_url}
+                                className="rounded-full w-full h-full object-cover"
+                                alt="Logo Image"
+                                onClick={() => handleCircleSelection(item.id)}
+                                style={{ cursor: "pointer" }}
+                                title={item.circle_name}
+                              />
+                              {isSelected && (
+                                <span className="success-icon border-none absolute top-0 right-0 font-bold">
+                                  <FaCheckCircle
+                                    className="bg-[#fff] border-none rounded-full"
+                                    color="#007BAB"
+                                    size={25}
+                                  />
+                                </span>
+                              )}
+                              <input
+                                type="radio"
+                                value={item.id}
+                                checked={isSelected}
+                                onChange={() => handleCircleSelection(item.id)}
+                                className="hidden"
+                              />
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </>
+                  ) : (
+                    <>
                       <button
                         type="button"
-                        onClick={() => setIsOpen(false)}
-                        className={`bg-[red] border-2 border-[red] text-white hover:border-2 hover:border-[red] hover:bg-transparent hover:text-[red] py-2 px-4 rounded-lg`}
-                      >
-                        Close
-                      </button>
-                      <button
-                        type="button"
-                        disabled={circleCreationLoader === true}
-                        onClick={handleCircleCreation}
-                        className={`bg-[#007BAB] ml-2 border-2 border-[#007BAB] text-white hover:border-2 hover:border-[#007BAB] hover:bg-transparent hover:text-[#00384F] py-2 px-4 rounded-lg`}
+                        onClick={() => setIsOpen(true)}
+                        className={`bg-[#007BAB] mt-3 border-2 border-[#007BAB] text-white hover:border-2 hover:border-[#007BAB] hover:bg-transparent hover:text-[#00384F] w-1/3 lg:w-1/4 py-3 rounded-lg`}
                       >
                         Create Circle
                       </button>
-                    </Dialog.Title>
-                  </Dialog.Panel>
+                    </>
+                  )}
                 </div>
-              </div>
-            </Dialog>
-            <Header type="light" />
-            <div className="w-full h-auto p-4">
-              <div className="flex justify-center lg:justify-start items-center lg:items-start flex-col p-2 lg:p-10">
-                <h3 className="font-bold font48 text-[#17191C] mt-5">
-                  Create Event
-                </h3>
-                <p className="font24 text-[#8392AF] text-center lg:text-left font-normal text-base mt-2">
-                  Add all your event details, create new tickets, and set up
-                  recurring events
-                </p>
-              </div>
-              <div className="flex flex-col w-full h-auto lg:flex-row justify-start items-start">
-                <div className="w-full lg:w-8/12 h-auto pt-10 p-2 lg:p-10 lg:pt-5">
-                  <div className="flex justify-start items-start flex-col">
-                    <div className="flex md:flex-row flex-col justify-center md:justify-start items-center w-full">
-                      {selectedLogo && (
-                        <img
-                          src={URL.createObjectURL(selectedLogo)}
-                          alt="Selected Logo"
-                          className=" rounded-xl h-48 md:mr-5"
-                        />
-                      )}
-                      <label className="text-[#0E2354] font-bold mt-3 md:mt-0 py-2 px-4 cursor-pointer border-2 border-[#E6E7EC]">
-                        Upload Event Photo{" "}
-                        <span className="text-red-600 mr-1"> *</span>
-                        <input
-                          type="file"
-                          accept=".png, .jpg, .jpeg, .gif"
-                          className="hidden"
-                          onChange={handleLogoChange}
-                        />
-                      </label>
-                    </div>
-                    <div className="mb-4 mt-10 w-full lg:w-[90%] h-auto">
+                <div className="mb-4 w-full lg:w-[90%] h-auto">
+                  <label
+                    htmlFor="eventTitle"
+                    className="block text-[#292D32] font-bold text-[16px] ml-1"
+                  >
+                    Event Title
+                    <span className="text-red-600"> *</span>
+                  </label>
+                  <input
+                    type="text"
+                    id="eventTitle"
+                    className="border-2 text-[#8392AF] border-[#E6E7EC] mt-2 p-3 w-full rounded-lg focus:border-[#007BAB] focus:outline-none"
+                    placeholder="Enter your event title"
+                    value={eventTitle}
+                    onChange={(e) => {
+                      setEventTitle(e.target.value);
+                    }}
+                  />
+                </div>
+                <div className="mb-4 w-full lg:w-[90%] h-auto">
+                  <label
+                    htmlFor="description"
+                    className="block text-[#292D32] font-bold text-[16px] ml-1"
+                  >
+                    Description
+                    <span className="text-red-600"> *</span>
+                  </label>
+                  <textarea
+                    id="description"
+                    className="border-2 h-[80pt] text-[#8392AF] border-[#E6E7EC] mt-2 p-3 w-full rounded-lg focus:border-[#007BAB] focus:outline-none"
+                    placeholder="Tell attendees about your event"
+                    value={eventDescription}
+                    onChange={(e) => {
+                      setEventDescription(e.target.value);
+                    }}
+                  ></textarea>
+                </div>
+                <div className="mb-4 w-full lg:w-[90%] h-auto">
+                  <Menu
+                    as="div"
+                    className="relative inline-block text-left w-full"
+                  >
+                    <div>
                       <label
-                        htmlFor="eventTitle"
+                        htmlFor="circleFonts"
                         className="block text-[#292D32] font-bold text-[16px] ml-1"
                       >
-                        {circleData.length > 0
-                          ? "Your Circle"
-                          : "You haven't created any circle, please create circle to continue"}
-                        <span className="text-red-600"> *</span>
+                        Add Co Hosts (Optional)
                       </label>
-                      {circleData.length > 0 ? (
-                        <>
-                          <div className="flex justify-start mt-2 items-center flex-wrap gap-x-2 w-full">
-                            {circleData.map((item) => {
-                              const isSelected = item.id === selectedCircleId;
+                      <Menu.Button
+                        id="circleFonts"
+                        className="inline-flex w-full justify-between mt-2 gap-x-1.5 rounded-md bg-white px-3 py-4 text-sm text-[#888888] shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                      >
+                        {selectedCoHosts.length === 0
+                          ? "Select Co Hosts"
+                          : selectedCoHosts.join(", ").toUpperCase()}
 
-                              return (
-                                <div
-                                  key={item.id}
-                                  className="rounded-full border-2 w-20 h-20 relative"
-                                >
-                                  <img
-                                    src={item.logo_url}
-                                    className="rounded-full w-full h-full object-cover"
-                                    alt="Logo Image"
-                                    onClick={() =>
-                                      handleCircleSelection(item.id)
-                                    }
-                                    style={{ cursor: "pointer" }}
-                                    title={item.circle_name}
-                                  />
-                                  {isSelected && (
-                                    <span className="success-icon border-none absolute top-0 right-0 font-bold">
-                                      <FaCheckCircle
-                                        className="bg-[#fff] border-none rounded-full"
-                                        color="#007BAB"
-                                        size={25}
-                                      />
-                                    </span>
-                                  )}
-                                  <input
-                                    type="radio"
-                                    value={item.id}
-                                    checked={isSelected}
-                                    onChange={() =>
-                                      handleCircleSelection(item.id)
-                                    }
-                                    className="hidden"
-                                  />
-                                </div>
-                              );
-                            })}
-                          </div>
-                        </>
-                      ) : (
-                        <>
-                          <button
-                            type="button"
-                            onClick={() => setIsOpen(true)}
-                            className={`bg-[#007BAB] mt-3 border-2 border-[#007BAB] text-white hover:border-2 hover:border-[#007BAB] hover:bg-transparent hover:text-[#00384F] w-1/3 lg:w-1/4 py-3 rounded-lg`}
-                          >
-                            Create Circle
-                          </button>
-                        </>
-                      )}
+                        <ChevronDownIcon
+                          className="-mr-1 h-5 w-5 text-gray-400"
+                          aria-hidden="true"
+                        />
+                      </Menu.Button>
                     </div>
-                    <div className="mb-4 w-full lg:w-[90%] h-auto">
-                      <label
-                        htmlFor="eventTitle"
-                        className="block text-[#292D32] font-bold text-[16px] ml-1"
-                      >
-                        Event Title
-                        <span className="text-red-600"> *</span>
-                      </label>
-                      <input
-                        type="text"
-                        id="eventTitle"
-                        className="border-2 text-[#8392AF] border-[#E6E7EC] mt-2 p-3 w-full rounded-lg focus:border-[#007BAB] focus:outline-none"
-                        placeholder="Enter your event title"
-                        value={eventTitle}
-                        onChange={(e) => {
-                          setEventTitle(e.target.value);
-                        }}
-                      />
-                    </div>
-                    <div className="mb-4 w-full lg:w-[90%] h-auto">
-                      <label
-                        htmlFor="description"
-                        className="block text-[#292D32] font-bold text-[16px] ml-1"
-                      >
-                        Description
-                        <span className="text-red-600"> *</span>
-                      </label>
-                      <textarea
-                        id="description"
-                        className="border-2 h-[80pt] text-[#8392AF] border-[#E6E7EC] mt-2 p-3 w-full rounded-lg focus:border-[#007BAB] focus:outline-none"
-                        placeholder="Tell attendees about your event"
-                        value={eventDescription}
-                        onChange={(e) => {
-                          setEventDescription(e.target.value);
-                        }}
-                      ></textarea>
-                    </div>
-                    <div className="mb-4 w-full lg:w-[90%] h-auto">
-                      <Menu
-                        as="div"
-                        className="relative inline-block text-left w-full"
-                      >
-                        <div>
-                          <label
-                            htmlFor="circleFonts"
-                            className="block text-[#292D32] font-bold text-[16px] ml-1"
-                          >
-                            Add Co Hosts (Optional)
-                          </label>
-                          <Menu.Button
-                            id="circleFonts"
-                            className="inline-flex w-full justify-between mt-2 gap-x-1.5 rounded-md bg-white px-3 py-4 text-sm text-[#888888] shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-                          >
-                            {selectedCoHosts.length === 0
-                              ? "Select Co Hosts"
-                              : selectedCoHosts.join(", ").toUpperCase()}
 
-                            <ChevronDownIcon
-                              className="-mr-1 h-5 w-5 text-gray-400"
-                              aria-hidden="true"
+                    <Transition
+                      as={Fragment}
+                      enter="transition ease-out duration-100"
+                      enterFrom="transform opacity-0 scale-95"
+                      enterTo="transform opacity-100 scale-100"
+                      leave="transition ease-in duration-75"
+                      leaveFrom="transform opacity-100 scale-100"
+                      leaveTo="transform opacity-0 scale-95"
+                    >
+                      <Menu.Items className="absolute h-60 overflow-auto w-full left-0 z-10 mt-2 w-full origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                        <div className="py-1">
+                          <div className="px-4 py-2">
+                            <input
+                              type="text"
+                              placeholder="Search Hosts"
+                              className="border-2 text-[#8392AF] border-[#E6E7EC] mt-2 p-3 w-full rounded-lg focus:border-[#007BAB] focus:outline-none"
+                              value={searchTextHosts}
+                              onChange={(e) => {
+                                handleSearchHosts(e);
+                              }}
+                              onKeyDown={preventSpaceKeyPropagation}
                             />
-                          </Menu.Button>
-                        </div>
-
-                        <Transition
-                          as={Fragment}
-                          enter="transition ease-out duration-100"
-                          enterFrom="transform opacity-0 scale-95"
-                          enterTo="transform opacity-100 scale-100"
-                          leave="transition ease-in duration-75"
-                          leaveFrom="transform opacity-100 scale-100"
-                          leaveTo="transform opacity-0 scale-95"
-                        >
-                          <Menu.Items className="absolute h-60 overflow-auto w-full left-0 z-10 mt-2 w-full origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                            <div className="py-1">
-                              <div className="px-4 py-2">
-                                <input
-                                  type="text"
-                                  placeholder="Search Hosts"
-                                  className="border-2 text-[#8392AF] border-[#E6E7EC] mt-2 p-3 w-full rounded-lg focus:border-[#007BAB] focus:outline-none"
-                                  value={searchTextHosts}
-                                  onChange={(e) => {
-                                    handleSearchHosts(e);
-                                  }}
-                                  onKeyDown={preventSpaceKeyPropagation}
-                                />
-                              </div>
-                              {coHostsList
-                                ?.filter(
-                                  (items) =>
-                                    items.full_name_insensitive &&
-                                    items.full_name_insensitive !== undefined &&
-                                    items.full_name_insensitive !== ""
-                                )
-                                .sort((a, b) =>
-                                  a.full_name_insensitive.localeCompare(
-                                    b.full_name_insensitive
-                                  )
-                                )
-                                .map((item, index) => (
-                                  <div className="py-1">
-                                    <Menu.Item key={index}>
-                                      {({ active }) => (
-                                        <>
-                                          <div
-                                            className={`${
-                                              selectedCoHosts.length > 0 &&
+                          </div>
+                          {coHostsList
+                            ?.filter(
+                              (items) =>
+                                items.full_name_insensitive &&
+                                items.full_name_insensitive !== undefined &&
+                                items.full_name_insensitive !== ""
+                            )
+                            .sort((a, b) =>
+                              a.full_name_insensitive.localeCompare(
+                                b.full_name_insensitive
+                              )
+                            )
+                            .map((item, index) => (
+                              <div className="py-1">
+                                <Menu.Item key={index}>
+                                  {({ active }) => (
+                                    <>
+                                      <div
+                                        className={`${
+                                          selectedCoHosts.length > 0 &&
+                                          selectedCoHosts.includes(
+                                            item.full_name_insensitive
+                                          )
+                                            ? "bg-[#007BAB]"
+                                            : "bg-transparent"
+                                        } flex justify-between items-center flex-row`}
+                                      >
+                                        <div
+                                          className={classNames(
+                                            selectedCoHosts.length > 0 &&
                                               selectedCoHosts.includes(
                                                 item.full_name_insensitive
                                               )
-                                                ? "bg-[#007BAB]"
-                                                : "bg-transparent"
-                                            } flex justify-between items-center flex-row`}
+                                              ? "text-white font-semibold"
+                                              : "text-gray-700",
+                                            "block px-4 py-2 text-sm cursor-pointer"
+                                          )}
+                                        >
+                                          {item?.full_name_insensitive
+                                            ? item?.full_name_insensitive?.toUpperCase()
+                                            : item?.full_name?.toUpperCase()}
+                                        </div>
+                                        {selectedCoHosts.length > 0 &&
+                                        selectedCoHosts.includes(
+                                          item.full_name_insensitive
+                                        ) ? (
+                                          <div
+                                            className="rounded-full mr-10 bg-white px-3 text-[#ff3333] cursor-pointer"
+                                            onClick={() =>
+                                              toggleCoHostSelection(
+                                                item.full_name_insensitive
+                                              )
+                                            }
                                           >
-                                            <div
-                                              className={classNames(
-                                                selectedCoHosts.length > 0 &&
-                                                  selectedCoHosts.includes(
-                                                    item.full_name_insensitive
-                                                  )
-                                                  ? "text-white font-semibold"
-                                                  : "text-gray-700",
-                                                "block px-4 py-2 text-sm cursor-pointer"
-                                              )}
-                                            >
-                                              {item?.full_name_insensitive
-                                                ? item?.full_name_insensitive?.toUpperCase()
-                                                : item?.full_name?.toUpperCase()}
-                                            </div>
-                                            {selectedCoHosts.length > 0 &&
-                                            selectedCoHosts.includes(
-                                              item.full_name_insensitive
-                                            ) ? (
-                                              <div
-                                                className="rounded-full mr-10 bg-white px-3 text-[#ff3333] cursor-pointer"
-                                                onClick={() =>
-                                                  toggleCoHostSelection(
-                                                    item.full_name_insensitive
-                                                  )
-                                                }
-                                              >
-                                                Remove
-                                              </div>
-                                            ) : (
-                                              <div
-                                                className="rounded-full mr-10 text-white px-3 bg-[#007BAB] cursor-pointer"
-                                                onClick={() =>
-                                                  toggleCoHostSelection(
-                                                    item.full_name_insensitive
-                                                  )
-                                                }
-                                              >
-                                                Add
-                                              </div>
-                                            )}
+                                            Remove
                                           </div>
-                                        </>
-                                      )}
-                                    </Menu.Item>
-                                  </div>
-                                ))}
-                            </div>
-                          </Menu.Items>
-                        </Transition>
-                      </Menu>
-                    </div>
-                    <div className="mb-4 w-full lg:w-[90%] h-auto">
-                      <label
-                        htmlFor="hyperlink"
-                        className="block text-[#292D32] font-bold text-[16px] ml-1"
-                      >
-                        Website/Hyperlink (Optional)
-                      </label>
-                      <input
-                        type="text"
-                        id="hyperlink"
-                        className="border-2 text-[#8392AF] border-[#E6E7EC] mt-2 p-3 w-full rounded-lg focus:border-[#007BAB] focus:outline-none"
-                        placeholder="Add website/hyperlink"
-                        value={eventWebsite}
-                        onChange={(e) => {
-                          setEventWebsite(e.target.value);
-                        }}
-                      ></input>
-                    </div>
-                    <div className="flex justify-start lg:justify-between items-start lg:flex-row flex-col gap-4 w-full lg:w-[90%] mb-4 h-auto">
-                      <div className="w-full">
-                        <label
-                          htmlFor="forDateStart"
-                          className="block text-[#292D32] font-bold text-[16px] ml-1"
-                        >
-                          Event Start Date & Time
-                          <span className="text-red-600"> *</span>
-                        </label>
-                        {/* <input
+                                        ) : (
+                                          <div
+                                            className="rounded-full mr-10 text-white px-3 bg-[#007BAB] cursor-pointer"
+                                            onClick={() =>
+                                              toggleCoHostSelection(
+                                                item.full_name_insensitive
+                                              )
+                                            }
+                                          >
+                                            Add
+                                          </div>
+                                        )}
+                                      </div>
+                                    </>
+                                  )}
+                                </Menu.Item>
+                              </div>
+                            ))}
+                        </div>
+                      </Menu.Items>
+                    </Transition>
+                  </Menu>
+                </div>
+                <div className="mb-4 w-full lg:w-[90%] h-auto">
+                  <label
+                    htmlFor="hyperlink"
+                    className="block text-[#292D32] font-bold text-[16px] ml-1"
+                  >
+                    Website/Hyperlink (Optional)
+                  </label>
+                  <input
+                    type="text"
+                    id="hyperlink"
+                    className="border-2 text-[#8392AF] border-[#E6E7EC] mt-2 p-3 w-full rounded-lg focus:border-[#007BAB] focus:outline-none"
+                    placeholder="Add website/hyperlink"
+                    value={eventWebsite}
+                    onChange={(e) => {
+                      setEventWebsite(e.target.value);
+                    }}
+                  ></input>
+                </div>
+                <div className="flex justify-start lg:justify-between items-start lg:flex-row flex-col gap-4 w-full lg:w-[90%] mb-4 h-auto">
+                  <div className="w-full">
+                    <label
+                      htmlFor="forDateStart"
+                      className="block text-[#292D32] font-bold text-[16px] ml-1"
+                    >
+                      Event Start Date & Time
+                      <span className="text-red-600"> *</span>
+                    </label>
+                    {/* <input
                           type="datetime-local"
                           value={startDateTime}
                           onChange={(e) => setStartDateTime(e.target.value)}
@@ -1535,28 +1495,28 @@ const CreateEvent = () => {
                             .set({ second: 0, millisecond: 0 })
                             .toISO({ includeOffset: false })}
                         /> */}
-                        <LocalizationProvider dateAdapter={AdapterDayjs}>
-                          <DateTimePicker
-                            sx={{
-                              color: "#8392AF",
-                              marginTop: 1,
-                              width: "100%",
-                            }}
-                            value={startDateTime}
-                            onChange={(newValue) => setStartDateTime(newValue)}
-                            disablePast
-                          />
-                        </LocalizationProvider>
-                      </div>
-                      <div className="w-full">
-                        <label
-                          htmlFor="forDateEnd"
-                          className="block text-[#292D32] font-bold text-[16px] ml-1"
-                        >
-                          Event End Date & Time
-                          <span className="text-red-600"> *</span>
-                        </label>
-                        {/* <input
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <DateTimePicker
+                        sx={{
+                          color: "#8392AF",
+                          marginTop: 1,
+                          width: "100%",
+                        }}
+                        value={startDateTime}
+                        onChange={(newValue) => setStartDateTime(newValue)}
+                        disablePast
+                      />
+                    </LocalizationProvider>
+                  </div>
+                  <div className="w-full">
+                    <label
+                      htmlFor="forDateEnd"
+                      className="block text-[#292D32] font-bold text-[16px] ml-1"
+                    >
+                      Event End Date & Time
+                      <span className="text-red-600"> *</span>
+                    </label>
+                    {/* <input
                           type="datetime-local"
                           value={endDateTime}
                           onChange={(e) => setEndDateTime(e.target.value)}
@@ -1567,21 +1527,21 @@ const CreateEvent = () => {
                             .set({ second: 0, millisecond: 0 })
                             .toISO({ includeOffset: false })}
                         /> */}
-                        <LocalizationProvider dateAdapter={AdapterDayjs}>
-                          <DateTimePicker
-                            value={endDateTime}
-                            sx={{
-                              color: "#8392AF",
-                              marginTop: 1,
-                              width: "100%",
-                            }}
-                            onChange={(newValue) => setEndDateTime(newValue)}
-                            disablePast
-                          />
-                        </LocalizationProvider>
-                      </div>
-                    </div>
-                    {/* <button
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <DateTimePicker
+                        value={endDateTime}
+                        sx={{
+                          color: "#8392AF",
+                          marginTop: 1,
+                          width: "100%",
+                        }}
+                        onChange={(newValue) => setEndDateTime(newValue)}
+                        disablePast
+                      />
+                    </LocalizationProvider>
+                  </div>
+                </div>
+                {/* <button
                       onClick={() => {
                         checkStartAndEndDateTime();
                         convertToTimestampEndDateTime();
@@ -1590,242 +1550,235 @@ const CreateEvent = () => {
                     >
                       CLICK ME BRO
                     </button> */}
-                    <div className="mb-4 w-full lg:w-[90%] h-auto">
-                      <label
-                        htmlFor="location"
-                        className="block text-[#292D32] font-bold text-[16px] ml-1"
-                      >
-                        Location/Address
-                        <span className="text-red-600"> *</span>
-                      </label>
-                      <LocationSearchInput
-                        onSelect={handleSelect}
-                        location={eventLocation}
-                        setEventLocation={setEventLocation}
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div className="w-full lg:w-4/12 h-auto flex flex-col justify-center items-center p-2 pt-0 lg:pt-10 lg:p-10">
-                  <div className="flex bg-[#F9F9F9] w-full h-auto flex-col justify-start items-start rounded-lg p-10 lg:mt-[-13%]">
-                    <div className="text-[#101820] w-full h-auto border-b-2 border-[#E0E0E0] pb-5 font-semibold text-lg">
-                      <p
-                        onClick={() => {
-                          console.log(thirdPartyCheckboxSelected);
-                        }}
-                      >
-                        Post Event To Third Party Platforms
-                      </p>
-                    </div>
-                    {thirdPartyIntegrations.length > 0 &&
-                      thirdPartyIntegrations?.map((item) => (
-                        <>
-                          <div className="flex justify-between items-center text-[#292D32] font-semibold flex-row w-full h-auto mt-2">
-                            <div>{item.integrationType}</div>
-                            <input
-                              type="checkbox"
-                              className="h-6 w-6 cursor-pointer"
-                              onChange={() =>
-                                handleCheckboxChange(
-                                  item.integrationType.toString().toUpperCase()
-                                )
-                              }
-                              checked={thirdPartyCheckboxSelected.includes(
-                                item.integrationType
-                              )}
-                            />
-                          </div>
-                        </>
-                      ))}
-                    {thirdPartyIntegrations.length === 0 && (
-                      <>
-                        <div className="flex mt-3 justify-center flex-col items-center w-full">
-                          <div className="font-semibold">
-                            No Integrations found
-                          </div>
-                          <button
-                            onClick={() => {
-                              router.push("/settings");
-                            }}
-                            className={`font14 mt-3 font-medium rounded-xl py-2 px-4 font-Montserrat text-[#fff] hover:text-[#007BAB] border-2 border-[#007BAB] hover:bg-transparent bg-[#007BAB]`}
-                          >
-                            <div className="flex justify-center items-center">
-                              Go to Settings
-                            </div>
-                          </button>
-                        </div>
-                      </>
-                    )}
-                  </div>
-                  <div className="flex bg-[#F9F9F9] mt-5 w-full h-auto flex-col justify-start items-start rounded-lg p-10">
-                    <div className="text-[#101820] w-full h-auto border-b-2 border-[#E0E0E0] pb-5 font-semibold text-lg">
-                      <p>Features</p>
-                    </div>
-                    <div className="flex justify-between text-[#292D32] flex-row w-full h-auto mt-5">
-                      <div>Open for Exhibitors</div>
-                      <div>
-                        <label
-                          className={`${
-                            isOnExhibitors ? "bg-[#007BAB]" : "bg-[#E2E2E2]"
-                          } relative inline-flex items-center h-6 rounded-full w-11 cursor-pointer`}
-                        >
-                          <input
-                            type="checkbox"
-                            className="absolute h-0 w-0 opacity-0"
-                            onChange={toggleSwitchExhibitors}
-                            checked={isOnExhibitors}
-                          />
-                          <span
-                            className={`${
-                              isOnExhibitors ? "translate-x-6" : "translate-x-1"
-                            } inline-block w-4 h-4 transform translate-x-0.5 bg-white rounded-full transition-transform duration-200 ease-in-out`}
-                          ></span>
-                        </label>
-                      </div>
-                    </div>
-                    <div className="flex justify-between text-[#292D32] flex-row w-full h-auto mt-2">
-                      <div>Open for Sponsorship</div>
-                      <div>
-                        <label
-                          className={`${
-                            isOnSponsorship ? "bg-[#007BAB]" : "bg-[#E2E2E2]"
-                          } relative inline-flex items-center h-6 rounded-full w-11 cursor-pointer`}
-                        >
-                          <input
-                            type="checkbox"
-                            className="absolute h-0 w-0 opacity-0"
-                            onChange={toggleSwitchSponsorship}
-                            checked={isOnSponsorship}
-                          />
-                          <span
-                            className={`${
-                              isOnSponsorship
-                                ? "translate-x-6"
-                                : "translate-x-1"
-                            } inline-block w-4 h-4 transform translate-x-0.5 bg-white rounded-full transition-transform duration-200 ease-in-out`}
-                          ></span>
-                        </label>
-                      </div>
-                    </div>
-                    {isOnSponsorship && (
-                      <div className="flex w-full justify-center items-center h-auto mt-2">
-                        <input
-                          type="text"
-                          id="sponsorship"
-                          className="border-2 text-[#8392AF] border-[#E6E7EC] mt-2 p-3 w-full rounded-lg focus:border-[#007BAB] focus:outline-none"
-                          placeholder="Eg. Title sponsor, Food Sponsor"
-                          value={eventSponsorShip}
-                          onChange={(e) => {
-                            setEventSponsorShip(e.target.value);
-                          }}
-                        ></input>
-                      </div>
-                    )}
-                    <div className="flex justify-between text-[#292D32] flex-row w-full h-auto mt-2">
-                      <div className="font-bold">
-                        Ticket Price {isOnPrice ? "(Paid)" : "(Free)"}
-                      </div>
-                      <div>
-                        <label
-                          className={`${
-                            isOnPrice ? "bg-[#007BAB]" : "bg-[#E2E2E2]"
-                          } relative inline-flex items-center h-6 rounded-full w-11 cursor-pointer`}
-                        >
-                          <input
-                            type="checkbox"
-                            className="absolute h-0 w-0 opacity-0"
-                            onChange={toggleSwitchPrice}
-                            checked={isOnPrice}
-                          />
-                          <span
-                            className={`${
-                              isOnPrice ? "translate-x-6" : "translate-x-1"
-                            } inline-block w-4 h-4 transform translate-x-0.5 bg-white rounded-full transition-transform duration-200 ease-in-out`}
-                          ></span>
-                        </label>
-                      </div>
-                    </div>
-                    {isOnPrice && (
-                      <div className="flex w-full flex-col justify-center items-center h-auto mt-2">
-                        <input
-                          type="text"
-                          inputMode="numeric"
-                          id="maximumTicket"
-                          className="border-2 text-[#8392AF] border-[#E6E7EC] mt-2 p-3 w-full rounded-lg focus:border-[#007BAB] focus:outline-none"
-                          placeholder="Maximum Tickets"
-                          value={eventMaximumTickets}
-                          onChange={(e) => {
-                            const numericValue = e.target.value.replace(
-                              /\D/g,
-                              ""
-                            );
-
-                            if (e.target.value !== numericValue) {
-                              e.target.value = numericValue;
-                            } else {
-                              setEventMaximumTickets(numericValue);
-                            }
-                          }}
-                        ></input>
-                        <div className="relative w-full">
-                          <span className="absolute inset-y-0 left-0 pl-3 pt-2 text-[#007BAB] font18 font-bold flex items-center">
-                            $
-                          </span>
-                          <input
-                            type="text"
-                            inputMode="numeric"
-                            id="ticketPrice"
-                            className="border-2 pl-10 text-[#8392AF] border-[#E6E7EC] mt-2 p-3 w-full rounded-lg focus:border-[#007BAB] focus:outline-none"
-                            placeholder="Ticket Price"
-                            value={eventTicketPrice}
-                            onChange={(e) => {
-                              setEventTicketPrice(e.target.value);
-                            }}
-                          ></input>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                  <div className="flex bg-[#F9F9F9] mt-5 w-full h-auto flex-col justify-center items-center rounded-lg p-5">
-                    <div className="w-full text-center">
-                      <button
-                        onClick={handleCreateEvent}
-                        type="submit"
-                        disabled={createEventLoader === true}
-                        className={`bg-[#007BAB] border-2 border-[#007BAB] text-white w-full py-5 rounded-lg`}
-                      >
-                        {createEventLoader === true ? (
-                          <>
-                            <div className="flex justify-center items-center w-full">
-                              <ThreeDots
-                                height="20"
-                                color="#fff"
-                                width="50"
-                                radius="9"
-                                ariaLabel="three-dots-loading"
-                                visible={true}
-                              />
-                            </div>
-                          </>
-                        ) : (
-                          "Create Event"
-                        )}
-                      </button>
-                    </div>
-                  </div>
+                <div className="mb-4 w-full lg:w-[90%] h-auto">
+                  <label
+                    htmlFor="location"
+                    className="block text-[#292D32] font-bold text-[16px] ml-1"
+                  >
+                    Location/Address
+                    <span className="text-red-600"> *</span>
+                  </label>
+                  <LocationSearchInput
+                    onSelect={handleSelect}
+                    location={eventLocation}
+                    setEventLocation={setEventLocation}
+                  />
                 </div>
               </div>
             </div>
-            <Footer />
+            <div className="w-full lg:w-4/12 h-auto flex flex-col justify-center items-center p-2 pt-0 lg:pt-10 lg:p-10">
+              <div className="flex bg-[#F9F9F9] w-full h-auto flex-col justify-start items-start rounded-lg p-10 lg:mt-[-13%]">
+                <div className="text-[#101820] w-full h-auto border-b-2 border-[#E0E0E0] pb-5 font-semibold text-lg">
+                  <p
+                    onClick={() => {
+                      console.log(thirdPartyCheckboxSelected);
+                    }}
+                  >
+                    Post Event To Third Party Platforms
+                  </p>
+                </div>
+                {thirdPartyIntegrations.length > 0 &&
+                  thirdPartyIntegrations?.map((item) => (
+                    <>
+                      <div className="flex justify-between items-center text-[#292D32] font-semibold flex-row w-full h-auto mt-2">
+                        <div>{item.integrationType}</div>
+                        <input
+                          type="checkbox"
+                          className="h-6 w-6 cursor-pointer"
+                          onChange={() =>
+                            handleCheckboxChange(
+                              item.integrationType.toString().toUpperCase()
+                            )
+                          }
+                          checked={thirdPartyCheckboxSelected.includes(
+                            item.integrationType
+                          )}
+                        />
+                      </div>
+                    </>
+                  ))}
+                {thirdPartyIntegrations.length === 0 && (
+                  <>
+                    <div className="flex mt-3 justify-center flex-col items-center w-full">
+                      <div className="font-semibold">No Integrations found</div>
+                      <button
+                        onClick={() => {
+                          router.push("/settings");
+                        }}
+                        className={`font14 mt-3 font-medium rounded-xl py-2 px-4 font-Montserrat text-[#fff] hover:text-[#007BAB] border-2 border-[#007BAB] hover:bg-transparent bg-[#007BAB]`}
+                      >
+                        <div className="flex justify-center items-center">
+                          Go to Settings
+                        </div>
+                      </button>
+                    </div>
+                  </>
+                )}
+              </div>
+              <div className="flex bg-[#F9F9F9] mt-5 w-full h-auto flex-col justify-start items-start rounded-lg p-10">
+                <div className="text-[#101820] w-full h-auto border-b-2 border-[#E0E0E0] pb-5 font-semibold text-lg">
+                  <p>Features</p>
+                </div>
+                <div className="flex justify-between text-[#292D32] flex-row w-full h-auto mt-5">
+                  <div>Open for Exhibitors</div>
+                  <div>
+                    <label
+                      className={`${
+                        isOnExhibitors ? "bg-[#007BAB]" : "bg-[#E2E2E2]"
+                      } relative inline-flex items-center h-6 rounded-full w-11 cursor-pointer`}
+                    >
+                      <input
+                        type="checkbox"
+                        className="absolute h-0 w-0 opacity-0"
+                        onChange={toggleSwitchExhibitors}
+                        checked={isOnExhibitors}
+                      />
+                      <span
+                        className={`${
+                          isOnExhibitors ? "translate-x-6" : "translate-x-1"
+                        } inline-block w-4 h-4 transform translate-x-0.5 bg-white rounded-full transition-transform duration-200 ease-in-out`}
+                      ></span>
+                    </label>
+                  </div>
+                </div>
+                <div className="flex justify-between text-[#292D32] flex-row w-full h-auto mt-2">
+                  <div>Open for Sponsorship</div>
+                  <div>
+                    <label
+                      className={`${
+                        isOnSponsorship ? "bg-[#007BAB]" : "bg-[#E2E2E2]"
+                      } relative inline-flex items-center h-6 rounded-full w-11 cursor-pointer`}
+                    >
+                      <input
+                        type="checkbox"
+                        className="absolute h-0 w-0 opacity-0"
+                        onChange={toggleSwitchSponsorship}
+                        checked={isOnSponsorship}
+                      />
+                      <span
+                        className={`${
+                          isOnSponsorship ? "translate-x-6" : "translate-x-1"
+                        } inline-block w-4 h-4 transform translate-x-0.5 bg-white rounded-full transition-transform duration-200 ease-in-out`}
+                      ></span>
+                    </label>
+                  </div>
+                </div>
+                {isOnSponsorship && (
+                  <div className="flex w-full justify-center items-center h-auto mt-2">
+                    <input
+                      type="text"
+                      id="sponsorship"
+                      className="border-2 text-[#8392AF] border-[#E6E7EC] mt-2 p-3 w-full rounded-lg focus:border-[#007BAB] focus:outline-none"
+                      placeholder="Eg. Title sponsor, Food Sponsor"
+                      value={eventSponsorShip}
+                      onChange={(e) => {
+                        setEventSponsorShip(e.target.value);
+                      }}
+                    ></input>
+                  </div>
+                )}
+                <div className="flex justify-between text-[#292D32] flex-row w-full h-auto mt-2">
+                  <div className="font-bold">
+                    Ticket Price {isOnPrice ? "(Paid)" : "(Free)"}
+                  </div>
+                  <div>
+                    <label
+                      className={`${
+                        isOnPrice ? "bg-[#007BAB]" : "bg-[#E2E2E2]"
+                      } relative inline-flex items-center h-6 rounded-full w-11 cursor-pointer`}
+                    >
+                      <input
+                        type="checkbox"
+                        className="absolute h-0 w-0 opacity-0"
+                        onChange={toggleSwitchPrice}
+                        checked={isOnPrice}
+                      />
+                      <span
+                        className={`${
+                          isOnPrice ? "translate-x-6" : "translate-x-1"
+                        } inline-block w-4 h-4 transform translate-x-0.5 bg-white rounded-full transition-transform duration-200 ease-in-out`}
+                      ></span>
+                    </label>
+                  </div>
+                </div>
+                {isOnPrice && (
+                  <div className="flex w-full flex-col justify-center items-center h-auto mt-2">
+                    <input
+                      type="text"
+                      inputMode="numeric"
+                      id="maximumTicket"
+                      className="border-2 text-[#8392AF] border-[#E6E7EC] mt-2 p-3 w-full rounded-lg focus:border-[#007BAB] focus:outline-none"
+                      placeholder="Maximum Tickets"
+                      value={eventMaximumTickets}
+                      onChange={(e) => {
+                        const numericValue = e.target.value.replace(/\D/g, "");
+
+                        if (e.target.value !== numericValue) {
+                          e.target.value = numericValue;
+                        } else {
+                          setEventMaximumTickets(numericValue);
+                        }
+                      }}
+                    ></input>
+                    <div className="relative w-full">
+                      <span className="absolute inset-y-0 left-0 pl-3 pt-2 text-[#007BAB] font18 font-bold flex items-center">
+                        $
+                      </span>
+                      <input
+                        type="text"
+                        inputMode="numeric"
+                        id="ticketPrice"
+                        className="border-2 pl-10 text-[#8392AF] border-[#E6E7EC] mt-2 p-3 w-full rounded-lg focus:border-[#007BAB] focus:outline-none"
+                        placeholder="Ticket Price"
+                        value={eventTicketPrice}
+                        onChange={(e) => {
+                          setEventTicketPrice(e.target.value);
+                        }}
+                      ></input>
+                    </div>
+                  </div>
+                )}
+              </div>
+              <div className="flex bg-[#F9F9F9] mt-5 w-full h-auto flex-col justify-center items-center rounded-lg p-5">
+                <div className="w-full text-center">
+                  <button
+                    onClick={handleCreateEvent}
+                    type="submit"
+                    disabled={createEventLoader === true}
+                    className={`bg-[#007BAB] border-2 border-[#007BAB] text-white w-full py-5 rounded-lg`}
+                  >
+                    {createEventLoader === true ? (
+                      <>
+                        <div className="flex justify-center items-center w-full">
+                          <ThreeDots
+                            height="20"
+                            color="#fff"
+                            width="50"
+                            radius="9"
+                            ariaLabel="three-dots-loading"
+                            visible={true}
+                          />
+                        </div>
+                      </>
+                    ) : (
+                      "Create Event"
+                    )}
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
-        </>
-      ) : (
-        <>
-          <div className="flex w-screen h-screen justify-center items-center">
-            <img src={loaderGif.src} alt="Loader" />
-          </div>
-        </>
-      )}
+        </div>
+        <Footer />
+      </div>
+      {/* </> */}
+      {/*  ) : (
+         <>
+           <div className="flex w-screen h-screen justify-center items-center">
+             <img src={loaderGif.src} alt="Loader" />
+           </div>
+         </>
+       )} */}
     </>
   );
 };
