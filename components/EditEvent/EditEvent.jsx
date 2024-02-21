@@ -28,6 +28,8 @@ import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import dayjs from "dayjs";
 import { FaCheckCircle } from "react-icons/fa";
 import LocationSearchInput from "../Location/LocationSearchInput";
+import Cropper from "react-cropper";
+import "cropperjs/dist/cropper.css";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -144,6 +146,10 @@ const EditEvent = () => {
   );
   const [imageUploadLoader, setImageUploadLoader] = useState(false);
   const [locationCords, setLocationCords] = useState(null);
+  const [openImageCropper, setOpenImageCropper] = useState(false);
+  const [cropImageLoader, setCropImageLoader] = useState(false);
+  const [cropper, setCropper] = useState(null);
+  const [newAvatarUrl, setNewAvatarUrl] = useState("");
 
   const handleSelect = (address, latLng) => {
     console.log("Selected address:", address);
@@ -386,11 +392,31 @@ const EditEvent = () => {
   };
 
   const handleLogoChange = async (e) => {
-    setImageUploadLoader(true);
-    const file = e.target.files[0];
-    setSelectedLogo(file);
-    const uploadURL = await uploadImage(file);
-    setSelectedLogoURL(uploadURL);
+    // const file = e.target.files[0];
+    if (e.target.files) {
+      setNewAvatarUrl(URL.createObjectURL(e.target.files[0]));
+      setOpenImageCropper(true);
+    }
+  };
+
+  const getCropData = async () => {
+    if (cropper) {
+      setCropImageLoader(true);
+      const file = await fetch(cropper.getCroppedCanvas().toDataURL())
+        .then((res) => res.blob())
+        .then((blob) => {
+          return new File([blob], "image.png", { type: "image/png" });
+        });
+      if (file) {
+        const uploadURL = await uploadImage(file);
+        if (uploadURL) {
+          setSelectedLogo(file);
+          setSelectedLogoURL(uploadURL);
+          setCropImageLoader(false);
+          setOpenImageCropper(false);
+        }
+      }
+    }
   };
 
   const handleLogoChangeCircle = async (e) => {
@@ -663,11 +689,11 @@ const EditEvent = () => {
   }, [user, isOpen]);
 
   const handleColorChange = (selectedColor) => {
-    toast(
-      <div style={{ color: selectedColor.hex }}>
-        Color Selected: {selectedColor.hex}
-      </div>
-    );
+    // toast(
+    //   <div style={{ color: selectedColor.hex }}>
+    //     Color Selected: {selectedColor.hex}
+    //   </div>
+    // );
     const { r, g, b, a } = selectedColor.rgb;
 
     // Convert RGBA values to hexadecimal and concatenate them
@@ -1343,6 +1369,86 @@ const EditEvent = () => {
             </div>
           </div>
         </Dialog>
+        <Dialog
+          open={openImageCropper}
+          onClose={() => setOpenImageCropper(false)}
+          className="relative z-50"
+        >
+          <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
+          <div className="fixed inset-0 w-screen overflow-y-auto">
+            <div className="flex min-h-full items-center justify-center p-4">
+              <Dialog.Panel className="w-full md:w-1/2 xl:w-1/3 h-auto rounded-xl shadow-xl bg-white">
+                <Dialog.Title
+                  className={`flex w-full items-center justify-between p-3 flex-row border-b-2`}
+                >
+                  <p className="font-bold text-lg">Crop Image</p>
+                  <button
+                    type="button"
+                    className="box-content rounded-none border-none hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none"
+                    onClick={() => setOpenImageCropper(false)}
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke-width="1.5"
+                      stroke="currentColor"
+                      className="h-6 w-6"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M6 18L18 6M6 6l12 12"
+                      />
+                    </svg>
+                  </button>
+                </Dialog.Title>
+                <div className="relative p-4 flex flex-col justify-center items-center w-full">
+                  <Cropper
+                    src={newAvatarUrl}
+                    // style={{ height: 400, width: 400 }}
+                    // initialAspectRatio={16 / 9}
+                    minCropBoxHeight={100}
+                    minCropBoxWidth={100}
+                    guides={false}
+                    checkOrientation={false}
+                    responsive={true}
+                    onInitialized={(instance) => {
+                      setCropper(instance);
+                    }}
+                  />
+                </div>
+                <Dialog.Title
+                  className={`flex w-full items-center justify-center p-3 flex-row border-t-2`}
+                >
+                  <button
+                    onClick={getCropData}
+                    type="submit"
+                    disabled={cropImageLoader === true}
+                    className={`bg-[#007BAB] border-2 border-[#007BAB] text-white w-full py-5 rounded-lg`}
+                  >
+                    {cropImageLoader === true ? (
+                      <>
+                        <div className="flex justify-center items-center w-full">
+                          <ThreeDots
+                            height="20"
+                            color="#fff"
+                            width="50"
+                            radius="9"
+                            ariaLabel="three-dots-loading"
+                            visible={true}
+                          />
+                        </div>
+                      </>
+                    ) : (
+                      "Crop Image"
+                    )}
+                  </button>
+                </Dialog.Title>
+              </Dialog.Panel>
+            </div>
+          </div>
+        </Dialog>
         <Header type="light" />
         <div className="w-full h-auto p-4">
           <div className="flex justify-center lg:justify-start items-center lg:items-start flex-col p-2 lg:p-10">
@@ -1364,14 +1470,8 @@ const EditEvent = () => {
                     />
                   )}
                   <label className="text-[#0E2354] font-bold mt-3 md:mt-0 py-2 px-4 cursor-pointer border-2 border-[#E6E7EC]">
-                    {imageUploadLoader ? (
-                      <>Uploading...</>
-                    ) : (
-                      <>
-                        Upload Event Photo{" "}
-                        <span className="text-red-600 mr-1"> *</span>
-                      </>
-                    )}
+                    Upload Event Photo{" "}
+                    <span className="text-red-600 mr-1"> *</span>
                     <input
                       disabled={imageUploadLoader}
                       type="file"
