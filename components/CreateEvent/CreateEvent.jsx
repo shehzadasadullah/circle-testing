@@ -141,6 +141,7 @@ const CreateEvent = () => {
   const [coHostsList, setCoHostsList] = useState([]);
   const [selectedCoHosts, setSelectedCoHosts] = useState([]);
   const [createEventLoader, setCreateEventLoader] = useState(false);
+  const [eventPublishLoader, setEventPublishLoader] = useState(false);
   const [fetchCircleDataLoader, setFetchCircleDataLoader] = useState(true);
   const [fetchAllUserLoader, setFetchAllUserLoader] = useState(true);
   const [fetchCoHostsLoader, setFetchCoHostsLoader] = useState(true);
@@ -769,16 +770,53 @@ const CreateEvent = () => {
                       console.log(error);
                     }
 
+                    // Update the document
+                    try {
+                      await updateDoc(docRefUpdate, updatedData);
+                      console.log("Document successfully updated");
+                      toast("Event Created Successfully!");
+                      setCreateEventLoader(false);
+                      if (thirdPartyCheckboxSelected.length === 0) {
+                        setTimeout(() => {
+                          router.push(`/events/${docRef.id}`);
+                        }, 3000);
+                      }
+                    } catch (error) {
+                      console.error("Error updating document: ", error);
+                      toast("Something went wrong!");
+                      setCreateEventLoader(false);
+                    }
+
                     // Post event to third party platforms
 
-                    if (thirdPartyCheckboxSelected.length > 0) {
+                    async function postDataToThirdParty(
+                      docRefId,
+                      thirdPartyCheckboxSelected,
+                      circleAccessToken,
+                      retry = 0
+                    ) {
+                      setEventPublishLoader(true);
+                      if (retry > 2) {
+                        // Limiting retries to avoid infinite recursion
+                        thirdPartyCheckboxSelected.map((item) => {
+                          toast(
+                            `Max retries reached. Aborting Event Publishing - ${item}.`
+                          );
+                        });
+                        setEventPublishLoader(false);
+                        setTimeout(() => {
+                          router.push(`/events/${docRef.id}`);
+                        }, 5000);
+                        return;
+                      }
+
                       try {
                         const myHeaders = new Headers();
                         myHeaders.append("Content-Type", "application/json");
                         myHeaders.append("accessToken", circleAccessToken); // Include accessToken in the headers
 
                         const dataToPost = {
-                          eventId: docRef.id,
+                          eventId: docRefId,
                           platforms: thirdPartyCheckboxSelected,
                         };
 
@@ -801,24 +839,36 @@ const CreateEvent = () => {
                         }
 
                         const result = await response.json();
-                        if (result) {
-                          result
-                            .filter((items) => items.result === true)
-                            .map((item) => {
-                              toast(
-                                `${item?.integration?.toUpperCase()} - ${item?.message?.toUpperCase()}`
-                              );
-                            });
-                          result
-                            .filter((items) => items.result === false)
-                            .map((item) => {
-                              toast(
-                                `${item?.integration?.toUpperCase()} - ${item?.message?.toUpperCase()}`
-                              );
-                            });
+                        const allSuccessful = result.every(
+                          (item) => item.result === true
+                        ); // Check if all results are true
+
+                        result.forEach((item) => {
+                          if (item.result === true) {
+                            toast(
+                              `${item.integration.toUpperCase()} - ${item.message.toUpperCase()}`
+                            );
+                          } else if (item.result === false) {
+                            // toast(`${item.integration.toUpperCase()} - ${item.message.toUpperCase()}`);
+                            // Recall the API with platforms from the response payload
+                            postDataToThirdParty(
+                              docRefId,
+                              [item.integration],
+                              circleAccessToken,
+                              retry + 1
+                            );
+                          }
+                        });
+
+                        if (allSuccessful) {
+                          // Redirect the user to another page
+                          setEventPublishLoader(false);
+                          setTimeout(() => {
+                            router.push(`/events/${docRef.id}`);
+                          }, 3000);
                         }
-                        // console.log("THIRD PARTY RESULT", result);
                       } catch (error) {
+                        setEventPublishLoader(false);
                         console.error(
                           "Error posting event to third-party platforms:",
                           error
@@ -827,20 +877,70 @@ const CreateEvent = () => {
                       }
                     }
 
-                    // Update the document
-                    try {
-                      await updateDoc(docRefUpdate, updatedData);
-                      console.log("Document successfully updated");
-                      toast("Event Created Successfully!");
-                      setCreateEventLoader(false);
-                      setTimeout(() => {
-                        router.push(`/events/${docRef.id}`);
-                      }, 3000);
-                    } catch (error) {
-                      console.error("Error updating document: ", error);
-                      toast("Something went wrong!");
-                      setCreateEventLoader(false);
+                    // Call this function when you want to post data to third-party platforms
+                    if (thirdPartyCheckboxSelected.length > 0) {
+                      postDataToThirdParty(
+                        docRef.id,
+                        thirdPartyCheckboxSelected,
+                        circleAccessToken
+                      );
                     }
+
+                    // if (thirdPartyCheckboxSelected.length > 0) {
+                    //   try {
+                    //     const myHeaders = new Headers();
+                    //     myHeaders.append("Content-Type", "application/json");
+                    //     myHeaders.append("accessToken", circleAccessToken); // Include accessToken in the headers
+
+                    //     const dataToPost = {
+                    //       eventId: docRef.id,
+                    //       platforms: thirdPartyCheckboxSelected,
+                    //     };
+
+                    //     const requestOptions = {
+                    //       method: "POST",
+                    //       headers: myHeaders,
+                    //       body: JSON.stringify(dataToPost),
+                    //       redirect: "follow",
+                    //     };
+
+                    //     const response = await fetch(
+                    //       "https://api.circle.ooo/api/circle/third-party/publish",
+                    //       requestOptions
+                    //     );
+
+                    //     if (!response.ok) {
+                    //       throw new Error(
+                    //         `HTTP error! Status: ${response.status}`
+                    //       );
+                    //     }
+
+                    //     const result = await response.json();
+                    //     if (result) {
+                    //       result
+                    //         .filter((items) => items.result === true)
+                    //         .map((item) => {
+                    //           toast(
+                    //             `${item?.integration?.toUpperCase()} - ${item?.message?.toUpperCase()}`
+                    //           );
+                    //         });
+                    //       result
+                    //         .filter((items) => items.result === false)
+                    //         .map((item) => {
+                    //           toast(
+                    //             `${item?.integration?.toUpperCase()} - ${item?.message?.toUpperCase()}`
+                    //           );
+                    //         });
+                    //     }
+                    //     // console.log("THIRD PARTY RESULT", result);
+                    //   } catch (error) {
+                    //     console.error(
+                    //       "Error posting event to third-party platforms:",
+                    //       error
+                    //     );
+                    //     toast("Error posting event to third-party platforms!");
+                    //   }
+                    // }
                   } catch (error) {
                     console.error("Error adding event: ", error);
                     toast("Something went wrong!");
@@ -1851,10 +1951,13 @@ const CreateEvent = () => {
                   <button
                     onClick={handleCreateEvent}
                     type="submit"
-                    disabled={createEventLoader === true}
+                    disabled={
+                      createEventLoader === true || eventPublishLoader === true
+                    }
                     className={`bg-[#007BAB] border-2 border-[#007BAB] text-white w-full py-5 rounded-lg`}
                   >
-                    {createEventLoader === true ? (
+                    {createEventLoader === true ||
+                    eventPublishLoader === true ? (
                       <>
                         <div className="flex justify-center items-center w-full">
                           <ThreeDots
