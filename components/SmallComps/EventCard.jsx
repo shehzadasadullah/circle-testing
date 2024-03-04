@@ -426,7 +426,9 @@ const EventCard = ({
               {title}
             </div>
             <div className="w-full flex justify-start items-start truncate font16 lg:font12 text-[#828282]">
-              {moment(time?.seconds * 1000).format("MMMM Do YYYY, h:mm:ss a")}
+              {moment(time?.seconds * 1000)
+                .local()
+                .format("MMMM Do YYYY, h:mm:ss a")}
             </div>
           </div>
         </div>

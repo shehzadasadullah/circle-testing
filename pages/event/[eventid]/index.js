@@ -1521,9 +1521,9 @@ const EventDetails = () => {
                           Date
                         </span>
                         <span className="text-[16px] font-Montserrat">
-                          {moment(
-                            new Date(EventData?.timefrom?.seconds * 1000)
-                          ).format("dddd, MMMM D")}
+                          {moment(new Date(EventData?.timefrom?.seconds * 1000))
+                            .local()
+                            .format("dddd, MMMM D")}
                         </span>
                       </div>
                     </div>
@@ -1534,9 +1534,9 @@ const EventDetails = () => {
                           Time
                         </span>
                         <span className="text-[16px] font-Montserrat">
-                          {moment(EventData?.timefrom?.toDate()).format(
-                            "dddd, MMMM D, h:mm A"
-                          )}
+                          {moment(EventData?.timefrom?.toDate())
+                            .local()
+                            .format("dddd, MMMM D, h:mm A")}
                         </span>
                       </div>
                     </div>
