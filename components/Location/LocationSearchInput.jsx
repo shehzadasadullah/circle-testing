@@ -4,6 +4,7 @@ import PlacesAutocomplete, {
   getLatLng,
 } from "react-places-autocomplete";
 import { ThreeDots } from "react-loader-spinner";
+import bgImage from "../../public/revamp/bg-createEvent.jpg";
 
 const LocationSearchInput = ({ onSelect, location, setEventLocation }) => {
   const handleChange = (value) => {
@@ -26,23 +27,34 @@ const LocationSearchInput = ({ onSelect, location, setEventLocation }) => {
       {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
         <div>
           <input
-            className="border-2 text-[#8392AF] border-[#E6E7EC] mt-2 p-3 w-full rounded-lg focus:border-[#007BAB] focus:outline-none"
+            style={{
+              background: "rgba(255, 255, 255, 0.10)",
+            }}
+            className="border-[0.5px] border-opacity-20 border-[#fff] focus:border-[0.5px] focus:border-opacity-60 text-[#fff] mt-2 p-3 w-full rounded-lg focus:outline-none"
             {...getInputProps({
               placeholder: "Add event location/address here",
             })}
           />
 
-          <div className="shadow-md rounded-b-xl rounded-t-md">
+          <div
+            style={{
+              backgroundImage: `url(${bgImage.src})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              backgroundRepeat: "no-repeat",
+            }}
+            className="shadow-md rounded-b-lg rounded-t-lg"
+          >
             {loading && (
               <div
                 style={{
                   padding: "10px",
-                  borderRadius: "10px",
+                  borderRadius: "0.5rem",
                 }}
               >
                 <ThreeDots
                   height="20"
-                  color="#007BAB"
+                  color="#fff"
                   width="50"
                   radius="9"
                   ariaLabel="three-dots-loading"
@@ -52,10 +64,12 @@ const LocationSearchInput = ({ onSelect, location, setEventLocation }) => {
             )}
             {suggestions.map((suggestion) => {
               const style = {
-                color: suggestion.active ? "#fff" : "#000",
-                backgroundColor: suggestion.active ? "#007BAB" : "#fff",
+                color: suggestion.active ? "#fff" : "#fff",
+                backgroundColor: suggestion.active
+                  ? "rgba(255,255,255,0.20)"
+                  : "transparent",
                 padding: "10px",
-                borderRadius: "10px",
+                borderRadius: "0.5rem",
                 cursor: "pointer",
               };
 

@@ -340,7 +340,7 @@ const Header = ({ type = "", page = "" }) => {
                             router.push("/create-event");
                           }
                         }}
-                        className={`ml-5 font14 font-medium rounded-full p-4 font-Montserrat text-[#fff] hover:text-[#007BAB] border-2 border-[#007BAB] hover:bg-[#fff] bg-[#007BAB]`}
+                        className={`ml-5 font14 font-medium rounded-full p-4 font-Montserrat text-[#000] border-2 border-[#fff] bg-[#fff]`}
                       >
                         <div className="flex justify-between items-center">
                           Create an Event
@@ -580,7 +580,7 @@ const Header = ({ type = "", page = "" }) => {
                               router.push("/create-event");
                             }
                           }}
-                          className={`font14 font-medium rounded-full p-4 font-Montserrat text-[#fff] hover:text-[#007BAB] border-2 border-[#007BAB] hover:bg-[#fff] bg-[#007BAB]`}
+                          className={`font14 font-medium rounded-full p-4 font-Montserrat text-[#000] border-2 border-[#fff] bg-[#fff]`}
                         >
                           <div className="flex justify-between items-center">
                             Create an Event
@@ -611,9 +611,13 @@ const Header = ({ type = "", page = "" }) => {
               <Menu as="div" className="relative inline-block text-left">
                 <div>
                   <Menu.Button
-                    className={
-                      "flex items-center bg-[#007BAB] rounded-lg p-2 text-white"
-                    }
+                    style={{
+                      border: "1px solid rgba(255, 255, 255, 0.20)",
+                      background:
+                        "linear-gradient(90deg, #4532BF 5.81%, #9429FF 100%)",
+                      boxShadow: "0px 4px 50px 0px rgba(69, 50, 191, 0.50)",
+                    }}
+                    className={"flex items-center rounded-lg p-2 text-white"}
                   >
                     <div className="flex items-center justify-start">
                       <div className={`font16 font-semibold font-Montserrat`}>

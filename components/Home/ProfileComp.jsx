@@ -9,6 +9,7 @@ import Curate from "../../public/curate.png";
 import Safe from "../../public/safe.png";
 import SavesTime from "../../public/savestime.png";
 import Wishlist from "../../public/wishlist.png";
+import bgImage from "../../public/revamp/bg-sec5.png";
 // import AOS from "aos";
 // import "aos/dist/aos.css";
 
@@ -129,7 +130,15 @@ const ProfileComp = () => {
   }, [selectedDropdown, selectedOption]);
   return (
     <>
-      <div className="flex bg-[#F8F9FD] justify-center items-center w-full h-auto">
+      <div
+        style={{
+          backgroundImage: `url(${bgImage.src})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+        }}
+        className="flex justify-center items-center w-full h-full"
+      >
         <div
           // data-aos="fade-up"
           // data-aos-delay="50"
@@ -139,8 +148,23 @@ const ProfileComp = () => {
           // data-aos-once="true"
           className="hidden lg:flex w-1/2 justify-center items-center flex-col p-6"
         >
-          <h3 className="font48 font-semibold mt-20 text-[#14183E] font-Montserrat">
-            One Profile for All Events
+          <h3 className="font48 font-semibold mt-20 text-[#fff] font-Montserrat">
+            One Profile for{" "}
+            <span
+              style={{
+                background:
+                  "linear-gradient(269deg, #FFF -1.77%, #9E22FF 37.99%)",
+                backgroundClip: "text",
+                WebkitBackgroundClip: "text", // Add the Webkit prefix for older browsers
+                WebkitTextFillColor: "transparent", // Add the Webkit prefix for older browsers
+
+                // color: "#fff",
+                // textShadow:
+                //   "0 0 0.1em rgba(255, 255, 255, 0.5), 0 0 0.2em rgba(255, 255, 255, 0.2), 0 0 0.3em rgba(255, 255, 255, 0.0)",
+              }}
+            >
+              All Events
+            </span>
           </h3>
 
           <div
@@ -170,8 +194,25 @@ const ProfileComp = () => {
           // data-aos-once="true"
           className="w-full lg:w-1/2 justify-center items-center flex flex-col p-4"
         >
-          <h3 className="font48 font-semibold text-center mt-10 text-[#14183E] flex lg:hidden font-Montserrat">
-            One Profile for All Events
+          <h3 className="font48 font-semibold text-center mt-10 text-[#fff] flex lg:hidden font-Montserrat">
+            <p>
+              One Profile for{" "}
+              <span
+                style={{
+                  background:
+                    "linear-gradient(269deg, #FFF -1.77%, #9E22FF 37.99%)",
+                  backgroundClip: "text",
+                  WebkitBackgroundClip: "text", // Add the Webkit prefix for older browsers
+                  WebkitTextFillColor: "transparent", // Add the Webkit prefix for older browsers
+
+                  // color: "#fff",
+                  // textShadow:
+                  //   "0 0 0.1em rgba(255, 255, 255, 0.5), 0 0 0.2em rgba(255, 255, 255, 0.2), 0 0 0.3em rgba(255, 255, 255, 0.0)",
+                }}
+              >
+                All Events
+              </span>
+            </p>
           </h3>
           <div style={{ width: "80%" }} className="mt-5 mb-5 lg:mb-0 lg:mt-0">
             {/* <h5 className="font16">

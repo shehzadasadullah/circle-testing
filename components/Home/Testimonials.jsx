@@ -6,6 +6,7 @@ import { IoIosArrowBack } from "react-icons/io";
 import girlImage from "./girl-img.png";
 import img from "./Profile_Picture.png";
 import { useMediaQuery } from "react-responsive";
+import bgImage from "../../public/revamp/bg-sec5.png";
 // import AOS from "aos";
 // import "aos/dist/aos.css";
 
@@ -82,10 +83,33 @@ const Testimonial = () => {
       // data-aos-easing="ease-in-out"
       // data-aos-mirror="false"
       // data-aos-once="true"
-      className="bg-white w-full h-auto pt-0 p-5 lg:p-20"
+      style={{
+        backgroundImage: `url(${bgImage.src})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+      }}
+      className="w-full h-auto pt-0 p-5 lg:p-20"
     >
       <h3 className="font48 font-semibold mt-10 lg:mt-0 font-Montserrat text-center pb-10">
-        Hear what our users say
+        <p className="text-[#fff]">
+          Hear what our{" "}
+          <span
+            style={{
+              background:
+                "linear-gradient(269deg, #FFF -1.77%, #9E22FF 37.99%)",
+              backgroundClip: "text",
+              WebkitBackgroundClip: "text", // Add the Webkit prefix for older browsers
+              WebkitTextFillColor: "transparent", // Add the Webkit prefix for older browsers
+
+              // color: "#fff",
+              // textShadow:
+              //   "0 0 0.1em rgba(255, 255, 255, 0.5), 0 0 0.2em rgba(255, 255, 255, 0.2), 0 0 0.3em rgba(255, 255, 255, 0.0)",
+            }}
+          >
+            users say
+          </span>
+        </p>
       </h3>
       <Carousel
         showArrows={true}
@@ -104,12 +128,15 @@ const Testimonial = () => {
                 position: "absolute",
                 top: "50%",
                 transform: "translateY(-50%)",
-                backgroundColor: "#F0F5FB",
-                color: "black",
+                color: "white",
                 padding: "10px",
                 cursor: "pointer",
                 zIndex: "2",
                 left: "10px",
+                border: "1px solid rgba(255, 255, 255, 0.20)",
+                background:
+                  "linear-gradient(90deg, #4532BF 5.81%, #9429FF 100%)",
+                boxShadow: "0px 4px 50px 0px rgba(69, 50, 191, 0.50)",
               }}
               className="rounded-full"
               onClick={onClickHandler}
@@ -125,12 +152,15 @@ const Testimonial = () => {
                 position: "absolute",
                 top: "50%",
                 transform: "translateY(-50%)",
-                backgroundColor: "#F0F5FB",
-                color: "black",
+                color: "white",
                 padding: "10px",
                 cursor: "pointer",
                 zIndex: "2",
                 right: "10px",
+                border: "1px solid rgba(255, 255, 255, 0.20)",
+                background:
+                  "linear-gradient(90deg, #4532BF 5.81%, #9429FF 100%)",
+                boxShadow: "0px 4px 50px 0px rgba(69, 50, 191, 0.50)",
               }}
               className="rounded-full"
               onClick={onClickHandler}
@@ -142,25 +172,57 @@ const Testimonial = () => {
       >
         {testimonials.map((item) => (
           <div
-            className="border-[#EFF0F6] my-4 h-auto lg:h-96 border-2 flex justify-center items-start flex-col gap-4 p-10 rounded-xl mr-10 ml-10 lg:ml-0"
+            style={{
+              border: "1px solid rgba(25, 112, 214, 0.30)",
+              background: "rgba(28, 34, 44, 0.60)",
+              boxShadow:
+                "0px 13px 29px 0px rgba(0, 0, 0, 0.07), 0px 53px 53px 0px rgba(0, 0, 0, 0.06), 0px 118px 71px 0px rgba(0, 0, 0, 0.03), 0px 211px 84px 0px rgba(0, 0, 0, 0.01), 0px 329px 92px 0px rgba(0, 0, 0, 0.00)",
+            }}
+            className="my-4 h-auto lg:h-96 flex justify-center items-start flex-col gap-4 p-10 rounded-xl mr-10 ml-10 lg:ml-0"
             key={item.id}
           >
-            <h4 className="font24 w-full font-bold text-center md:text-start">
+            <h4
+              style={{
+                color: "rgba(255, 255, 255, 0.80)",
+              }}
+              className="font24 w-full font-bold text-center md:text-start"
+            >
               {item.heading}
             </h4>
-            <p className="text-base w-full font-normal text-[#6F6C90] mb-4 text-center md:text-start">
+            <p
+              style={{
+                color: "rgba(255, 255, 255, 0.80)",
+              }}
+              className="text-base w-full font-normal mb-4 text-center md:text-start"
+            >
               {item.text}
             </p>
             <div className="flex w-full flex-col justify-center items-center lg:flex-row lg:justify-start lg:items-start">
               <img
                 src={item.image}
-                style={{ height: "50pt", width: "55pt" }}
-                className="bg-[#fff] rounded-full"
+                style={{
+                  height: "60pt",
+                  width: "60pt",
+                  background: "rgba(255, 255, 255, 0.80)",
+                }}
+                className="p-2 rounded-full"
                 alt=""
               />
               <div className="flex w-full justify-center items-center lg:items-start flex-col lg:ml-5 mt-3 lg:mt-0">
-                <h4 className="font24 font-bold">{item.author}</h4>
-                <p className="text-base font-normal text-[#6F6C90]">
+                <h4
+                  style={{
+                    color: "rgba(255, 255, 255, 0.80)",
+                  }}
+                  className="font24 font-bold"
+                >
+                  {item.author}
+                </h4>
+                <p
+                  style={{
+                    color: "rgba(255, 255, 255, 0.80)",
+                  }}
+                  className="text-base font-normal"
+                >
                   {item.profession}
                 </p>
               </div>

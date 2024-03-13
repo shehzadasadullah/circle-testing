@@ -4,27 +4,34 @@ import FAQComponent from "../components/FaqComponent";
 import Link from "next/link";
 import Header from "@/components/Common/Header";
 import Footer from "@/components/Common/Footer";
-import bgImage from "../public/linesBG.png";
+import bgImage from "../public/revamp/bg-invite.png";
 import basket from "../public/bgBasket.png";
 import { useRouter } from "next/router";
+import backgroundImage from "../public/revamp/bg-createEvent.jpg";
 
 const FaqItem = ({ question, answer, isActive, onToggle }) => (
   <div
     onClick={onToggle}
-    className={`rounded-xl p-5 flex cursor-pointer flex-col justify-center items-center w-full text-start border-[#E0E0E0] border-[1px] ${
-      isActive ? "bg-[#007BAB] text-[#fff]" : "text-[#000]"
-    } transition-all duration-500 ease-in-out`}
+    style={{
+      border: isActive
+        ? "1px solid rgba(64, 17, 124, 0.45)"
+        : "1px solid rgba(255, 255, 255, 0.10)",
+      background: isActive
+        ? "linear-gradient(94deg, rgba(42, 28, 61, 0.60) 0.01%, rgba(144, 33, 255, 0.47) 103.3%), #070317"
+        : "rgba(28, 34, 44, 0.60)",
+    }}
+    className={`rounded-xl p-5 flex cursor-pointer text-[#fff] flex-col justify-center items-center w-full text-start transition-all duration-500 ease-in-out`}
   >
     <div className="w-full flex justify-center items-center">
       <button className="w-full justify-between items-center flex">
-        <div className="text-lg w-full text-start">{question}</div>
-        <div className="text-end ml-5 lg:ml-0 text-2xl">
+        <div className="text-lg text-[#fff] w-full text-start">{question}</div>
+        <div className="text-end text-[#fff] ml-5 lg:ml-0 text-2xl">
           {isActive ? "-" : "+"}
         </div>
       </button>
     </div>
     <div
-      className={`w-full text-start overflow-hidden transition-max-height ${
+      className={`w-full text-start text-[#fff] overflow-hidden transition-max-height ${
         isActive ? "mt-2 max-h-auto" : "max-h-0"
       } duration-500 ease-in-out`}
     >
@@ -83,14 +90,31 @@ const FAQSection = () => {
   };
 
   return (
-    <div className="w-full h-full bg-[#F8F9FD]">
-      <div className="w-full h-full bg-[#fff]">
-        <Header type="light" />
+    <div
+      style={{
+        backgroundImage: `url(${backgroundImage.src})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+      }}
+      className="w-full h-full"
+    >
+      <div className="w-full h-full">
+        <Header type="dark" />
       </div>
 
       <div className="w-full h-auto flex flex-col justify-center gap-12 items-center p-8 lg:p-20">
-        <p className="text-5xl lg:text-6xl text-[#0E0E11] w-full text-center">
-          Frequently Asked <span className="font-bold">Questions</span>
+        <p
+          style={{
+            background:
+              "linear-gradient(98deg, #FFF 17.81%, rgba(255, 255, 255, 0.00) 120.14%)",
+            backgroundClip: "text",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+          }}
+          className="text-5xl lg:text-6xl w-full text-center"
+        >
+          Frequently Asked Questions
         </p>
         <div className=" w-full lg:w-[90%] flex flex-col gap-5 justify-center items-center h-auto">
           {faqs.map((faq, index) => (
@@ -105,27 +129,65 @@ const FAQSection = () => {
         </div>
       </div>
 
-      <div
-        class="bg-cover bg-center h-96 bg-[#00384F] flex flex-col lg:flex-row justify-center items-center"
-        style={{ backgroundImage: `url(${bgImage.src})` }}
+      {/* <div
+        style={{
+          background:
+            "linear-gradient(94deg, rgba(42, 28, 61, 0.60) 0.01%, rgba(144, 33, 255, 0.47) 103.3%), #070317",
+          // backgroundSize: "cover",
+          // backgroundPosition: "center",
+          // backgroundRepeat: "no-repeat",
+        }}
+        className="w-full h-full text-[#fff] p-5"
       >
-        <div className="w-full lg:w-1/2 flex gap-10 justify-center items-center flex-col lg:px-10 lg:py-5">
-          <p className="w-full text-center text-4xl lg:text-6xl font-semibold text-[#fff]">
-            Can't find the answer you're looking for?
-          </p>
-          <div className="w-full text-center">
-            <button
-              onClick={() => {
-                router.push("contact");
-              }}
-              className="rounded-full py-3 px-5 bg-[#F2F2F2] text-[#333]"
-            >
-              Submit Request
-            </button>
+        <div className="flex flex-col lg:flex-row justify-center items-center w-full lg:gap-5">
+          <div className="w-full lg:w-[70%] flex flex-col justify-center items-center p-2 lg:p-10">
+            <p className="w-full text-center text-2xl lg:text-6xl font-semibold text-[#fff]">
+              Can't find the answer you're looking for?
+            </p>
+            <div className="w-full text-center">
+              <button
+                onClick={() => {
+                  router.push("contact");
+                }}
+                className="rounded-full py-4 px-10 bg-[#F2F2F2] text-[#333] mt-8"
+              >
+                Submit Request
+              </button>
+            </div>
           </div>
         </div>
-        <div className="w-full lg:w-1/2 hidden lg:flex justify-center items-center">
-          <img src={basket.src} alt="" />
+      </div> */}
+
+      <div
+        class="w-full h-full p-5"
+        style={{
+          background:
+            "linear-gradient(94deg, rgba(42, 28, 61, 0.60) 0.01%, rgba(144, 33, 255, 0.47) 103.3%), #070317",
+        }}
+      >
+        <div className="flex flex-col lg:flex-row justify-center items-center">
+          <div className="w-full lg:w-1/2 flex gap-5 lg:gap-10 justify-center items-center flex-col px-3 py-3 lg:px-10 lg:py-5">
+            <p className="w-full text-center text-2xl lg:text-6xl font-semibold text-[#fff]">
+              Can't find the answer you're looking for?
+            </p>
+            <div className="w-full text-center">
+              <button
+                onClick={() => {
+                  router.push("contact");
+                }}
+                className="rounded-full py-3 px-10 bg-[#F2F2F2] text-[#333]"
+              >
+                Submit Request
+              </button>
+            </div>
+          </div>
+          <div className="w-full hidden lg:w-1/2 lg:flex justify-center items-center">
+            <img
+              src={basket.src}
+              className="w-full object-contain h-full"
+              alt=""
+            />
+          </div>
         </div>
       </div>
 

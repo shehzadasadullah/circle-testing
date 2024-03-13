@@ -12,6 +12,8 @@ import { useRouter } from "next/router";
 import toast from "react-simple-toasts";
 import { MdEmail } from "react-icons/md";
 import { ThreeDots } from "react-loader-spinner";
+import bgImage from "@/public/revamp/bg-new.png";
+import bgImageSecond from "@/public/revamp/bg-sec5.png";
 
 const contact = () => {
   const router = useRouter();
@@ -111,43 +113,61 @@ const contact = () => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="bg-[#fff] w-full h-full">
+      <div
+        style={{
+          backgroundImage: `url(${bgImage.src})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+        }}
+        className="w-full h-full"
+      >
         <div className="w-full">
-          <Header type="light" page="contact" />
+          <Header type="dark" page="contact" />
         </div>
-        <div className="h-auto w-full">
-          <div className="flex flex-col justify-center items-center w-full p-5 lg:p-12">
-            <div
+        <div className="flex mt-5 flex-col justify-center items-center w-full p-5 lg:p-12">
+          <div
+            style={{
+              fill: "rgba(7, 3, 23, 0.60)",
+              // background:
+              //   "linear-gradient(180deg, rgba(217, 217, 217, 0.00) 0%, rgba(115, 173, 195, 0.15) 53.03%, rgba(16, 154, 207, 0.31) 100%)",
+              backdropFilter: "blur(50.5px)",
+              boxShadow:
+                "0px 13px 29px 0px rgba(0, 0, 0, 0.07), 0px 53px 53px 0px rgba(0, 0, 0, 0.06), 0px 118px 71px 0px rgba(0, 0, 0, 0.03), 0px 211px 84px 0px rgba(0, 0, 0, 0.01), 0px 329px 92px 0px rgba(0, 0, 0, 0.00)",
+            }}
+            className="w-full flex flex-col p-5 lg:p-10 justify-center items-center rounded-xl"
+          >
+            <p className="w-full text-center mt-8">
+              <span className="text-[#fff] text-6xl">Get in touch with</span>
+            </p>
+            <p
               style={{
                 background:
-                  "linear-gradient(180deg, rgba(217, 217, 217, 0.00) 0%, rgba(115, 173, 195, 0.15) 53.03%, rgba(16, 154, 207, 0.31) 100%)",
-                backdropFilter: "blur(50.5px)",
+                  "linear-gradient(100deg, #FFF 17.43%, rgba(255, 255, 255, 0.00) 110.91%)",
+                backgroundClip: "text",
+                WebkitBackgroundClip: "text", // Add the Webkit prefix for older browsers
+                WebkitTextFillColor: "transparent", // Add the Webkit prefix for older browsers
               }}
-              className="w-full flex flex-col p-5 lg:p-10 justify-center items-center rounded-xl"
+              className="w-full text-center lg:mt-3"
             >
-              <p className="w-full text-center">
-                <span className="text-[#0E0E11] text-6xl">Get in touch</span>
-                <span className="text-[#878A92] text-6xl">{" with"}</span>
-              </p>
-              <p className="w-full text-center lg:mt-3">
-                <span className="text-[#878A92] text-6xl">{"us for "}</span>
-                <span className="text-[#0E0E11] text-6xl">
-                  more information
-                </span>
-              </p>
-              <p className="w-full text-center mt-5 text-[#3B3C45]">
-                Have questions or need more details? We're here to help! Don't
-                hesitate to
-              </p>
-              <p className="w-full text-center text-[#3B3C45] mb-[10%]">
-                reach out to us for any additional information
-              </p>
-            </div>
+              <span className="text-6xl">us for more information</span>
+            </p>
+            <p className="w-full text-center mt-5 text-[#F8F9FD]">
+              Have questions or need more details? We're here to help! Don't
+              hesitate to reach out to us for any additional information
+            </p>
           </div>
 
-          <div className="flex justify-center items-center w-full p-5 mt-[-10%] lg:mt-0 lg:p-8 xl:p-12">
+          <div className="flex justify-center items-center w-full p-5 mt-[-5%] lg:mt-[15%] lg:p-8 xl:p-12">
             <div className="w-full lg:mt-[-15%] z-10 h-auto lg:px-20 py-5 lg:py-0 flex flex-col lg:flex-row justify-center lg:justify-between items-center gap-5 lg:gap-0">
-              <div className="flex border-[1px] lg:border-0 border-[#C0E3F1] flex-col h-52 w-full lg:w-[30%] justify-center lg:justify-start justify-center lg:items-start p-5 bg-[#fff] lg:shadow-lg rounded-xl">
+              <div
+                style={{
+                  border: "1px solid rgba(25, 112, 214, 0.30)",
+                  background: "rgba(28, 34, 44, 0.60)",
+                  boxShadow: "0px 12px 80px 0px rgba(0, 0, 0, 0.06)",
+                }}
+                className="flex flex-col h-52 w-full lg:w-[30%] justify-center lg:justify-start justify-center lg:items-start p-5 rounded-xl"
+              >
                 <div className="w-full flex justify-center lg:justify-start items-center">
                   <div
                     onClick={() => {
@@ -162,7 +182,11 @@ const contact = () => {
                       const googleMapsUrl = generateGoogleMapsUrl(locationText);
                       window.open(googleMapsUrl, "_blank");
                     }}
-                    className="h-12 w-12 cursor-pointer flex justify-center items-center rounded-full bg-[#007BAB]"
+                    style={{
+                      background:
+                        "linear-gradient(90deg, #4532BF 5.81%, #9429FF 100%)",
+                    }}
+                    className="h-12 w-12 cursor-pointer flex justify-center items-center rounded-full"
                   >
                     <BiSolidNavigation size={25} color="#fff" />
                   </div>
@@ -179,7 +203,7 @@ const contact = () => {
                     const googleMapsUrl = generateGoogleMapsUrl(locationText);
                     window.open(googleMapsUrl, "_blank");
                   }}
-                  className="text-[#170F49] cursor-pointer w-full text-center lg:text-start font-bold text-lg mt-5"
+                  className="text-[#fff] cursor-pointer w-full text-center lg:text-start font-bold text-lg mt-5"
                 >
                   Address
                 </p>
@@ -195,33 +219,67 @@ const contact = () => {
                     const googleMapsUrl = generateGoogleMapsUrl(locationText);
                     window.open(googleMapsUrl, "_blank");
                   }}
-                  className="text-[#6F6C90] cursor-pointer w-full text-center lg:text-start mt-4"
+                  style={{
+                    color: "rgba(255, 255, 255, 0.80)",
+                  }}
+                  className="cursor-pointer w-full text-center lg:text-start mt-4"
                 >
                   3233 W. Dallas St, Suite 1107 Houston, Tx 77019
                 </p>
               </div>
 
-              <div className="flex border-[1px] lg:border-0 border-[#C0E3F1] flex-col h-52 w-full lg:w-[30%] justify-center lg:justify-start justify-center lg:items-start p-5 bg-[#fff] lg:shadow-lg rounded-xl">
+              <div
+                style={{
+                  border: "1px solid rgba(25, 112, 214, 0.30)",
+                  background: "rgba(28, 34, 44, 0.60)",
+                  boxShadow: "0px 12px 80px 0px rgba(0, 0, 0, 0.06)",
+                }}
+                className="flex flex-col h-52 w-full lg:w-[30%] justify-center lg:justify-start justify-center lg:items-start p-5 rounded-xl"
+              >
                 <div className="w-full flex justify-center lg:justify-start items-center">
-                  <div className="h-12 w-12 flex justify-center items-center rounded-full bg-[#007BAB]">
+                  <div
+                    style={{
+                      background:
+                        "linear-gradient(90deg, #4532BF 5.81%, #9429FF 100%)",
+                    }}
+                    className="h-12 w-12 flex justify-center items-center rounded-full"
+                  >
                     <MdEmail size={25} color="#fff" />
                   </div>
                 </div>
-                <p className="text-[#170F49] w-full text-center lg:text-start font-bold text-lg mt-5">
+                <p className="text-[#fff] w-full text-center lg:text-start font-bold text-lg mt-5">
                   Contact
                 </p>
-                <p className="text-[#6F6C90] w-full text-center lg:text-start mt-4">
+                <p
+                  style={{
+                    color: "rgba(255, 255, 255, 0.80)",
+                  }}
+                  className="w-full text-center lg:text-start mt-4"
+                >
                   <a href="mailto:support@circle.ooo">Support@circle.ooo</a>
                 </p>
               </div>
 
-              <div className="flex border-[1px] lg:border-0 border-[#C0E3F1] flex-col h-52 w-full lg:w-[30%] justify-center lg:justify-start justify-center lg:items-start p-5 bg-[#fff] lg:shadow-lg rounded-xl">
+              <div
+                style={{
+                  border: "1px solid rgba(25, 112, 214, 0.30)",
+                  background: "rgba(28, 34, 44, 0.60)",
+                  boxShadow: "0px 12px 80px 0px rgba(0, 0, 0, 0.06)",
+                }}
+                className="flex flex-col h-52 w-full lg:w-[30%] justify-center lg:justify-start justify-center lg:items-start p-5 rounded-xl"
+              >
                 <div className="w-full flex justify-center lg:justify-start items-center">
-                  <div className="h-12 w-12 flex justify-center items-center rounded-full bg-[#007BAB]">
+                  <div
+                    style={{
+                      background:
+                        "linear-gradient(90deg, #4532BF 5.81%, #9429FF 100%)",
+                    }}
+                    className="h-12 w-12 flex justify-center items-center rounded-full"
+                  >
                     <BiSolidNavigation size={25} color="#fff" />
                   </div>
                 </div>
-                <p className="text-[#170F49] font-bold w-full text-center lg:text-start text-lg mt-5">
+                <p className="text-[#fff] font-bold w-full text-center lg:text-start text-lg mt-5">
                   Follow Us
                 </p>
 
@@ -233,7 +291,10 @@ const contact = () => {
                         "_blank"
                       )
                     }
-                    className="h-12 cursor-pointer w-12 rounded-full bg-[#F5F5F7] flex items-center justify-center"
+                    style={{
+                      background: "rgba(255, 255, 255, 0.10)",
+                    }}
+                    className="h-12 cursor-pointer w-12 rounded-full flex items-center justify-center"
                   >
                     <img src="/facebook.png" alt="" className="h-6 w-6" />
                   </div>
@@ -244,7 +305,10 @@ const contact = () => {
                         "_blank"
                       )
                     }
-                    className="h-12 cursor-pointer w-12 rounded-full bg-[#F5F5F7] flex items-center justify-center"
+                    style={{
+                      background: "rgba(255, 255, 255, 0.10)",
+                    }}
+                    className="h-12 cursor-pointer w-12 rounded-full flex items-center justify-center"
                   >
                     <img src="/linkedin.png" alt="" className="h-6 w-6" />
                   </div>
@@ -255,7 +319,10 @@ const contact = () => {
                         "_blank"
                       )
                     }
-                    className="h-12 cursor-pointer w-12 rounded-full bg-[#F5F5F7] flex items-center justify-center"
+                    style={{
+                      background: "rgba(255, 255, 255, 0.10)",
+                    }}
+                    className="h-12 cursor-pointer w-12 rounded-full flex items-center justify-center"
                   >
                     <img src="/instagram.png" alt="" className="h-6 w-6" />
                   </div>
@@ -263,114 +330,137 @@ const contact = () => {
               </div>
             </div>
           </div>
+        </div>
+      </div>
 
-          <div
-            style={{
-              background:
-                "linear-gradient(90deg, rgba(217, 217, 217, 0.00) 0%, rgba(0, 123, 171, 0.20) 53.03%, rgba(217, 217, 217, 0.00) 100%)",
-              backdropFilter: "blur(50.5px)",
-            }}
-            className="flex flex-col justify-center mt-[-5%] lg:mt-10 items-center w-full p-5 lg:p-12 shadow-xl"
+      <div
+        style={{
+          backgroundImage: `url(${bgImageSecond.src})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+        }}
+        className="w-full h-full mt-[-10%] lg:mt-0"
+      >
+        <div className="flex flex-col justify-center items-center w-full p-5 lg:p-12 shadow-xl">
+          <form
+            className="flex w-full lg:w-[70%] xl:w-[50%] flex-col justify-center items-center p-5 lg:p-10"
+            onSubmit={(e) => handleSubmit(e)}
           >
-            <form
-              className="flex w-full lg:w-[70%] xl:w-[50%] flex-col justify-center items-center p-5 lg:p-10"
-              onSubmit={(e) => handleSubmit(e)}
-            >
-              <div className="mb-4 mt-4 w-full flex flex-col lg:flex-row justify-center lg:justify-between items-center gap-5">
-                <input
-                  className="w-full py-3 px-5 rounded-2xl border border-transparent border-2 focus:border-[#007BAB] focus:border-2 outline-none"
-                  id="fName"
-                  type="text"
-                  value={firstName}
-                  onChange={(e) => {
-                    setFirstName(e.target.value);
-                  }}
-                  placeholder="First name"
-                  required
-                />
-                <input
-                  className="w-full py-3 px-5 rounded-2xl border border-transparent border-2 focus:border-[#007BAB] focus:border-2 outline-none"
-                  id="lName"
-                  type="text"
-                  value={lastName}
-                  onChange={(e) => {
-                    setLastName(e.target.value);
-                  }}
-                  placeholder="Last name"
-                  required
-                />
-              </div>
-              <div className="mb-4 w-full flex justify-center items-center">
-                <input
-                  className="w-full py-3 px-5 rounded-2xl border border-transparent border-2 focus:border-[#007BAB] focus:border-2 outline-none"
-                  id="email"
-                  type="email"
-                  value={email}
-                  onChange={(e) => {
-                    setEmail(e.target.value);
-                  }}
-                  placeholder="Email"
-                  required
-                />
-              </div>
-              <div className="mb-4 w-full flex justify-center items-center">
-                <input
-                  className="w-full py-3 px-5 rounded-2xl border border-transparent border-2 focus:border-[#007BAB] focus:border-2 outline-none"
-                  id="number"
-                  type="text"
-                  inputMode="number"
-                  value={phoneNumber}
-                  onChange={(e) => {
-                    setPhoneNumber(e.target.value);
-                  }}
-                  placeholder="5555551212"
-                  required
-                />
-              </div>
-              <div className="mb-4 w-full flex justify-center items-center">
-                <textarea
-                  className="w-full h-40 py-3 px-5 rounded-2xl border border-transparent border-2 focus:border-[#007BAB] focus:border-2 outline-none"
-                  id="message"
-                  type="text"
-                  value={message}
-                  onChange={(e) => {
-                    setMessage(e.target.value);
-                  }}
-                  placeholder="Message..."
-                  required
-                />
-              </div>
-              <div className="mb-4 w-full flex justify-center items-center">
-                <button
-                  disabled={emailLoader}
-                  className="w-full py-3 rounded-full bg-[#007BAB] text-white border border-2 border-[#007BAB] font-semibold"
-                  id="button"
-                  type="submit"
-                >
-                  {emailLoader === true ? (
-                    <>
-                      <div className="flex justify-center items-center w-full">
-                        <ThreeDots
-                          height="25"
-                          color="#fff"
-                          width="50"
-                          radius="9"
-                          ariaLabel="three-dots-loading"
-                          visible={true}
-                        />
-                      </div>
-                    </>
-                  ) : (
-                    "Submit"
-                  )}
-                </button>
-              </div>
-            </form>
-          </div>
+            <div className="mb-4 mt-4 w-full flex flex-col lg:flex-row justify-center lg:justify-between items-center gap-5">
+              <input
+                style={{
+                  background: "rgba(28, 34, 44, 0.60)",
+                }}
+                className="w-full text-[#fff] border border-opacity-20 focus:border-opacity-60 border-[#fff] border-[0.5px] focus:border-[0.5px] py-3 px-5 rounded-2xl outline-none"
+                id="fName"
+                type="text"
+                value={firstName}
+                onChange={(e) => {
+                  setFirstName(e.target.value);
+                }}
+                placeholder="First name"
+                required
+              />
+              <input
+                style={{
+                  background: "rgba(28, 34, 44, 0.60)",
+                }}
+                className="w-full text-[#fff] border border-opacity-20 focus:border-opacity-60 border-[#fff] border-[0.5px] focus:border-[0.5px] py-3 px-5 rounded-2xl outline-none"
+                id="lName"
+                type="text"
+                value={lastName}
+                onChange={(e) => {
+                  setLastName(e.target.value);
+                }}
+                placeholder="Last name"
+                required
+              />
+            </div>
+            <div className="mb-4 w-full flex justify-center items-center">
+              <input
+                style={{
+                  background: "rgba(28, 34, 44, 0.60)",
+                }}
+                className="w-full text-[#fff] border border-opacity-20 focus:border-opacity-60 border-[#fff] border-[0.5px] focus:border-[0.5px] py-3 px-5 rounded-2xl outline-none"
+                id="email"
+                type="email"
+                value={email}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                }}
+                placeholder="Email"
+                required
+              />
+            </div>
+            <div className="mb-4 w-full flex justify-center items-center">
+              <input
+                style={{
+                  background: "rgba(28, 34, 44, 0.60)",
+                }}
+                className="w-full text-[#fff] border border-opacity-20 focus:border-opacity-60 border-[#fff] border-[0.5px] focus:border-[0.5px] py-3 px-5 rounded-2xl outline-none"
+                id="number"
+                type="text"
+                inputMode="number"
+                value={phoneNumber}
+                onChange={(e) => {
+                  setPhoneNumber(e.target.value);
+                }}
+                placeholder="5555551212"
+                required
+              />
+            </div>
+            <div className="mb-4 w-full flex justify-center items-center">
+              <textarea
+                style={{
+                  background: "rgba(28, 34, 44, 0.60)",
+                }}
+                className="w-full h-40 text-[#fff] border border-opacity-20 focus:border-opacity-60 border-[#fff] border-[0.5px] focus:border-[0.5px] py-3 px-5 rounded-2xl outline-none"
+                id="message"
+                type="text"
+                value={message}
+                onChange={(e) => {
+                  setMessage(e.target.value);
+                }}
+                placeholder="Message..."
+                required
+              />
+            </div>
+            <div className="mb-4 w-full flex justify-center items-center">
+              <button
+                disabled={emailLoader}
+                style={{
+                  border: "1px solid rgba(255, 255, 255, 0.20)",
+                  background:
+                    "linear-gradient(90deg, #4532BF 5.81%, #9429FF 100%)",
+                }}
+                className="w-full py-3 rounded-full text-white font-semibold"
+                id="button"
+                type="submit"
+              >
+                {emailLoader === true ? (
+                  <>
+                    <div className="flex justify-center items-center w-full">
+                      <ThreeDots
+                        height="25"
+                        color="#fff"
+                        width="50"
+                        radius="9"
+                        ariaLabel="three-dots-loading"
+                        visible={true}
+                      />
+                    </div>
+                  </>
+                ) : (
+                  "Submit"
+                )}
+              </button>
+            </div>
+          </form>
         </div>
-        <div className="w-full">
-          <Footer />
-        </div>
+      </div>
+      <div className="w-full">
+        <Footer />
       </div>
     </>
   );

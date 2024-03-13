@@ -30,8 +30,13 @@ const Footer = () => {
   };
 
   return (
-    <div className="w-full h-full bg-[#00384F] pl-0 pr-0 pt-12 pb-12 lg:p-12 flex flex-col lg:flex-wrap justify-center lg:justify-between items-center lg:items-start">
-      <div className="w-full flex flex-col lg:flex-row h-auto border-[#E0E0E0] border-b-2">
+    <div className="w-full h-full bg-[#060212] pl-0 pr-0 pt-12 pb-12 lg:p-12 flex flex-col lg:flex-wrap justify-center lg:justify-between items-center lg:items-start">
+      <div
+        style={{
+          borderBottom: "2px solid rgba(25, 112, 214, 0.30)",
+        }}
+        className="w-full flex flex-col lg:flex-row h-auto"
+      >
         <div className="w-full lg:w-2/5 flex flex-col justify-centre lg:justify-start items-center lg:items-start h-full py-2 px-4">
           <Link className="" href="/">
             <Image
@@ -131,22 +136,31 @@ const Footer = () => {
               <div className="flex justify-center items-center gap-4 z-10">
                 <a
                   target="_blank"
+                  style={{
+                    border: "1px solid rgba(25, 112, 214, 0.30)",
+                  }}
                   href="https://www.linkedin.com/company/circledotooo/"
-                  className="cursor-pointer border-2 border-[#45434B] rounded-full w-10 h-10 flex justify-center items-center"
+                  className="cursor-pointer rounded-full w-10 h-10 flex justify-center items-center"
                 >
                   <LinkedinIcon className={"w-4 h-4"} />
                 </a>
                 <a
                   target="_blank"
+                  style={{
+                    border: "1px solid rgba(25, 112, 214, 0.30)",
+                  }}
                   href="https://www.facebook.com/Circledot.ooo"
-                  className="cursor-pointer border-2 border-[#45434B] rounded-full w-10 h-10 flex justify-center items-center"
+                  className="cursor-pointer rounded-full w-10 h-10 flex justify-center items-center"
                 >
                   <FacebookIcon className={"w-4 h-4"} />
                 </a>
                 <a
                   target="_blank"
+                  style={{
+                    border: "1px solid rgba(25, 112, 214, 0.30)",
+                  }}
                   href="https://www.instagram.com/circledot.ooo/"
-                  className="cursor-pointer border-2 border-[#45434B] rounded-full w-10 h-10 flex justify-center items-center"
+                  className="cursor-pointer  rounded-full w-10 h-10 flex justify-center items-center"
                 >
                   <InstagramIcon className={"w-4 h-4"} />
                 </a>

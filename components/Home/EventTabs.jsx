@@ -21,6 +21,7 @@ import { LocationMarkerIcon, SearchIcon } from "@heroicons/react/outline";
 import axios from "axios";
 import LocationIcon from "@/icons/LocationIcon";
 import { RotatingLines } from "react-loader-spinner";
+import bgImage from "../../public/revamp/bg-sec3.png";
 // import AOS from "aos";
 // import "aos/dist/aos.css";
 // import "intersection-observer";
@@ -490,17 +491,42 @@ const EventTabs = () => {
       // data-aos-easing="ease-in-out"
       // data-aos-mirror="false"
       // data-aos-once="true"
+      style={{
+        backgroundImage: `url(${bgImage.src})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+      }}
       className="flex flex-col items-center w-full h-auto justify-center"
     >
-      <h3 className="font48 font-semibold mt-20 text-center font-Montserrat">
-        Events related to your interests
+      <h3 className="font48 text-[#fff] font-semibold mt-20 text-center font-Montserrat">
+        Events related to{" "}
+        <span
+          style={{
+            background: "linear-gradient(269deg, #FFF -1.77%, #9E22FF 37.99%)",
+            backgroundClip: "text",
+            WebkitBackgroundClip: "text", // Add the Webkit prefix for older browsers
+            WebkitTextFillColor: "transparent", // Add the Webkit prefix for older browsers
+
+            // color: "#fff",
+            // textShadow:
+            //   "0 0 0.1em rgba(255, 255, 255, 0.5), 0 0 0.2em rgba(255, 255, 255, 0.2), 0 0 0.3em rgba(255, 255, 255, 0.0)",
+          }}
+        >
+          your interests
+        </span>
       </h3>
       <div className="flex mt-10 flex-wrap lg:flex-row justify-center items-center w-full h-auto gap-2 lg:gap-4 overflow-auto">
         <button
+          style={{
+            background:
+              activeTab === 1
+                ? "linear-gradient(94deg, rgba(42, 28, 61, 0.60) 0.01%, rgba(144, 33, 255, 0.47) 103.3%)"
+                : "#14112E",
+            border: activeTab === 1 ? "1px solid rgba(64, 17, 124, 0.45)" : "",
+          }}
           className={`${
-            activeTab === 1
-              ? "bg-[#007BAB] text-white border-[#007BAB] border-2"
-              : "bg-transparent text-[#8392AF] border-[#8392AF] border"
+            activeTab === 1 ? "text-white" : "text-[#8392AF]"
           } px-5 py-2 rounded-full`}
           onClick={() => {
             handleTabClick(1);
@@ -510,10 +536,15 @@ const EventTabs = () => {
           All
         </button>
         <button
+          style={{
+            background:
+              activeTab === 2
+                ? "linear-gradient(94deg, rgba(42, 28, 61, 0.60) 0.01%, rgba(144, 33, 255, 0.47) 103.3%)"
+                : "#14112E",
+            border: activeTab === 2 ? "1px solid rgba(64, 17, 124, 0.45)" : "",
+          }}
           className={`${
-            activeTab === 2
-              ? "bg-[#007BAB] text-white border-[#007BAB] border-2"
-              : "bg-transparent text-[#8392AF] border-[#8392AF] border"
+            activeTab === 2 ? "text-white" : "text-[#8392AF]"
           } px-5 py-2 rounded-full`}
           onClick={() => {
             handleTabClick(2);
@@ -523,10 +554,15 @@ const EventTabs = () => {
           Near Me
         </button>
         <button
+          style={{
+            background:
+              activeTab === 3
+                ? "linear-gradient(94deg, rgba(42, 28, 61, 0.60) 0.01%, rgba(144, 33, 255, 0.47) 103.3%)"
+                : "#14112E",
+            border: activeTab === 3 ? "1px solid rgba(64, 17, 124, 0.45)" : "",
+          }}
           className={`${
-            activeTab === 3
-              ? "bg-[#007BAB] text-white border-[#007BAB] border-2"
-              : "bg-transparent text-[#8392AF] border-[#8392AF] border"
+            activeTab === 3 ? "text-white" : "text-[#8392AF]"
           } px-5 py-2 rounded-full`}
           onClick={() => {
             handleTabClick(3);
@@ -536,10 +572,15 @@ const EventTabs = () => {
           Free
         </button>
         <button
+          style={{
+            background:
+              activeTab === 4
+                ? "linear-gradient(94deg, rgba(42, 28, 61, 0.60) 0.01%, rgba(144, 33, 255, 0.47) 103.3%)"
+                : "#14112E",
+            border: activeTab === 4 ? "1px solid rgba(64, 17, 124, 0.45)" : "",
+          }}
           className={`${
-            activeTab === 4
-              ? "bg-[#007BAB] text-white border-[#007BAB] border-2"
-              : "bg-transparent text-[#8392AF] border-[#8392AF] border"
+            activeTab === 4 ? "text-white" : "text-[#8392AF]"
           } px-5 py-2 rounded-full`}
           onClick={() => {
             handleTabClick(4);
@@ -549,10 +590,15 @@ const EventTabs = () => {
           Paid
         </button>
         <button
+          style={{
+            background:
+              activeTab === 5
+                ? "linear-gradient(94deg, rgba(42, 28, 61, 0.60) 0.01%, rgba(144, 33, 255, 0.47) 103.3%)"
+                : "#14112E",
+            border: activeTab === 5 ? "1px solid rgba(64, 17, 124, 0.45)" : "",
+          }}
           className={`${
-            activeTab === 5
-              ? "bg-[#007BAB] text-white border-[#007BAB] border-2"
-              : "bg-transparent text-[#8392AF] border-[#8392AF] border"
+            activeTab === 5 ? "text-white" : "text-[#8392AF]"
           } px-5 py-2 rounded-full`}
           onClick={() => {
             handleTabClick(5);
@@ -562,10 +608,15 @@ const EventTabs = () => {
           Today
         </button>
         <button
+          style={{
+            background:
+              activeTab === 6
+                ? "linear-gradient(94deg, rgba(42, 28, 61, 0.60) 0.01%, rgba(144, 33, 255, 0.47) 103.3%)"
+                : "#14112E",
+            border: activeTab === 6 ? "1px solid rgba(64, 17, 124, 0.45)" : "",
+          }}
           className={`${
-            activeTab === 6
-              ? "bg-[#007BAB] text-white border-[#007BAB] border-2"
-              : "bg-transparent text-[#8392AF] border-[#8392AF] border"
+            activeTab === 6 ? "text-white" : "text-[#8392AF]"
           } px-5 py-2 rounded-full`}
           onClick={() => {
             handleTabClick(6);
@@ -575,10 +626,15 @@ const EventTabs = () => {
           Tomorrow
         </button>
         <button
+          style={{
+            background:
+              activeTab === 7
+                ? "linear-gradient(94deg, rgba(42, 28, 61, 0.60) 0.01%, rgba(144, 33, 255, 0.47) 103.3%)"
+                : "#14112E",
+            border: activeTab === 7 ? "1px solid rgba(64, 17, 124, 0.45)" : "",
+          }}
           className={`${
-            activeTab === 7
-              ? "bg-[#007BAB] text-white border-[#007BAB] border-2"
-              : "bg-transparent text-[#8392AF] border-[#8392AF] border"
+            activeTab === 7 ? "text-white" : "text-[#8392AF]"
           } px-5 py-2 rounded-full`}
           onClick={() => {
             handleTabClick(7);
@@ -588,10 +644,15 @@ const EventTabs = () => {
           By Location
         </button>
         <button
+          style={{
+            background:
+              activeTab === 8
+                ? "linear-gradient(94deg, rgba(42, 28, 61, 0.60) 0.01%, rgba(144, 33, 255, 0.47) 103.3%)"
+                : "#14112E",
+            border: activeTab === 8 ? "1px solid rgba(64, 17, 124, 0.45)" : "",
+          }}
           className={`${
-            activeTab === 8
-              ? "bg-[#007BAB] text-white border-[#007BAB] border-2"
-              : "bg-transparent text-[#8392AF] border-[#8392AF] border"
+            activeTab === 8 ? "text-white" : "text-[#8392AF]"
           } px-5 py-2 rounded-full`}
           onClick={() => {
             handleTabClick(8);
@@ -639,7 +700,7 @@ const EventTabs = () => {
                 </div>
               )}
               {EventsData.length <= 0 && !allEventsLoader && (
-                <div className="flex justify-center items-center mt-10">
+                <div className="flex justify-center items-center mt-10 text-white">
                   No Events Found!
                 </div>
               )}
@@ -653,7 +714,13 @@ const EventTabs = () => {
                     getEventsData(allEventsLimit + 8);
                   }}
                   disabled={allEventsLoader && true}
-                  className={`px-10 mt-12 font14 font-medium rounded-full py-3 font-Montserrat text-[#fff] hover:text-[#007BAB] border-2 border-[#007BAB] hover:bg-transparent bg-[#007BAB]`}
+                  style={{
+                    border: "1px solid rgba(255, 255, 255, 0.20)",
+                    background:
+                      "linear-gradient(90deg, #4532BF 5.81%, #9429FF 100%)",
+                    boxShadow: "0px 4px 50px 0px rgba(69, 50, 191, 0.50)",
+                  }}
+                  className={`px-10 mt-12 font14 font-medium rounded-full py-3 font-Montserrat text-[#fff]`}
                 >
                   Show More
                 </button>
@@ -697,7 +764,7 @@ const EventTabs = () => {
                 </div>
               )}
               {eventsNearMe.length <= 0 && !eventsNearMeLoader && (
-                <div className="flex justify-center items-center mt-10">
+                <div className="flex justify-center items-center mt-10 text-white">
                   No Events Found!
                 </div>
               )}
@@ -711,7 +778,13 @@ const EventTabs = () => {
                     getEventsNearMeData(eventsNearMeLimit + 8);
                   }}
                   disabled={eventsNearMeLoader && true}
-                  className={`px-10 mt-12 font14 font-medium rounded-full py-3 font-Montserrat text-[#fff] hover:text-[#007BAB] border-2 border-[#007BAB] hover:bg-transparent bg-[#007BAB]`}
+                  style={{
+                    border: "1px solid rgba(255, 255, 255, 0.20)",
+                    background:
+                      "linear-gradient(90deg, #4532BF 5.81%, #9429FF 100%)",
+                    boxShadow: "0px 4px 50px 0px rgba(69, 50, 191, 0.50)",
+                  }}
+                  className={`px-10 mt-12 font14 font-medium rounded-full py-3 font-Montserrat text-[#fff]`}
                 >
                   Show More
                 </button>
@@ -755,7 +828,7 @@ const EventTabs = () => {
                 </div>
               )}
               {freeEvents.length <= 0 && !freeEventsLoader && (
-                <div className="flex justify-center items-center mt-10">
+                <div className="flex justify-center items-center mt-10 text-white">
                   No Events Found!
                 </div>
               )}
@@ -769,7 +842,13 @@ const EventTabs = () => {
                     getFreeEventsData(freeEventsLimit + 8);
                   }}
                   disabled={freeEventsLoader && true}
-                  className={`px-10 mt-12 font14 font-medium rounded-full py-3 font-Montserrat text-[#fff] hover:text-[#007BAB] border-2 border-[#007BAB] hover:bg-transparent bg-[#007BAB]`}
+                  style={{
+                    border: "1px solid rgba(255, 255, 255, 0.20)",
+                    background:
+                      "linear-gradient(90deg, #4532BF 5.81%, #9429FF 100%)",
+                    boxShadow: "0px 4px 50px 0px rgba(69, 50, 191, 0.50)",
+                  }}
+                  className={`px-10 mt-12 font14 font-medium rounded-full py-3 font-Montserrat text-[#fff]`}
                 >
                   Show More
                 </button>
@@ -813,7 +892,7 @@ const EventTabs = () => {
                 </div>
               )}
               {paidEvents.length <= 0 && !paidEventsLoader && (
-                <div className="flex justify-center items-center mt-10">
+                <div className="flex justify-center items-center mt-10 text-white">
                   No Events Found!
                 </div>
               )}
@@ -827,7 +906,13 @@ const EventTabs = () => {
                     getPaidEventsData(paidEventsLimit + 8);
                   }}
                   disabled={paidEventsLoader && true}
-                  className={`px-10 mt-12 font14 font-medium rounded-full py-3 font-Montserrat text-[#fff] hover:text-[#007BAB] border-2 border-[#007BAB] hover:bg-transparent bg-[#007BAB]`}
+                  style={{
+                    border: "1px solid rgba(255, 255, 255, 0.20)",
+                    background:
+                      "linear-gradient(90deg, #4532BF 5.81%, #9429FF 100%)",
+                    boxShadow: "0px 4px 50px 0px rgba(69, 50, 191, 0.50)",
+                  }}
+                  className={`px-10 mt-12 font14 font-medium rounded-full py-3 font-Montserrat text-[#fff]`}
                 >
                   Show More
                 </button>
@@ -871,7 +956,7 @@ const EventTabs = () => {
                 </div>
               )}
               {todayEvents.length <= 0 && !TTEventsLoader && (
-                <div className="flex justify-center items-center mt-10">
+                <div className="flex justify-center items-center mt-10 text-white">
                   No Events Found!
                 </div>
               )}
@@ -885,7 +970,13 @@ const EventTabs = () => {
                     getExtraEventsData(TTLimit + 8);
                   }}
                   disabled={TTEventsLoader && true}
-                  className={`px-10 mt-12 font14 font-medium rounded-full py-3 font-Montserrat text-[#fff] hover:text-[#007BAB] border-2 border-[#007BAB] hover:bg-transparent bg-[#007BAB]`}
+                  style={{
+                    border: "1px solid rgba(255, 255, 255, 0.20)",
+                    background:
+                      "linear-gradient(90deg, #4532BF 5.81%, #9429FF 100%)",
+                    boxShadow: "0px 4px 50px 0px rgba(69, 50, 191, 0.50)",
+                  }}
+                  className={`px-10 mt-12 font14 font-medium rounded-full py-3 font-Montserrat text-[#fff]`}
                 >
                   Show More
                 </button>
@@ -929,7 +1020,7 @@ const EventTabs = () => {
                 </div>
               )}
               {tomEvents.length <= 0 && !TTEventsLoader && (
-                <div className="flex justify-center items-center mt-10">
+                <div className="flex justify-center items-center mt-10 text-white">
                   No Events Found!
                 </div>
               )}
@@ -943,7 +1034,13 @@ const EventTabs = () => {
                     getExtraEventsData(TTLimit + 8);
                   }}
                   disabled={TTEventsLoader && true}
-                  className={`px-10 mt-12 font14 font-medium rounded-full py-3 font-Montserrat text-[#fff] hover:text-[#007BAB] border-2 border-[#007BAB] hover:bg-transparent bg-[#007BAB]`}
+                  style={{
+                    border: "1px solid rgba(255, 255, 255, 0.20)",
+                    background:
+                      "linear-gradient(90deg, #4532BF 5.81%, #9429FF 100%)",
+                    boxShadow: "0px 4px 50px 0px rgba(69, 50, 191, 0.50)",
+                  }}
+                  className={`px-10 mt-12 font14 font-medium rounded-full py-3 font-Montserrat text-[#fff]`}
                 >
                   Show More
                 </button>
@@ -952,7 +1049,7 @@ const EventTabs = () => {
         )}
         {activeTab === 7 && (
           <div className="flex justify-center items-center flex-col w-full">
-            <h3 className="text-lg font-semibold font-Montserrat text-center">
+            <h3 className="text-lg font-semibold font-Montserrat text-center text-white">
               Search Your Desired Events By Location Search!
             </h3>
             <div className="w-[80%] lg:w-[40%] mt-5">
@@ -977,7 +1074,11 @@ const EventTabs = () => {
                 <input
                   type="search"
                   id="default-search"
-                  className="block w-full p-4 pl-10 border-2 text-[#8392AF]  focus:border-[#007BAB] text-sm rounded-lg focus:outline-none"
+                  style={{
+                    border: "0.5px solid rgba(255, 255, 255, 0.10)",
+                    background: "rgba(28, 34, 44, 0.60)",
+                  }}
+                  className="block w-full p-4 pl-10 border-2 text-[#fff] focus:border-[#007BAB] text-sm rounded-lg focus:outline-none"
                   placeholder="Search Events, By Location..."
                   value={locationInput}
                   onChange={(e) => {
@@ -1028,7 +1129,7 @@ const EventTabs = () => {
                       </div>
                     )}
                     {bySearchEvents.length <= 0 && !bsEventsLoader && (
-                      <div className="flex justify-center items-center mt-10">
+                      <div className="flex justify-center items-center mt-10 text-white">
                         No Events Found!
                       </div>
                     )}
@@ -1042,7 +1143,13 @@ const EventTabs = () => {
                           getBSEventsData(bsLimit + 8, locationInput);
                         }}
                         disabled={bsEventsLoader && true}
-                        className={`px-10 mt-12 font14 font-medium rounded-full py-3 font-Montserrat text-[#fff] hover:text-[#007BAB] border-2 border-[#007BAB] hover:bg-transparent bg-[#007BAB]`}
+                        style={{
+                          border: "1px solid rgba(255, 255, 255, 0.20)",
+                          background:
+                            "linear-gradient(90deg, #4532BF 5.81%, #9429FF 100%)",
+                          boxShadow: "0px 4px 50px 0px rgba(69, 50, 191, 0.50)",
+                        }}
+                        className={`px-10 mt-12 font14 font-medium rounded-full py-3 font-Montserrat text-[#fff]`}
                       >
                         Show More
                       </button>
@@ -1056,7 +1163,7 @@ const EventTabs = () => {
                   <div
                     className={`w-full mt-10 flex justify-center items-center flex-col`}
                   >
-                    <h3 className="text-sm font-semibold font-Montserrat">
+                    <h3 className="text-sm font-semibold font-Montserrat text-white">
                       No Events Found!
                     </h3>
                     {/* <div className="grid mt-10 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 lg:flex-row">
@@ -1155,7 +1262,7 @@ const EventTabs = () => {
                       </div>
                     )}
                     {bySearchEvents.length <= 0 && !bsEventsLoader && (
-                      <div className="flex justify-center items-center mt-10">
+                      <div className="flex justify-center items-center mt-10 text-white">
                         No Events Found!
                       </div>
                     )}
@@ -1169,7 +1276,13 @@ const EventTabs = () => {
                           getBSEventsData(bsLimit + 8, locationInput);
                         }}
                         disabled={bsEventsLoader && true}
-                        className={`px-10 mt-12 font14 font-medium rounded-full py-3 font-Montserrat text-[#fff] hover:text-[#007BAB] border-2 border-[#007BAB] hover:bg-transparent bg-[#007BAB]`}
+                        style={{
+                          border: "1px solid rgba(255, 255, 255, 0.20)",
+                          background:
+                            "linear-gradient(90deg, #4532BF 5.81%, #9429FF 100%)",
+                          boxShadow: "0px 4px 50px 0px rgba(69, 50, 191, 0.50)",
+                        }}
+                        className={`px-10 mt-12 font14 font-medium rounded-full py-3 font-Montserrat text-[#fff]`}
                       >
                         Show More
                       </button>
@@ -1216,7 +1329,7 @@ const EventTabs = () => {
                 </div>
               )}
               {otherEventsData.length <= 0 && !otherEventsLoader && (
-                <div className="flex justify-center items-center mt-10">
+                <div className="flex justify-center items-center mt-10 text-white">
                   No Events Found!
                 </div>
               )}
@@ -1230,7 +1343,13 @@ const EventTabs = () => {
                     getOtherEventsData(otherEventsLimit + 8);
                   }}
                   disabled={otherEventsLoader && true}
-                  className={`px-10 mt-12 font14 font-medium rounded-full py-3 font-Montserrat text-[#fff] hover:text-[#007BAB] border-2 border-[#007BAB] hover:bg-transparent bg-[#007BAB]`}
+                  style={{
+                    border: "1px solid rgba(255, 255, 255, 0.20)",
+                    background:
+                      "linear-gradient(90deg, #4532BF 5.81%, #9429FF 100%)",
+                    boxShadow: "0px 4px 50px 0px rgba(69, 50, 191, 0.50)",
+                  }}
+                  className={`px-10 mt-12 font14 font-medium rounded-full py-3 font-Montserrat text-[#fff]`}
                 >
                   Show More
                 </button>

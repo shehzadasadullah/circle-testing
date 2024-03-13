@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
-import mobile from "../../public/mobilebg.png";
 import pentagon from "../../public/imgpentagon.png";
 import { AiFillApple } from "react-icons/ai";
 import { IoLogoGooglePlaystore } from "react-icons/io5";
 // import AOS from "aos";
 // import "aos/dist/aos.css";
 import { useRouter } from "next/router";
+import bgImage from "../../public/revamp/bg-invite.png";
+import image from "../../public/revamp/img-invite.png";
 
 const InviteToApp = () => {
   // useEffect(() => {
@@ -31,9 +32,10 @@ const InviteToApp = () => {
     <>
       <div
         style={{
-          background: "rgba(17, 129, 172, 1)",
-          //   background:
-          //     "linear-gradient(to bottom right, rgba(255, 255, 255, 1) 50%, rgba(17, 129, 172, 1) 100%)",
+          backgroundImage: `url(${bgImage.src})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
         }}
         className="flex justify-center items-center w-full h-auto p-2 lg:p-10"
       >
@@ -47,14 +49,18 @@ const InviteToApp = () => {
             // data-aos-once="true"
             className="flex flex-col justify-center lg:items-start items-center mb-6"
           >
-            <img src={mobile.src} alt="" className="flex lg:hidden p-6" />
-            <h3 className="font48 hidden mt-10 lg:mt-0 lg:flex font-semibold font-Montserrat text-center lg:text-left">
+            <img
+              src={image.src}
+              alt=""
+              className="flex object-contain lg:hidden p-6"
+            />
+            <h3 className="font48 hidden w-full mt-10 lg:mt-0 lg:flex font-semibold font-Montserrat text-center lg:text-left">
               Want to See Who's Coming?
             </h3>
-            <h3 className="font48 mt-3 font-semibold flex lg:hidden font-Montserrat text-center lg:text-left">
+            <h3 className="font48 mt-3 w-full font-semibold flex lg:hidden font-Montserrat text-center lg:text-left">
               Want to See Who's Coming? Download Circle.ooo
             </h3>
-            <h3 className="text-xl font-semibold mt-2 ml-2 font-Montserrat hidden lg:flex">
+            <h3 className="text-xl w-full font-semibold mt-2 ml-2 font-Montserrat hidden lg:flex">
               Download Circle.ooo
             </h3>
             <div className="flex flex-row mt-10">
@@ -98,9 +104,9 @@ const InviteToApp = () => {
             // data-aos-easing="ease-in-out"
             // data-aos-mirror="false"
             // data-aos-once="true"
-            src={mobile.src}
+            src={image.src}
             alt=""
-            className="hidden lg:flex ml-20"
+            className="hidden lg:flex ml-20 object-contain w-auto h-[500px]"
           />
         </div>
       </div>

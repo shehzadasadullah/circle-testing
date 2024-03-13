@@ -21,6 +21,7 @@ import { deleteField } from "firebase/firestore";
 import toast from "react-simple-toasts";
 import Register from "../Home/Register";
 import { BsHeart, BsFillHeartFill } from "react-icons/bs";
+import bgImage from "../../public/revamp/bg-sec3.png";
 const EventCard = ({
   image,
   title,
@@ -271,7 +272,7 @@ const EventCard = ({
 
   return (
     <div
-      className={`w-full h-full rounded-[25px] border-[1px] border-[#BDBDBD] p-3 ${
+      className={`w-full h-full rounded-[25px] p-3 ${
         id?.length > 0 ? "cursor-pointer" : ""
       }`}
       onClick={() => {
@@ -283,7 +284,14 @@ const EventCard = ({
           }
         }
       }}
-      style={{ maxWidth: "100%", margin: "0 auto" }} // Add this style for responsiveness
+      style={{
+        maxWidth: "100%",
+        margin: "0 auto",
+        border: "1px solid rgba(25, 112, 214, 0.30)",
+        background: "rgba(28, 34, 44, 0.60)",
+        boxShadow:
+          "0px 13px 29px 0px rgba(0, 0, 0, 0.07), 0px 53px 53px 0px rgba(0, 0, 0, 0.06), 0px 118px 71px 0px rgba(0, 0, 0, 0.03), 0px 211px 84px 0px rgba(0, 0, 0, 0.01), 0px 329px 92px 0px rgba(0, 0, 0, 0.00)",
+      }} // Add this style for responsiveness
     >
       <div className="w-full rounded-[25px]">
         {image ? (
@@ -352,9 +360,9 @@ const EventCard = ({
             </div>
           </div>
         ) : (
-          <div className="relative w-full h-[175px] bg-gray-300 rounded-[25px] ">
+          <div className="relative flex flex-col">
             <img
-              src="https://cdnspicyfy.azureedge.net/images/8400a5e7-639e-4e1a-bd5e-41c689de93a5.jpg"
+              src={bgImage.src}
               alt={title}
               className="w-full h-[175px] object-fit rounded-[25px]"
             />
@@ -422,10 +430,13 @@ const EventCard = ({
       <div className="w-full p-4 flex flex-col justify-start items-start gap-1.5">
         <div className="w-full flex justify-between items-start">
           <div className="w-full flex flex-col justify-start items-start gap-1">
-            <div className="w-full truncate flex justify-start items-start font18 lg:font16 text-black font-semibold">
+            <div className="w-full truncate flex justify-start items-start font18 lg:font16 text-[#fff] font-semibold">
               {title}
             </div>
-            <div className="w-full flex justify-start items-start truncate font16 lg:font12 text-[#828282]">
+            <div
+              style={{ color: "rgba(255, 255, 255, 0.80)" }}
+              className="w-full flex justify-start items-start truncate font16 lg:font12"
+            >
               {moment(time?.seconds * 1000)
                 .local()
                 .format("MMMM Do YYYY, h:mm:ss a")}
@@ -433,17 +444,23 @@ const EventCard = ({
           </div>
         </div>
 
-        <div className="sm:w-full w-24 truncate font16 lg:font12 text-[#828282]">
+        <div
+          style={{ color: "rgba(255, 255, 255, 0.80)" }}
+          className="sm:w-full w-24 truncate font16 lg:font12"
+        >
           {description}
         </div>
-        <div className="w-full truncate font18 font-semibold text-[#007BAB]">
+        <div className="w-full truncate font18 font-semibold text-[#1DD9F3]">
           {type === "" && Number(price) === 0.0
             ? "Free"
             : type === "" && Number(price) !== 0.0
             ? "$" + price
             : price}
         </div>
-        <div className="w-full flex justify-start items-center gap-1 font16 lg:font12 text-[#828282]">
+        <div
+          style={{ color: "rgba(255, 255, 255, 0.80)" }}
+          className="w-full flex justify-start items-center gap-1 font16 lg:font12"
+        >
           {type === "" ? (
             <>
               <AttendeIcon className="w-3 h-3" />

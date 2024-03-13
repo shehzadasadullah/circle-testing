@@ -27,25 +27,25 @@ const DropDownComponent = (props) => {
   return (
     <>
       <div
-        style={
-          {
-            // opacity: showItems ? "1" : "0",
-            // transition: "opacity 0.5s ease",
-          }
-        }
-        className={`w-full h-auto py-5 cursor-pointer relative rounded-xl ${
-          selectedDropdown === title ? "bg-[#007BAB]" : "bg-[#F0F4FB]"
-        }`}
+        style={{
+          // opacity: showItems ? "1" : "0",
+          // transition: "opacity 0.5s ease",
+          background:
+            selectedDropdown === title
+              ? "linear-gradient(94deg, rgba(42, 28, 61, 0.60) 0.01%, rgba(144, 33, 255, 0.47) 103.3%)"
+              : "rgba(28, 34, 44, 0.60)",
+          border:
+            selectedDropdown === title
+              ? "1px solid rgba(64, 17, 124, 0.45)"
+              : "",
+        }}
+        className={`w-full h-auto py-5 cursor-pointer relative rounded-xl`}
         onClick={() => {
           handleToggle(id);
         }}
       >
         <div className="w-full h-auto">
-          <div
-            className={`flex justify-between items-center px-3 ${
-              selectedDropdown === title ? "text-white" : "text-[#000]"
-            } `}
-          >
+          <div className={`flex justify-between items-center px-3 text-[#fff]`}>
             <div className="flex justify-start items-center">
               {image_path && (
                 <img src={image_path} alt="Image" style={{ height: "20pt" }} />
@@ -57,9 +57,9 @@ const DropDownComponent = (props) => {
             // style={{ transitionDuration: "0.5s" }}
             >
               {selectedDropdown === title ? (
-                <AiOutlineMinusCircle size={20} />
+                <AiOutlineMinusCircle color="#fff" size={20} />
               ) : (
-                <BsPlusCircle size={20} />
+                <BsPlusCircle color="#fff" size={20} />
               )}
             </div>
           </div>

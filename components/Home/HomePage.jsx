@@ -15,6 +15,7 @@ import Footer from "../Common/Footer";
 import { ThreeCircles } from "react-loader-spinner";
 import loaderGif from "../../public/events/Loader.gif";
 import ScrollToTopButton from "../ScrollToTop/ScrollToTopButton";
+import bgImage from "../../public/revamp/bg-sec5.png";
 
 //Main Container Component to contain all the sections of the homepage
 const HomePage = () => {
@@ -32,12 +33,28 @@ const HomePage = () => {
   return (
     <>
       {loading ? (
-        <div className="flex w-screen h-screen justify-center items-center">
+        <div
+          style={{
+            backgroundImage: `url(${bgImage.src})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",
+          }}
+          className="flex w-screen h-screen justify-center items-center"
+        >
           <img src={loaderGif.src} alt="Loader" />
         </div>
       ) : (
         <>
-          <div className="w-full h-full relative">
+          <div
+            style={{
+              backgroundImage: `url(${bgImage.src})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              backgroundRepeat: "no-repeat",
+            }}
+            className="w-full h-full relative"
+          >
             <HeroSection />
             <EventTabs />
             <ProfileComp />
