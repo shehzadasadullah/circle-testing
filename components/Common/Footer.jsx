@@ -86,6 +86,14 @@ const Footer = () => {
               >
                 Privacy Policy
               </div>
+              <div
+                className="text-[#D9D9D9] cursor-pointer"
+                onClick={() => {
+                  router.push("/terms");
+                }}
+              >
+                Terms & Conditions
+              </div>
               {/* <div
                 className="text-[#D9D9D9]"
                 onClick={() => {
@@ -97,10 +105,10 @@ const Footer = () => {
               <div
                 className="text-[#D9D9D9] cursor-pointer"
                 onClick={() => {
-                  router.push("/gdpr");
+                  router.push("/security");
                 }}
               >
-                GDPR
+                SECURITY
               </div>
               <div
                 className="cursor-pointer text-[#D9D9D9]"
