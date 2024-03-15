@@ -58,32 +58,26 @@ const Favorites = () => {
         </>
       ) : (
         <> */}
-      <div
-        style={{
-          backgroundImage: `url(${bgImage.src})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-        }}
-        className="w-full h-full"
-      >
+      <div className="w-full h-full bg-[#060212]">
         <div className="w-full h-full">
           <Header type="dark" />
         </div>
         <div className=" w-full h-full flex flex-col justify-center items-center p-10">
-          <h3
-            style={{
-              background:
-                "linear-gradient(99deg, #FFF 49.91%, rgba(255, 255, 255, 0.00) 112.45%)",
-              backgroundClip: "text",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-            }}
-            className="text-5xl font-bold w-full flex justify-center items-center"
-          >
-            Favorite Events
+          <h3 className="text-5xl lg:text-7xl font-bold w-full flex justify-center items-center">
+            <span
+              style={{
+                background:
+                  "linear-gradient(269deg, #FFF -1.77%, #9E22FF 37.99%)",
+                backgroundClip: "text",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+              }}
+              className="w-full text-center"
+            >
+              Favorite Events
+            </span>
           </h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 py-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 py-16">
             {(EventsData || {}) && Object.keys(EventsData || {}).length > 0 && (
               <>
                 {Object.keys(EventsData || {}).map((item, id) => (
@@ -166,7 +160,7 @@ const Favorites = () => {
           </div>
           {(EventsData || {}) && Object.keys(EventsData || {}).length === 0 && (
             <>
-              <div className="flex w-full text-xl justify-center items-center">
+              <div className="flex w-full text-xl mt-[-5%] justify-center items-center">
                 <p className="w-full text-[#fff] text-center">
                   No Favorite Events Found!
                 </p>
