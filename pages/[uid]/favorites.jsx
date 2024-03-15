@@ -20,6 +20,7 @@ import Header from "@/components/Common/Header";
 import Footer from "@/components/Common/Footer";
 import { useRouter } from "next/router";
 import loaderGif from "../../public/events/Loader.gif";
+import bgImage from "../../public/revamp/bg-new.png";
 
 const Favorites = () => {
   const router = useRouter();
@@ -47,9 +48,6 @@ const Favorites = () => {
 
   return (
     <>
-      <div className="w-full h-full">
-        <Header type="light" />
-      </div>
       {/* {loader ? (
         <>
           <>
@@ -60,12 +58,32 @@ const Favorites = () => {
         </>
       ) : (
         <> */}
-      <div className="w-full h-full">
-        <div className="bg-[#E9EDF5] w-full h-full flex flex-col justify-center items-center p-10">
-          <h3 className="text-5xl font-semibold text-[#14183E] w-full flex justify-center items-center">
+      <div
+        style={{
+          backgroundImage: `url(${bgImage.src})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+        }}
+        className="w-full h-full"
+      >
+        <div className="w-full h-full">
+          <Header type="dark" />
+        </div>
+        <div className=" w-full h-full flex flex-col justify-center items-center p-10">
+          <h3
+            style={{
+              background:
+                "linear-gradient(99deg, #FFF 49.91%, rgba(255, 255, 255, 0.00) 112.45%)",
+              backgroundClip: "text",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+            }}
+            className="text-5xl font-bold w-full flex justify-center items-center"
+          >
             Favorite Events
           </h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 py-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 py-10">
             {(EventsData || {}) && Object.keys(EventsData || {}).length > 0 && (
               <>
                 {Object.keys(EventsData || {}).map((item, id) => (
@@ -149,7 +167,9 @@ const Favorites = () => {
           {(EventsData || {}) && Object.keys(EventsData || {}).length === 0 && (
             <>
               <div className="flex w-full text-xl justify-center items-center">
-                <p className="w-full text-center">No Favorite Events Found!</p>
+                <p className="w-full text-[#fff] text-center">
+                  No Favorite Events Found!
+                </p>
               </div>
             </>
           )}

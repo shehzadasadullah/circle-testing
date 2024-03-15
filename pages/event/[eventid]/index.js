@@ -69,6 +69,7 @@ import {
 } from "react-share";
 import { useMediaQuery } from "react-responsive";
 import calendarImage from "./schedule.png";
+import noImage from "../../../public/revamp/bg-sec3.png";
 
 const EventDetails = () => {
   const breakpoints = {
@@ -779,7 +780,7 @@ const EventDetails = () => {
                 src={
                   EventData?.large_image || EventData.largeimage
                     ? EventData?.large_image || EventData.largeimage
-                    : "https://cdnspicyfy.azureedge.net/images/8400a5e7-639e-4e1a-bd5e-41c689de93a5.jpg"
+                    : noImage.src
                 }
               />
             </div>
