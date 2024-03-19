@@ -790,7 +790,7 @@ const EventDetails = () => {
             </div>
 
             <div className="w-full mt-8 flex flex-col justify-start items-center">
-              <div className="flex border-[#007BAB] flex-row gap-6 border-b-2 w-full">
+              <div className="flex border-[#fff] border-opacity-20 flex-row gap-6 border-b-2 w-full">
                 {type
                   ? otherTabs.map((tab) => (
                       <>
@@ -798,8 +798,8 @@ const EventDetails = () => {
                           key={tab.id}
                           className={`cursor-pointer text-xl ${
                             activeTab === tab.id
-                              ? "text-[#007BAB] border-b-4 border-[#007BAB]"
-                              : "text-[#667085]"
+                              ? "text-[#3DFFE8] border-b-4 border-[#3DFFE8]"
+                              : "text-[#fff]"
                           }`}
                           onClick={() => handleTabClick(tab.id)}
                         >
@@ -813,8 +813,8 @@ const EventDetails = () => {
                           key={tab.id}
                           className={`cursor-pointer text-xl ${
                             activeTab === tab.id
-                              ? "text-[#007BAB] border-b-4 border-[#007BAB]"
-                              : "text-[#667085]"
+                              ? "text-[#3DFFE8] border-b-4 border-[#3DFFE8]"
+                              : "text-[#fff]"
                           }`}
                           onClick={() => handleTabClick(tab.id)}
                         >
@@ -825,12 +825,12 @@ const EventDetails = () => {
               </div>
 
               {activeTab === "tab1" ? (
-                <div className="text-[#F9F9F9] mt-6 w-full flex justify-start items-start">
+                <div className="text-[#fff] mt-6 w-full flex justify-start items-start">
                   {EventData?.description || ""}
                 </div>
               ) : (
                 activeTab === "tab2" && (
-                  <div className="text-[#F9F9F9] mt-6 w-full flex justify-start items-center">
+                  <div className="text-[#3DFFE8] mt-6 w-full flex justify-start items-center">
                     <div className="flex w-full flex-col flex-nowrap lg:flex-wrap lg:flex-row items-center justify-start gap-y-4">
                       {/* <div className="relative w-full">
                          <div className="absolute w-full inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -865,7 +865,14 @@ const EventDetails = () => {
                         filteredAttendeesDataList.map((key) => {
                           return (
                             <>
-                              <div className="flex w-full justify-start items-center flex-col bg-[#012432] rounded-xl p-2">
+                              <div
+                                style={{
+                                  border: "1px solid rgba(255, 255, 255, 0.20)",
+                                  background: "rgba(255, 255, 255, 0.12)",
+                                  backdropFilter: "blur(40px)",
+                                }}
+                                className="flex w-full justify-start items-center flex-col rounded-xl p-2"
+                              >
                                 <div
                                   style={{
                                     filter: "blur(3px)",
@@ -890,11 +897,14 @@ const EventDetails = () => {
                                         </>
                                       ) : (
                                         <>
-                                          <HiMiniUserCircle size={50} />
+                                          <HiMiniUserCircle
+                                            size={50}
+                                            color="#fff"
+                                          />
                                         </>
                                       )}
                                     </div>
-                                    <div className="flex ml-2 flex-col justify-start items-center">
+                                    <div className="flex ml-2 text-[#fff] flex-col justify-start items-center">
                                       <p className="font-bold">
                                         {key?.full_name
                                           ? key?.full_name?.toUpperCase()
@@ -928,7 +938,12 @@ const EventDetails = () => {
                                 onClick={() => {
                                   setShowDownloadMobileAppModal(true);
                                 }}
-                                className={`rounded-xl text-lg py-2 px-5 w-full lg:w-auto font-semibold bg-[#007BAB] hover:bg-transparent border-[#007BAB] border-2 text-[#fff]`}
+                                style={{
+                                  border: "1px solid rgba(255, 255, 255, 0.10)",
+                                  background:
+                                    "linear-gradient(90deg, #4532BF 5.81%, #9429FF 100%)",
+                                }}
+                                className={`rounded-xl text-lg py-2 px-5 w-full lg:w-auto font-semibold text-[#fff]`}
                               >
                                 Download the App to See & Connect With
                                 Attendees!
@@ -945,7 +960,12 @@ const EventDetails = () => {
                               onClick={() => {
                                 setShowDownloadMobileAppModal(true);
                               }}
-                              className={`rounded-xl text-lg py-2 px-5 font-semibold bg-[#007BAB] hover:bg-transparent border-[#007BAB] border-2 text-[#fff]`}
+                              style={{
+                                border: "1px solid rgba(255, 255, 255, 0.10)",
+                                background:
+                                  "linear-gradient(90deg, #4532BF 5.81%, #9429FF 100%)",
+                              }}
+                              className={`rounded-xl text-lg py-2 px-5 font-semibold text-[#fff]`}
                             >
                               Download the App to See & Connect With Attendees!
                             </button>
@@ -975,9 +995,14 @@ const EventDetails = () => {
                     </span>
 
                     <div
-                      className={`inline-block w-full lg:w-[50%] align-middle bg-[#00384F] rounded-lg shadow-xl transform transition-all`}
+                      className={`inline-block w-full lg:w-[50%] align-middle bg-[#0E0725] rounded-xl shadow-xl transform transition-all`}
                     >
-                      <div className="w-full flex justify-between border-[#F9F9F9] text-[#F9F9F9] border-b-2 items-center px-6 py-3">
+                      <div
+                        style={{
+                          borderBottom: "1px solid rgba(255, 255, 255, 0.10)",
+                        }}
+                        className="w-full flex justify-between text-[#fff] items-center px-6 py-3"
+                      >
                         <p className="font-semibold text-xl w-full">
                           <div className="flex flex-row justify-start items-centre">
                             <p className="ml-2">Download Mobile App</p>
@@ -996,7 +1021,7 @@ const EventDetails = () => {
                             viewBox="0 0 24 24"
                             stroke-width="1.5"
                             stroke="currentColor"
-                            className="h-6 w-6"
+                            className="h-6 w-6 text-[#fff]"
                           >
                             <path
                               stroke-linecap="round"
@@ -1007,11 +1032,11 @@ const EventDetails = () => {
                         </button>
                       </div>
                       <div className="w-full h-auto flex justify-center items-center flex-col gap-10 p-6">
-                        <div className="w-full h-auto bg-[#012432] rounded-xl flex justify-center items-center flex-col p-10">
-                          <p className="text-[#F9F9F9] text-3xl font-bold">
+                        <div className="w-full h-auto bg-[#1C142E] rounded-xl flex justify-center items-center flex-col p-10">
+                          <p className="text-[#fff] text-3xl font-bold">
                             “Circle Is Available For All Devices”
                           </p>
-                          <p className="text-[#BDBDBD] w-full lg:w-3/4 mt-4">
+                          <p className="text-[#fff] text-opacity-80 w-full lg:w-3/4 mt-4">
                             Connect effortlessly at the event with a
                             personalized digital business card. Register now to
                             explore who else will be there and use Circle, the
@@ -1062,11 +1087,18 @@ const EventDetails = () => {
               )}
             </div>
 
-            <div className="flex w-full text-[#F2F2F2] flex-col items-start justify-start mt-8 border-dashed border-t-2 border-[#596A73]">
+            <div className="flex w-full text-[#F2F2F2] flex-col items-start justify-start mt-8 border-dashed border-t-2 border-[#fff] border-opacity-20">
               <div className="mt-6 font-bold text-[#F2F2F2] text-3xl">
                 About The Host
               </div>
-              <div className="flex w-full lg:w-auto justify-center items-center flex-col bg-[#012432] rounded-xl p-10 mt-6">
+              <div
+                style={{
+                  border: "1px solid rgba(255, 255, 255, 0.20)",
+                  background: "rgba(255, 255, 255, 0.12)",
+                  backdropFilter: "blur(40px)",
+                }}
+                className="flex w-full lg:w-auto justify-center items-center flex-col rounded-xl p-10 mt-6"
+              >
                 <div className="flex text-base w-full justify-start items-center flex-row p-2">
                   <div className="rounded-full bg-white border-2 w-20 h-20">
                     <img
@@ -1098,8 +1130,8 @@ const EventDetails = () => {
 
             {cohostList.length > 0 && (
               <>
-                <div className="flex w-full text-[#F2F2F2] flex-col items-start justify-start mt-8 border-dashed border-t-2 border-[#596A73]">
-                  <div className="mt-6 font-bold text-[#F2F2F2] text-3xl">
+                <div className="flex w-full text-[#F2F2F2] flex-col items-start justify-start mt-8 border-dashed border-t-2 border-[#fff] border-opacity-20">
+                  <div className="mt-6 font-bold text-[#fff] text-3xl">
                     About Co Hosts
                   </div>
                   {cohostList?.length > 0 && (
@@ -1107,7 +1139,14 @@ const EventDetails = () => {
                       {cohostList.map((key) => {
                         return (
                           <>
-                            <div className="flex w-full lg:w-1/4 justify-center items-center flex-col bg-[#012432] rounded-xl p-2 mt-6">
+                            <div
+                              style={{
+                                border: "1px solid rgba(255, 255, 255, 0.20)",
+                                background: "rgba(255, 255, 255, 0.12)",
+                                backdropFilter: "blur(40px)",
+                              }}
+                              className="flex w-full lg:w-1/4 justify-center items-center flex-col rounded-xl p-2 mt-6"
+                            >
                               <div className="flex text-base w-full justify-start items-center flex-col p-2">
                                 <div className="rounded-full border-2 ">
                                   {key?.photo_url ? (
@@ -1152,10 +1191,17 @@ const EventDetails = () => {
 
           {/* RIGHT SIDE */}
           <div className="w-full lg:w-[30%] flex flex-col items-center justify-center">
-            <div className="flex w-full flex-col justify-start items-start p-6 bg-[#012432] rounded-xl">
-              <p className="text-[#F9F9F9] font-bold text-lg">Event Details</p>
+            <div
+              style={{
+                border: "1px solid rgba(255, 255, 255, 0.20)",
+                background: "rgba(255, 255, 255, 0.12)",
+                backdropFilter: "blur(40px)",
+              }}
+              className="flex w-full flex-col justify-start items-start p-6 rounded-xl"
+            >
+              <p className="text-[#fff] font-bold text-lg">Event Details</p>
 
-              <div className="flex flex-row text-[#F9F9F9] mt-5 justify-start w-full items-center">
+              <div className="flex flex-row text-[#fff] mt-5 justify-start w-full items-center">
                 <LuCalendarDays size={30} />
                 <p className="font-Montserrat ml-3">
                   {type
@@ -1173,7 +1219,7 @@ const EventDetails = () => {
               {type ? (
                 ""
               ) : (
-                <div className="flex flex-row text-[#F9F9F9] mt-3 justify-start w-full items-center">
+                <div className="flex flex-row text-[#fff] mt-3 justify-start w-full items-center">
                   <FaClock size={30} />
                   <p className="font-Montserrat ml-3">
                     {moment(EventData?.timefrom?.seconds * 1000)
@@ -1187,7 +1233,7 @@ const EventDetails = () => {
                 </div>
               )}
 
-              <div className="flex flex-row text-[#F9F9F9] mt-3 justify-start w-full items-center">
+              <div className="flex flex-row text-[#fff] mt-3 justify-start w-full items-center">
                 <FaLocationDot
                   onClick={() => {
                     const generateGoogleMapsUrl = (locationText) => {
@@ -1219,7 +1265,7 @@ const EventDetails = () => {
                 </p>
               </div>
 
-              <div className="flex flex-row text-[#F9F9F9] mt-3 justify-start w-full items-center">
+              <div className="flex flex-row text-[#fff] mt-3 justify-start w-full items-center">
                 <FaTag size={30} />
                 <p className="font-Montserrat ml-3">
                   {type
@@ -1232,7 +1278,7 @@ const EventDetails = () => {
                 </p>
               </div>
 
-              <div className="flex text-base w-full justify-start items-center flex-row mt-5 border-dashed border-t-2 border-[#828282]">
+              <div className="flex text-base w-full justify-start items-center flex-row mt-5 border-dashed border-t-2 border-[#fff] border-opacity-20">
                 <div className="rounded-full bg-white border-2 w-20 h-20 mt-5">
                   <img
                     src={
@@ -1246,8 +1292,8 @@ const EventDetails = () => {
                   />
                 </div>
                 <div className="flex ml-3 flex-col justify-start items-start mt-3">
-                  <p className="font-normal text-[#BDBDBD]">Hosted By:</p>
-                  <p className="font-bold text-[#F2F2F2]">
+                  <p className="font-normal text-[#fff]">Hosted By:</p>
+                  <p className="font-bold text-[#fff]">
                     {creatorData?.full_name ||
                       creatorData?.display_name ||
                       creatorData?.displayName ||
@@ -1261,12 +1307,24 @@ const EventDetails = () => {
 
             {user && user?.uid && user?.uid === creatorData.uid && (
               <>
-                <div className="flex w-full mt-4 gap-y-4 flex-col justify-center items-center p-6 bg-[#012432] rounded-xl">
+                <div
+                  style={{
+                    border: "1px solid rgba(255, 255, 255, 0.20)",
+                    background: "rgba(255, 255, 255, 0.12)",
+                    backdropFilter: "blur(40px)",
+                  }}
+                  className="flex w-full mt-4 gap-y-4 flex-col justify-center items-center p-6 rounded-xl"
+                >
                   <button
                     onClick={() => {
                       router.push(`/event/${id}/edit-event`);
                     }}
-                    className="rounded-xl px-5 flex flex-row justify-between items-center w-full py-4 bg-[#007BAB] border-2 border-[#007BAB] hover:bg-transparent font-semibold text-[#fff]"
+                    style={{
+                      border: "1px solid rgba(255, 255, 255, 0.10)",
+                      background:
+                        "linear-gradient(90deg, #4532BF 5.81%, #9429FF 100%)",
+                    }}
+                    className="rounded-xl px-5 flex flex-row justify-between items-center w-full py-4 font-semibold text-[#fff]"
                   >
                     <div className="flex flex-row justify-center items-center">
                       <FaPencil size={20} color="#fff" />
@@ -1283,7 +1341,14 @@ const EventDetails = () => {
 
             {Array.isArray(attendeList) && attendeList.includes(user?.uid) && (
               <>
-                <div className="flex w-full mt-4 gap-y-4 flex-col justify-center items-center p-6 bg-[#012432] rounded-xl">
+                <div
+                  style={{
+                    border: "1px solid rgba(255, 255, 255, 0.20)",
+                    background: "rgba(255, 255, 255, 0.12)",
+                    backdropFilter: "blur(40px)",
+                  }}
+                  className="flex w-full mt-4 gap-y-4 flex-col justify-center items-center p-6 rounded-xl"
+                >
                   <button
                     disabled={addToCalenderLoader}
                     onClick={() => {
@@ -1304,7 +1369,12 @@ const EventDetails = () => {
                         handleAddToCalendar();
                       }
                     }}
-                    className="rounded-xl px-5 flex flex-row justify-between items-center w-full py-4 bg-[#007BAB] border-2 border-[#007BAB] hover:bg-transparent font-semibold text-[#fff]"
+                    style={{
+                      border: "1px solid rgba(255, 255, 255, 0.10)",
+                      background:
+                        "linear-gradient(90deg, #4532BF 5.81%, #9429FF 100%)",
+                    }}
+                    className="rounded-xl px-5 flex flex-row justify-between items-center w-full py-4 font-semibold text-[#fff]"
                   >
                     <div className="flex flex-row justify-center items-center">
                       <FaCalendarAlt size={20} color="#fff" />
@@ -1335,22 +1405,42 @@ const EventDetails = () => {
               </>
             )}
 
-            <div className="flex w-full mt-4 flex-col xl:flex-row justify-center items-center p-6 bg-[#012432] rounded-xl">
+            <div
+              style={{
+                border: "1px solid rgba(255, 255, 255, 0.20)",
+                background: "rgba(255, 255, 255, 0.12)",
+                backdropFilter: "blur(40px)",
+              }}
+              className="flex w-full mt-4 flex-col xl:flex-row justify-center items-center p-6 rounded-xl"
+            >
               <button
                 onClick={() => setShowShareModal(true)}
-                className="flex justify-center items-center flex-row rounded-xl text-lg px-5 py-4 w-full font-semibold bg-[#fff] hover:bg-transparent border-[#fff] border-2 text-[#000] hover:text-[#fff]"
+                className="flex justify-center items-center flex-row rounded-xl text-lg px-5 py-4 w-full font-semibold bg-[#fff] text-[#000]"
               >
                 <LiaShareAltSolid size={28} /> <p className="ml-2">Share</p>
               </button>
             </div>
 
-            <div className="flex w-full mt-4 flex-row justify-center items-center p-6 bg-[#012432] rounded-xl">
+            <div
+              style={{
+                border: "1px solid rgba(255, 255, 255, 0.20)",
+                background: "rgba(255, 255, 255, 0.12)",
+                backdropFilter: "blur(40px)",
+              }}
+              className="flex w-full mt-4 flex-row justify-center items-center p-6 rounded-xl"
+            >
+              {/* Hello */}
               {type ? (
                 <button
                   onClick={(e) => {
                     window.open(EventData?.hyperlink, "_blank");
                   }}
-                  className={`rounded-xl text-lg py-5 px-5 w-full font-bold bg-[#007BAB] hover:bg-transparent border-[#007BAB] border-2 text-[#fff]`}
+                  style={{
+                    border: "1px solid rgba(255, 255, 255, 0.10)",
+                    background:
+                      "linear-gradient(90deg, #4532BF 5.81%, #9429FF 100%)",
+                  }}
+                  className={`rounded-xl text-lg py-5 px-5 w-full font-bold text-[#fff]`}
                 >
                   Attend Event
                 </button>
@@ -1362,12 +1452,17 @@ const EventDetails = () => {
                       AttendeesData();
                       handleAttend();
                     }}
+                    style={{
+                      border: "1px solid rgba(255, 255, 255, 0.10)",
+                      background:
+                        "linear-gradient(90deg, #4532BF 5.81%, #9429FF 100%)",
+                    }}
                     className={`flex ${
                       Array.isArray(attendeList) &&
                       attendeList.includes(user?.uid)
                         ? "justify-center"
                         : "justify-between"
-                    } items-center flex-row rounded-xl text-lg py-5 px-5 w-full font-bold bg-[#007BAB] hover:bg-transparent border-[#007BAB] border-2 text-[#fff]`}
+                    } items-center flex-row rounded-xl text-lg py-5 px-5 w-full font-bold text-[#fff]`}
                   >
                     <p>
                       {Array.isArray(attendeList) &&
@@ -1386,7 +1481,7 @@ const EventDetails = () => {
               )}
             </div>
 
-            {showFreeModal && (
+            {/* {showFreeModal && (
               <div className="fixed z-10 inset-0 overflow-y-auto">
                 <div className="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
                   <div
@@ -1577,7 +1672,7 @@ const EventDetails = () => {
                   </div>
                 </div>
               </div>
-            )}
+            )} */}
             {showticketModal && (
               <div className="fixed z-50 inset-0 overflow-y-auto">
                 <div className="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
@@ -1600,9 +1695,14 @@ const EventDetails = () => {
                       showMobileScreen || showNoIntegrationScreen
                         ? "lg:w-[50%]"
                         : "lg:w-[90%]"
-                    } align-middle bg-[#00384F] rounded-lg shadow-xl transform transition-all`}
+                    } align-middle bg-[#0E0725] rounded-xl shadow-xl transform transition-all`}
                   >
-                    <div className="w-full flex justify-between border-[#F9F9F9] text-[#F9F9F9] border-b-2 items-center px-6 py-3">
+                    <div
+                      style={{
+                        borderBottom: "1px solid rgba(255, 255, 255, 0.10)",
+                      }}
+                      className="w-full flex justify-between text-[#fff] items-center px-6 py-3"
+                    >
                       <p className="font-semibold text-xl w-full">
                         {showMobileScreen === true ? (
                           <>
@@ -1651,7 +1751,7 @@ const EventDetails = () => {
                           viewBox="0 0 24 24"
                           stroke-width="1.5"
                           stroke="currentColor"
-                          className="h-6 w-6"
+                          className="h-6 w-6 text-[#fff]"
                         >
                           <path
                             stroke-linecap="round"
@@ -1665,8 +1765,8 @@ const EventDetails = () => {
                       showNoIntegrationScreen === false && (
                         <>
                           <div className="w-full h-auto flex justify-start items-start flex-col lg:flex-row gap-2 lg:gap-10 p-6">
-                            <div className="overflow-hidden w-full h-auto bg-[#012432] rounded-xl lg:w-2/3 flex justify-between items-center flex-row">
-                              <div className="ml-[-12.5%] lg:ml-[-4.5%] h-20 w-20 rounded-full bg-[#00384F]"></div>
+                            <div className="overflow-hidden w-full h-auto bg-[#1C142E] rounded-xl lg:w-2/3 flex justify-between items-center flex-row">
+                              <div className="ml-[-12.5%] lg:ml-[-4.5%] h-20 w-20 rounded-full bg-[#0E0725]"></div>
 
                               <div className="flex my-8 w-full justify-center items-center flex-col">
                                 <div className="flex w-full flex-col lg:flex-row justify-start items-start gap-3 p-3">
@@ -1676,7 +1776,7 @@ const EventDetails = () => {
                                         ✓
                                       </div>
                                       <div className="flex mt-4 lg:mt-0 w-full lg:ml-4 flex-col text-center lg:text-start justify-center lg:justify-start items-center lg:items-start">
-                                        <p className="text-[#F9F9F9] text-2xl font-semibold">
+                                        <p className="text-[#fff] text-2xl font-semibold">
                                           Success in creating a ticket
                                         </p>
                                         <p
@@ -1690,15 +1790,15 @@ const EventDetails = () => {
                                       </div>
                                     </div>
 
-                                    <div className="mt-10 w-full flex justify-start items-start text-[#F9F9F9] text-3xl font-bold">
-                                      <p className="text-start">
+                                    <div className="mt-10 w-full flex justify-center items-center text-[#fff] text-3xl font-bold">
+                                      <p className="w-full text-center lg:text-start">
                                         {EventData?.name || ""}
                                       </p>
                                     </div>
 
-                                    <div className="flex flex-row text-[#F9F9F9] mt-6 justify-start w-full items-center">
+                                    <div className="flex flex-row text-[#fff] mt-6 justify-start w-full items-center">
                                       <LuCalendarDays size={30} />
-                                      <p className="font-Montserrat ml-3">
+                                      <p className="font-Montserrat ml-3 w-full text-start">
                                         {moment(
                                           EventData?.timefrom?.seconds * 1000
                                         )
@@ -1713,9 +1813,9 @@ const EventDetails = () => {
                                       </p>
                                     </div>
 
-                                    <div className="flex flex-row text-[#F9F9F9] mt-3 justify-start w-full items-center">
+                                    <div className="flex flex-row text-[#fff] mt-3 justify-start w-full items-center">
                                       <FaClock size={30} />
-                                      <p className="font-Montserrat ml-3">
+                                      <p className="font-Montserrat ml-3 w-full text-start">
                                         {moment(
                                           EventData?.timefrom?.seconds * 1000
                                         )
@@ -1730,14 +1830,14 @@ const EventDetails = () => {
                                       </p>
                                     </div>
 
-                                    <div className="flex flex-row text-[#F9F9F9] mt-3 justify-start w-full items-center">
+                                    <div className="flex flex-row text-[#fff] mt-3 justify-start w-full items-center">
                                       <FaLocationDot size={30} />
-                                      <p className="font-Montserrat ml-3">
+                                      <p className="font-Montserrat ml-3 w-full text-start">
                                         {EventData?.location}
                                       </p>
                                     </div>
 
-                                    <div className="flex flex-row text-[#F9F9F9] mt-3 justify-start w-full items-center">
+                                    <div className="flex flex-row text-[#fff] mt-3 justify-start w-full items-center">
                                       <FaTag size={30} />
                                       <p className="font-Montserrat ml-3">
                                         {EventData?.ticketPrice === "0.00"
@@ -1747,7 +1847,7 @@ const EventDetails = () => {
                                     </div>
                                   </div>
                                   <div className="w-full mt-5 lg:mt-0 lg:w-1/5 h-full text-white">
-                                    <div className="flex w-full justify-center items-center bg-white rounded-xl">
+                                    <div className="flex w-full justify-center items-center bg-transparent rounded-xl">
                                       {qrCodeBase64 ? (
                                         <img
                                           src={qrCodeBase64}
@@ -1768,12 +1868,7 @@ const EventDetails = () => {
                                     </div>
                                   </div>
                                 </div>
-                                <div
-                                  style={{
-                                    borderColor: "rgba(255, 255, 255, 0.21)",
-                                  }}
-                                  className="mt-8 p-3 flex w-full flex-col lg:flex-row justify-center lg:justify-between items-center border-t-2 border-dashed"
-                                >
+                                <div className="mt-8 p-3 flex w-full flex-col lg:flex-row justify-center lg:justify-between items-center border-dashed border-t-2 border-[#fff] border-opacity-20">
                                   <div className="flex text-base w-full justify-start items-center flex-row mt-8">
                                     <div className="rounded-full bg-white border-2 w-20 h-20">
                                       <img
@@ -1789,10 +1884,10 @@ const EventDetails = () => {
                                       />
                                     </div>
                                     <div className="flex ml-3 flex-col justify-start items-start">
-                                      <p className="font-normal text-[#BDBDBD]">
+                                      <p className="font-normal text-[#fff]">
                                         Hosted By:
                                       </p>
-                                      <p className="font-bold text-[#F2F2F2]">
+                                      <p className="font-bold w-full text-start text-[#fff]">
                                         {creatorData?.full_name ||
                                           creatorData?.display_name ||
                                           creatorData?.displayName ||
@@ -1804,19 +1899,25 @@ const EventDetails = () => {
                                   </div>
                                   <button
                                     onClick={() => setShowMobileScreen(true)}
-                                    className="mt-8 rounded-xl w-full py-4 bg-[#007BAB] border-2 border-[#007BAB] hover:bg-transparent font-semibold text-[#fff]"
+                                    style={{
+                                      border:
+                                        "1px solid rgba(255, 255, 255, 0.10)",
+                                      background:
+                                        "linear-gradient(90deg, #4532BF 5.81%, #9429FF 100%)",
+                                    }}
+                                    className="mt-8 rounded-xl w-full py-4 px-2 font-semibold text-[#fff]"
                                   >
                                     Create Your Free Event Passport
                                   </button>
                                 </div>
                               </div>
 
-                              <div className="mr-[-12.5%] lg:mr-[-4.5%] h-20 w-20 rounded-full bg-[#00384F]"></div>
+                              <div className="mr-[-12.5%] lg:mr-[-4.5%] h-20 w-20 rounded-full bg-[#0E0725]"></div>
                             </div>
 
                             <div className="lg:w-1/3 flex w-full h-auto justify-center items-center flex-col">
                               <div className="flex w-full justify-center items-center flex-col gap-4">
-                                <div className="bg-[#012432] mt-6 lg:mt-0 flex justify-start items-center flex-col rounded-xl w-full p-6">
+                                <div className="bg-[#1C142E] mt-6 lg:mt-0 flex justify-start items-center flex-col rounded-xl w-full p-6">
                                   <button
                                     disabled={addToCalenderLoader}
                                     onClick={() => {
@@ -1837,7 +1938,13 @@ const EventDetails = () => {
                                         handleAddToCalendar();
                                       }
                                     }}
-                                    className="rounded-xl px-5 flex flex-row justify-between items-center w-full py-4 bg-[#007BAB] border-2 border-[#007BAB] hover:bg-transparent font-semibold text-[#fff]"
+                                    style={{
+                                      border:
+                                        "1px solid rgba(255, 255, 255, 0.10)",
+                                      background:
+                                        "linear-gradient(90deg, #4532BF 5.81%, #9429FF 100%)",
+                                    }}
+                                    className="rounded-xl px-5 flex flex-row justify-between items-center w-full py-4 font-semibold text-[#fff]"
                                   >
                                     <div className="flex flex-row justify-center items-center">
                                       <FaCalendarAlt size={20} color="#fff" />
@@ -1900,7 +2007,13 @@ const EventDetails = () => {
 
                                   <button
                                     onClick={() => setShowMobileScreen(true)}
-                                    className="mt-3 rounded-xl px-5 flex flex-row justify-between items-center w-full py-4 bg-[#007BAB] border-2 border-[#007BAB] hover:bg-transparent font-semibold text-[#fff]"
+                                    style={{
+                                      border:
+                                        "1px solid rgba(255, 255, 255, 0.10)",
+                                      background:
+                                        "linear-gradient(90deg, #4532BF 5.81%, #9429FF 100%)",
+                                    }}
+                                    className="mt-3 rounded-xl px-5 flex flex-row justify-between items-center w-full py-4 font-semibold text-[#fff]"
                                   >
                                     <div className="flex flex-row justify-center items-center">
                                       <FaWallet size={20} color="#fff" />
@@ -1918,7 +2031,13 @@ const EventDetails = () => {
                                       EmailMe();
                                     }}
                                     disabled={emailLoading}
-                                    className="mt-3 rounded-xl px-5 flex flex-row justify-between items-center w-full py-4 bg-[#007BAB] border-2 border-[#007BAB] hover:bg-transparent font-semibold text-[#fff]"
+                                    style={{
+                                      border:
+                                        "1px solid rgba(255, 255, 255, 0.10)",
+                                      background:
+                                        "linear-gradient(90deg, #4532BF 5.81%, #9429FF 100%)",
+                                    }}
+                                    className="mt-3 rounded-xl px-5 flex flex-row justify-between items-center w-full py-4 font-semibold text-[#fff]"
                                   >
                                     <div className="flex flex-row justify-center items-center">
                                       <FaMobile size={20} color="#fff" />
@@ -1954,8 +2073,8 @@ const EventDetails = () => {
                                   </button>
                                 </div>
 
-                                <div className="bg-[#012432] mt-6 flex justify-start items-center flex-col rounded-xl w-full p-6">
-                                  <p className="w-full text-left mb-2 text-[#F9F9F9] text-xl">
+                                <div className="bg-[#1C142E] mt-6 flex justify-start items-center flex-col rounded-xl w-full p-6">
+                                  <p className="w-full text-left mb-2 text-[#fff] text-xl">
                                     Connect with Attendees
                                   </p>
                                   <div className="w-full flex flex-row justify-center items-center">
@@ -1991,7 +2110,13 @@ const EventDetails = () => {
                                   </div>
                                   <button
                                     onClick={() => setShowMobileScreen(true)}
-                                    className="mt-3 rounded-xl w-full py-4 bg-[#007BAB] border-2 border-[#007BAB] hover:bg-transparent font-semibold text-[#fff]"
+                                    style={{
+                                      border:
+                                        "1px solid rgba(255, 255, 255, 0.10)",
+                                      background:
+                                        "linear-gradient(90deg, #4532BF 5.81%, #9429FF 100%)",
+                                    }}
+                                    className="mt-3 rounded-xl w-full py-4 px-2 font-semibold text-[#fff]"
                                   >
                                     Connect with Attendees via Mobile App
                                   </button>
@@ -2004,11 +2129,11 @@ const EventDetails = () => {
                     {showMobileScreen === true && (
                       <>
                         <div className="w-full h-auto flex justify-center items-center flex-col gap-10 p-6">
-                          <div className="w-full h-auto bg-[#012432] rounded-xl flex justify-center items-center flex-col p-10">
-                            <p className="text-[#F9F9F9] text-3xl font-bold">
+                          <div className="w-full h-auto bg-[#1C142E] rounded-xl flex justify-center items-center flex-col p-10">
+                            <p className="text-[#fff] text-3xl font-bold">
                               “Circle Is Available For All Devices”
                             </p>
-                            <p className="text-[#BDBDBD] w-full lg:w-3/4 mt-4">
+                            <p className="text-[#fff] text-opacity-80 w-full lg:w-3/4 mt-4">
                               Connect effortlessly at the event with a
                               personalized digital business card. Register now
                               to explore who else will be there and use Circle,
@@ -2058,16 +2183,16 @@ const EventDetails = () => {
                     {showNoIntegrationScreen === true && (
                       <>
                         <div className="w-full h-auto flex justify-center items-center flex-col gap-10 p-6">
-                          <div className="w-full h-auto bg-[#012432] rounded-xl flex justify-center items-center flex-col p-10">
+                          <div className="w-full h-auto bg-[#1C142E] rounded-xl flex justify-center items-center flex-col p-10">
                             <img
                               src={calendarImage.src}
                               alt=""
                               className="h-40"
                             />
-                            <p className="text-[#F9F9F9] text-3xl mt-4 font-bold">
+                            <p className="text-[#fff] text-3xl mt-4 font-bold">
                               “Oops, No Calendar Integration Found”
                             </p>
-                            <p className="text-[#BDBDBD] w-full lg:w-3/4 mt-4">
+                            <p className="text-[#fff] text-opacity-80 w-full lg:w-3/4 mt-4">
                               In-Order to add events into your calendars, you
                               must have to integrate calendars first in the
                               Settings page. Click on the button below to
@@ -2079,7 +2204,12 @@ const EventDetails = () => {
                                 onClick={() => {
                                   router.push("/settings");
                                 }}
-                                className={`px-5 flex flex-row justify-center items-center font14 font-medium rounded-full py-3 font-Montserrat text-[#000] hover:text-[#fff] border-2 border-[#F2F2F2] hover:bg-transparent bg-[#F2F2F2]`}
+                                style={{
+                                  border: "1px solid rgba(255, 255, 255, 0.10)",
+                                  background:
+                                    "linear-gradient(90deg, #4532BF 5.81%, #9429FF 100%)",
+                                }}
+                                className={`px-5 flex font-semibold flex-row justify-center items-center rounded-xl py-3 text-[#fff]`}
                               >
                                 <p>Add your first Calendar</p>
                                 <div className="ml-2">
@@ -2113,9 +2243,14 @@ const EventDetails = () => {
                   </span>
 
                   <div
-                    className={`inline-block w-full lg:w-[50%] align-middle bg-[#00384F] rounded-lg shadow-xl transform transition-all`}
+                    className={`inline-block w-full lg:w-[50%] align-middle bg-[#0E0725] rounded-xl shadow-xl transform transition-all`}
                   >
-                    <div className="w-full flex justify-between border-[#F9F9F9] text-[#F9F9F9] border-b-2 items-center px-6 py-3">
+                    <div
+                      style={{
+                        borderBottom: "1px solid rgba(255, 255, 255, 0.10)",
+                      }}
+                      className="w-full flex justify-between text-[#fff] items-center px-6 py-3"
+                    >
                       <p className="font-semibold text-xl">
                         Share Event Details
                       </p>
@@ -2135,7 +2270,7 @@ const EventDetails = () => {
                           viewBox="0 0 24 24"
                           stroke-width="1.5"
                           stroke="currentColor"
-                          className="h-6 w-6"
+                          className="h-6 w-6 text-[#fff]"
                         >
                           <path
                             stroke-linecap="round"
@@ -2149,9 +2284,9 @@ const EventDetails = () => {
                     <div className="w-full h-auto flex justify-center items-center flex-col p-6">
                       <div className="flex w-full h-auto justify-center items-center flex-col">
                         <div className="flex w-full justify-center items-center flex-col gap-4">
-                          <div className="bg-[#012432] flex justify-center items-center flex-col rounded-xl w-full p-6">
-                            <div className="w-full h-auto bg-[#012432] rounded-xl flex justify-center items-center flex-col lg:p-6">
-                              <p className="text-[#F9F9F9] text-3xl w-full font-bold">
+                          <div className="bg-[#1C142E] flex justify-center items-center flex-col rounded-xl w-full p-6">
+                            <div className="w-full h-auto bg-[#1C142E] rounded-xl flex justify-center items-center flex-col lg:p-6">
+                              <p className="text-[#fff] text-3xl w-full font-bold">
                                 “Share & Invite others to Join You!”
                               </p>
 
@@ -2163,18 +2298,28 @@ const EventDetails = () => {
                                   value={window.location.href}
                                   readOnly={true}
                                   onClick={() => copyToClipboard()}
-                                  className="w-full cursor-pointer rounded-xl border-2 border-[#F2F2F2] p-4 text-[#000]"
+                                  style={{
+                                    border:
+                                      "2px solid rgba(255, 255, 255, 0.10)",
+                                  }}
+                                  className="w-full cursor-pointer rounded-xl bg-transparent p-4 text-[#fff]"
                                 />
 
                                 <button
                                   onClick={() => copyToClipboard()}
-                                  className={`px-5 lg:ml-2 mt-2 lg:mt-0 rounded-xl py-4 bg-[#007BAB] hover:bg-transparent border-[#007BAB] border-2 text-[#fff]`}
+                                  style={{
+                                    border:
+                                      "1px solid rgba(255, 255, 255, 0.10)",
+                                    background:
+                                      "linear-gradient(90deg, #4532BF 5.81%, #9429FF 100%)",
+                                  }}
+                                  className={`px-5 lg:ml-2 mt-2 lg:mt-0 rounded-xl py-4 text-[#fff]`}
                                 >
                                   {isLgScreen ? "Copy Link" : "Copy"}
                                 </button>
                               </div>
 
-                              <p className="text-[#F9F9F9] mt-6 text-xl font-bold">
+                              <p className="text-[#fff] mt-6 text-xl font-bold">
                                 Or
                               </p>
 
@@ -2246,7 +2391,7 @@ const EventDetails = () => {
                 </div>
               </div>
             )}
-            {showPaymentModal && (
+            {/* {showPaymentModal && (
               <div className="fixed z-10 inset-0 overflow-y-auto">
                 <div className="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
                   <div
@@ -2285,7 +2430,7 @@ const EventDetails = () => {
                   </div>
                 </div>
               </div>
-            )}
+            )} */}
           </div>
         </div>
       </div>

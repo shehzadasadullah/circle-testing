@@ -10,12 +10,12 @@ const Header = dynamic(() => import("../Common/Header"), { ssr: false });
 const AttendEventMain = () => {
   return (
     <>
-      <div className="w-full h-full bg-[#00384F]">
+      <div className="w-full h-full bg-[#070317]">
         <Header type="dark" />
       </div>
 
-      <div className="w-full h-full bg-[#00384F]">
-        <div className="w-full h-full  flex flex-col justify-start items-start relative bg-[#00384F]">
+      <div className="w-full h-full bg-[#070317]">
+        <div className="w-full h-full  flex flex-col justify-start items-start relative bg-[#070317]">
           <div className="w-full h-full">
             <EventDetails />
           </div>

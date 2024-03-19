@@ -295,7 +295,12 @@ const Register = ({ showModal, setShowModal }) => {
           }}
           className="inline-block w-full lg:w-[40%] align-middle rounded-lg shadow-xl transform transition-all"
         >
-          <div className="w-full flex justify-center border-b-2 items-center px-6 py-3">
+          <div
+            style={{
+              borderBottom: "1px solid rgba(255, 255, 255, 0.10)",
+            }}
+            className="w-full flex justify-center items-center px-6 py-3"
+          >
             <p className="font-semibold w-full text-xl text-[#fff]">
               Get Started
             </p>
