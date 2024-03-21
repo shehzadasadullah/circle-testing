@@ -23,6 +23,7 @@ import { ImLinkedin } from "react-icons/im";
 import iCal from "./iCal.png";
 import gCal from "./gCal.png";
 import mCal from "./mCal.png";
+import bgImage from "../../public/revamp/bg-createEvent.jpg";
 
 function Dashboard() {
   const [user] = useAuthState(auth);
@@ -682,7 +683,15 @@ function Dashboard() {
           </div>
         </div>
       </Dialog>
-      <div className="flex flex-col w-full h-auto bg-[#00384F]">
+      <div
+        style={{
+          backgroundImage: `url(${bgImage.src})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+        }}
+        className="flex flex-col w-full h-auto"
+      >
         <Header type="dark" />
         {/* Sidebar Menu */}
         {/* {showSideBar && (
@@ -805,17 +814,26 @@ function Dashboard() {
                   </>
                 ) : (
                   <> */}
-                <div className="p-6 lg:p-20 bg-[#012432] rounded-xl">
-                  <h1 className="text-4xl text-[#F9F9F9] font-bold mb-4">
+                <div
+                  style={{
+                    borderRadius: "16px",
+                    border: "1px solid rgba(255, 255, 255, 0.16)",
+                    background:
+                      "linear-gradient(149deg, rgba(255, 255, 255, 0.20) 0.71%, rgba(255, 255, 255, 0.10) 98.8%)",
+                    backdropFilter: "blur(40px)",
+                  }}
+                  className="p-6 lg:p-10 rounded-xl w-full"
+                >
+                  <h1 className="text-4xl text-[#fff] font-bold mb-4 w-full text-center lg:text-start">
                     Third Party Integrations
                   </h1>
-                  <p className="text-[#BDBDBD]">
+                  <p className="text-[#fff] w-full text-center lg:text-start">
                     Add all third party event integrations here - (EventBrite,
                     Meetup, LinkedIn etc.)
                   </p>
-                  <div className="flex w-full h-auto flex-col justify-start items-start rounded-lg mt-5">
-                    <div className="flex justify-between text-[#292D32] flex-row w-full h-auto mt-2">
-                      <div className="text-[#F9F9F9] flex flex-row justify-center items-center text-xl font-bold">
+                  <div className="flex w-full h-auto flex-col justify-start items-start rounded-xl mt-5">
+                    <div className="flex justify-between bg-[#2B213F] p-4 rounded-xl text-[#fff] flex-row w-full h-auto mt-2">
+                      <div className="text-[#fff] flex flex-row justify-center items-center text-xl font-bold">
                         <SiEventbrite size={25} color="#F05537" />{" "}
                         <p className="ml-2">EventBrite</p>
                       </div>
@@ -825,7 +843,7 @@ function Dashboard() {
                             <div className="flex justify-center items-center w-full p-4">
                               <ThreeDots
                                 height="20"
-                                color="#007BAB"
+                                color="#fff"
                                 width="60"
                                 radius="9"
                                 ariaLabel="three-dots-loading"
@@ -837,7 +855,13 @@ function Dashboard() {
                           <>
                             <button
                               disabled={true}
-                              className={`font14 font-medium rounded-xl sm:py-2 px-4 font-Montserrat text-[#fff] border-2 border-[#007BAB] bg-[#007BAB]`}
+                              style={{
+                                background:
+                                  "linear-gradient(90deg, #4532BF 5.81%, #9429FF 100%)",
+                                boxShadow:
+                                  "0px 1px 2px 0px rgba(82, 88, 102, 0.06)",
+                              }}
+                              className={`font14 font-medium rounded-xl sm:py-2 px-4 font-Montserrat text-[#fff]`}
                             >
                               <div className="flex justify-center font-bold text-[20pt] items-center">
                                 ✓
@@ -851,7 +875,13 @@ function Dashboard() {
                                 handleEventBriteIntegration();
                               }}
                               disabled={eventBriteLoader}
-                              className={`font14 font-medium rounded-xl py-3 px-5 font-Montserrat text-[#fff] hover:text-[#fff] border-2 border-[#007BAB] hover:bg-transparent bg-[#007BAB]`}
+                              style={{
+                                background:
+                                  "linear-gradient(90deg, #4532BF 5.81%, #9429FF 100%)",
+                                boxShadow:
+                                  "0px 1px 2px 0px rgba(82, 88, 102, 0.06)",
+                              }}
+                              className={`font14 font-medium rounded-xl py-3 px-5 font-Montserrat text-[#fff]`}
                             >
                               <div className="flex justify-center items-center">
                                 Integrate
@@ -861,8 +891,8 @@ function Dashboard() {
                         )}
                       </div>
                     </div>
-                    <div className="flex justify-between text-[#292D32] flex-row w-full h-auto mt-4">
-                      <div className="text-[#F9F9F9] flex flex-row justify-center items-center text-xl font-bold">
+                    <div className="flex justify-between text-[#fff] bg-[#2B213F] p-4 rounded-xl flex-row w-full h-auto mt-2">
+                      <div className="text-[#fff] flex flex-row justify-center items-center text-xl font-bold">
                         <FaMeetup size={25} color="#F65858" />{" "}
                         <p className="ml-2">MeetUp</p>
                       </div>
@@ -872,7 +902,7 @@ function Dashboard() {
                             <div className="flex justify-center items-center w-full p-4">
                               <ThreeDots
                                 height="20"
-                                color="#007BAB"
+                                color="#fff"
                                 width="60"
                                 radius="9"
                                 ariaLabel="three-dots-loading"
@@ -884,7 +914,13 @@ function Dashboard() {
                           <>
                             <button
                               disabled={true}
-                              className={`font14 font-medium rounded-xl sm:py-2 px-4 font-Montserrat text-[#fff] border-2 border-[#007BAB] bg-[#007BAB]`}
+                              style={{
+                                background:
+                                  "linear-gradient(90deg, #4532BF 5.81%, #9429FF 100%)",
+                                boxShadow:
+                                  "0px 1px 2px 0px rgba(82, 88, 102, 0.06)",
+                              }}
+                              className={`font14 font-medium rounded-xl sm:py-2 px-4 font-Montserrat text-[#fff]`}
                             >
                               <div className="flex justify-center font-bold text-[20pt] items-center">
                                 ✓
@@ -898,7 +934,13 @@ function Dashboard() {
                                 handleMeetUpIntegration();
                               }}
                               disabled={meetUpLoader}
-                              className={`font14 font-medium rounded-xl py-3 px-5 font-Montserrat text-[#fff] hover:text-[#fff] border-2 border-[#007BAB] hover:bg-transparent bg-[#007BAB]`}
+                              style={{
+                                background:
+                                  "linear-gradient(90deg, #4532BF 5.81%, #9429FF 100%)",
+                                boxShadow:
+                                  "0px 1px 2px 0px rgba(82, 88, 102, 0.06)",
+                              }}
+                              className={`font14 font-medium rounded-xl py-3 px-5 font-Montserrat text-[#fff]`}
                             >
                               <div className="flex justify-center items-center">
                                 Integrate
@@ -908,26 +950,35 @@ function Dashboard() {
                         )}
                       </div>
                     </div>
-                    <div className="flex justify-between text-[#292D32] flex-row w-full h-auto mt-4">
-                      <div className="text-[#F9F9F9] flex flex-row justify-center items-center text-xl font-bold">
-                        <ImLinkedin size={25} color="#007BAB" />{" "}
+                    <div className="flex justify-between text-[#fff] bg-[#2B213F] p-4 rounded-xl flex-row w-full h-auto mt-2">
+                      <div className="text-[#fff] flex flex-row justify-center items-center text-xl font-bold">
+                        <ImLinkedin size={25} color="#007BB5" />{" "}
                         <p className="ml-2">LinkedIn (Coming Soon)</p>
                       </div>
                     </div>
                   </div>
                 </div>
 
-                <div className="p-6 mt-10 lg:p-20 bg-[#012432] rounded-xl">
-                  <h1 className="text-4xl text-[#F9F9F9] font-bold mb-4">
+                <div
+                  style={{
+                    borderRadius: "16px",
+                    border: "1px solid rgba(255, 255, 255, 0.16)",
+                    background:
+                      "linear-gradient(149deg, rgba(255, 255, 255, 0.20) 0.71%, rgba(255, 255, 255, 0.10) 98.8%)",
+                    backdropFilter: "blur(40px)",
+                  }}
+                  className="p-6 lg:p-10 rounded-xl mt-10 w-full"
+                >
+                  <h1 className="text-4xl text-[#fff] font-bold mb-4 w-full text-center lg:text-start">
                     Calendars Integration
                   </h1>
-                  <p className="text-[#BDBDBD]">
+                  <p className="text-[#fff] w-full text-center lg:text-start">
                     Add all calendars integrations here - (Google Calendar,
                     iCal, Outlook etc.)
                   </p>
                   <div className="flex w-full h-auto flex-col justify-start items-start rounded-lg mt-5">
-                    <div className="flex justify-between text-[#292D32] flex-row w-full h-auto mt-2">
-                      <div className="text-[#F9F9F9] flex flex-row justify-center items-center text-xl font-bold">
+                    <div className="flex justify-between text-[#fff] bg-[#2B213F] p-4 rounded-xl flex-row w-full h-auto mt-2">
+                      <div className="text-[#fff] flex flex-row justify-center items-center text-xl font-bold">
                         <img src={gCal.src} className="h-7" alt="" />
                         <p className="ml-2">Google Calendar</p>
                       </div>
@@ -937,7 +988,7 @@ function Dashboard() {
                             <div className="flex justify-center items-center w-full p-4">
                               <ThreeDots
                                 height="20"
-                                color="#007BAB"
+                                color="#fff"
                                 width="60"
                                 radius="9"
                                 ariaLabel="three-dots-loading"
@@ -949,7 +1000,13 @@ function Dashboard() {
                           <>
                             <button
                               disabled={true}
-                              className={`font14 font-medium rounded-xl sm:py-2 px-4 font-Montserrat text-[#fff] border-2 border-[#007BAB] bg-[#007BAB]`}
+                              style={{
+                                background:
+                                  "linear-gradient(90deg, #4532BF 5.81%, #9429FF 100%)",
+                                boxShadow:
+                                  "0px 1px 2px 0px rgba(82, 88, 102, 0.06)",
+                              }}
+                              className={`font14 font-medium rounded-xl sm:py-2 px-4 font-Montserrat text-[#fff]`}
                             >
                               <div className="flex justify-center font-bold text-[20pt] items-center">
                                 ✓
@@ -963,7 +1020,13 @@ function Dashboard() {
                                 handleGCIntegration();
                               }}
                               disabled={googleCalenderLoader}
-                              className={`font14 font-medium rounded-xl py-3 px-5 font-Montserrat text-[#fff] hover:text-[#fff] border-2 border-[#007BAB] hover:bg-transparent bg-[#007BAB]`}
+                              style={{
+                                background:
+                                  "linear-gradient(90deg, #4532BF 5.81%, #9429FF 100%)",
+                                boxShadow:
+                                  "0px 1px 2px 0px rgba(82, 88, 102, 0.06)",
+                              }}
+                              className={`font14 font-medium rounded-xl py-3 px-5 font-Montserrat text-[#fff]`}
                             >
                               <div className="flex justify-center items-center">
                                 Integrate
@@ -973,8 +1036,8 @@ function Dashboard() {
                         )}
                       </div>
                     </div>
-                    <div className="flex justify-between text-[#292D32] flex-row w-full h-auto mt-4">
-                      <div className="text-[#F9F9F9] flex flex-row justify-center items-center text-xl font-bold">
+                    <div className="flex justify-between text-[#fff] bg-[#2B213F] p-4 rounded-xl flex-row w-full h-auto mt-2">
+                      <div className="text-[#fff] flex flex-row justify-center items-center text-xl font-bold">
                         <img src={iCal.src} className="h-7" alt="" />
                         <p className="ml-2">iCal</p>
                       </div>
@@ -985,7 +1048,7 @@ function Dashboard() {
                             <div className="flex justify-center items-center w-full p-4">
                               <ThreeDots
                                 height="20"
-                                color="#007BAB"
+                                color="#fff"
                                 width="60"
                                 radius="9"
                                 ariaLabel="three-dots-loading"
@@ -997,7 +1060,13 @@ function Dashboard() {
                           <>
                             <button
                               disabled={true}
-                              className={`font14 font-medium rounded-xl sm:py-2 px-4 font-Montserrat text-[#fff] border-2 border-[#007BAB] bg-[#007BAB]`}
+                              style={{
+                                background:
+                                  "linear-gradient(90deg, #4532BF 5.81%, #9429FF 100%)",
+                                boxShadow:
+                                  "0px 1px 2px 0px rgba(82, 88, 102, 0.06)",
+                              }}
+                              className={`font14 font-medium rounded-xl sm:py-2 px-4 font-Montserrat text-[#fff]`}
                             >
                               <div className="flex justify-center font-bold text-[20pt] items-center">
                                 ✓
@@ -1011,7 +1080,13 @@ function Dashboard() {
                                 handleICIntegration();
                               }}
                               disabled={iCalLoader}
-                              className={`font14 font-medium rounded-xl py-3 px-5 font-Montserrat text-[#fff] hover:text-[#fff] border-2 border-[#007BAB] hover:bg-transparent bg-[#007BAB]`}
+                              style={{
+                                background:
+                                  "linear-gradient(90deg, #4532BF 5.81%, #9429FF 100%)",
+                                boxShadow:
+                                  "0px 1px 2px 0px rgba(82, 88, 102, 0.06)",
+                              }}
+                              className={`font14 font-medium rounded-xl py-3 px-5 font-Montserrat text-[#fff]`}
                             >
                               <div className="flex justify-center items-center">
                                 Integrate
@@ -1021,8 +1096,8 @@ function Dashboard() {
                         )}
                       </div>
                     </div>
-                    <div className="flex justify-between text-[#292D32] flex-row w-full h-auto mt-4">
-                      <div className="text-[#F9F9F9] flex flex-row justify-center items-center text-xl font-bold">
+                    <div className="flex justify-between text-[#fff] bg-[#2B213F] p-4 rounded-xl flex-row w-full h-auto mt-2">
+                      <div className="text-[#fff] flex flex-row justify-center items-center text-xl font-bold">
                         <img src={mCal.src} className="h-7" alt="" />
                         <p className="ml-2">Microsoft Outlook</p>
                       </div>
@@ -1033,7 +1108,7 @@ function Dashboard() {
                             <div className="flex justify-center items-center w-full p-4">
                               <ThreeDots
                                 height="20"
-                                color="#007BAB"
+                                color="#fff"
                                 width="60"
                                 radius="9"
                                 ariaLabel="three-dots-loading"
@@ -1045,7 +1120,13 @@ function Dashboard() {
                           <>
                             <button
                               disabled={true}
-                              className={`font14 font-medium rounded-xl sm:py-2 px-4 font-Montserrat text-[#fff] border-2 border-[#007BAB] bg-[#007BAB]`}
+                              style={{
+                                background:
+                                  "linear-gradient(90deg, #4532BF 5.81%, #9429FF 100%)",
+                                boxShadow:
+                                  "0px 1px 2px 0px rgba(82, 88, 102, 0.06)",
+                              }}
+                              className={`font14 font-medium rounded-xl sm:py-2 px-4 font-Montserrat text-[#fff]`}
                             >
                               <div className="flex justify-center font-bold text-[20pt] items-center">
                                 ✓
@@ -1059,7 +1140,13 @@ function Dashboard() {
                                 handleMOIntegration();
                               }}
                               disabled={moLoader}
-                              className={`font14 font-medium rounded-xl py-3 px-5 font-Montserrat text-[#fff] hover:text-[#fff] border-2 border-[#007BAB] hover:bg-transparent bg-[#007BAB]`}
+                              style={{
+                                background:
+                                  "linear-gradient(90deg, #4532BF 5.81%, #9429FF 100%)",
+                                boxShadow:
+                                  "0px 1px 2px 0px rgba(82, 88, 102, 0.06)",
+                              }}
+                              className={`font14 font-medium rounded-xl py-3 px-5 font-Montserrat text-[#fff]`}
                             >
                               <div className="flex justify-center items-center">
                                 Integrate

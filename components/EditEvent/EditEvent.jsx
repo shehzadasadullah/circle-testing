@@ -30,6 +30,9 @@ import { FaCheckCircle } from "react-icons/fa";
 import LocationSearchInput from "../Location/LocationSearchInput";
 import Cropper from "react-cropper";
 import "cropperjs/dist/cropper.css";
+import bgImage from "../../public/revamp/bg-createEvent.jpg";
+import circleImage from "../../public/revamp/circle.png";
+import noIntegration from "../../public/revamp/error.png";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -1158,7 +1161,15 @@ const EditEvent = () => {
       fetchCoHostsLoader === false ? (
         <> */}
       {/* <ToastContainer /> */}
-      <div className="w-full h-full">
+      <div
+        style={{
+          backgroundImage: `url(${bgImage.src})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+        }}
+        className="w-full h-full"
+      >
         <Dialog
           open={isOpen}
           onClose={() => setIsOpen(false)}
@@ -1167,11 +1178,20 @@ const EditEvent = () => {
           <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
           <div className="fixed inset-0 w-screen overflow-y-auto">
             <div className="flex min-h-full items-center justify-center p-4">
-              <Dialog.Panel className="w-full md:w-1/2 xl:w-1/3 h-auto rounded-xl shadow-xl bg-white">
+              <Dialog.Panel
+                style={{
+                  borderRadius: "16px",
+                  border: "1px solid rgba(255, 255, 255, 0.16)",
+                  background:
+                    "linear-gradient(149deg, rgba(255, 255, 255, 0.20) 0.71%, rgba(255, 255, 255, 0.10) 98.8%)",
+                  backdropFilter: "blur(40px)",
+                }}
+                className="w-full md:w-1/2 xl:w-1/3 h-auto shadow-xl"
+              >
                 <Dialog.Title
                   className={`flex w-full items-center justify-between p-3 flex-row border-b-2`}
                 >
-                  <p className="font-bold text-lg">Create Circle</p>
+                  <p className="font-bold text-lg text-[#fff]">Create Circle</p>
                   <button
                     type="button"
                     className="box-content rounded-none border-none hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none"
@@ -1183,7 +1203,7 @@ const EditEvent = () => {
                       viewBox="0 0 24 24"
                       stroke-width="1.5"
                       stroke="currentColor"
-                      className="h-6 w-6"
+                      className="h-6 w-6 text-[#fff]"
                     >
                       <path
                         stroke-linecap="round"
@@ -1203,9 +1223,16 @@ const EditEvent = () => {
                         className="border-2 rounded-full mr-5"
                       />
                     )}
-                    <label className="text-[#0E2354] font-bold py-2 px-4 cursor-pointer border-2 border-[#E6E7EC]">
-                      Upload Circle Logo{" "}
-                      <span className="text-red-600 mr-1"> *</span>
+                    <label
+                      style={{
+                        borderRadius: "8px",
+                        background:
+                          "linear-gradient(90deg, #4532BF 5.81%, #9429FF 100%)",
+                        boxShadow: "0px 1px 2px 0px rgba(82, 88, 102, 0.06)",
+                      }}
+                      className="text-[#fff] font-bold py-2 px-4 cursor-pointer"
+                    >
+                      Upload Circle Logo
                       <input
                         type="file"
                         accept=".png, .jpg, .jpeg, .gif"
@@ -1217,7 +1244,7 @@ const EditEvent = () => {
                   <div className="mb-4 mt-4 w-full h-auto">
                     <label
                       htmlFor="circleName"
-                      className="block text-[#292D32] font-bold text-[16px] ml-1"
+                      className="block text-[#fff] font-bold text-[16px] ml-1"
                     >
                       Circle Name
                       <span className="text-red-600"> *</span>
@@ -1225,7 +1252,10 @@ const EditEvent = () => {
                     <input
                       type="text"
                       id="circleName"
-                      className="border-2 text-[#8392AF] border-[#E6E7EC] mt-2 p-3 w-full rounded-lg focus:border-[#007BAB] focus:outline-none"
+                      style={{
+                        background: "rgba(255, 255, 255, 0.10)",
+                      }}
+                      className="border-[0.5px] border-opacity-20 border-[#fff] focus:border-[0.5px] focus:border-opacity-60 text-[#fff] mt-2 p-3 w-full rounded-lg focus:outline-none"
                       placeholder="Enter your circle name"
                       value={circleName}
                       onChange={(e) => {
@@ -1236,14 +1266,17 @@ const EditEvent = () => {
                   <div className="mb-4 w-full h-auto">
                     <label
                       htmlFor="circleDescription"
-                      className="block text-[#292D32] font-bold text-[16px] ml-1"
+                      className="block text-[#fff] font-bold text-[16px] ml-1"
                     >
                       Circle Description
                       <span className="text-red-600"> *</span>
                     </label>
                     <textarea
                       id="circleDescription"
-                      className="border-2 h-[80pt] text-[#8392AF] border-[#E6E7EC] mt-2 p-3 w-full rounded-lg focus:border-[#007BAB] focus:outline-none"
+                      style={{
+                        background: "rgba(255, 255, 255, 0.10)",
+                      }}
+                      className="h-[80pt] border-[0.5px] border-opacity-20 border-[#fff] focus:border-[0.5px] focus:border-opacity-60 text-[#fff] mt-2 p-3 w-full rounded-lg focus:outline-none"
                       placeholder="Add your circle description here"
                       value={circleDescription}
                       onChange={(e) => {
@@ -1259,14 +1292,17 @@ const EditEvent = () => {
                       <div>
                         <label
                           htmlFor="circleFonts"
-                          className="block text-[#292D32] font-bold text-[16px] ml-1"
+                          className="block text-[#fff] font-bold text-[16px] ml-1"
                         >
                           Circle Font
                           <span className="text-red-600"> *</span>
                         </label>
                         <Menu.Button
                           id="circleFonts"
-                          className="inline-flex w-full justify-between mt-2 gap-x-1.5 rounded-md bg-white px-3 py-4 text-sm text-[#888888] shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                          style={{
+                            background: "rgba(255, 255, 255, 0.10)",
+                          }}
+                          className="inline-flex w-full justify-between mt-2 gap-x-1.5 rounded-lg px-3 py-4 text-sm text-[#fff] shadow-sm ring-1 ring-inset ring-gray-300 ring-opacity-20 hover:bg-gray-50"
                         >
                           {circleFont === "" ? "Select Font" : circleFont}
 
@@ -1287,12 +1323,23 @@ const EditEvent = () => {
                         leaveTo="transform opacity-0 scale-95"
                       >
                         <Menu.Items className="absolute h-60 overflow-auto w-full left-0 z-10 mt-2 w-full origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                          <div className="py-1">
+                          <div
+                            style={{
+                              backgroundImage: `url(${bgImage.src})`,
+                              backgroundSize: "cover",
+                              backgroundPosition: "center",
+                              backgroundRepeat: "no-repeat",
+                            }}
+                            className="py-1"
+                          >
                             <div className="px-4 py-2">
                               <input
                                 type="text"
                                 placeholder="Search Fonts"
-                                className="border-2 text-[#8392AF] border-[#E6E7EC] mt-2 p-3 w-full rounded-lg focus:border-[#007BAB] focus:outline-none"
+                                style={{
+                                  background: "rgba(255, 255, 255, 0.10)",
+                                }}
+                                className="text-[#fff] border-[0.5px] border-opacity-20 border-[#fff] focus:border-[0.5px] focus:border-opacity-60 mt-2 p-3 w-full rounded-lg focus:outline-none"
                                 value={searchText}
                                 onChange={(e) => {
                                   handleSearch(e);
@@ -1309,9 +1356,9 @@ const EditEvent = () => {
                                     }
                                     className={classNames(
                                       active
-                                        ? "bg-gray-100 text-gray-900"
-                                        : "text-gray-700",
-                                      "block px-4 py-2 text-sm cursor-pointer"
+                                        ? "bg-[#fff] bg-opacity-20"
+                                        : "bg-transparent",
+                                      "block px-4 py-2 text-sm cursor-pointer text-[#fff]"
                                     )}
                                   >
                                     {item}
@@ -1327,7 +1374,7 @@ const EditEvent = () => {
                   <div className="mb-4 w-full h-auto flex flex-col">
                     <label
                       htmlFor="circleColor"
-                      className="block text-[#292D32] font-bold text-[16px] ml-1"
+                      className="block text-[#fff] font-bold text-[16px] ml-1"
                     >
                       Circle Color
                       <span className="text-red-600"> *</span>
@@ -1340,6 +1387,8 @@ const EditEvent = () => {
                         default: {
                           picker: {
                             width: "96%",
+
+                            background: "rgba(255, 255, 255, 0.10)",
                           },
                         },
                       }}
@@ -1352,7 +1401,7 @@ const EditEvent = () => {
                   <button
                     type="button"
                     onClick={() => setIsOpen(false)}
-                    className={`bg-[red] border-2 border-[red] text-white hover:border-2 hover:border-[red] hover:bg-transparent hover:text-[red] py-2 px-4 rounded-lg`}
+                    className={`bg-[#EB5757] text-white py-2 px-4 rounded-lg`}
                   >
                     Close
                   </button>
@@ -1360,7 +1409,12 @@ const EditEvent = () => {
                     type="button"
                     disabled={circleCreationLoader === true}
                     onClick={handleCircleCreation}
-                    className={`bg-[#007BAB] ml-2 border-2 border-[#007BAB] text-white hover:border-2 hover:border-[#007BAB] hover:bg-transparent hover:text-[#00384F] py-2 px-4 rounded-lg`}
+                    style={{
+                      background:
+                        "linear-gradient(90deg, #4532BF 5.81%, #9429FF 100%)",
+                      boxShadow: "0px 1px 2px 0px rgba(82, 88, 102, 0.06)",
+                    }}
+                    className={`ml-2 text-white py-2 px-4 rounded-lg`}
                   >
                     Create Circle
                   </button>
@@ -1377,11 +1431,20 @@ const EditEvent = () => {
           <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
           <div className="fixed inset-0 w-screen overflow-y-auto">
             <div className="flex min-h-full items-center justify-center p-4">
-              <Dialog.Panel className="w-full md:w-1/2 xl:w-1/3 h-auto rounded-xl shadow-xl bg-white">
+              <Dialog.Panel
+                style={{
+                  borderRadius: "16px",
+                  border: "1px solid rgba(255, 255, 255, 0.16)",
+                  background:
+                    "linear-gradient(149deg, rgba(255, 255, 255, 0.20) 0.71%, rgba(255, 255, 255, 0.10) 98.8%)",
+                  backdropFilter: "blur(40px)",
+                }}
+                className="w-full md:w-1/2 xl:w-1/3 h-auto rounded-xl shadow-xl"
+              >
                 <Dialog.Title
                   className={`flex w-full items-center justify-between p-3 flex-row border-b-2`}
                 >
-                  <p className="font-bold text-lg">Crop Image</p>
+                  <p className="font-bold text-lg text-[#fff]">Crop Image</p>
                   <button
                     type="button"
                     className="box-content rounded-none border-none hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none"
@@ -1393,7 +1456,7 @@ const EditEvent = () => {
                       viewBox="0 0 24 24"
                       stroke-width="1.5"
                       stroke="currentColor"
-                      className="h-6 w-6"
+                      className="h-6 w-6 text-[#fff]"
                     >
                       <path
                         stroke-linecap="round"
@@ -1425,7 +1488,13 @@ const EditEvent = () => {
                     onClick={getCropData}
                     type="submit"
                     disabled={cropImageLoader === true}
-                    className={`bg-[#007BAB] border-2 border-[#007BAB] text-white w-full py-5 rounded-lg`}
+                    style={{
+                      borderRadius: "8px",
+                      background:
+                        "linear-gradient(90deg, #4532BF 5.81%, #9429FF 100%)",
+                      boxShadow: "0px 1px 2px 0px rgba(82, 88, 102, 0.06)",
+                    }}
+                    className={`text-white w-full py-5 rounded-lg`}
                   >
                     {cropImageLoader === true ? (
                       <>
@@ -1449,18 +1518,29 @@ const EditEvent = () => {
             </div>
           </div>
         </Dialog>
-        <Header type="light" />
-        <div className="w-full h-auto p-4">
-          <div className="flex justify-center lg:justify-start items-center lg:items-start flex-col p-2 lg:p-10">
-            <h3 className="font-bold font48 text-[#17191C] mt-5">Edit Event</h3>
-            <p className="font24 text-[#8392AF] text-center lg:text-left font-normal text-base mt-2">
-              Edit all your event details, create new tickets, and set up
-              recurring events
-            </p>
-          </div>
+        <Header type="dark" />
+        <div className="w-full h-auto p-4 lg:p-10">
           <div className="flex flex-col w-full h-auto lg:flex-row justify-start items-start">
-            <div className="w-full lg:w-8/12 h-auto pt-10 p-2 lg:p-10 lg:pt-5">
-              <div className="flex justify-start items-start flex-col">
+            <div
+              style={{
+                borderRadius: "16px",
+                border: "1px solid rgba(255, 255, 255, 0.16)",
+                background:
+                  "linear-gradient(149deg, rgba(255, 255, 255, 0.20) 0.71%, rgba(255, 255, 255, 0.10) 98.8%)",
+                backdropFilter: "blur(40px)",
+              }}
+              className="w-full lg:w-8/12 h-auto pt-10 pb-10 p-2 lg:p-10 lg:pb-0 lg:pt-5"
+            >
+              <div className="flex w-full justify-center lg:justify-start items-center lg:items-start flex-col">
+                <h3 className="font-bold w-full text-center lg:text-left font48 text-[#fff]">
+                  Edit Event
+                </h3>
+                <p className="font24 w-full text-[#fff] text-center lg:text-left font-normal text-base mt-2">
+                  Edit all your event details, create new tickets, and set up
+                  recurring events
+                </p>
+              </div>
+              <div className="flex justify-start items-start flex-col mt-4">
                 <div className="flex md:flex-row flex-col justify-center md:justify-start items-center w-full">
                   {selectedLogoURL && (
                     <img
@@ -1469,9 +1549,16 @@ const EditEvent = () => {
                       className=" rounded-xl h-48 md:mr-5"
                     />
                   )}
-                  <label className="text-[#0E2354] font-bold mt-3 md:mt-0 py-2 px-4 cursor-pointer border-2 border-[#E6E7EC]">
+                  <label
+                    style={{
+                      borderRadius: "8px",
+                      background:
+                        "linear-gradient(90deg, #4532BF 5.81%, #9429FF 100%)",
+                      boxShadow: "0px 1px 2px 0px rgba(82, 88, 102, 0.06)",
+                    }}
+                    className="text-[#fff] font-bold mt-3 md:mt-0 py-2 px-4 cursor-pointer"
+                  >
                     Upload Event Photo{" "}
-                    <span className="text-red-600 mr-1"> *</span>
                     <input
                       disabled={imageUploadLoader}
                       type="file"
@@ -1481,10 +1568,10 @@ const EditEvent = () => {
                     />
                   </label>
                 </div>
-                <div className="mb-4 mt-10 w-full lg:w-[90%] h-auto">
+                <div className="mb-4 mt-4 w-full lg:w-[90%] h-auto">
                   <label
                     htmlFor="eventTitle"
-                    className="block text-[#292D32] font-bold text-[16px] ml-1"
+                    className="block text-[#fff] font-bold text-[16px] ml-1"
                   >
                     {circleData.length > 0
                       ? "Your Circle"
@@ -1493,7 +1580,7 @@ const EditEvent = () => {
                   </label>
                   {circleData.length > 0 ? (
                     <>
-                      <div className="flex justify-start mt-2 items-center flex-wrap gap-x-2 w-full">
+                      <div className="flex justify-start mt-2 items-center flex-wrap gap-2 w-full">
                         {circleData.map((item) => {
                           const isSelected = item.id === selectedCircleId;
 
@@ -1510,11 +1597,18 @@ const EditEvent = () => {
                                 style={{ cursor: "pointer" }}
                               />
                               {isSelected && (
-                                <span className="success-icon border-none absolute top-0 right-0 font-bold">
+                                <span
+                                  style={{
+                                    background:
+                                      "linear-gradient(90deg, #4532BF 5.81%, #9429FF 100%)",
+                                    boxShadow:
+                                      "0px 1px 2px 0px rgba(82, 88, 102, 0.06)",
+                                  }}
+                                  className="rounded-full flex justify-center items-center success-icon h-8 w-8 border-none absolute top-0 right-0 font-bold"
+                                >
                                   <FaCheckCircle
-                                    className="bg-[#fff] border-none rounded-full"
-                                    color="#007BAB"
-                                    size={25}
+                                    color="#fff"
+                                    className="text-3xl p-[3px]"
                                   />
                                 </span>
                               )}
@@ -1532,20 +1626,50 @@ const EditEvent = () => {
                     </>
                   ) : (
                     <>
-                      <button
-                        type="button"
-                        onClick={() => setIsOpen(true)}
-                        className={`bg-[#007BAB] mt-3 border-2 border-[#007BAB] text-white hover:border-2 hover:border-[#007BAB] hover:bg-transparent hover:text-[#00384F] w-1/3 lg:w-1/4 py-3 rounded-lg`}
+                      <div
+                        style={{
+                          borderRadius: "16px",
+                          border: "1px solid rgba(255, 255, 255, 0.20)",
+                          background: "rgba(255, 255, 255, 0.12)",
+                          backdropFilter: "blur(40px)",
+                        }}
+                        className="flex justify-center items-center mt-2 mb-4 flex-row w-full p-5"
                       >
-                        Create Circle
-                      </button>
+                        <div className="hidden lg:flex justify-center items-center">
+                          <img
+                            src={circleImage.src}
+                            className="object-contain p-2 bg-[#000] rounded-full"
+                            alt=""
+                          />
+                        </div>
+                        <div className="flex w-full flex-col justify-center items-center">
+                          <p className="text-white w-full text-center text-lg font-semibold">
+                            You haven't created any circle, please create circle
+                            to continue <span className="text-red-600"> *</span>
+                          </p>
+                          <button
+                            style={{
+                              borderRadius: "8px",
+                              background:
+                                "linear-gradient(90deg, #4532BF 5.81%, #9429FF 100%)",
+                              boxShadow:
+                                "0px 1px 2px 0px rgba(82, 88, 102, 0.06)",
+                            }}
+                            type="button"
+                            onClick={() => setIsOpen(true)}
+                            className={`mt-3 text-white font-semibold w-[80%] py-3 rounded-lg`}
+                          >
+                            Create Circle
+                          </button>
+                        </div>
+                      </div>
                     </>
                   )}
                 </div>
                 <div className="mb-4 w-full lg:w-[90%] h-auto">
                   <label
                     htmlFor="eventTitle"
-                    className="block text-[#292D32] font-bold text-[16px] ml-1"
+                    className="block text-[#fff] font-bold text-[16px] ml-1"
                   >
                     Event Title
                     <span className="text-red-600"> *</span>
@@ -1553,7 +1677,10 @@ const EditEvent = () => {
                   <input
                     type="text"
                     id="eventTitle"
-                    className="border-2 text-[#8392AF] border-[#E6E7EC] mt-2 p-3 w-full rounded-lg focus:border-[#007BAB] focus:outline-none"
+                    style={{
+                      background: "rgba(255, 255, 255, 0.10)",
+                    }}
+                    className="mt-2 p-3 border-[0.5px] border-opacity-20 border-[#fff] focus:border-[0.5px] focus:border-opacity-60 text-[#fff] w-full rounded-lg focus:outline-none"
                     placeholder="Enter your event title"
                     value={eventTitle}
                     onChange={(e) => {
@@ -1564,14 +1691,17 @@ const EditEvent = () => {
                 <div className="mb-4 w-full lg:w-[90%] h-auto">
                   <label
                     htmlFor="description"
-                    className="block text-[#292D32] font-bold text-[16px] ml-1"
+                    className="block text-[#fff] font-bold text-[16px] ml-1"
                   >
                     Description
                     <span className="text-red-600"> *</span>
                   </label>
                   <textarea
                     id="description"
-                    className="border-2 h-[80pt] text-[#8392AF] border-[#E6E7EC] mt-2 p-3 w-full rounded-lg focus:border-[#007BAB] focus:outline-none"
+                    style={{
+                      background: "rgba(255, 255, 255, 0.10)",
+                    }}
+                    className="mt-2 p-3 h-[80pt] border-[0.5px] border-opacity-20 border-[#fff] focus:border-[0.5px] focus:border-opacity-60 text-[#fff] w-full rounded-lg focus:outline-none"
                     placeholder="Tell attendees about your event"
                     value={eventDescription}
                     onChange={(e) => {
@@ -1587,17 +1717,22 @@ const EditEvent = () => {
                     <div>
                       <label
                         htmlFor="circleFonts"
-                        className="block text-[#292D32] font-bold text-[16px] ml-1"
+                        className="block text-[#fff] font-bold text-[16px] ml-1"
                       >
                         Add Co Hosts (Optional)
                       </label>
                       <Menu.Button
                         id="circleFonts"
-                        className="inline-flex w-full justify-between mt-2 gap-x-1.5 rounded-md bg-white px-3 py-4 text-sm text-[#888888] shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                        style={{
+                          background: "rgba(255, 255, 255, 0.10)",
+                        }}
+                        className="inline-flex w-full justify-between mt-2 gap-x-1.5 rounded-lg px-3 py-4 text-sm text-[#fff] shadow-sm ring-1 ring-inset ring-gray-300 ring-opacity-20 hover:bg-gray-50"
                       >
-                        {selectedCoHosts.length === 0
-                          ? "Select Co Hosts"
-                          : selectedCoHosts.join(", ").toUpperCase()}
+                        <div className="w-full flex justify-start text-start items-center">
+                          {selectedCoHosts.length === 0
+                            ? "Select Co Hosts"
+                            : selectedCoHosts.join(", ").toUpperCase()}
+                        </div>
 
                         <ChevronDownIcon
                           className="-mr-1 h-5 w-5 text-gray-400"
@@ -1615,13 +1750,24 @@ const EditEvent = () => {
                       leaveFrom="transform opacity-100 scale-100"
                       leaveTo="transform opacity-0 scale-95"
                     >
-                      <Menu.Items className="absolute h-60 overflow-auto w-full left-0 z-10 mt-2 w-full origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                        <div className="py-1">
+                      <Menu.Items className="absolute h-60 overflow-auto w-full left-0 z-50 mt-2 w-full origin-top-right rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                        <div
+                          style={{
+                            backgroundImage: `url(${bgImage.src})`,
+                            backgroundSize: "cover",
+                            backgroundPosition: "center",
+                            backgroundRepeat: "no-repeat",
+                          }}
+                          className="py-1"
+                        >
                           <div className="px-4 py-2">
                             <input
                               type="text"
                               placeholder="Search Hosts"
-                              className="border-2 text-[#8392AF] border-[#E6E7EC] mt-2 p-3 w-full rounded-lg focus:border-[#007BAB] focus:outline-none"
+                              style={{
+                                background: "rgba(255, 255, 255, 0.10)",
+                              }}
+                              className="text-[#fff] border-[0.5px] border-opacity-20 border-[#fff] focus:border-[0.5px] focus:border-opacity-60 mt-2 p-3 w-full rounded-lg focus:outline-none"
                               value={searchTextHosts}
                               onChange={(e) => {
                                 handleSearchHosts(e);
@@ -1652,7 +1798,7 @@ const EditEvent = () => {
                                           selectedCoHosts.includes(
                                             item.full_name_insensitive
                                           )
-                                            ? "bg-[#007BAB]"
+                                            ? "bg-[#fff] bg-opacity-20"
                                             : "bg-transparent"
                                         } flex justify-between items-center flex-row`}
                                       >
@@ -1663,7 +1809,7 @@ const EditEvent = () => {
                                                 item.full_name_insensitive
                                               )
                                               ? "text-white font-semibold"
-                                              : "text-gray-700",
+                                              : "text-white",
                                             "block px-4 py-2 text-sm cursor-pointer"
                                           )}
                                         >
@@ -1676,7 +1822,13 @@ const EditEvent = () => {
                                           item.full_name_insensitive
                                         ) ? (
                                           <div
-                                            className="rounded-full mr-10 bg-white px-3 text-[#ff3333] cursor-pointer"
+                                            style={{
+                                              background:
+                                                "linear-gradient(90deg, #4532BF 5.81%, #9429FF 100%)",
+                                              boxShadow:
+                                                "0px 1px 2px 0px rgba(82, 88, 102, 0.06)",
+                                            }}
+                                            className="rounded-full mr-10 px-3 text-[#fff] cursor-pointer"
                                             onClick={() =>
                                               toggleCoHostSelection(
                                                 item.full_name_insensitive
@@ -1687,7 +1839,13 @@ const EditEvent = () => {
                                           </div>
                                         ) : (
                                           <div
-                                            className="rounded-full mr-10 text-white px-3 bg-[#007BAB] cursor-pointer"
+                                            style={{
+                                              background:
+                                                "linear-gradient(90deg, #4532BF 5.81%, #9429FF 100%)",
+                                              boxShadow:
+                                                "0px 1px 2px 0px rgba(82, 88, 102, 0.06)",
+                                            }}
+                                            className="rounded-full mr-10 text-white px-3 cursor-pointer"
                                             onClick={() =>
                                               toggleCoHostSelection(
                                                 item.full_name_insensitive
@@ -1711,14 +1869,17 @@ const EditEvent = () => {
                 <div className="mb-4 w-full lg:w-[90%] h-auto">
                   <label
                     htmlFor="hyperlink"
-                    className="block text-[#292D32] font-bold text-[16px] ml-1"
+                    className="block text-[#fff] font-bold text-[16px] ml-1"
                   >
                     Website/Hyperlink (Optional)
                   </label>
                   <input
                     type="text"
                     id="hyperlink"
-                    className="border-2 text-[#8392AF] border-[#E6E7EC] mt-2 p-3 w-full rounded-lg focus:border-[#007BAB] focus:outline-none"
+                    style={{
+                      background: "rgba(255, 255, 255, 0.10)",
+                    }}
+                    className="text-[#fff] border-[0.5px] border-opacity-20 border-[#fff] focus:border-[0.5px] focus:border-opacity-60 mt-2 p-3 w-full rounded-lg focus:outline-none"
                     placeholder="Add website/hyperlink"
                     value={eventWebsite}
                     onChange={(e) => {
@@ -1730,28 +1891,32 @@ const EditEvent = () => {
                   <div className="w-full">
                     <label
                       htmlFor="forDateStart"
-                      className="block text-[#292D32] font-bold text-[16px] ml-1"
+                      className="block text-[#fff] font-bold text-[16px] ml-1"
                     >
                       Event Start Date & Time
                       <span className="text-red-600"> *</span>
                     </label>
-                    {/* <input
-                          type="datetime-local"
-                          value={startDateTime}
-                          onChange={(e) => setStartDateTime(e.target.value)}
-                          id="forDateStart"
-                          className="border-2 text-[#8392AF] border-[#E6E7EC] mt-2 p-3 w-full rounded-lg focus:border-[#007BAB] focus:outline-none"
-                          placeholder="Select Date"
-                          min={DateTime.local()
-                            .set({ second: 0, millisecond: 0 })
-                            .toISO({ includeOffset: false })}
-                        /> */}
+
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                       <DateTimePicker
                         sx={{
-                          color: "#8392AF",
+                          "& .MuiInputBase-root": {
+                            color: "white",
+                            border: "none",
+                          },
+                          "& .MuiIconButton-label": { color: "white" },
+                          "& .MuiOutlinedInput-notchedOutline": {
+                            border: "none !important",
+                          },
+                          "& .MuiButtonBase-root": {
+                            color: "white",
+                            border: "none",
+                          },
                           marginTop: 1,
                           width: "100%",
+                          background: "rgba(255, 255, 255, 0.10)",
+                          border: "0.5px solid rgba(255, 255, 255, 0.20)",
+                          borderRadius: "0.5rem",
                         }}
                         value={startDateTime}
                         onChange={(newValue) => setStartDateTime(newValue)}
@@ -1762,29 +1927,33 @@ const EditEvent = () => {
                   <div className="w-full">
                     <label
                       htmlFor="forDateEnd"
-                      className="block text-[#292D32] font-bold text-[16px] ml-1"
+                      className="block text-[#fff] font-bold text-[16px] ml-1"
                     >
                       Event End Date & Time
                       <span className="text-red-600"> *</span>
                     </label>
-                    {/* <input
-                          type="datetime-local"
-                          value={endDateTime}
-                          onChange={(e) => setEndDateTime(e.target.value)}
-                          id="forDateEnd"
-                          className="border-2 text-[#8392AF] border-[#E6E7EC] mt-2 p-3 w-full rounded-lg focus:border-[#007BAB] focus:outline-none"
-                          placeholder="Select Date"
-                          min={DateTime.local()
-                            .set({ second: 0, millisecond: 0 })
-                            .toISO({ includeOffset: false })}
-                        /> */}
+
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                       <DateTimePicker
                         value={endDateTime}
                         sx={{
-                          color: "#8392AF",
+                          "& .MuiInputBase-root": {
+                            color: "white",
+                            border: "none",
+                          },
+                          "& .MuiIconButton-label": { color: "white" },
+                          "& .MuiOutlinedInput-notchedOutline": {
+                            border: "none !important",
+                          },
+                          "& .MuiButtonBase-root": {
+                            color: "white",
+                            border: "none",
+                          },
                           marginTop: 1,
                           width: "100%",
+                          background: "rgba(255, 255, 255, 0.10)",
+                          border: "0.5px solid rgba(255, 255, 255, 0.20)",
+                          borderRadius: "0.5rem",
                         }}
                         onChange={(newValue) => setEndDateTime(newValue)}
                         disablePast
@@ -1792,19 +1961,10 @@ const EditEvent = () => {
                     </LocalizationProvider>
                   </div>
                 </div>
-                {/* <button
-                      onClick={() => {
-                        checkStartAndEndDateTime();
-                        convertToTimestampEndDateTime();
-                        convertToTimestampStartDateTime();
-                      }}
-                    >
-                      CLICK ME BRO
-                    </button> */}
                 <div className="mb-4 w-full lg:w-[90%] h-auto">
                   <label
                     htmlFor="location"
-                    className="block text-[#292D32] font-bold text-[16px] ml-1"
+                    className="block text-[#fff] font-bold text-[16px] ml-1"
                   >
                     Location/Address
                     <span className="text-red-600"> *</span>
@@ -1815,11 +1975,51 @@ const EditEvent = () => {
                     setEventLocation={setEventLocation}
                   />
                 </div>
+                <div className="w-full lg:flex hidden lg:w-[90%] h-auto mb-4 text-center">
+                  <button
+                    onClick={handleCreateEvent}
+                    type="submit"
+                    disabled={createEventLoader === true}
+                    style={{
+                      borderRadius: "8px",
+                      background:
+                        "linear-gradient(90deg, #4532BF 5.81%, #9429FF 100%)",
+                      boxShadow: "0px 1px 2px 0px rgba(82, 88, 102, 0.06)",
+                    }}
+                    className={`text-white w-full py-5 rounded-lg`}
+                  >
+                    {createEventLoader === true ? (
+                      <>
+                        <div className="flex justify-center items-center w-full">
+                          <ThreeDots
+                            height="20"
+                            color="#fff"
+                            width="50"
+                            radius="9"
+                            ariaLabel="three-dots-loading"
+                            visible={true}
+                          />
+                        </div>
+                      </>
+                    ) : (
+                      "Save Changes"
+                    )}
+                  </button>
+                </div>
               </div>
             </div>
-            <div className="w-full lg:w-4/12 h-auto flex flex-col justify-center items-center p-2 pt-0 lg:pt-10 lg:p-10">
-              <div className="flex bg-[#F9F9F9] w-full h-auto flex-col justify-start items-start rounded-lg p-10 lg:mt-[-13%]">
-                <div className="text-[#101820] w-full h-auto border-b-2 border-[#E0E0E0] pb-5 font-semibold text-lg">
+            <div className="w-full lg:w-4/12 h-auto flex flex-col justify-center items-center mt-5 lg:mt-0 lg:pt-10 lg:p-10">
+              <div
+                style={{
+                  borderRadius: "16px",
+                  border: "1px solid rgba(255, 255, 255, 0.16)",
+                  background:
+                    "linear-gradient(149deg, rgba(255, 255, 255, 0.20) 0.71%, rgba(255, 255, 255, 0.10) 98.8%)",
+                  backdropFilter: "blur(40px)",
+                }}
+                className="flex w-full h-auto flex-col justify-start items-start rounded-lg p-10 lg:mt-[-10%]"
+              >
+                <div className="text-[#fff] w-full h-auto border-b-2 border-[#E0E0E0] pb-5 font-semibold text-lg">
                   <p
                     onClick={() => {
                       console.log(thirdPartyCheckboxSelected);
@@ -1831,11 +2031,11 @@ const EditEvent = () => {
                 {thirdPartyIntegrations.length > 0 &&
                   thirdPartyIntegrations?.map((item) => (
                     <>
-                      <div className="flex justify-between items-center text-[#292D32] font-semibold flex-row w-full h-auto mt-2">
+                      <div className="flex justify-between items-center text-[#fff] font-semibold flex-row w-full h-auto mt-2">
                         <div>{item.integrationType}</div>
                         <input
                           type="checkbox"
-                          className="h-6 w-6 cursor-pointer"
+                          className="h-6 w-6 cursor-pointer text-[#fff]"
                           onChange={() =>
                             handleCheckboxChange(
                               item.integrationType.toString().toUpperCase()
@@ -1851,12 +2051,25 @@ const EditEvent = () => {
                 {thirdPartyIntegrations.length === 0 && (
                   <>
                     <div className="flex mt-3 justify-center flex-col items-center w-full">
-                      <div className="font-semibold">No Integrations found</div>
+                      <img
+                        src={noIntegration.src}
+                        alt=""
+                        className="object-contain mt-3 h-[80px] w-full"
+                      />
+                      <div className="font-semibold text-[#fff] mt-3">
+                        No Integrations found
+                      </div>
                       <button
                         onClick={() => {
                           router.push("/settings");
                         }}
-                        className={`font14 mt-3 font-medium rounded-xl py-2 px-4 font-Montserrat text-[#fff] hover:text-[#007BAB] border-2 border-[#007BAB] hover:bg-transparent bg-[#007BAB]`}
+                        style={{
+                          borderRadius: "8px",
+                          background:
+                            "linear-gradient(90deg, #4532BF 5.81%, #9429FF 100%)",
+                          boxShadow: "0px 1px 2px 0px rgba(82, 88, 102, 0.06)",
+                        }}
+                        className={`mt-3 py-2 font-bold w-full cursor-pointer text-[#fff]`}
                       >
                         <div className="flex justify-center items-center">
                           Go to Settings
@@ -1866,17 +2079,29 @@ const EditEvent = () => {
                   </>
                 )}
               </div>
-              <div className="flex bg-[#F9F9F9] mt-5 w-full h-auto flex-col justify-start items-start rounded-lg p-10">
-                <div className="text-[#101820] w-full h-auto border-b-2 border-[#E0E0E0] pb-5 font-semibold text-lg">
+              <div
+                style={{
+                  borderRadius: "16px",
+                  border: "1px solid rgba(255, 255, 255, 0.16)",
+                  background:
+                    "linear-gradient(149deg, rgba(255, 255, 255, 0.20) 0.71%, rgba(255, 255, 255, 0.10) 98.8%)",
+                  backdropFilter: "blur(40px)",
+                }}
+                className="flex bg-[#fff] mt-5 w-full h-auto flex-col justify-start items-start rounded-lg p-10"
+              >
+                <div className="text-[#fff] w-full h-auto border-b-2 border-[#E0E0E0] pb-5 font-semibold text-lg">
                   <p>Features</p>
                 </div>
-                <div className="flex justify-between text-[#292D32] flex-row w-full h-auto mt-5">
+                <div className="flex justify-between text-[#fff] flex-row w-full h-auto mt-5">
                   <div>Open for Exhibitors</div>
                   <div>
                     <label
-                      className={`${
-                        isOnExhibitors ? "bg-[#007BAB]" : "bg-[#E2E2E2]"
-                      } relative inline-flex items-center h-6 rounded-full w-11 cursor-pointer`}
+                      style={{
+                        background: isOnExhibitors
+                          ? "linear-gradient(90deg, #4532BF 5.81%, #9429FF 100%)"
+                          : "#E2E2E2",
+                      }}
+                      className={`relative inline-flex items-center h-6 rounded-full w-11 cursor-pointer`}
                     >
                       <input
                         type="checkbox"
@@ -1892,13 +2117,16 @@ const EditEvent = () => {
                     </label>
                   </div>
                 </div>
-                <div className="flex justify-between text-[#292D32] flex-row w-full h-auto mt-2">
+                <div className="flex justify-between text-[#fff] flex-row w-full h-auto mt-2">
                   <div>Open for Sponsorship</div>
                   <div>
                     <label
-                      className={`${
-                        isOnSponsorship ? "bg-[#007BAB]" : "bg-[#E2E2E2]"
-                      } relative inline-flex items-center h-6 rounded-full w-11 cursor-pointer`}
+                      style={{
+                        background: isOnSponsorship
+                          ? "linear-gradient(90deg, #4532BF 5.81%, #9429FF 100%)"
+                          : "#E2E2E2",
+                      }}
+                      className={`relative inline-flex items-center h-6 rounded-full w-11 cursor-pointer`}
                     >
                       <input
                         type="checkbox"
@@ -1919,7 +2147,10 @@ const EditEvent = () => {
                     <input
                       type="text"
                       id="sponsorship"
-                      className="border-2 text-[#8392AF] border-[#E6E7EC] mt-2 p-3 w-full rounded-lg focus:border-[#007BAB] focus:outline-none"
+                      style={{
+                        background: "rgba(255, 255, 255, 0.10)",
+                      }}
+                      className="text-[#fff] border-[0.5px] border-opacity-20 border-[#fff] focus:border-[0.5px] focus:border-opacity-60 mt-2 p-3 w-full rounded-lg focus:outline-none"
                       placeholder="Eg. Title sponsor, Food Sponsor"
                       value={eventSponsorShip}
                       onChange={(e) => {
@@ -1928,15 +2159,18 @@ const EditEvent = () => {
                     ></input>
                   </div>
                 )}
-                <div className="flex justify-between text-[#292D32] flex-row w-full h-auto mt-2">
+                <div className="flex justify-between text-[#fff] flex-row w-full h-auto mt-2">
                   <div className="font-bold">
                     Ticket Price {isOnPrice ? "(Paid)" : "(Free)"}
                   </div>
                   <div>
                     <label
-                      className={`${
-                        isOnPrice ? "bg-[#007BAB]" : "bg-[#E2E2E2]"
-                      } relative inline-flex items-center h-6 rounded-full w-11 cursor-pointer`}
+                      style={{
+                        background: isOnPrice
+                          ? "linear-gradient(90deg, #4532BF 5.81%, #9429FF 100%)"
+                          : "#E2E2E2",
+                      }}
+                      className={`relative inline-flex items-center h-6 rounded-full w-11 cursor-pointer`}
                     >
                       <input
                         type="checkbox"
@@ -1958,7 +2192,10 @@ const EditEvent = () => {
                       type="text"
                       inputMode="numeric"
                       id="maximumTicket"
-                      className="border-2 text-[#8392AF] border-[#E6E7EC] mt-2 p-3 w-full rounded-lg focus:border-[#007BAB] focus:outline-none"
+                      style={{
+                        background: "rgba(255, 255, 255, 0.10)",
+                      }}
+                      className="border-[0.5px] border-opacity-20 border-[#fff] focus:border-[0.5px] focus:border-opacity-60 text-[#fff] mt-2 p-3 w-full rounded-lg focus:outline-none"
                       placeholder="Maximum Tickets"
                       value={eventMaximumTickets}
                       onChange={(e) => {
@@ -1972,14 +2209,17 @@ const EditEvent = () => {
                       }}
                     ></input>
                     <div className="relative w-full">
-                      <span className="absolute inset-y-0 left-0 pl-3 pt-2 text-[#007BAB] font18 font-bold flex items-center">
+                      <span className="absolute inset-y-0 left-0 pl-3 pt-2 text-[#fff] font18 font-bold flex items-center">
                         $
                       </span>
                       <input
                         type="text"
                         inputMode="numeric"
                         id="ticketPrice"
-                        className="border-2 pl-10 text-[#8392AF] border-[#E6E7EC] mt-2 p-3 w-full rounded-lg focus:border-[#007BAB] focus:outline-none"
+                        style={{
+                          background: "rgba(255, 255, 255, 0.10)",
+                        }}
+                        className="border-[0.5px] border-opacity-20 border-[#fff] focus:border-[0.5px] focus:border-opacity-60 pl-10 text-[#fff] mt-2 p-3 w-full rounded-lg focus:outline-none"
                         placeholder="Ticket Price"
                         value={eventTicketPrice}
                         onChange={(e) => {
@@ -1990,13 +2230,28 @@ const EditEvent = () => {
                   </div>
                 )}
               </div>
-              <div className="flex bg-[#F9F9F9] mt-5 w-full h-auto flex-col justify-center items-center rounded-lg p-5">
+              <div
+                style={{
+                  borderRadius: "16px",
+                  border: "1px solid rgba(255, 255, 255, 0.16)",
+                  background:
+                    "linear-gradient(149deg, rgba(255, 255, 255, 0.20) 0.71%, rgba(255, 255, 255, 0.10) 98.8%)",
+                  backdropFilter: "blur(40px)",
+                }}
+                className="flex lg:hidden mt-5 mb-2 w-full h-auto flex-col justify-center items-center rounded-lg p-5"
+              >
                 <div className="w-full text-center">
                   <button
                     onClick={handleCreateEvent}
                     type="submit"
                     disabled={createEventLoader === true}
-                    className={`bg-[#007BAB] border-2 border-[#007BAB] text-white w-full py-5 rounded-lg`}
+                    style={{
+                      borderRadius: "8px",
+                      background:
+                        "linear-gradient(90deg, #4532BF 5.81%, #9429FF 100%)",
+                      boxShadow: "0px 1px 2px 0px rgba(82, 88, 102, 0.06)",
+                    }}
+                    className={`text-white w-full py-5 rounded-lg`}
                   >
                     {createEventLoader === true ? (
                       <>
@@ -2035,669 +2290,3 @@ const EditEvent = () => {
 };
 
 export default EditEvent;
-
-{
-  /* <div className="mb-4 w-full lg:w-[90%] h-auto">
-                <label
-                  htmlFor="cost"
-                  className="block text-[#292D32] font-bold text-[16px] ml-1"
-                >
-                  Cost
-                  <span className="text-red-600"> *</span>
-                </label>
-                <input
-                  type="text"
-                  id="cost"
-                  className="border-2 text-[#8392AF] border-[#E6E7EC] mt-2 p-3 w-full rounded-lg focus:border-[#007BAB] focus:outline-none"
-                  placeholder="Tell attendees who is organizing the event"
-                  required
-                />
-              </div>
-               <div className="flex justify-start lg:justify-between items-start lg:flex-row flex-col gap-4 w-full lg:w-[90%] mb-4 h-auto">
-                <div className="w-full">
-                  <Menu
-                    as="div"
-                    className="relative inline-block text-left w-full"
-                  >
-                    <div>
-                      <label
-                        htmlFor="dropdown"
-                        className="block text-[#292D32] font-bold text-[16px] ml-1"
-                      >
-                        Select Event Type
-                        <span className="text-red-600"> *</span>
-                      </label>
-                      <Menu.Button
-                        id="dropdown"
-                        className="inline-flex w-full justify-between mt-2 gap-x-1.5 rounded-md bg-white px-3 py-4 text-sm text-[#888888] shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-                      >
-                        {selectedType === ""
-                          ? "Select Event Type"
-                          : selectedType}
-
-                        <ChevronDownIcon
-                          className="-mr-1 h-5 w-5 text-gray-400"
-                          aria-hidden="true"
-                        />
-                      </Menu.Button>
-                    </div>
-
-                    <Transition
-                      as={Fragment}
-                      enter="transition ease-out duration-100"
-                      enterFrom="transform opacity-0 scale-95"
-                      enterTo="transform opacity-100 scale-100"
-                      leave="transition ease-in duration-75"
-                      leaveFrom="transform opacity-100 scale-100"
-                      leaveTo="transform opacity-0 scale-95"
-                    >
-                      <Menu.Items className="absolute w-full left-0 z-10 mt-2 w-full origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                        <div className="py-1">
-                          <Menu.Item>
-                            {({ active }) => (
-                              <a
-                                onClick={() =>
-                                  handleOptionSelectType("Books Event")
-                                } // Handle selection here
-                                className={classNames(
-                                  active
-                                    ? "bg-gray-100 text-gray-900"
-                                    : "text-gray-700",
-                                  "block px-4 py-2 text-sm cursor-pointer"
-                                )}
-                              >
-                                Books Event
-                              </a>
-                            )}
-                          </Menu.Item>
-                          <Menu.Item>
-                            {({ active }) => (
-                              <a
-                                onClick={() =>
-                                  handleOptionSelectType("Rave Party")
-                                } // Handle selection here
-                                className={classNames(
-                                  active
-                                    ? "bg-gray-100 text-gray-900"
-                                    : "text-gray-700",
-                                  "block px-4 py-2 text-sm cursor-pointer"
-                                )}
-                              >
-                                Rave Party
-                              </a>
-                            )}
-                          </Menu.Item>
-                          <Menu.Item>
-                            {({ active }) => (
-                              <a
-                                onClick={() =>
-                                  handleOptionSelectType("Gaming Event")
-                                } // Handle selection here
-                                className={classNames(
-                                  active
-                                    ? "bg-gray-100 text-gray-900"
-                                    : "text-gray-700",
-                                  "block px-4 py-2 text-sm cursor-pointer"
-                                )}
-                              >
-                                Gaming Event
-                              </a>
-                            )}
-                          </Menu.Item>
-                        </div>
-                      </Menu.Items>
-                    </Transition>
-                  </Menu>
-                </div>
-                <div className="w-full">
-                  <Menu
-                    as="div"
-                    className="relative inline-block text-left w-full"
-                  >
-                    <div>
-                      <label
-                        htmlFor="dropdown2"
-                        className="block text-[#292D32] font-bold text-[16px] ml-1"
-                      >
-                        Select Event Category
-                        <span className="text-red-600"> *</span>
-                      </label>
-                      <Menu.Button
-                        id="dropdown2"
-                        className="inline-flex w-full justify-between mt-2 gap-x-1.5 rounded-md bg-white px-3 py-4 text-sm text-[#888888] shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-                      >
-                        {selectedCategory === ""
-                          ? "Select Event Category"
-                          : selectedCategory}
-
-                        <ChevronDownIcon
-                          className="-mr-1 h-5 w-5 text-gray-400"
-                          aria-hidden="true"
-                        />
-                      </Menu.Button>
-                    </div>
-
-                    <Transition
-                      as={Fragment}
-                      enter="transition ease-out duration-100"
-                      enterFrom="transform opacity-0 scale-95"
-                      enterTo="transform opacity-100 scale-100"
-                      leave="transition ease-in duration-75"
-                      leaveFrom="transform opacity-100 scale-100"
-                      leaveTo="transform opacity-0 scale-95"
-                    >
-                      <Menu.Items className="absolute w-full left-0 z-10 mt-2 w-full origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                        <div className="py-1">
-                          <Menu.Item>
-                            {({ active }) => (
-                              <a
-                                onClick={() =>
-                                  handleOptionSelectCategory("Education")
-                                } // Handle selection here
-                                className={classNames(
-                                  active
-                                    ? "bg-gray-100 text-gray-900"
-                                    : "text-gray-700",
-                                  "block px-4 py-2 text-sm cursor-pointer"
-                                )}
-                              >
-                                Education
-                              </a>
-                            )}
-                          </Menu.Item>
-                          <Menu.Item>
-                            {({ active }) => (
-                              <a
-                                onClick={() =>
-                                  handleOptionSelectCategory("E-Gaming")
-                                } // Handle selection here
-                                className={classNames(
-                                  active
-                                    ? "bg-gray-100 text-gray-900"
-                                    : "text-gray-700",
-                                  "block px-4 py-2 text-sm cursor-pointer"
-                                )}
-                              >
-                                E-Gaming
-                              </a>
-                            )}
-                          </Menu.Item>
-                          <Menu.Item>
-                            {({ active }) => (
-                              <a
-                                onClick={() =>
-                                  handleOptionSelectCategory("Concert")
-                                } // Handle selection here
-                                className={classNames(
-                                  active
-                                    ? "bg-gray-100 text-gray-900"
-                                    : "text-gray-700",
-                                  "block px-4 py-2 text-sm cursor-pointer"
-                                )}
-                              >
-                                Concert
-                              </a>
-                            )}
-                          </Menu.Item>
-                        </div>
-                      </Menu.Items>
-                    </Transition>
-                  </Menu>
-                </div>
-              </div> 
-               <div className="flex justify-start lg:justify-between items-start lg:flex-row flex-col gap-4 w-full lg:w-[90%] mb-4 h-auto">
-                <div className="w-full">
-                  <label
-                    htmlFor="startTime"
-                    className="block text-[#292D32] font-bold text-[16px] ml-1"
-                  >
-                    Start Time
-                    <span className="text-red-600"> *</span>
-                  </label>
-                  <input
-                    type="time"
-                    id="startTime"
-                    className="border-2 text-[#8392AF] border-[#E6E7EC] mt-2 p-3 w-full rounded-lg focus:border-[#007BAB] focus:outline-none"
-                    value={startTime}
-                    onChange={(e) => {
-                      setStartTime(e.target.value);
-                    }}
-                    required
-                  />
-                </div>
-                <div className="w-full">
-                  <label
-                    htmlFor="endTime"
-                    className="block text-[#292D32] font-bold text-[16px] ml-1"
-                  >
-                    End Time
-                    <span className="text-red-600"> *</span>
-                  </label>
-                  <input
-                    type="time"
-                    id="endTime"
-                    className="border-2 text-[#8392AF] border-[#E6E7EC] mt-2 p-3 w-full rounded-lg focus:border-[#007BAB] focus:outline-none"
-                    value={endTime}
-                    onChange={(e) => {
-                      setEndTime(e.target.value);
-                    }}
-                    required
-                  />
-                </div>
-              </div> 
-               <div className="mb-4 w-full lg:w-[90%] h-auto">
-                <Menu
-                  as="div"
-                  className="relative inline-block text-left w-full"
-                >
-                  <div>
-                    <label
-                      htmlFor="timeZone"
-                      className="block text-[#292D32] font-bold text-[16px] ml-1"
-                    >
-                      Time Zone
-                      <span className="text-red-600"> *</span>
-                    </label>
-                    <Menu.Button
-                      id="timeZone"
-                      className="inline-flex w-full justify-between mt-2 gap-x-1.5 rounded-md bg-white px-3 py-4 text-sm text-[#888888] shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-                    >
-                      {selectedTimeZone === ""
-                        ? "Select TimeZone"
-                        : selectedTimeZone}
-
-                      <ChevronDownIcon
-                        className="-mr-1 h-5 w-5 text-gray-400"
-                        aria-hidden="true"
-                      />
-                    </Menu.Button>
-                  </div>
-
-                  <Transition
-                    as={Fragment}
-                    enter="transition ease-out duration-100"
-                    enterFrom="transform opacity-0 scale-95"
-                    enterTo="transform opacity-100 scale-100"
-                    leave="transition ease-in duration-75"
-                    leaveFrom="transform opacity-100 scale-100"
-                    leaveTo="transform opacity-0 scale-95"
-                  >
-                    <Menu.Items className="absolute h-60 overflow-auto w-full left-0 z-10 mt-2 w-full origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                      <div className="py-1">
-                        <div className="px-4 py-2">
-                          <input
-                            type="text"
-                            placeholder="Search Time Zone"
-                            className="border-2 text-[#8392AF] border-[#E6E7EC] mt-2 p-3 w-full rounded-lg focus:border-[#007BAB] focus:outline-none"
-                            value={searchText}
-                            onChange={(e) => {
-                              handleSearch(e);
-                            }}
-                            onKeyDown={preventSpaceKeyPropagation}
-                          />
-                        </div>
-                        {filteredTimezones.map((item, index) => (
-                          <Menu.Item key={index}>
-                            {({ active }) => (
-                              <a
-                                onClick={() => handleOptionSelectTimeZone(item)}
-                                className={classNames(
-                                  active
-                                    ? "bg-gray-100 text-gray-900"
-                                    : "text-gray-700",
-                                  "block px-4 py-2 text-sm cursor-pointer"
-                                )}
-                              >
-                                {item}
-                              </a>
-                            )}
-                          </Menu.Item>
-                        ))}
-                      </div>
-                    </Menu.Items>
-                  </Transition>
-                </Menu>
-              </div> 
-              <div className="mb-4 w-full lg:w-[90%] h-auto">
-                <Menu
-                  as="div"
-                  className="relative inline-block text-left w-full"
-                >
-                  <div>
-                    <label
-                      htmlFor="languages"
-                      className="block text-[#292D32] font-bold text-[16px] ml-1"
-                    >
-                      Event Page Language
-                      <span className="text-red-600"> *</span>
-                    </label>
-                    <Menu.Button
-                      id="languages"
-                      className="inline-flex w-full justify-between mt-2 gap-x-1.5 rounded-md bg-white px-3 py-4 text-sm text-[#888888] shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-                    >
-                      {selectedLanguage === ""
-                        ? "Select Language"
-                        : selectedLanguage}
-
-                      <ChevronDownIcon
-                        className="-mr-1 h-5 w-5 text-gray-400"
-                        aria-hidden="true"
-                      />
-                    </Menu.Button>
-                  </div>
-
-                  <Transition
-                    as={Fragment}
-                    enter="transition ease-out duration-100"
-                    enterFrom="transform opacity-0 scale-95"
-                    enterTo="transform opacity-100 scale-100"
-                    leave="transition ease-in duration-75"
-                    leaveFrom="transform opacity-100 scale-100"
-                    leaveTo="transform opacity-0 scale-95"
-                  >
-                    <Menu.Items className="absolute h-60 overflow-auto w-full left-0 z-10 mt-2 w-full origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                      <div className="py-1">
-                        <div className="px-4 py-2">
-                          <input
-                            type="text"
-                            placeholder="Search Language"
-                            className="border-2 text-[#8392AF] border-[#E6E7EC] mt-2 p-3 w-full rounded-lg focus:border-[#007BAB] focus:outline-none"
-                            value={searchTextLanguage}
-                            onChange={(e) => {
-                              handleSearchLanguage(e);
-                            }}
-                            onKeyDown={preventSpaceKeyPropagation}
-                          />
-                        </div>
-                        {filteredLanguages.map((item, index) => (
-                          <Menu.Item key={index}>
-                            {({ active }) => (
-                              <a
-                                onClick={() => handleOptionSelectLanguage(item)}
-                                className={classNames(
-                                  active
-                                    ? "bg-gray-100 text-gray-900"
-                                    : "text-gray-700",
-                                  "block px-4 py-2 text-sm cursor-pointer"
-                                )}
-                              >
-                                {item}
-                              </a>
-                            )}
-                          </Menu.Item>
-                        ))}
-                      </div>
-                    </Menu.Items>
-                  </Transition>
-                </Menu>
-              </div> */
-}
-
-{
-  /* <!-- Modal --> */
-}
-{
-  /* TODO button is not working fine on click, check click and update states */
-}
-{
-  /* <div className="fixed left-0 top-0 z-[1055] h-full w-full overflow-y-auto overflow-x-hidden outline-none">
-            <div className="pointer-events-none relative w-auto translate-y-[-50px] opacity-0 transition-all duration-300 ease-in-out min-[576px]:mx-auto min-[576px]:mt-7 min-[576px]:max-w-[500px]">
-              <div className="min-[576px]:shadow-[0_0.5rem_1rem_rgba(#000, 0.15)] pointer-events-auto relative flex w-full flex-col rounded-md border-none bg-white bg-clip-padding text-current shadow-lg outline-none">
-                <div className="flex flex-shrink-0 items-center justify-between rounded-t-md border-b-2 border-neutral-100 border-opacity-100 p-4 dark:border-opacity-50">
-                  
-                  <h5 className="text-xl font-medium leading-normal">
-                    Create Circle
-                  </h5>
-               
-                  <button
-                    type="button"
-                    className="box-content rounded-none border-none hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none"
-                    onClick={handleCloseModal}
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke-width="1.5"
-                      stroke="currentColor"
-                      className="h-6 w-6"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M6 18L18 6M6 6l12 12"
-                      />
-                    </svg>
-                  </button>
-                </div>
-
-               
-                <div className="relative p-4 flex flex-col w-full">
-                  <div className="flex items-center w-full">
-                    {circleLogo && (
-                      <img
-                        src={URL.createObjectURL(circleLogo)}
-                        alt="Selected Logo"
-                        style={{ height: "50pt" }}
-                        className="border-2 rounded-full mr-5"
-                      />
-                    )}
-                    <label className="text-[#0E2354] font-bold py-2 px-4 cursor-pointer border-2 border-[#E6E7EC]">
-                      Upload Circle Logo{" "}
-                      <span className="text-red-600 mr-1"> *</span>
-                      <input
-                        type="file"
-                        accept=".png, .jpg, .jpeg, .gif"
-                        className="hidden"
-                        onChange={handleLogoChangeCircle}
-                      />
-                    </label>
-                  </div>
-                  <div className="mb-4 mt-4 w-full h-auto">
-                    <label
-                      htmlFor="circleName"
-                      className="block text-[#292D32] font-bold text-[16px] ml-1"
-                    >
-                      Circle Name
-                      <span className="text-red-600"> *</span>
-                    </label>
-                    <input
-                      type="text"
-                      id="circleName"
-                      className="border-2 text-[#8392AF] border-[#E6E7EC] mt-2 p-3 w-full rounded-lg focus:border-[#007BAB] focus:outline-none"
-                      placeholder="Enter your circle name"
-                      value={circleName}
-                      onChange={(e) => {
-                        setCircleName(e.target.value);
-                      }}
-                    />
-                  </div>
-                  <div className="mb-4 w-full h-auto">
-                    <label
-                      htmlFor="circleDescription"
-                      className="block text-[#292D32] font-bold text-[16px] ml-1"
-                    >
-                      Circle Description
-                      <span className="text-red-600"> *</span>
-                    </label>
-                    <textarea
-                      id="circleDescription"
-                      className="border-2 h-[80pt] text-[#8392AF] border-[#E6E7EC] mt-2 p-3 w-full rounded-lg focus:border-[#007BAB] focus:outline-none"
-                      placeholder="Add your circle description here"
-                      value={circleDescription}
-                      onChange={(e) => {
-                        setCircleDescription(e.target.value);
-                      }}
-                    ></textarea>
-                  </div>
-                  <div className="mb-4 w-full h-auto">
-                    <Menu
-                      as="div"
-                      className="relative inline-block text-left w-full"
-                    >
-                      <div>
-                        <label
-                          htmlFor="circleFonts"
-                          className="block text-[#292D32] font-bold text-[16px] ml-1"
-                        >
-                          Circle Font
-                          <span className="text-red-600"> *</span>
-                        </label>
-                        <Menu.Button
-                          id="circleFonts"
-                          className="inline-flex w-full justify-between mt-2 gap-x-1.5 rounded-md bg-white px-3 py-4 text-sm text-[#888888] shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-                        >
-                          {circleFont === "" ? "Select Font" : circleFont}
-
-                          <ChevronDownIcon
-                            className="-mr-1 h-5 w-5 text-gray-400"
-                            aria-hidden="true"
-                          />
-                        </Menu.Button>
-                      </div>
-
-                      <Transition
-                        as={Fragment}
-                        enter="transition ease-out duration-100"
-                        enterFrom="transform opacity-0 scale-95"
-                        enterTo="transform opacity-100 scale-100"
-                        leave="transition ease-in duration-75"
-                        leaveFrom="transform opacity-100 scale-100"
-                        leaveTo="transform opacity-0 scale-95"
-                      >
-                        <Menu.Items className="absolute h-60 overflow-auto w-full left-0 z-10 mt-2 w-full origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                          <div className="py-1">
-                            <div className="px-4 py-2">
-                              <input
-                                type="text"
-                                placeholder="Search Fonts"
-                                className="border-2 text-[#8392AF] border-[#E6E7EC] mt-2 p-3 w-full rounded-lg focus:border-[#007BAB] focus:outline-none"
-                                value={searchText}
-                                onChange={(e) => {
-                                  handleSearch(e);
-                                }}
-                                onKeyDown={preventSpaceKeyPropagation}
-                              />
-                            </div>
-                            {filteredFonts.map((item, index) => (
-                              <Menu.Item key={index}>
-                                {({ active }) => (
-                                  <a
-                                    onClick={() =>
-                                      handleOptionSelectFonts(item)
-                                    }
-                                    className={classNames(
-                                      active
-                                        ? "bg-gray-100 text-gray-900"
-                                        : "text-gray-700",
-                                      "block px-4 py-2 text-sm cursor-pointer"
-                                    )}
-                                  >
-                                    {item}
-                                  </a>
-                                )}
-                              </Menu.Item>
-                            ))}
-                          </div>
-                        </Menu.Items>
-                      </Transition>
-                    </Menu>
-                  </div>
-                  <div className="mb-4 w-full h-auto flex flex-col">
-                    <label
-                      htmlFor="circleColor"
-                      className="block text-[#292D32] font-bold text-[16px] ml-1"
-                    >
-                      Circle Color
-                      <span className="text-red-600"> *</span>
-                    </label>
-                    <SketchPicker
-                      className="mt-2"
-                      color={circleColor}
-                      onChange={handleColorChange}
-                      styles={{
-                        default: {
-                          picker: {
-                            width: "96%",
-                          },
-                        },
-                      }}
-                    />
-                  </div>
-                </div>
-
-               
-                <div className="flex flex-shrink-0 flex-wrap items-center justify-end rounded-b-md border-t-2 border-neutral-100 border-opacity-100 p-4 dark:border-opacity-50">
-                  <button
-                    type="button"
-                    className="inline-block rounded bg-primary-100 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:bg-primary-accent-100 focus:bg-primary-accent-100 focus:outline-none focus:ring-0 active:bg-primary-accent-200"
-                    onClick={handleCloseModal}
-                  >
-                    Close
-                  </button>
-                  <button
-                    type="button"
-                    className="ml-2 inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
-                  >
-                    Create Circle
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div> */
-}
-
-// const [selectedType, setSelectedType] = useState("");
-// const [selectedCategory, setSelectedCategory] = useState("");
-// const [selectedTimeZone, setSelectedTimeZone] = useState("");
-// const [selectedLanguage, setSelectedLanguage] = useState("");
-// const [searchTextLanguage, setSearchLanguage] = useState("");
-// useEffect(() => {
-//   if (!isOnPrice) {
-//     setEventMaximumTickets(0);
-//     setEventTicketPrice("0.00");
-//   }
-// }, [isOnPrice]);
-
-// const handleSearch = (e) => {
-//   const text = e.target.value;
-//   setSearchText(text);
-//   const filtered = timezones.filter((timezone) =>
-//     timezone.toLowerCase().includes(text.toLowerCase())
-//   );
-//   setFilteredTimezones(filtered);
-// };
-
-// const handleSearchLanguage = (e) => {
-//   const text = e.target.value;
-//   setSearchLanguage(text);
-//   const filtered = languages.filter((language) =>
-//     language.toLowerCase().includes(text.toLowerCase())
-//   );
-//   console.log("Filtered Language: ", filtered);
-//   setFilteredLanguages(filtered);
-// };
-
-// function handleOptionSelectType(selectedOption) {
-//   setSelectedType(selectedOption);
-// }
-
-// function handleOptionSelectCategory(selectedOption) {
-//   setSelectedCategory(selectedOption);
-// }
-
-// function handleOptionSelectTimeZone(selectedOption) {
-//   setSelectedTimeZone(selectedOption);
-// }
-
-// function handleOptionSelectLanguage(selectedOption) {
-//   setSelectedLanguage(selectedOption);
-// }
-
-// function getTodayDate() {
-//   const today = new Date();
-//   const year = today.getFullYear();
-//   const month = (today.getMonth() + 1).toString().padStart(2, "0");
-//   const day = today.getDate().toString().padStart(2, "0");
-//   return `${year}-${month}-${day}`;
-// }
