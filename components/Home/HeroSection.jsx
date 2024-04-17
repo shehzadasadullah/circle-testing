@@ -138,7 +138,7 @@ const HeroSection = () => {
             <div className="w-full hidden lg:flex justify-center items-center">
               <button
                 onClick={() => {
-                  if (user?.email === undefined) {
+                  if (user === null) {
                     handleClick();
                   } else {
                     router.push("/create-event");
@@ -175,7 +175,7 @@ const HeroSection = () => {
             />
             <button
               onClick={() => {
-                if (user?.email === undefined) {
+                if (user === null) {
                   handleClick();
                 } else {
                   router.push("/create-event");

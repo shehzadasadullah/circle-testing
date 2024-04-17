@@ -598,8 +598,7 @@ const AboutMain = () => {
           </span>
           <a
             style={{ textDecoration: "underline" }}
-            href="http://support@circle.ooo
-"
+            href="mailto:support@circle.ooo"
           >
             support@circle.ooo
           </a>

@@ -101,6 +101,8 @@ const EventDetails = () => {
   const [emailLoading, setEmailLoading] = useState(false);
   const [showMobileScreen, setShowMobileScreen] = useState(false);
   const [showNoIntegrationScreen, setShowNoIntegrationScreen] = useState(false);
+  const [showNoIntegrationScreenOutside, setShowNoIntegrationScreenOutside] =
+    useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showFreeModal, setShowFreeModal] = useState(false);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
@@ -117,6 +119,7 @@ const EventDetails = () => {
   const [showOptions, setShowOptions] = useState(false);
   const router = useRouter();
   const { id } = router.query;
+  const [eventIDQR, setEventIDQR] = useState(id);
   const { type } = router.query;
   const [allevents, setAllEvents] = useState([]);
   const sortedEvents = allevents.sort((a, b) => a.timefrom - b.timefrom);
@@ -357,7 +360,7 @@ const EventDetails = () => {
   };
 
   const handleAttend = () => {
-    if (user?.email == undefined) {
+    if (user === null) {
       setShowModal(true);
       toast("Please log in to attend event!");
     } else if (
@@ -434,6 +437,10 @@ const EventDetails = () => {
     const eventtime = formattedTime;
     const email = user?.email;
 
+    const userDocRef = doc(db, "Users", user?.uid);
+    const userDocSnap = await getDoc(userDocRef);
+    const email2 = userDocSnap.data().email;
+
     try {
       // Start generating QR code and await the result
       let dataUrl = await GenerateQr(
@@ -457,7 +464,8 @@ const EventDetails = () => {
 
         // Make the API call to send the email
         const res = await axios.post("https://api.circle.ooo/ticket", {
-          usersdata: email,
+          usersdata:
+            email && email !== null && email !== undefined ? email : email2,
           bodymessage: msgbody,
         });
 
@@ -503,29 +511,19 @@ const EventDetails = () => {
     }
   };
 
+  const generateQRCode = async () => {
+    try {
+      const qrCodeDataURL = await QRCode.toDataURL(
+        `https://apps.noww.co/preview/invitationcard/${id}`
+      );
+      console.log("QR DATA: ", qrCodeDataURL);
+      setQRCodeBase64(qrCodeDataURL);
+    } catch (error) {
+      console.error("QR code generation error:", error);
+    }
+  };
+
   useEffect(() => {
-    const generateQRCode = async (
-      eventId,
-      circleId,
-      currentUserId,
-      creatorId
-    ) => {
-      try {
-        const link = `https://nowwsocial.page.link?id=events_${eventId}_${circleId}_${currentUserId}_${creatorId}`;
-        let id = `events_${eventId}_${circleId}_${currentUserId}_${creatorId}`;
-        let response = await axios.post("/api/database/getdynamiclink", {
-          id: id,
-          link: link,
-        });
-        let dynamicLink = response.data.shortLink;
-
-        const qrCodeDataURL = await QRCode.toDataURL(dynamicLink);
-        setQRCodeBase64(qrCodeDataURL);
-      } catch (error) {
-        console.error("QR code generation error:", error);
-      }
-    };
-
     generateQRCode();
   }, []);
 
@@ -955,7 +953,14 @@ const EventDetails = () => {
 
                       {filteredAttendeesDataList.length === 0 && (
                         <>
-                          <div className="flex w-full justify-center items-center flex-col bg-[#012432] rounded-xl p-5">
+                          <div
+                            style={{
+                              border: "1px solid rgba(255, 255, 255, 0.20)",
+                              background: "rgba(255, 255, 255, 0.12)",
+                              backdropFilter: "blur(40px)",
+                            }}
+                            className="flex w-full justify-center items-center flex-col rounded-xl p-5"
+                          >
                             <button
                               onClick={() => {
                                 setShowDownloadMobileAppModal(true);
@@ -1361,9 +1366,10 @@ const EventDetails = () => {
                           );
                         }
                       );
+                      console.log(hasValidIntegration);
 
-                      if (!hasValidIntegration) {
-                        setShowNoIntegrationScreen(true);
+                      if (hasValidIntegration === false) {
+                        setShowNoIntegrationScreenOutside(true);
                       } else {
                         setShowNoIntegrationScreen(false);
                         handleAddToCalendar();
@@ -2221,6 +2227,96 @@ const EventDetails = () => {
                         </div>
                       </>
                     )}
+                  </div>
+                </div>
+              </div>
+            )}
+            {showNoIntegrationScreenOutside === true && (
+              <div className="fixed z-50 inset-0 overflow-y-auto">
+                <div className="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                  <div
+                    className="fixed inset-0 transition-opacity"
+                    aria-hidden="true"
+                  >
+                    <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
+                  </div>
+
+                  <span
+                    className="hidden sm:inline-block sm:align-middle sm:h-screen"
+                    aria-hidden="true"
+                  >
+                    &#8203;
+                  </span>
+
+                  <div
+                    className={`inline-block w-full lg:w-[50%] align-middle bg-[#0E0725] rounded-xl shadow-xl transform transition-all`}
+                  >
+                    <div
+                      style={{
+                        borderBottom: "1px solid rgba(255, 255, 255, 0.10)",
+                      }}
+                      className="w-full flex justify-between text-[#fff] items-center px-6 py-3"
+                    >
+                      <p className="font-semibold text-xl w-full">
+                        <div className="flex flex-row justify-center items-centre">
+                          <p className="ml-2">Integrate Calendars</p>
+                        </div>
+                      </p>
+                      <button
+                        type="button"
+                        className="box-content rounded-none border-none hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none"
+                        onClick={() => {
+                          setShowNoIntegrationScreenOutside(false);
+                        }}
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke-width="1.5"
+                          stroke="currentColor"
+                          className="h-6 w-6 text-[#fff]"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M6 18L18 6M6 6l12 12"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+                    <div className="w-full h-auto flex justify-center items-center flex-col gap-10 p-6">
+                      <div className="w-full h-auto bg-[#1C142E] rounded-xl flex justify-center items-center flex-col p-10">
+                        <img src={calendarImage.src} alt="" className="h-40" />
+                        <p className="text-[#fff] text-3xl mt-4 font-bold">
+                          “Oops, No Calendar Integration Found”
+                        </p>
+                        <p className="text-[#fff] text-opacity-80 w-full lg:w-3/4 mt-4">
+                          In-Order to add events into your calendars, you must
+                          have to integrate calendars first in the Settings
+                          page. Click on the button below to navigate to
+                          Settings page and integrate your calendars.
+                        </p>
+                        <div className="flex justify-center items-center flex-row mt-10 w-full">
+                          <button
+                            onClick={() => {
+                              router.push("/settings");
+                            }}
+                            style={{
+                              border: "1px solid rgba(255, 255, 255, 0.10)",
+                              background:
+                                "linear-gradient(90deg, #4532BF 5.81%, #9429FF 100%)",
+                            }}
+                            className={`px-5 flex font-semibold flex-row justify-center items-center rounded-xl py-3 text-[#fff]`}
+                          >
+                            <p>Add your first Calendar</p>
+                            <div className="ml-2">
+                              <IoIosArrowForward size={20} />
+                            </div>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>

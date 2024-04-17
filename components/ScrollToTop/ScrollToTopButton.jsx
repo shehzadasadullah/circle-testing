@@ -38,7 +38,7 @@ const ScrollToTopButton = () => {
         background: "linear-gradient(90deg, #4532BF 5.81%, #9429FF 100%)",
         boxShadow: "0px 4px 50px 0px rgba(69, 50, 191, 0.50)",
       }}
-      className={`fixed bottom-10 right-10 text-white transform hover:scale-125 rounded-full p-2 cursor-pointer opacity-0 transition duration-700 ease-in-out ${
+      className={`fixed bottom-24 right-10 text-white transform hover:scale-125 rounded-full p-2 cursor-pointer opacity-0 transition duration-700 ease-in-out ${
         isVisible ? "opacity-100" : ""
       }`}
       onClick={scrollToTop}

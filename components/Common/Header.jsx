@@ -39,6 +39,10 @@ const Header = ({ type = "", page = "" }) => {
   const { pathname } = router;
   const [user] = useAuthState(auth);
 
+  useEffect(() => {
+    console.log("USER DATA: ", user);
+  }, [user]);
+
   const { accessToken, errorval, error_description } = router.query;
   //useEffect
 
@@ -319,7 +323,7 @@ const Header = ({ type = "", page = "" }) => {
             </div>
             <div className="w-1/2 h-auto flex justify-end items-center">
               <div>
-                {user?.email === undefined && (
+                {user === null && (
                   <>
                     <div className="flex justify-between items-center">
                       <button
@@ -334,7 +338,7 @@ const Header = ({ type = "", page = "" }) => {
                       </button>
                       <button
                         onClick={() => {
-                          if (user?.email === undefined) {
+                          if (user === null) {
                             handleClick();
                           } else {
                             router.push("/create-event");
@@ -353,7 +357,7 @@ const Header = ({ type = "", page = "" }) => {
                   </>
                 )}
 
-                {user?.email && (
+                {(user?.email || user?.phoneNumber) && (
                   <>
                     <div className="flex justify-center items-center p-4 lg:p-0">
                       <Menu
@@ -387,7 +391,8 @@ const Header = ({ type = "", page = "" }) => {
                                           word.slice(1)
                                       )
                                       .join(" ")
-                                  : user?.email
+                                  : user !== null && user?.email
+                                  ? user?.email
                                       .slice(0, user?.email.indexOf("@"))
                                       .toLowerCase()
                                       .split(" ")
@@ -396,7 +401,8 @@ const Header = ({ type = "", page = "" }) => {
                                           word.charAt(0).toUpperCase() +
                                           word.slice(1)
                                       )
-                                      .join(" ")}
+                                      .join(" ")
+                                  : "User"}
                                 !
                               </div>
                               <div className="hidden lg:flex">
@@ -460,7 +466,9 @@ const Header = ({ type = "", page = "" }) => {
                                         <div className="font-bold">
                                           {user?.displayName}
                                         </div>
-                                        <div>{user?.email}</div>
+                                        <div>
+                                          {user?.email || user?.phoneNumber}
+                                        </div>
                                       </div>
                                     </div>
                                   </>
@@ -574,7 +582,7 @@ const Header = ({ type = "", page = "" }) => {
                       <div className="ml-5 hidden lg:flex">
                         <button
                           onClick={() => {
-                            if (user?.email === undefined) {
+                            if (user === null) {
                               handleClick();
                             } else {
                               router.push("/create-event");
@@ -638,7 +646,7 @@ const Header = ({ type = "", page = "" }) => {
                 >
                   <Menu.Items className="absolute right-0 z-10 mt-2 w-auto origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                     <div className="py-1">
-                      {user?.email && (
+                      {(user?.email || user?.phoneNumber) && (
                         <Menu.Item>
                           {({ active }) => (
                             <>
@@ -668,7 +676,7 @@ const Header = ({ type = "", page = "" }) => {
                                   <div className="font-bold">
                                     {user?.displayName}
                                   </div>
-                                  <div>{user?.email}</div>
+                                  <div>{user?.email || user?.phoneNumber}</div>
                                 </div>
                               </div>
                             </>
@@ -741,7 +749,7 @@ const Header = ({ type = "", page = "" }) => {
                           </div>
                         )}
                       </Menu.Item>
-                      {user?.email === undefined && (
+                      {user === null && (
                         <Menu.Item>
                           {({ active }) => (
                             <div
@@ -765,7 +773,7 @@ const Header = ({ type = "", page = "" }) => {
                           )}
                         </Menu.Item>
                       )}
-                      {user?.email && (
+                      {(user?.email || user?.phoneNumber) && (
                         <>
                           <Menu.Item>
                             {({ active }) => (

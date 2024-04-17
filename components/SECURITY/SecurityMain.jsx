@@ -29,7 +29,7 @@ const AboutMain = () => {
             }}
             className="w-full text-center text-5xl lg:text-7xl font-bold"
           >
-            SECURITY
+            Security
           </h1>
           <p
             style={{

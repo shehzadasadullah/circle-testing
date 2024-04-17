@@ -1526,9 +1526,7 @@ const CreateEvent = () => {
                     htmlFor="eventTitle"
                     className="block text-[#fff] font-bold text-[16px] ml-1"
                   >
-                    {circleData.length > 0
-                      ? "Your Circle"
-                      : "You haven't created any circle, please create circle to continue"}
+                    Your Circle
                     <span className="text-red-600"> *</span>
                   </label>
                   {circleData.length > 0 ? (
@@ -1992,7 +1990,7 @@ const CreateEvent = () => {
                       console.log(thirdPartyCheckboxSelected);
                     }}
                   >
-                    Post Event To Third Party Platforms
+                    Third Party Platforms
                   </p>
                 </div>
                 {thirdPartyIntegrations.length > 0 &&

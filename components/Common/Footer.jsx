@@ -62,7 +62,7 @@ const Footer = () => {
               <div
                 className="cursor-pointer text-[#D9D9D9]"
                 onClick={() => {
-                  if (user?.email === undefined) {
+                  if (user === null) {
                     handleClick();
                   } else {
                     router.push("/create-event");
@@ -108,7 +108,7 @@ const Footer = () => {
                   router.push("/security");
                 }}
               >
-                SECURITY
+                Security
               </div>
               <div
                 className="cursor-pointer text-[#D9D9D9]"
