@@ -114,7 +114,7 @@ const Feedback = () => {
           >
             <div className="border-b-2 border-[#fff] border-opacity-10 flex flex-col justify-center lg:justify-start items-center w-full p-5">
               <p className="w-full text-[#fff] text-center lg:text-left font-semibold text-3xl">
-                We appreciate your feedback!
+                We appreciate your Feedback!
               </p>
               <p className="text-[#fff] w-full text-center lg:text-left mt-4">
                 Your feedback shapes the future! Let us know what you thought of
@@ -232,7 +232,7 @@ const Feedback = () => {
                     className="hidden lg:block text-[#fff] font-bold text-[16px] ml-1"
                   >
                     Feedback
-                    <span className="text-red-600"> *</span>
+                    <span className="font-normal"> (Optional)</span>
                   </label>
                   <textarea
                     id="feedback"
