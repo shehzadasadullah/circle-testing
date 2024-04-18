@@ -68,7 +68,13 @@ const Feedback = () => {
 
   const handleFeedback = () => {
     setFeedbackLoader(true);
-    console.log({ feedback: feedback, rating: selectedEmoji });
+    if (selectedEmoji === 0) {
+      toast("Please Select One Emoji!");
+    } else {
+      toast(
+        "(Dummy Feedback) Rating: " + selectedEmoji + ", Review: " + feedback
+      );
+    }
     setFeedbackLoader(false);
   };
 
@@ -294,7 +300,11 @@ const Feedback = () => {
               className="flex flex-col justify-start items-center w-full p-5 rounded-xl"
             >
               <p className="text-[#fff] w-full text-left font-bold text-lg">
-                Event Details
+                Event Details:
+              </p>
+
+              <p className="text-[#fff] w-full text-left font-bold mt-5 text-lg">
+                {eventData.name}
               </p>
 
               <div className="flex flex-row text-[#fff] mt-3 justify-start w-full items-center">
@@ -394,7 +404,7 @@ const Feedback = () => {
                 background: "rgba(255, 255, 255, 0.10)",
                 backdropFilter: "blur(40px)",
               }}
-              className="flex flex-col justify-center items-center w-full p-5 lg:p-6 xl:p-8 rounded-xl"
+              className="flex flex-col justify-center items-center w-full p-5 lg:p-[2px] xl:p-[9px] rounded-xl"
             >
               <div className="flex w-full flex-row justify-center items-center gap-x-6">
                 <div
