@@ -8,6 +8,7 @@ import bgImage from "../public/revamp/bg-invite.png";
 import basket from "../public/bgBasket.png";
 import { useRouter } from "next/router";
 import backgroundImage from "../public/revamp/bg-createEvent.jpg";
+import Head from "next/head";
 
 const FaqItem = ({ question, answer, isActive, onToggle }) => (
   <div
@@ -90,46 +91,56 @@ const FAQSection = () => {
   };
 
   return (
-    <div
-      style={{
-        backgroundImage: `url(${backgroundImage.src})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-      }}
-      className="w-full h-full"
-    >
-      <div className="w-full h-full">
-        <Header type="dark" />
-      </div>
-
-      <div className="w-full h-auto flex flex-col justify-center gap-12 items-center p-8 lg:p-20">
-        <p
-          style={{
-            background:
-              "linear-gradient(98deg, #FFF 17.81%, rgba(255, 255, 255, 0.00) 120.14%)",
-            backgroundClip: "text",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-          }}
-          className="text-5xl lg:text-6xl w-full text-center"
-        >
-          Frequently Asked Questions
-        </p>
-        <div className=" w-full lg:w-[90%] flex flex-col gap-5 justify-center items-center h-auto">
-          {faqs.map((faq, index) => (
-            <FaqItem
-              key={index}
-              question={faq.question}
-              answer={faq.answer}
-              isActive={index === activeIndex}
-              onToggle={() => handleToggle(index)}
-            />
-          ))}
+    <>
+      <Head>
+        <title>CIRCLE - FAQs</title>
+        <meta
+          name="description"
+          content="Circle.ooo ❤️'s our customers! Events: beautiful, fast & simple for all."
+        />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <div
+        style={{
+          backgroundImage: `url(${backgroundImage.src})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+        }}
+        className="w-full h-full"
+      >
+        <div className="w-full h-full">
+          <Header type="dark" />
         </div>
-      </div>
 
-      {/* <div
+        <div className="w-full h-auto flex flex-col justify-center gap-12 items-center p-8 lg:p-20">
+          <p
+            style={{
+              background:
+                "linear-gradient(98deg, #FFF 17.81%, rgba(255, 255, 255, 0.00) 120.14%)",
+              backgroundClip: "text",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+            }}
+            className="text-5xl lg:text-6xl w-full text-center"
+          >
+            Frequently Asked Questions
+          </p>
+          <div className=" w-full lg:w-[90%] flex flex-col gap-5 justify-center items-center h-auto">
+            {faqs.map((faq, index) => (
+              <FaqItem
+                key={index}
+                question={faq.question}
+                answer={faq.answer}
+                isActive={index === activeIndex}
+                onToggle={() => handleToggle(index)}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* <div
         style={{
           background:
             "linear-gradient(94deg, rgba(42, 28, 61, 0.60) 0.01%, rgba(144, 33, 255, 0.47) 103.3%), #070317",
@@ -158,43 +169,44 @@ const FAQSection = () => {
         </div>
       </div> */}
 
-      <div
-        class="w-full h-full p-5"
-        style={{
-          background:
-            "linear-gradient(94deg, rgba(42, 28, 61, 0.60) 0.01%, rgba(144, 33, 255, 0.47) 103.3%), #070317",
-        }}
-      >
-        <div className="flex flex-col lg:flex-row justify-center items-center">
-          <div className="w-full lg:w-1/2 flex gap-5 lg:gap-10 justify-center items-center flex-col px-3 py-3 lg:px-10 lg:py-5">
-            <p className="w-full text-center text-2xl lg:text-6xl font-semibold text-[#fff]">
-              Can't find the answer you're looking for?
-            </p>
-            <div className="w-full text-center">
-              <button
-                onClick={() => {
-                  router.push("contact");
-                }}
-                className="rounded-full py-3 px-10 bg-[#F2F2F2] text-[#333]"
-              >
-                Submit Request
-              </button>
+        <div
+          class="w-full h-full p-5"
+          style={{
+            background:
+              "linear-gradient(94deg, rgba(42, 28, 61, 0.60) 0.01%, rgba(144, 33, 255, 0.47) 103.3%), #070317",
+          }}
+        >
+          <div className="flex flex-col lg:flex-row justify-center items-center">
+            <div className="w-full lg:w-1/2 flex gap-5 lg:gap-10 justify-center items-center flex-col px-3 py-3 lg:px-10 lg:py-5">
+              <p className="w-full text-center text-2xl lg:text-6xl font-semibold text-[#fff]">
+                Can't find the answer you're looking for?
+              </p>
+              <div className="w-full text-center">
+                <button
+                  onClick={() => {
+                    router.push("contact");
+                  }}
+                  className="rounded-full py-3 px-10 bg-[#F2F2F2] text-[#333]"
+                >
+                  Submit Request
+                </button>
+              </div>
+            </div>
+            <div className="w-full hidden lg:w-1/2 lg:flex justify-center items-center">
+              <img
+                src={basket.src}
+                className="w-full object-contain h-full"
+                alt=""
+              />
             </div>
           </div>
-          <div className="w-full hidden lg:w-1/2 lg:flex justify-center items-center">
-            <img
-              src={basket.src}
-              className="w-full object-contain h-full"
-              alt=""
-            />
-          </div>
+        </div>
+
+        <div className="w-full h-full">
+          <Footer />
         </div>
       </div>
-
-      <div className="w-full h-full">
-        <Footer />
-      </div>
-    </div>
+    </>
   );
 };
 
