@@ -491,17 +491,9 @@ const EventDetails = () => {
 
   const GenerateQr = async (eventId, circleId, currentUserId, creatorId) => {
     try {
-      const link = `https://nowwsocial.page.link?id=events_${eventId}_${circleId}_${currentUserId}_${creatorId}`;
-      let id = `events_${eventId}_${circleId}_${currentUserId}_${creatorId}`;
-
-      let response = await axios.post("/api/database/getdynamiclink", {
-        id: id,
-        link: link,
-      });
-
-      let dynamicLink = response.data.shortLink;
-
-      const qrCodeDataURL = await QRCode.toDataURL(dynamicLink);
+      const qrCodeDataURL = await QRCode.toDataURL(
+        `https://apps.noww.co/preview/invitationcard/${id}`
+      );
 
       let dataUrl = qrCodeDataURL.split(",")[1];
       return dataUrl;
@@ -524,8 +516,10 @@ const EventDetails = () => {
   };
 
   useEffect(() => {
-    generateQRCode();
-  }, []);
+    if (id) {
+      generateQRCode();
+    }
+  }, [id]);
 
   if (loading) {
     return (
