@@ -16,13 +16,13 @@ import { auth } from "@/firebase";
 import { arrayUnion } from "firebase/firestore";
 import Register from "@/components/Home/Register";
 import QRCode from "qrcode";
-import { ThreeDots } from "react-loader-spinner";
 import toast from "react-simple-toasts";
 import img from "./Profile_Picture.png";
 import { LogoUrl } from "@/utils/logo";
 import { HiMiniUserCircle } from "react-icons/hi2";
 import axios from "axios";
 import Loading from "@/components/Loading";
+import { ThreeDots } from "react-loader-spinner";
 import {
   CalendarIcon,
   ClockIcon,
@@ -70,6 +70,8 @@ import {
 import { useMediaQuery } from "react-responsive";
 import calendarImage from "./schedule.png";
 import noImage from "../../../public/revamp/bg-sec3.png";
+import ReactStars from "react-rating-stars-component";
+import Rating from "@mui/material/Rating";
 
 const EventDetails = () => {
   const breakpoints = {
@@ -134,6 +136,9 @@ const EventDetails = () => {
   const [filteredAttendeesDataList, setFilteredAttendeesDataList] =
     useState(null);
   const [searchAttendees, setSearchAttendees] = useState("");
+  const [rating, setRating] = useState("");
+  const [ratingCount, setRatingCount] = useState("");
+  const [ratingFeedback, setRatingFeedback] = useState("");
 
   // Filter events that occur after the current date and time
   const upcomingEvents = sortedEvents.filter((event) => {
@@ -144,6 +149,11 @@ const EventDetails = () => {
   const handleTextChange = (e) => {
     setText(e.target.value);
   };
+
+  useEffect(() => {
+    console.log("USER: ", user);
+    console.log("Creator Data: ", creatorData);
+  }, [user, creatorData]);
 
   //get all events
   useEffect(() => {
@@ -335,29 +345,6 @@ const EventDetails = () => {
       fetchCreatorData();
     }
   }, [nextFourEvents]);
-
-  const attendEventMail = () => {
-    try {
-      var myHeaders = new Headers();
-      myHeaders.append("accessToken", circleAccessToken);
-
-      var requestOptions = {
-        method: "GET",
-        headers: myHeaders,
-        redirect: "follow",
-      };
-
-      fetch(
-        `https://api.circle.ooo/api/circle/email/event?eventId=${id}&emailType=ATTEND-EVENT-MAIL`,
-        requestOptions
-      )
-        .then((response) => response.text())
-        .then((result) => console.log("MAIL RESULT:", result))
-        .catch((error) => console.log("error", error));
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   const handleAttend = () => {
     if (user === null) {
@@ -586,6 +573,110 @@ const EventDetails = () => {
     }
   }, [searchAttendees]);
 
+  // Get Feedbacks
+  const [feedbackPageSize, setFeedbackPageSize] = useState(10);
+  const [getFeedbacksLoader, setGetFeedbacksLoader] = useState(false);
+  const [feedbacksData, setFeedbacksData] = useState([]);
+  const getInitialFeedbacks = async () => {
+    try {
+      const myHeaders = new Headers();
+      myHeaders.append("accessToken", circleAccessToken);
+
+      const requestOptions = {
+        method: "GET",
+        headers: myHeaders,
+        redirect: "follow",
+      };
+
+      await fetch(
+        `https://api.circle.ooo/api/circle/event/get-feedback-by-eventid?eventId=${id}&pageSize=10`,
+        requestOptions
+      )
+        .then((response) => response.json())
+        .then((result) => {
+          if (result.result === true && result.code === 6000) {
+            console.log("FEEDBACKS: ", result.data);
+            setFeedbacksData(result.data.Feedbacks);
+          } else {
+            toast(result.message);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const showMoreReviews = async () => {
+    if (getFeedbacksLoader || feedbacksData.length === 0) {
+      return;
+    }
+
+    setGetFeedbacksLoader(true);
+    try {
+      const newPageSize = feedbackPageSize + 10;
+      const response = await fetch(
+        `https://api.circle.ooo/api/circle/event/get-feedback-by-eventid?eventId=${id}&pageSize=${newPageSize}`,
+        {
+          method: "GET",
+          headers: {
+            accessToken: circleAccessToken,
+          },
+        }
+      );
+      const data = await response.json();
+
+      if (data.result === true && data.code === 6000) {
+        setFeedbacksData(data.data.Feedbacks); // Concatenate new data with existing
+        setFeedbackPageSize(newPageSize);
+      } else {
+        console.error("Error fetching reviews:", data.message);
+        toast("Error fetching reviews!"); // Consider a more user-friendly message if applicable
+      }
+    } catch (error) {
+      console.error("Error fetching reviews:", error);
+      toast("Error loading reviews. Please try again later."); // Informative error message
+    } finally {
+      setGetFeedbacksLoader(false);
+    }
+  };
+
+  const getFeedbackStats = async () => {
+    try {
+      const myHeaders = new Headers();
+      myHeaders.append("accessToken", circleAccessToken);
+
+      const requestOptions = {
+        method: "GET",
+        headers: myHeaders,
+        redirect: "follow",
+      };
+
+      await fetch(
+        `https://api.circle.ooo/api/circle/event/get-feedback-stats-by-eventid?eventId=${id}`,
+        requestOptions
+      )
+        .then((response) => response.json())
+        .then((result) => {
+          if (result.result === true) {
+            console.log(result);
+            setRatingFeedback(result.data);
+            let totalSum = 0;
+            for (const key in result.data.rating_count) {
+              totalSum += result.data.rating_count[key];
+            }
+            setRating(Math.round(result.data.avg_rating));
+            setRatingCount(Number(totalSum));
+          }
+        })
+        .catch((error) => console.log(error));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   // Add to calendar
 
   const [circleAccessToken, setCircleAccessToken] = useState("");
@@ -607,6 +698,36 @@ const EventDetails = () => {
     console.log("USER DATA", user);
     getIdTokenForUser();
   }, [user]);
+
+  useEffect(() => {
+    if (circleAccessToken !== "" && user && user.uid === creatorData.uid) {
+      getFeedbackStats();
+      getInitialFeedbacks();
+    }
+  }, [circleAccessToken, user, id, creatorData]);
+
+  const attendEventMail = () => {
+    try {
+      var myHeaders = new Headers();
+      myHeaders.append("accessToken", circleAccessToken);
+
+      var requestOptions = {
+        method: "GET",
+        headers: myHeaders,
+        redirect: "follow",
+      };
+
+      fetch(
+        `https://api.circle.ooo/api/circle/email/event?eventId=${id}&emailType=ATTEND-EVENT-MAIL`,
+        requestOptions
+      )
+        .then((response) => response.text())
+        .then((result) => console.log("MAIL RESULT:", result))
+        .catch((error) => console.log("error", error));
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const getThirdPartyIntegrations = async () => {
     var myHeaders = new Headers();
@@ -1183,6 +1304,265 @@ const EventDetails = () => {
                       })}
                     </div>
                   )}
+                </div>
+              </>
+            )}
+
+            {user && user.uid === creatorData.uid && (
+              <>
+                <div className="flex w-full text-[#F2F2F2] flex-col items-start justify-start mt-8 border-dashed border-t-2 border-[#fff] border-opacity-20">
+                  <div className="mt-6 font-bold text-[#F2F2F2] text-3xl">
+                    Review/s
+                  </div>
+                  <div
+                    style={{
+                      border: "1px solid rgba(255, 255, 255, 0.20)",
+                      background: "rgba(255, 255, 255, 0.12)",
+                      backdropFilter: "blur(40px)",
+                    }}
+                    className="flex w-full justify-center lg:justify-start items-center flex-col rounded-xl p-10 mt-6"
+                  >
+                    <div className="w-full mt-4 flex flex-wrap justify-center lg:justify-start items-center gap-6">
+                      <div
+                        style={{
+                          borderRadius: "16px",
+                          border: "1px solid rgba(255, 255, 255, 0.16)",
+                          background:
+                            "linear-gradient(149deg, rgba(255, 255, 255, 0.20) 0.71%, rgba(255, 255, 255, 0.10) 98.8%)",
+                          backdropFilter: "blur(40px)",
+                        }}
+                        className="flex w-full lg:w-auto h-40 flex-col justify-start items-start rounded-lg p-5"
+                      >
+                        <div className="text-[#fff] text-center lg:text-left w-full h-auto border-b-2 border-[#E0E0E0] pb-5 font-semibold text-lg">
+                          <p>Average Rating</p>
+                        </div>
+                        <div className="flex justify-center items-center text-[#fff] font-semibold flex-row w-full h-auto mt-2">
+                          <div className="flex flex-col justify-center items-center">
+                            <Rating value={rating} readOnly />
+                            <div className="mt-2">
+                              Rated {rating} out of {ratingCount} Review/s
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        style={{
+                          borderRadius: "16px",
+                          border: "1px solid rgba(255, 255, 255, 0.16)",
+                          background:
+                            "linear-gradient(149deg, rgba(255, 255, 255, 0.20) 0.71%, rgba(255, 255, 255, 0.10) 98.8%)",
+                          backdropFilter: "blur(40px)",
+                        }}
+                        className="flex w-full lg:w-auto h-auto flex-col justify-start items-start rounded-lg p-10"
+                      >
+                        <div className="flex justify-center items-center text-[#fff] font-semibold flex-row w-full h-auto mt-2">
+                          <div className="flex flex-col justify-center items-center">
+                            <img
+                              src="https://files.zmurl.com/email/star-5.png"
+                              alt="Rating: 5"
+                              className="object-contain h-10"
+                            />
+                            <div className="mt-2">
+                              (
+                              {ratingFeedback && ratingFeedback.rating_count[5]}{" "}
+                              Review/s)
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        style={{
+                          borderRadius: "16px",
+                          border: "1px solid rgba(255, 255, 255, 0.16)",
+                          background:
+                            "linear-gradient(149deg, rgba(255, 255, 255, 0.20) 0.71%, rgba(255, 255, 255, 0.10) 98.8%)",
+                          backdropFilter: "blur(40px)",
+                        }}
+                        className="flex w-full lg:w-auto h-auto flex-col justify-start items-start rounded-lg p-10"
+                      >
+                        <div className="flex justify-center items-center text-[#fff] font-semibold flex-row w-full h-auto mt-2">
+                          <div className="flex flex-col justify-center items-center">
+                            <img
+                              src="https://files.zmurl.com/email/star-4.png"
+                              alt="Rating: 4"
+                              className="object-contain h-10"
+                            />
+                            <div className="mt-2">
+                              (
+                              {ratingFeedback && ratingFeedback.rating_count[4]}{" "}
+                              Review/s)
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        style={{
+                          borderRadius: "16px",
+                          border: "1px solid rgba(255, 255, 255, 0.16)",
+                          background:
+                            "linear-gradient(149deg, rgba(255, 255, 255, 0.20) 0.71%, rgba(255, 255, 255, 0.10) 98.8%)",
+                          backdropFilter: "blur(40px)",
+                        }}
+                        className="flex w-full lg:w-auto h-auto flex-col justify-start items-start rounded-lg p-10"
+                      >
+                        <div className="flex justify-center items-center text-[#fff] font-semibold flex-row w-full h-auto mt-2">
+                          <div className="flex flex-col justify-center items-center">
+                            <img
+                              src="https://files.zmurl.com/email/star-3.png"
+                              alt="Rating: 3"
+                              className="object-contain h-10"
+                            />
+                            <div className="mt-2">
+                              (
+                              {ratingFeedback && ratingFeedback.rating_count[3]}{" "}
+                              Review/s)
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        style={{
+                          borderRadius: "16px",
+                          border: "1px solid rgba(255, 255, 255, 0.16)",
+                          background:
+                            "linear-gradient(149deg, rgba(255, 255, 255, 0.20) 0.71%, rgba(255, 255, 255, 0.10) 98.8%)",
+                          backdropFilter: "blur(40px)",
+                        }}
+                        className="flex w-full lg:w-auto h-auto flex-col justify-start items-start rounded-lg p-10"
+                      >
+                        <div className="flex justify-center items-center text-[#fff] font-semibold flex-row w-full h-auto mt-2">
+                          <div className="flex flex-col justify-center items-center">
+                            <img
+                              src="https://files.zmurl.com/email/star-2.png"
+                              alt="Rating: 2"
+                              className="object-contain h-10"
+                            />
+                            <div className="mt-2">
+                              (
+                              {ratingFeedback && ratingFeedback.rating_count[2]}{" "}
+                              Review/s)
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        style={{
+                          borderRadius: "16px",
+                          border: "1px solid rgba(255, 255, 255, 0.16)",
+                          background:
+                            "linear-gradient(149deg, rgba(255, 255, 255, 0.20) 0.71%, rgba(255, 255, 255, 0.10) 98.8%)",
+                          backdropFilter: "blur(40px)",
+                        }}
+                        className="flex w-full lg:w-auto h-auto flex-col justify-start items-start rounded-lg p-10"
+                      >
+                        <div className="flex justify-center items-center text-[#fff] font-semibold flex-row w-full h-auto mt-2">
+                          <div className="flex flex-col justify-center items-center">
+                            <img
+                              src="https://files.zmurl.com/email/star-1.png"
+                              alt="Rating: 1"
+                              className="object-contain h-10"
+                            />
+                            <div className="mt-2">
+                              (
+                              {ratingFeedback && ratingFeedback.rating_count[1]}{" "}
+                              Review/s)
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    {/* Second Section */}
+                    <div className="flex w-full flex-col justify-start items-center">
+                      {feedbacksData !== undefined &&
+                      feedbacksData.length > 0 ? (
+                        <>
+                          {feedbacksData.map((item) => (
+                            <>
+                              <div className="flex text-base w-full justify-start mt-8 items-center flex-row p-2">
+                                <div className="rounded-full bg-white border-2 w-16 h-16">
+                                  <img
+                                    src={
+                                      item?.PhotoURL ? item?.PhotoURL : img.src
+                                    }
+                                    className="rounded-full w-full h-full object-cover"
+                                    alt=""
+                                  />
+                                </div>
+                                <div className="flex ml-3 flex-col justify-start items-start">
+                                  <p className="font-bold">
+                                    {item.DisplayName}
+                                  </p>
+                                  <p className="font-bold">
+                                    <Rating
+                                      value={Number(item?.Rating)}
+                                      readOnly
+                                    />
+                                  </p>
+                                </div>
+                              </div>
+                              <div className="flex flex-row justify-start items-center w-full mt-0 pt-0">
+                                <p className="font-bold ml-[10%]">
+                                  {item.Review}
+                                </p>
+                              </div>
+                            </>
+                          ))}
+                        </>
+                      ) : (
+                        <>
+                          <div className="flex text-base w-full justify-center lg:justify-start items-center mt-8 flex-row p-2">
+                            <div className="flex flex-col justify-center lg:justify-start items-start">
+                              <p className="w-full font-bold">
+                                No Reviews Found!
+                              </p>
+                            </div>
+                          </div>
+                        </>
+                      )}
+                      {feedbacksData.length > 0 && (
+                        <button
+                          onClick={() => {
+                            if (feedbacksData.length < feedbackPageSize) {
+                              toast("All Reviews Fetched!");
+                            } else {
+                              showMoreReviews();
+                            }
+                          }}
+                          disabled={
+                            getFeedbacksLoader ||
+                            feedbacksData.length < feedbackPageSize
+                          }
+                          style={{
+                            border: "1px solid rgba(255, 255, 255, 0.20)",
+                            background:
+                              "linear-gradient(90deg, #4532BF 5.81%, #9429FF 100%)",
+                            boxShadow:
+                              "0px 4px 50px 0px rgba(69, 50, 191, 0.50)",
+                          }}
+                          className={`px-10 mt-12 font14 font-medium rounded-full py-3 font-Montserrat text-[#fff]`}
+                        >
+                          {getFeedbacksLoader ? (
+                            <>
+                              <div className="flex justify-center items-center w-full">
+                                <ThreeDots
+                                  height="20"
+                                  color="#fff"
+                                  width="50"
+                                  radius="9"
+                                  ariaLabel="three-dots-loading"
+                                  visible={true}
+                                />
+                              </div>
+                            </>
+                          ) : feedbacksData.length < feedbackPageSize ? (
+                            "All Reviews Fetched!"
+                          ) : (
+                            "Show More Reviews"
+                          )}
+                        </button>
+                      )}
+                    </div>
+                  </div>
                 </div>
               </>
             )}

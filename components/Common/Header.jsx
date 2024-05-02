@@ -22,6 +22,7 @@ import { ChevronDownIcon } from "@heroicons/react/solid";
 import { FaSignOutAlt, FaQuestionCircle } from "react-icons/fa";
 import { IoSettingsSharp } from "react-icons/io5";
 import { MdOutlineFavorite } from "react-icons/md";
+import { BsFillCalendarEventFill } from "react-icons/bs";
 import { BsFillInfoCircleFill } from "react-icons/bs";
 import { BiSolidPhoneCall } from "react-icons/bi";
 import { FaSignInAlt } from "react-icons/fa";
@@ -506,6 +507,30 @@ const Header = ({ type = "", page = "" }) => {
                                       "block px-4 py-4 cursor-pointer text-sm"
                                     )}
                                     onClick={() => {
+                                      router.push(
+                                        `/hostEvents?userID=${user.uid}`
+                                      );
+                                    }}
+                                  >
+                                    <div className="flex justify-start items-start">
+                                      <BsFillCalendarEventFill className="w-5 h-5" />
+                                      <span className="px-4 text-sm text-[#666F76] font-Poppins font-normal">
+                                        My Events
+                                      </span>
+                                    </div>
+                                  </div>
+                                )}
+                              </Menu.Item>
+                              <Menu.Item>
+                                {({ active }) => (
+                                  <div
+                                    className={classNames(
+                                      active
+                                        ? "bg-gray-100 text-gray-900"
+                                        : "text-gray-700",
+                                      "block px-4 py-4 cursor-pointer text-sm"
+                                    )}
+                                    onClick={() => {
                                       router.push("/faq");
                                     }}
                                   >
@@ -792,6 +817,28 @@ const Header = ({ type = "", page = "" }) => {
                                   <MdOutlineFavorite className="w-5 h-5" />
                                   <span className="px-4 text-sm text-[#666F76] font-Poppins font-normal">
                                     FAVORITES
+                                  </span>
+                                </div>
+                              </div>
+                            )}
+                          </Menu.Item>
+                          <Menu.Item>
+                            {({ active }) => (
+                              <div
+                                className={classNames(
+                                  active
+                                    ? "bg-gray-100 text-gray-900"
+                                    : "text-gray-700",
+                                  "block px-4 py-4 cursor-pointer text-sm"
+                                )}
+                                onClick={() => {
+                                  router.push(`/hostEvents?userID=${user.uid}`);
+                                }}
+                              >
+                                <div className="flex justify-start items-start">
+                                  <BsFillCalendarEventFill className="w-5 h-5" />
+                                  <span className="px-4 text-sm text-[#666F76] font-Poppins font-normal">
+                                    My Events
                                   </span>
                                 </div>
                               </div>
