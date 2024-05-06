@@ -682,7 +682,7 @@ const Register = ({ showModal, setShowModal }) => {
                             "linear-gradient(90deg, #4532BF 5.81%, #9429FF 100%)",
                           boxShadow: "0px 1px 2px 0px rgba(82, 88, 102, 0.06)",
                         }}
-                        className={`text-white w-full py-5 px-5 rounded-lg`}
+                        className={`text-white w-full lg:w-4/5 py-5 px-5 rounded-lg`}
                       >
                         Login With Email
                       </button>
@@ -702,7 +702,7 @@ const Register = ({ showModal, setShowModal }) => {
                             "linear-gradient(90deg, #4532BF 5.81%, #9429FF 100%)",
                           boxShadow: "0px 1px 2px 0px rgba(82, 88, 102, 0.06)",
                         }}
-                        className={`text-white w-full py-5 rounded-lg`}
+                        className={`text-white w-full lg:w-4/5 py-5 rounded-lg`}
                       >
                         Login With Phone
                       </button>
@@ -711,7 +711,7 @@ const Register = ({ showModal, setShowModal }) => {
                       </div>
                       <div className="w-full flex items-center justify-center flex-col gap-4 mt-8">
                         <div className="flex flex-row justify-center items-center gap-4">
-                          <div
+                          {/* <div
                             style={{
                               border: "1px solid rgba(255, 255, 255, 0.16)",
                               background:
@@ -751,7 +751,7 @@ const Register = ({ showModal, setShowModal }) => {
                                 </defs>
                               </svg>
                             </button>
-                          </div>
+                          </div> */}
                           <div
                             style={{
                               border: "1px solid rgba(255, 255, 255, 0.16)",
@@ -871,7 +871,7 @@ const Register = ({ showModal, setShowModal }) => {
                             "linear-gradient(90deg, #4532BF 5.81%, #9429FF 100%)",
                           boxShadow: "0px 1px 2px 0px rgba(82, 88, 102, 0.06)",
                         }}
-                        className={`text-white w-full py-5 px-5 rounded-lg`}
+                        className={`text-white w-full lg:w-4/5 py-5 px-5 rounded-lg`}
                       >
                         Register With Email
                       </button>
@@ -891,7 +891,7 @@ const Register = ({ showModal, setShowModal }) => {
                             "linear-gradient(90deg, #4532BF 5.81%, #9429FF 100%)",
                           boxShadow: "0px 1px 2px 0px rgba(82, 88, 102, 0.06)",
                         }}
-                        className={`text-white w-full py-5 rounded-lg`}
+                        className={`text-white w-full lg:w-4/5 py-5 rounded-lg`}
                       >
                         Register With Phone
                       </button>
@@ -900,7 +900,7 @@ const Register = ({ showModal, setShowModal }) => {
                       </div>
                       <div className="w-full flex items-center justify-center flex-col gap-4 mt-8">
                         <div className="flex flex-row justify-center items-center gap-4">
-                          <div
+                          {/* <div
                             style={{
                               border: "1px solid rgba(255, 255, 255, 0.16)",
                               background:
@@ -940,7 +940,7 @@ const Register = ({ showModal, setShowModal }) => {
                                 </defs>
                               </svg>
                             </button>
-                          </div>
+                          </div> */}
                           <div
                             style={{
                               border: "1px solid rgba(255, 255, 255, 0.16)",
@@ -1152,7 +1152,7 @@ const Register = ({ showModal, setShowModal }) => {
                           <div>
                             <MuiTelInput
                               value={phoneNumber}
-                              defaultCountry="PK"
+                              defaultCountry="US"
                               // onChange={(value) => }
                               onChange={(value) => {
                                 setPhoneNumber(value);
@@ -1219,7 +1219,7 @@ const Register = ({ showModal, setShowModal }) => {
                         </div>
                         <div className="w-full flex items-center justify-center flex-col gap-4 mt-8">
                           <div className="flex flex-row justify-center items-center gap-4">
-                            <div
+                            {/* <div
                               style={{
                                 border: "1px solid rgba(255, 255, 255, 0.16)",
                                 background:
@@ -1263,7 +1263,7 @@ const Register = ({ showModal, setShowModal }) => {
                                   </defs>
                                 </svg>
                               </button>
-                            </div>
+                            </div> */}
                             <div
                               style={{
                                 border: "1px solid rgba(255, 255, 255, 0.16)",
@@ -1483,7 +1483,7 @@ const Register = ({ showModal, setShowModal }) => {
                     </div>
                     <div className="w-full flex items-center justify-center flex-col gap-4 mt-8">
                       <div className="flex flex-row justify-center items-center gap-4">
-                        <div
+                        {/* <div
                           style={{
                             border: "1px solid rgba(255, 255, 255, 0.16)",
                             background:
@@ -1523,7 +1523,7 @@ const Register = ({ showModal, setShowModal }) => {
                               </defs>
                             </svg>
                           </button>
-                        </div>
+                        </div> */}
                         <div
                           style={{
                             border: "1px solid rgba(255, 255, 255, 0.16)",
@@ -1810,7 +1810,7 @@ const Register = ({ showModal, setShowModal }) => {
                         <div>
                           <MuiTelInput
                             value={phoneNumber}
-                            defaultCountry="PK"
+                            defaultCountry="US"
                             // onChange={(value) => }
                             onChange={(value) => {
                               setPhoneNumber(value);
@@ -1877,7 +1877,7 @@ const Register = ({ showModal, setShowModal }) => {
                       </div>
                       <div className="w-full flex items-center justify-center flex-col gap-4 mt-8">
                         <div className="flex flex-row justify-center items-center gap-4">
-                          <div
+                          {/* <div
                             style={{
                               border: "1px solid rgba(255, 255, 255, 0.16)",
                               background:
@@ -1917,7 +1917,7 @@ const Register = ({ showModal, setShowModal }) => {
                                 </defs>
                               </svg>
                             </button>
-                          </div>
+                          </div> */}
                           <div
                             style={{
                               border: "1px solid rgba(255, 255, 255, 0.16)",
@@ -2400,7 +2400,7 @@ const Register = ({ showModal, setShowModal }) => {
                   </div>
                   <div className="w-full flex items-center justify-center flex-col gap-4 mt-8">
                     <div className="flex flex-row justify-center items-center gap-4">
-                      <div
+                      {/* <div
                         style={{
                           border: "1px solid rgba(255, 255, 255, 0.16)",
                           background:
@@ -2440,7 +2440,7 @@ const Register = ({ showModal, setShowModal }) => {
                             </defs>
                           </svg>
                         </button>
-                      </div>
+                      </div> */}
                       <div
                         style={{
                           border: "1px solid rgba(255, 255, 255, 0.16)",

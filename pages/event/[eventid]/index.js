@@ -112,7 +112,6 @@ const EventDetails = () => {
   const [showShareModal, setShowShareModal] = useState(false);
   const [showsuccessModal, setShowSuccessModal] = useState(false);
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
-  const [isCheckedIn, setIsCheckedIn] = useState(false);
   const timestamp = EventData?.timefrom?.seconds * 1000;
   const formattedTime = moment(timestamp).local().format("LT");
   const [qrCodeBase64, setQRCodeBase64] = useState(null);
@@ -139,6 +138,10 @@ const EventDetails = () => {
   const [rating, setRating] = useState("");
   const [ratingCount, setRatingCount] = useState("");
   const [ratingFeedback, setRatingFeedback] = useState("");
+  const [showCheckInButton, setShowCheckInButton] = useState(false);
+  const [checkInLoader, setCheckInLoader] = useState(false);
+  const [isCheckedIn, setIsCheckedIn] = useState(false);
+  const [checkedInList, setCheckedInList] = useState({});
 
   // Filter events that occur after the current date and time
   const upcomingEvents = sortedEvents.filter((event) => {
@@ -150,10 +153,75 @@ const EventDetails = () => {
     setText(e.target.value);
   };
 
+  const initialCheckInCheck = async () => {
+    const flAttendee = attendeList.filter((fl) => fl.uid === user?.uid);
+    let intervalId;
+    function getThirtyMinutesBefore(eventDate) {
+      const beforeDate = new Date(eventDate.getTime());
+      beforeDate.setMinutes(beforeDate.getMinutes() - 30);
+      return beforeDate;
+    }
+    function checkForEventStart() {
+      const now = new Date();
+      const thirtyMinutesBefore = getThirtyMinutesBefore(
+        EventData.timefrom.toDate()
+      );
+      if (now >= thirtyMinutesBefore && flAttendee) {
+        setShowCheckInButton(true);
+        clearInterval(intervalId);
+        return true;
+      } else {
+        return false;
+      }
+    }
+    intervalId = setInterval(checkForEventStart, 5000);
+    if (user.uid === creatorData.uid && flAttendee) {
+      setShowCheckInButton(true);
+    }
+  };
+
   useEffect(() => {
-    console.log("USER: ", user);
-    console.log("Creator Data: ", creatorData);
-  }, [user, creatorData]);
+    if (checkedInList.length > 0) {
+      const isCheckedInFlag = checkedInList?.filter(
+        (fl) => fl.uid === user?.uid
+      );
+      console.log("CHECKED IN FLAG: ", isCheckedInFlag, isCheckedIn);
+      if (isCheckedInFlag.length > 0) {
+        setIsCheckedIn(true);
+      }
+    }
+    if (
+      user &&
+      creatorData &&
+      attendeList.length > 0 &&
+      Object.keys(EventData).length > 0
+    ) {
+      initialCheckInCheck();
+    }
+  }, [user, creatorData, attendeList, EventData, checkedInList]);
+
+  const handleCheckIn = async () => {
+    setCheckInLoader(true);
+    const userUID = user.uid;
+    const userRef = doc(db, "Users", userUID);
+    const userRefPath = userRef;
+    const docRefUpdate = doc(db, "events", id);
+    const updatedData = {
+      checkedin: arrayUnion(userRefPath),
+    };
+    try {
+      await updateDoc(docRefUpdate, updatedData);
+      toast("Checked In Successfully!");
+      setCheckInLoader(false);
+      setIsCheckedIn(true);
+      setShowCheckInButton(true);
+    } catch (error) {
+      console.error("Error updating document: ", error);
+      toast("Something went wrong!");
+      setCheckInLoader(false);
+      setShowCheckInButton(true);
+    }
+  };
 
   //get all events
   useEffect(() => {
@@ -195,6 +263,30 @@ const EventDetails = () => {
 
             setCohostlist(cohosts_list_temp_array || []);
             console.log("CO HOSTS: ", cohosts_list_temp_array);
+
+            // Checked in users list
+
+            const checkedInData = docquery?.data()?.checkedin || [];
+            let checkedIn_list_temp_array = [];
+            if (checkedInData?.length > 0) {
+              for (let i = 0; i < checkedInData.length; i++) {
+                const checkedInUserDocRef = doc(
+                  db,
+                  "Users",
+                  checkedInData[i].id
+                );
+                const checkedInUserDocSnapshot = await getDoc(
+                  checkedInUserDocRef
+                );
+                if (checkedInUserDocSnapshot.exists()) {
+                  const checkedInUserData = checkedInUserDocSnapshot.data();
+                  checkedIn_list_temp_array.push(checkedInUserData);
+                }
+              }
+            }
+
+            setCheckedInList(checkedIn_list_temp_array || []);
+            console.log("Checked In List: ", checkedIn_list_temp_array);
 
             const attendesData = docquery?.data()?.attendees || [];
             let attendees_list_temp_array = [];
@@ -387,14 +479,6 @@ const EventDetails = () => {
       console.error("Error pushing attendee data:", error);
     }
   };
-
-  // useEffect(() => {
-  //   if (Array.isArray(attendeList) && attendeList.includes(user?.uid)) {
-  //     setIsCheckedIn(true);
-  //   } else {
-  //     setIsCheckedIn(false);
-  //   }
-  // }, [attendeList]);
 
   const handleClick = (e) => {
     e?.preventDefault();
@@ -1807,9 +1891,43 @@ const EventDetails = () => {
                 background: "rgba(255, 255, 255, 0.12)",
                 backdropFilter: "blur(40px)",
               }}
-              className="flex w-full mt-4 flex-row justify-center items-center p-6 rounded-xl"
+              className="flex w-full mt-4 flex-col justify-center items-center p-6 rounded-xl"
             >
-              {/* Hello */}
+              {(showCheckInButton || isCheckedIn) && (
+                <>
+                  <button
+                    onClick={(e) => {
+                      handleCheckIn();
+                    }}
+                    disabled={checkInLoader || isCheckedIn}
+                    style={{
+                      border: "1px solid rgba(255, 255, 255, 0.10)",
+                      background:
+                        "linear-gradient(90deg, #4532BF 5.81%, #9429FF 100%)",
+                    }}
+                    className={`flex mb-3 justify-center items-center flex-row rounded-xl text-lg py-5 px-5 w-full font-bold text-[#fff]`}
+                  >
+                    {checkInLoader ? (
+                      <>
+                        <div className="flex justify-center items-center w-full">
+                          <ThreeDots
+                            height="20"
+                            color="#fff"
+                            width="50"
+                            radius="9"
+                            ariaLabel="three-dots-loading"
+                            visible={true}
+                          />
+                        </div>
+                      </>
+                    ) : isCheckedIn ? (
+                      "Checked In"
+                    ) : (
+                      "Check In"
+                    )}
+                  </button>
+                </>
+              )}
               {type ? (
                 <button
                   onClick={(e) => {

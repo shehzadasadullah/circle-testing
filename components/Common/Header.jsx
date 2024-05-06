@@ -515,7 +515,7 @@ const Header = ({ type = "", page = "" }) => {
                                     <div className="flex justify-start items-start">
                                       <BsFillCalendarEventFill className="w-5 h-5" />
                                       <span className="px-4 text-sm text-[#666F76] font-Poppins font-normal">
-                                        My Events
+                                        My Past Events
                                       </span>
                                     </div>
                                   </div>
@@ -838,7 +838,7 @@ const Header = ({ type = "", page = "" }) => {
                                 <div className="flex justify-start items-start">
                                   <BsFillCalendarEventFill className="w-5 h-5" />
                                   <span className="px-4 text-sm text-[#666F76] font-Poppins font-normal">
-                                    My Events
+                                    My Past Events
                                   </span>
                                 </div>
                               </div>

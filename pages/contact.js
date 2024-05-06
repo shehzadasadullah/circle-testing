@@ -13,7 +13,9 @@ import toast from "react-simple-toasts";
 import { MdEmail } from "react-icons/md";
 import { ThreeDots } from "react-loader-spinner";
 import bgImage from "@/public/revamp/bg-new.png";
+import { IoShareSocialSharp } from "react-icons/io5";
 import bgImageSecond from "@/public/revamp/bg-sec5.png";
+import { MuiTelInput } from "mui-tel-input";
 
 const contact = () => {
   const router = useRouter();
@@ -30,8 +32,7 @@ const contact = () => {
 
     const nameRegex = /^[A-Za-z]+$/;
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-    const numberRegex =
-      /^(?:\+1)?(?:\(?([2-9]\d{2})\)?[-.\s]?)?\d{3}[-.\s]?\d{4}$/;
+    const phoneRegex = /^[+]{1}(?:[0-9\-\\(\\)\\/.]\s?){6,15}[0-9]{1}$/;
 
     if (!nameRegex.test(firstName)) {
       toast("Please enter a valid first name!");
@@ -42,7 +43,10 @@ const contact = () => {
     } else if (!emailRegex.test(email)) {
       toast("Please enter valid email!");
       setEmailLoader(false);
-    } else if (!numberRegex.test(phoneNumber)) {
+    } else if (phoneNumber === "") {
+      toast("Please enter valid phone number!");
+      setEmailLoader(false);
+    } else if (!phoneRegex.test(phoneNumber)) {
       toast("Please enter valid phone number!");
       setEmailLoader(false);
     } else {
@@ -237,15 +241,22 @@ const contact = () => {
                 className="flex flex-col h-52 w-full lg:w-[30%] justify-center lg:justify-start justify-center lg:items-start p-5 rounded-xl"
               >
                 <div className="w-full flex justify-center lg:justify-start items-center">
-                  <div
+                  <a
                     style={{
-                      background:
-                        "linear-gradient(90deg, #4532BF 5.81%, #9429FF 100%)",
+                      textDecoration: "none",
                     }}
-                    className="h-12 w-12 flex justify-center items-center rounded-full"
+                    href="mailto:support@circle.ooo"
                   >
-                    <MdEmail size={25} color="#fff" />
-                  </div>
+                    <div
+                      style={{
+                        background:
+                          "linear-gradient(90deg, #4532BF 5.81%, #9429FF 100%)",
+                      }}
+                      className="h-12 w-12 flex justify-center items-center rounded-full"
+                    >
+                      <MdEmail size={25} color="#fff" />
+                    </div>
+                  </a>
                 </div>
                 <p className="text-[#fff] w-full text-center lg:text-start font-bold text-lg mt-5">
                   Contact
@@ -276,7 +287,7 @@ const contact = () => {
                     }}
                     className="h-12 w-12 flex justify-center items-center rounded-full"
                   >
-                    <BiSolidNavigation size={25} color="#fff" />
+                    <IoShareSocialSharp size={25} color="#fff" />
                   </div>
                 </div>
                 <p className="text-[#fff] font-bold w-full text-center lg:text-start text-lg mt-5">
@@ -343,6 +354,9 @@ const contact = () => {
         className="w-full h-full mt-[-10%] lg:mt-0"
       >
         <div className="flex flex-col justify-center items-center w-full p-5 lg:p-12 shadow-xl">
+          <p className="w-full text-center mt-8">
+            <span className="text-[#fff] text-6xl">Reach out to us</span>
+          </p>
           <form
             className="flex w-full lg:w-[70%] xl:w-[50%] flex-col justify-center items-center p-5 lg:p-10"
             onSubmit={(e) => handleSubmit(e)}
@@ -352,7 +366,7 @@ const contact = () => {
                 style={{
                   background: "rgba(28, 34, 44, 0.60)",
                 }}
-                className="w-full text-[#fff] border border-opacity-20 focus:border-opacity-60 border-[#fff] border-[0.5px] focus:border-[0.5px] py-3 px-5 rounded-2xl outline-none"
+                className="w-full text-[#fff] border border-opacity-20 border-[#fff] border-[0.5px] py-3 px-5 rounded-2xl outline-none"
                 id="fName"
                 type="text"
                 value={firstName}
@@ -366,7 +380,7 @@ const contact = () => {
                 style={{
                   background: "rgba(28, 34, 44, 0.60)",
                 }}
-                className="w-full text-[#fff] border border-opacity-20 focus:border-opacity-60 border-[#fff] border-[0.5px] focus:border-[0.5px] py-3 px-5 rounded-2xl outline-none"
+                className="w-full text-[#fff] border border-opacity-20 border-[#fff] border-[0.5px] py-3 px-5 rounded-2xl outline-none"
                 id="lName"
                 type="text"
                 value={lastName}
@@ -382,7 +396,7 @@ const contact = () => {
                 style={{
                   background: "rgba(28, 34, 44, 0.60)",
                 }}
-                className="w-full text-[#fff] border border-opacity-20 focus:border-opacity-60 border-[#fff] border-[0.5px] focus:border-[0.5px] py-3 px-5 rounded-2xl outline-none"
+                className="w-full text-[#fff] border border-opacity-20 border-[#fff] border-[0.5px] py-3 px-5 rounded-2xl outline-none"
                 id="email"
                 type="email"
                 value={email}
@@ -394,20 +408,31 @@ const contact = () => {
               />
             </div>
             <div className="mb-4 w-full flex justify-center items-center">
-              <input
-                style={{
-                  background: "rgba(28, 34, 44, 0.60)",
-                }}
-                className="w-full text-[#fff] border border-opacity-20 focus:border-opacity-60 border-[#fff] border-[0.5px] focus:border-[0.5px] py-3 px-5 rounded-2xl outline-none"
-                id="number"
-                type="text"
-                inputMode="number"
+              <MuiTelInput
                 value={phoneNumber}
-                onChange={(e) => {
-                  setPhoneNumber(e.target.value);
+                defaultCountry="US"
+                onChange={(value) => {
+                  setPhoneNumber(value);
+                  console.log(value);
                 }}
-                placeholder="5555551212"
-                required
+                sx={{
+                  "& .MuiInputBase-root": {
+                    color: "white",
+                    border: "none",
+                  },
+                  "& .MuiIconButton-label": { color: "white" },
+                  "& .MuiOutlinedInput-notchedOutline": {
+                    border: "none !important",
+                  },
+                  "& .MuiButtonBase-root": {
+                    color: "white",
+                    border: "none",
+                  },
+                  width: "100%",
+                  background: "rgba(28, 34, 44, 0.60)",
+                  border: "0.5px solid rgba(255, 255, 255, 0.20)",
+                  borderRadius: "1rem",
+                }}
               />
             </div>
             <div className="mb-4 w-full flex justify-center items-center">
@@ -415,7 +440,7 @@ const contact = () => {
                 style={{
                   background: "rgba(28, 34, 44, 0.60)",
                 }}
-                className="w-full h-40 text-[#fff] border border-opacity-20 focus:border-opacity-60 border-[#fff] border-[0.5px] focus:border-[0.5px] py-3 px-5 rounded-2xl outline-none"
+                className="w-full h-40 text-[#fff] border border-opacity-20 border-[#fff] border-[0.5px] py-3 px-5 rounded-2xl outline-none"
                 id="message"
                 type="text"
                 value={message}
