@@ -183,7 +183,7 @@ const EventsNearMe = () => {
       <h3 className="font28 font-semibold text-[#14183E] font-Montserrat w-full flex justify-start items-center px-2">
         Events Near Me
       </h3>
-      <div className=" w-full h-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 py-4">
+      <div className=" w-full h-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:lg:grid-cols-5 gap-4 py-4">
         {(EventsData || [])
           .filter((item) => {
             const distance = calculateDistance(

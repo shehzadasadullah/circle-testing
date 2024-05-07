@@ -1396,7 +1396,7 @@ const EventDetails = () => {
               <>
                 <div className="flex w-full text-[#F2F2F2] flex-col items-start justify-start mt-8 border-dashed border-t-2 border-[#fff] border-opacity-20">
                   <div className="mt-6 font-bold text-[#F2F2F2] text-3xl">
-                    Review/s
+                    Rating & Reviews
                   </div>
                   <div
                     style={{
@@ -1424,7 +1424,8 @@ const EventDetails = () => {
                           <div className="flex flex-col justify-center items-center">
                             <Rating value={rating} readOnly />
                             <div className="mt-2">
-                              Rated {rating} out of {ratingCount} Review/s
+                              Rated {rating} out of {ratingCount}{" "}
+                              {ratingCount === 1 ? "Review" : "Reviews"}
                             </div>
                           </div>
                         </div>
@@ -1449,7 +1450,11 @@ const EventDetails = () => {
                             <div className="mt-2">
                               (
                               {ratingFeedback && ratingFeedback.rating_count[5]}{" "}
-                              Review/s)
+                              {ratingFeedback &&
+                              ratingFeedback.rating_count[5] === 1
+                                ? "Review"
+                                : "Reviews"}
+                              )
                             </div>
                           </div>
                         </div>
@@ -1474,7 +1479,11 @@ const EventDetails = () => {
                             <div className="mt-2">
                               (
                               {ratingFeedback && ratingFeedback.rating_count[4]}{" "}
-                              Review/s)
+                              {ratingFeedback &&
+                              ratingFeedback.rating_count[4] === 1
+                                ? "Review"
+                                : "Reviews"}
+                              )
                             </div>
                           </div>
                         </div>
@@ -1499,7 +1508,11 @@ const EventDetails = () => {
                             <div className="mt-2">
                               (
                               {ratingFeedback && ratingFeedback.rating_count[3]}{" "}
-                              Review/s)
+                              {ratingFeedback &&
+                              ratingFeedback.rating_count[3] === 1
+                                ? "Review"
+                                : "Reviews"}
+                              )
                             </div>
                           </div>
                         </div>
@@ -1524,7 +1537,11 @@ const EventDetails = () => {
                             <div className="mt-2">
                               (
                               {ratingFeedback && ratingFeedback.rating_count[2]}{" "}
-                              Review/s)
+                              {ratingFeedback &&
+                              ratingFeedback.rating_count[2] === 1
+                                ? "Review"
+                                : "Reviews"}
+                              )
                             </div>
                           </div>
                         </div>
@@ -1549,7 +1566,11 @@ const EventDetails = () => {
                             <div className="mt-2">
                               (
                               {ratingFeedback && ratingFeedback.rating_count[1]}{" "}
-                              Review/s)
+                              {ratingFeedback &&
+                              ratingFeedback.rating_count[1] === 1
+                                ? "Review"
+                                : "Reviews"}
+                              )
                             </div>
                           </div>
                         </div>

@@ -533,7 +533,7 @@ const EventTabs = () => {
             getEventsData(allEventsLimit);
           }}
         >
-          All
+          Upcoming
         </button>
         <button
           style={{
@@ -666,7 +666,7 @@ const EventTabs = () => {
         {activeTab === 1 && (
           <div className="flex justify-center items-center flex-col w-full">
             <div className={`w-full flex justify-center items-center flex-col`}>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 lg:flex-row">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:lg:grid-cols-5 gap-6 lg:flex-row">
                 {EventsData.length > 0 &&
                   EventsData.map((item, id) => (
                     <div
@@ -730,7 +730,7 @@ const EventTabs = () => {
         {activeTab === 2 && (
           <div className="flex justify-center items-center flex-col w-full">
             <div className={`w-full flex justify-center items-center flex-col`}>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 lg:flex-row">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:lg:grid-cols-5 gap-6 lg:flex-row">
                 {eventsNearMe.length > 0 &&
                   eventsNearMe.map((item, id) => (
                     <div
@@ -794,7 +794,7 @@ const EventTabs = () => {
         {activeTab === 3 && (
           <div className="flex justify-center items-center flex-col w-full">
             <div className={`w-full flex justify-center items-center flex-col`}>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 lg:flex-row">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:lg:grid-cols-5 gap-6 lg:flex-row">
                 {freeEvents.length > 0 &&
                   freeEvents.map((item, id) => (
                     <div
@@ -858,7 +858,7 @@ const EventTabs = () => {
         {activeTab === 4 && (
           <div className="flex justify-center items-center flex-col w-full">
             <div className={`w-full flex justify-center items-center flex-col`}>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 lg:flex-row">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:lg:grid-cols-5 gap-6 lg:flex-row">
                 {paidEvents.length > 0 &&
                   paidEvents.map((item, id) => (
                     <div
@@ -922,7 +922,7 @@ const EventTabs = () => {
         {activeTab === 5 && (
           <div className="flex justify-center items-center flex-col w-full">
             <div className={`w-full flex justify-center items-center flex-col`}>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 lg:flex-row">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:lg:grid-cols-5 gap-6 lg:flex-row">
                 {todayEvents.length > 0 &&
                   todayEvents.map((item, id) => (
                     <div
@@ -986,7 +986,7 @@ const EventTabs = () => {
         {activeTab === 6 && (
           <div className="flex justify-center items-center flex-col w-full">
             <div className={`w-full flex justify-center items-center flex-col`}>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 lg:flex-row">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:lg:grid-cols-5 gap-6 lg:flex-row">
                 {tomEvents.length > 0 &&
                   tomEvents.map((item, id) => (
                     <div
@@ -1095,7 +1095,7 @@ const EventTabs = () => {
                   <div
                     className={`w-full mt-10 flex justify-center items-center flex-col`}
                   >
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 lg:flex-row">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:lg:grid-cols-5 gap-6 lg:flex-row">
                       {bySearchEvents.length > 0 &&
                         bySearchEvents.map((item, id) => (
                           <div
@@ -1166,7 +1166,7 @@ const EventTabs = () => {
                     <h3 className="text-sm font-semibold font-Montserrat text-white">
                       No Events Found!
                     </h3>
-                    {/* <div className="grid mt-10 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 lg:flex-row">
+                    {/* <div className="grid mt-10 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:lg:grid-cols-5 gap-6 lg:flex-row">
                       {bySearchEvents.length > 0 &&
                         bySearchEvents.map((item, id) => (
                           <div
@@ -1228,7 +1228,7 @@ const EventTabs = () => {
                   <div
                     className={`w-full mt-10 flex justify-center items-center flex-col`}
                   >
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 lg:flex-row">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:lg:grid-cols-5 gap-6 lg:flex-row">
                       {bySearchEvents.length > 0 &&
                         bySearchEvents.map((item, id) => (
                           <div
@@ -1294,7 +1294,7 @@ const EventTabs = () => {
         {activeTab === 8 && (
           <div className="flex justify-center items-center flex-col w-full">
             <div className={`w-full flex justify-center items-center flex-col`}>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 lg:flex-row">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:lg:grid-cols-5 gap-6 lg:flex-row">
                 {otherEventsData.length > 0 &&
                   otherEventsData.map((item, id) => (
                     <div

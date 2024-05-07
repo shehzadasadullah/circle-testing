@@ -460,7 +460,7 @@ const AttendHero = () => {
                           ) : null}
                         </div>
                         <div>
-                          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 xl:w-[1000px] lg:flex-row  h-96 ">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:lg:grid-cols-5 gap-6 xl:w-[1000px] lg:flex-row  h-96 ">
                             {EventsData.map((item, id) => (
                               <div
                                 key={RandomNdigitnumber(10)}
@@ -487,7 +487,7 @@ const AttendHero = () => {
                         </div>
                       </div>
                     ) : (
-                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 xl:w-[1000px] lg:flex-row  h-96 ">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:lg:grid-cols-5 gap-6 xl:w-[1000px] lg:flex-row  h-96 ">
                         {filteredResult.map((item, id) => (
                           <div
                             key={RandomNdigitnumber(10)}

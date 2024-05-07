@@ -117,7 +117,7 @@ const HostEvents = () => {
           </div>
         ) : ( */}
         {/* <> */}
-        <div className="w-full h-auto flex flex-col justify-center gap-4 items-start p-8 lg:p-16">
+        <div className="w-full h-auto flex flex-col justify-center gap-4 items-center p-8 lg:p-16">
           <h3 className="text-5xl lg:text-7xl font-bold w-full flex justify-center items-center">
             <span
               style={{
@@ -132,7 +132,7 @@ const HostEvents = () => {
               My Events
             </span>
           </h3>
-          <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 lg:flex-row">
+          <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:lg:grid-cols-5 gap-6 lg:flex-row">
             {EventsData.length > 0 &&
               EventsData.map((item, id) => (
                 <div

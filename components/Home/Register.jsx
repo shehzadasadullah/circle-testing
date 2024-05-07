@@ -281,6 +281,13 @@ const Register = ({ showModal, setShowModal }) => {
       });
   };
 
+  useEffect(() => {
+    console.log("Verification Length: ", verificationCode.length);
+    if (verificationCode.length === 6) {
+      handleVerifyCode();
+    }
+  }, [verificationCode]);
+
   //google sign in function
   const GoogleSignIn = async () => {
     try {
@@ -1055,6 +1062,7 @@ const Register = ({ showModal, setShowModal }) => {
                           </label>
                           <div className="w-full flex justify-center items-center mb-10">
                             <OtpInput
+                              disabled={true}
                               containerStyle={
                                 "flex object-contain w-full justify-center items-center gap-2"
                               }
@@ -1095,7 +1103,21 @@ const Register = ({ showModal, setShowModal }) => {
                         </div>
 
                         <div className="mt-6 mb-4">
-                          <button
+                          {otpLoaderSignUp && (
+                            <>
+                              <div className="flex justify-center items-center w-full">
+                                <ThreeDots
+                                  height="25"
+                                  color="#fff"
+                                  width="50"
+                                  radius="9"
+                                  ariaLabel="three-dots-loading"
+                                  visible={true}
+                                />
+                              </div>
+                            </>
+                          )}
+                          {/* <button
                             id="sign-in-button"
                             type="submit"
                             disabled={otpLoaderSignUp}
@@ -1125,7 +1147,7 @@ const Register = ({ showModal, setShowModal }) => {
                             ) : (
                               "Verify OTP"
                             )}
-                          </button>
+                          </button> */}
                         </div>
                       </div>
                     </>
@@ -1763,7 +1785,21 @@ const Register = ({ showModal, setShowModal }) => {
                       </div>
 
                       <div className="mt-6 mb-4">
-                        <button
+                        {otpLoaderSignUp && (
+                          <>
+                            <div className="flex justify-center items-center w-full">
+                              <ThreeDots
+                                height="25"
+                                color="#fff"
+                                width="50"
+                                radius="9"
+                                ariaLabel="three-dots-loading"
+                                visible={true}
+                              />
+                            </div>
+                          </>
+                        )}
+                        {/* <button
                           id="sign-in-button"
                           type="submit"
                           disabled={otpLoaderSignUp}
@@ -1793,7 +1829,7 @@ const Register = ({ showModal, setShowModal }) => {
                           ) : (
                             "Verify OTP"
                           )}
-                        </button>
+                        </button> */}
                       </div>
                     </div>
                   </>

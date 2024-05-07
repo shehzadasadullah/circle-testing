@@ -87,7 +87,7 @@ const Favorites = () => {
               Favorite Events
             </span>
           </h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 py-16">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:lg:grid-cols-5 gap-4 py-16">
             {(EventsData || {}) && Object.keys(EventsData || {}).length > 0 && (
               <>
                 {Object.keys(EventsData || {}).map((item, id) => (

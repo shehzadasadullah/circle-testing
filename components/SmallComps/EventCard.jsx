@@ -299,7 +299,7 @@ const EventCard = ({
             <img
               src={image}
               alt={""}
-              className="w-full h-[175px] object-fit rounded-[25px]"
+              className="h-32 object-fit rounded-[25px]"
             />
             <div className="absolute p-2 mt-2 flex w-full justify-end">
               {user?.uid ? (
