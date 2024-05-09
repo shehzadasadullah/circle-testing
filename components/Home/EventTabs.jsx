@@ -505,12 +505,8 @@ const EventTabs = () => {
           style={{
             background: "linear-gradient(269deg, #FFF -1.77%, #9E22FF 37.99%)",
             backgroundClip: "text",
-            WebkitBackgroundClip: "text", // Add the Webkit prefix for older browsers
-            WebkitTextFillColor: "transparent", // Add the Webkit prefix for older browsers
-
-            // color: "#fff",
-            // textShadow:
-            //   "0 0 0.1em rgba(255, 255, 255, 0.5), 0 0 0.2em rgba(255, 255, 255, 0.2), 0 0 0.3em rgba(255, 255, 255, 0.0)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
           }}
         >
           your interests

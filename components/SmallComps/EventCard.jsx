@@ -296,11 +296,13 @@ const EventCard = ({
       <div className="w-full rounded-[25px]">
         {image ? (
           <div className="relative flex flex-col">
-            <img
-              src={image}
-              alt={""}
-              className="h-32 object-fit rounded-[25px]"
-            />
+            <div className="w-full h-32">
+              <img
+                src={image}
+                alt={""}
+                className="w-full h-full object-fill rounded-[25px]"
+              />
+            </div>
             <div className="absolute p-2 mt-2 flex w-full justify-end">
               {user?.uid ? (
                 <div>
@@ -361,11 +363,13 @@ const EventCard = ({
           </div>
         ) : (
           <div className="relative flex flex-col">
-            <img
-              src={bgImage.src}
-              alt={title}
-              className="w-full h-[175px] object-fit rounded-[25px]"
-            />
+            <div className="w-full h-32">
+              <img
+                src={bgImage.src}
+                alt={title}
+                className="w-full h-full object-fill rounded-[25px]"
+              />
+            </div>
             <div className="absolute p-2 mt-2 flex w-full justify-end">
               {user?.uid ? (
                 <div>

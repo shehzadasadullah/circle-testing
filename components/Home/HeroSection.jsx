@@ -93,21 +93,18 @@ const HeroSection = () => {
                 alt=""
               />
             </div>
-            <h1
-              style={{
-                background:
-                  "linear-gradient(100deg, #FFF 17.43%, rgba(255, 255, 255, 0.00) 110.91%)",
-                backgroundClip: "text",
-                WebkitBackgroundClip: "text", // Add the Webkit prefix for older browsers
-                WebkitTextFillColor: "transparent", // Add the Webkit prefix for older browsers
-
-                // color: "#fff",
-                // textShadow:
-                //   "0 0 0.1em rgba(255, 255, 255, 0.5), 0 0 0.2em rgba(255, 255, 255, 0.2), 0 0 0.3em rgba(255, 255, 255, 0.0)",
-              }}
-              className="lg:text-[64px] text-[40px] text-center lg:text-left font-Poppins font-semibold py-2 mt-5"
-            >
-              Invite, Meet & Network Smarter
+            <h1 className="lg:text-[64px] text-[40px] text-center lg:text-left font-Poppins font-semibold py-2 mt-5">
+              <span
+                style={{
+                  background:
+                    "linear-gradient(100deg, rgba(255, 255, 255, 0.70) 17.43%, #FFF 110.91%)",
+                  backgroundClip: "text",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                }}
+              >
+                Invite, Meet & Network Smarter
+              </span>
             </h1>
             <div className="w-full mt-5 flex flex-col  justify-start h-auto">
               <h2

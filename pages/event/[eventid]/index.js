@@ -154,7 +154,8 @@ const EventDetails = () => {
   };
 
   const initialCheckInCheck = async () => {
-    const flAttendee = attendeList.filter((fl) => fl.uid === user?.uid);
+    const flAttendee = attendeesDataList.filter((fl) => fl.uid === user?.uid);
+    console.log("FL ATTENDEE: ", attendeList, attendeesDataList, flAttendee);
     let intervalId;
     function getThirtyMinutesBefore(eventDate) {
       const beforeDate = new Date(eventDate.getTime());
@@ -166,7 +167,7 @@ const EventDetails = () => {
       const thirtyMinutesBefore = getThirtyMinutesBefore(
         EventData.timefrom.toDate()
       );
-      if (now >= thirtyMinutesBefore && flAttendee) {
+      if (now >= thirtyMinutesBefore && flAttendee.length > 0) {
         setShowCheckInButton(true);
         clearInterval(intervalId);
         return true;
@@ -175,7 +176,7 @@ const EventDetails = () => {
       }
     }
     intervalId = setInterval(checkForEventStart, 5000);
-    if (user.uid === creatorData.uid && flAttendee) {
+    if (user.uid === creatorData.uid && flAttendee.length > 0) {
       setShowCheckInButton(true);
     }
   };
@@ -193,12 +194,12 @@ const EventDetails = () => {
     if (
       user &&
       creatorData &&
-      attendeList.length > 0 &&
+      attendeesDataList?.length > 0 &&
       Object.keys(EventData).length > 0
     ) {
       initialCheckInCheck();
     }
-  }, [user, creatorData, attendeList, EventData, checkedInList]);
+  }, [user, creatorData, attendeesDataList, EventData, checkedInList]);
 
   const handleCheckIn = async () => {
     setCheckInLoader(true);
