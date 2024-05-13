@@ -40,6 +40,17 @@ import "cropperjs/dist/cropper.css";
 import bgImage from "../../public/revamp/bg-createEvent.jpg";
 import circleImage from "../../public/revamp/circle.png";
 import noIntegration from "../../public/revamp/error.png";
+import img1 from "@/public/Invite_Images/1.jpg";
+import img2 from "@/public/Invite_Images/2.jpg";
+import img3 from "@/public/Invite_Images/3.jpg";
+import img4 from "@/public/Invite_Images/4.jpg";
+import img5 from "@/public/Invite_Images/5.jpg";
+import img6 from "@/public/Invite_Images/6.jpg";
+import img7 from "@/public/Invite_Images/7.jpg";
+import img8 from "@/public/Invite_Images/8.jpg";
+import img9 from "@/public/Invite_Images/9.jpg";
+import img10 from "@/public/Invite_Images/10.jpg";
+import img11 from "@/public/Invite_Images/11.jpg";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -243,6 +254,46 @@ const CreateEvent = () => {
     setIsOnPrice(!isOnPrice);
   };
 
+  useEffect(() => {
+    const images = [
+      img1.src,
+      img2.src,
+      img3.src,
+      img4.src,
+      img5.src,
+      img6.src,
+      img7.src,
+      img8.src,
+      img9.src,
+      img10.src,
+      img11.src,
+    ];
+
+    const randomIndex = Math.floor(Math.random() * images.length);
+    const selectedImageIndex = images[randomIndex];
+
+    const fetchImage = async (selectedImage) => {
+      console.log("Selected Image: ", selectedImage);
+      const response = await fetch(selectedImage);
+      console.log("Response: ", response);
+      const blob = await response.blob();
+      console.log("Blob: ", blob);
+      const mimetype = blob.type;
+      console.log("TYPE: ", mimetype);
+      const file = new File([blob], "image.png", { type: mimetype });
+      if (file) {
+        const uploadURL = await uploadImage(file);
+        if (uploadURL) {
+          console.log("FILE: ", file);
+          setSelectedLogo(file);
+          setSelectedLogoURL(uploadURL);
+        }
+      }
+    };
+
+    fetchImage(selectedImageIndex);
+  }, []);
+
   const handleLogoChange = async (e) => {
     // const file = e.target.files[0];
     if (e.target.files) {
@@ -262,6 +313,7 @@ const CreateEvent = () => {
       if (file) {
         const uploadURL = await uploadImage(file);
         if (uploadURL) {
+          console.log("FILE: ", file);
           setSelectedLogo(file);
           setSelectedLogoURL(uploadURL);
           setCropImageLoader(false);
@@ -660,9 +712,11 @@ const CreateEvent = () => {
     const specialCharacterRegex = /[!@#$%^&*(),.?":{}|<>]/;
     if (circleData.length === 0) {
       toast("Please create circle in order to create event!");
-    } else if (!selectedLogo) {
-      toast("Please Upload Event Photo!");
-    } else if (selectedCircleId === null) {
+    }
+    // else if (!selectedLogo) {
+    //   toast("Please Upload Event Photo!");
+    // }
+    else if (selectedCircleId === null) {
       toast("Please Select Circle!");
     } else if (eventTitle === "") {
       toast("Please Input Event Title!");
@@ -679,7 +733,7 @@ const CreateEvent = () => {
       if (
         startDateTime &&
         endDateTime &&
-        selectedLogo &&
+        // selectedLogo &&
         eventTitle !== "" &&
         eventDescription !== "" &&
         eventLocation !== ""
@@ -1341,7 +1395,6 @@ const CreateEvent = () => {
                         default: {
                           picker: {
                             width: "96%",
-
                             background: "rgba(255, 255, 255, 0.10)",
                           },
                         },
@@ -1574,6 +1627,19 @@ const CreateEvent = () => {
                             </div>
                           );
                         })}
+                      </div>
+                    </>
+                  ) : fetchCircleDataLoader ? (
+                    <>
+                      <div className="flex mt-4 w-full justify-start items-center">
+                        <ThreeDots
+                          height="20"
+                          color="#fff"
+                          width="50"
+                          radius="9"
+                          ariaLabel="three-dots-loading"
+                          visible={true}
+                        />
                       </div>
                     </>
                   ) : (

@@ -296,7 +296,7 @@ const EventCard = ({
       <div className="w-full rounded-[25px]">
         {image ? (
           <div className="relative flex flex-col">
-            <div className="w-full h-32">
+            <div className="w-full h-40">
               <img
                 src={image}
                 alt={""}
@@ -363,7 +363,7 @@ const EventCard = ({
           </div>
         ) : (
           <div className="relative flex flex-col">
-            <div className="w-full h-32">
+            <div className="w-full h-40">
               <img
                 src={bgImage.src}
                 alt={title}
