@@ -213,7 +213,7 @@ const CreateDigiCard = () => {
         redirect: "follow",
       };
 
-      fetch(tokenUrl, requestOptions)
+      await fetch(tokenUrl, requestOptions)
         .then((response) => response.json())
         .then((result) => console.log("RESULT: ", result))
         .catch((error) => console.error(error));
