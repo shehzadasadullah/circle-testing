@@ -206,7 +206,7 @@ const MyDigicard = () => {
                               {item.photo_url && item.photo_url !== "" ? (
                                 <>
                                   <img
-                                    src={img.src}
+                                    src={item.photo_url}
                                     alt=""
                                     className="object-fill rounded-full w-full h-full"
                                   />
