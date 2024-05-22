@@ -4,9 +4,9 @@ import "@/styles/globals.css";
 // import "aos/dist/aos.css";
 // import AOS from "aos";
 
-console.log = () => {};
-console.error = () => {};
-console.debug = () => {};
+// console.log = () => {};
+// console.error = () => {};
+// console.debug = () => {};
 
 export default function App({ Component, pageProps }) {
   // useEffect(() => {

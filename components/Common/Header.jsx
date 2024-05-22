@@ -31,6 +31,7 @@ import { AiFillHome } from "react-icons/ai";
 import { IoIosArrowForward } from "react-icons/io";
 import toast from "react-simple-toasts";
 import { AiOutlineMenu } from "react-icons/ai";
+import { BsFillPersonVcardFill } from "react-icons/bs";
 
 const Header = ({ type = "", page = "" }) => {
   const [showModal, setShowModal] = useState(false);
@@ -416,7 +417,7 @@ const Header = ({ type = "", page = "" }) => {
                               </div>
                               <div className="flex lg:hidden ml-3">
                                 <div
-                                  className={`font16 font-semibold font-Montserrat bg-[#007BAB] rounded-lg p-2 text-white`}
+                                  className={`font16 bg-[#9E22FF] font-semibold font-Montserrat rounded-lg p-2 text-white`}
                                 >
                                   <AiOutlineMenu size={30} />
                                 </div>
@@ -434,8 +435,19 @@ const Header = ({ type = "", page = "" }) => {
                           leaveFrom="transform opacity-100 scale-100"
                           leaveTo="transform opacity-0 scale-95"
                         >
-                          <Menu.Items className="absolute right-0 z-10 mt-2 w-auto origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                            <div className="py-1">
+                          <Menu.Items
+                            style={{
+                              borderRadius: "10px",
+                              border: "0.5px solid rgba(25, 112, 214, 0.30)",
+                              background:
+                                "linear-gradient(149deg, rgba(255, 255, 255, 0.20) 0.71%, rgba(255, 255, 255, 0.10) 98.8%)",
+                              boxShadow:
+                                "0px 0px 0px 1px rgba(0, 0, 0, 0.12), 0px 1px 3px 0px rgba(0, 0, 0, 0.16), 0px 1px 0px 0px rgba(255, 255, 255, 0.05) inset",
+                              backdropFilter: "blur(40px)",
+                            }}
+                            className="absolute right-0 z-10 mt-2 w-auto origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+                          >
+                            <div className="px-2 py-2 bg-">
                               <Menu.Item>
                                 {({ active }) => (
                                   <>
@@ -464,10 +476,10 @@ const Header = ({ type = "", page = "" }) => {
                                         )}
                                       </div>
                                       <div className="flex p-2 pr-5 flex-col justify-start items-start">
-                                        <div className="font-bold">
+                                        <div className="font-bold text-white">
                                           {user?.displayName}
                                         </div>
-                                        <div>
+                                        <div className="text-white">
                                           {user?.email || user?.phoneNumber}
                                         </div>
                                       </div>
@@ -480,17 +492,20 @@ const Header = ({ type = "", page = "" }) => {
                                   <div
                                     className={classNames(
                                       active
-                                        ? "bg-gray-100 text-gray-900"
-                                        : "text-gray-700",
-                                      "block px-4 py-4 cursor-pointer text-sm"
+                                        ? "bg-[#fff] bg-opacity-10"
+                                        : "bg-transparent",
+                                      "block px-4 py-3 md:rounded-xl border-b-2 border-[#fff] border-opacity-20 md:border-b-0 cursor-pointer text-sm"
                                     )}
                                     onClick={() => {
                                       router.push(`/${user?.uid}/favorites`);
                                     }}
                                   >
                                     <div className="flex justify-start items-start">
-                                      <MdOutlineFavorite className="w-5 h-5" />
-                                      <span className="px-4 text-sm text-[#666F76] font-Poppins font-normal">
+                                      <MdOutlineFavorite
+                                        color="#fff"
+                                        className="w-5 h-5"
+                                      />
+                                      <span className="px-4 text-sm text-[#fff] font-Poppins font-normal">
                                         FAVORITES
                                       </span>
                                     </div>
@@ -502,9 +517,9 @@ const Header = ({ type = "", page = "" }) => {
                                   <div
                                     className={classNames(
                                       active
-                                        ? "bg-gray-100 text-gray-900"
-                                        : "text-gray-700",
-                                      "block px-4 py-4 cursor-pointer text-sm"
+                                        ? "bg-[#fff] bg-opacity-10"
+                                        : "bg-transparent",
+                                      "block px-4 py-3 md:rounded-xl border-b-2 border-[#fff] border-opacity-20 md:border-b-0 cursor-pointer text-sm"
                                     )}
                                     onClick={() => {
                                       router.push(
@@ -513,9 +528,12 @@ const Header = ({ type = "", page = "" }) => {
                                     }}
                                   >
                                     <div className="flex justify-start items-start">
-                                      <BsFillCalendarEventFill className="w-5 h-5" />
-                                      <span className="px-4 text-sm text-[#666F76] font-Poppins font-normal">
-                                        My Past Events
+                                      <BsFillCalendarEventFill
+                                        color="#fff"
+                                        className="w-5 h-5"
+                                      />
+                                      <span className="px-4 text-sm text-[#fff] font-Poppins font-normal">
+                                        My Events
                                       </span>
                                     </div>
                                   </div>
@@ -526,18 +544,48 @@ const Header = ({ type = "", page = "" }) => {
                                   <div
                                     className={classNames(
                                       active
-                                        ? "bg-gray-100 text-gray-900"
-                                        : "text-gray-700",
-                                      "block px-4 py-4 cursor-pointer text-sm"
+                                        ? "bg-[#fff] bg-opacity-10"
+                                        : "bg-transparent",
+                                      "block px-4 py-3 md:rounded-xl border-b-2 border-[#fff] border-opacity-20 md:border-b-0 cursor-pointer text-sm"
+                                    )}
+                                    onClick={() => {
+                                      router.push(
+                                        `/digicard/my-digicard?userID=${user.uid}`
+                                      );
+                                    }}
+                                  >
+                                    <div className="flex justify-start items-start">
+                                      <BsFillPersonVcardFill
+                                        color="#fff"
+                                        className="w-5 h-5"
+                                      />
+                                      <span className="px-4 text-sm text-[#fff] font-Poppins font-normal">
+                                        My DigiCard
+                                      </span>
+                                    </div>
+                                  </div>
+                                )}
+                              </Menu.Item>
+                              <Menu.Item>
+                                {({ active }) => (
+                                  <div
+                                    className={classNames(
+                                      active
+                                        ? "bg-[#fff] bg-opacity-10"
+                                        : "bg-transparent",
+                                      "block px-4 py-3 md:rounded-xl border-b-2 border-[#fff] border-opacity-20 md:border-b-0 cursor-pointer text-sm"
                                     )}
                                     onClick={() => {
                                       router.push("/faq");
                                     }}
                                   >
                                     <div className="flex justify-start items-start">
-                                      <FaQuestionCircle className="w-5 h-5" />
-                                      <span className="px-4 text-sm text-[#666F76] font-Poppins font-normal">
-                                        FAQ
+                                      <FaQuestionCircle
+                                        color="#fff"
+                                        className="w-5 h-5"
+                                      />
+                                      <span className="px-4 text-sm text-[#fff] font-Poppins font-normal">
+                                        FAQs
                                       </span>
                                     </div>
                                   </div>
@@ -548,17 +596,20 @@ const Header = ({ type = "", page = "" }) => {
                                   <div
                                     className={classNames(
                                       active
-                                        ? "bg-gray-100 text-gray-900"
-                                        : "text-gray-700",
-                                      "block px-4 py-4 cursor-pointer text-sm"
+                                        ? "bg-[#fff] bg-opacity-10"
+                                        : "bg-transparent",
+                                      "block px-4 py-3 md:rounded-xl border-b-2 border-[#fff] border-opacity-20 md:border-b-0 cursor-pointer text-sm"
                                     )}
                                     onClick={() => {
                                       router.push("/settings");
                                     }}
                                   >
                                     <div className="flex justify-start items-start">
-                                      <IoSettingsSharp className="w-5 h-5" />
-                                      <span className="px-4 text-sm text-[#666F76] font-Poppins font-normal">
+                                      <IoSettingsSharp
+                                        color="#fff"
+                                        className="w-5 h-5"
+                                      />
+                                      <span className="px-4 text-sm text-[#fff] font-Poppins font-normal">
                                         Integrations
                                       </span>
                                     </div>
@@ -571,9 +622,9 @@ const Header = ({ type = "", page = "" }) => {
                                     <div
                                       className={classNames(
                                         active
-                                          ? "bg-gray-100 text-gray-900"
-                                          : "text-gray-700",
-                                        "block px-4 py-4 cursor-pointer text-sm"
+                                          ? "bg-[#fff] bg-opacity-10"
+                                          : "bg-transparent",
+                                        "block px-4 py-3 md:rounded-xl cursor-pointer text-sm"
                                       )}
                                       onClick={() => {
                                         signOut(auth)
@@ -591,8 +642,11 @@ const Header = ({ type = "", page = "" }) => {
                                       }}
                                     >
                                       <div className="flex justify-start items-start">
-                                        <FaSignOutAlt className="w-5 h-5" />
-                                        <span className="px-4 text-sm text-[#666F76] font-Poppins font-normal">
+                                        <FaSignOutAlt
+                                          color="#fff"
+                                          className="w-5 h-5"
+                                        />
+                                        <span className="px-4 text-sm text-[#fff] font-Poppins font-normal">
                                           LOGOUT
                                         </span>
                                       </div>
@@ -644,16 +698,14 @@ const Header = ({ type = "", page = "" }) => {
               <Menu as="div" className="relative inline-block text-left">
                 <div>
                   <Menu.Button
-                    style={{
-                      border: "1px solid rgba(255, 255, 255, 0.20)",
-                      background:
-                        "linear-gradient(90deg, #4532BF 5.81%, #9429FF 100%)",
-                      boxShadow: "0px 4px 50px 0px rgba(69, 50, 191, 0.50)",
-                    }}
-                    className={"flex items-center rounded-lg p-2 text-white"}
+                    className={
+                      "flex items-center rounded-lg p-2 text-white bg-[#9E22FF]"
+                    }
                   >
-                    <div className="flex items-center justify-start">
-                      <div className={`font16 font-semibold font-Montserrat`}>
+                    <div className="flex bg-[#9E22FF] items-center justify-start">
+                      <div
+                        className={`font16 bg-[#9E22FF] font-semibold font-Montserrat`}
+                      >
                         <AiOutlineMenu size={30} />
                       </div>
                     </div>
@@ -669,8 +721,19 @@ const Header = ({ type = "", page = "" }) => {
                   leaveFrom="transform opacity-100 scale-100"
                   leaveTo="transform opacity-0 scale-95"
                 >
-                  <Menu.Items className="absolute right-0 z-10 mt-2 w-auto origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                    <div className="py-1">
+                  <Menu.Items
+                    style={{
+                      borderRadius: "10px",
+                      border: "0.5px solid rgba(25, 112, 214, 0.30)",
+                      background:
+                        "linear-gradient(149deg, rgba(255, 255, 255, 0.20) 0.71%, rgba(255, 255, 255, 0.10) 98.8%)",
+                      boxShadow:
+                        "0px 0px 0px 1px rgba(0, 0, 0, 0.12), 0px 1px 3px 0px rgba(0, 0, 0, 0.16), 0px 1px 0px 0px rgba(255, 255, 255, 0.05) inset",
+                      backdropFilter: "blur(40px)",
+                    }}
+                    className="absolute right-[-5%] z-10 mt-2 w-auto origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+                  >
+                    <div className="px-2 py-2">
                       {(user?.email || user?.phoneNumber) && (
                         <Menu.Item>
                           {({ active }) => (
@@ -698,10 +761,12 @@ const Header = ({ type = "", page = "" }) => {
                                   )}
                                 </div>
                                 <div className="flex p-2 pr-5 flex-col justify-start items-start">
-                                  <div className="font-bold">
+                                  <div className="font-bold text-white">
                                     {user?.displayName}
                                   </div>
-                                  <div>{user?.email || user?.phoneNumber}</div>
+                                  <div className="text-white">
+                                    {user?.email || user?.phoneNumber}
+                                  </div>
                                 </div>
                               </div>
                             </>
@@ -713,17 +778,17 @@ const Header = ({ type = "", page = "" }) => {
                           <div
                             className={classNames(
                               active
-                                ? "bg-gray-100 text-gray-900"
-                                : "text-gray-700",
-                              "block px-4 py-4 cursor-pointer text-sm"
+                                ? "bg-[#fff] bg-opacity-10"
+                                : "bg-transparent",
+                              "block px-4 py-3 md:rounded-xl border-b-2 border-[#fff] border-opacity-20 md:border-b-0 cursor-pointer text-sm"
                             )}
                             onClick={() => {
                               router.push(`/`);
                             }}
                           >
                             <div className="flex justify-start items-start">
-                              <AiFillHome className="w-5 h-5" />
-                              <span className="px-4 text-sm text-[#666F76] font-Poppins font-normal">
+                              <AiFillHome color="#fff" className="w-5 h-5" />
+                              <span className="px-4 text-sm text-[#fff] font-Poppins font-normal">
                                 HOME
                               </span>
                             </div>
@@ -735,17 +800,20 @@ const Header = ({ type = "", page = "" }) => {
                           <div
                             className={classNames(
                               active
-                                ? "bg-gray-100 text-gray-900"
-                                : "text-gray-700",
-                              "block px-4 py-4 cursor-pointer text-sm"
+                                ? "bg-[#fff] bg-opacity-10"
+                                : "bg-transparent",
+                              "block px-4 py-3 md:rounded-xl border-b-2 border-[#fff] border-opacity-20 md:border-b-0 cursor-pointer text-sm"
                             )}
                             onClick={() => {
                               router.push(`/about`);
                             }}
                           >
                             <div className="flex justify-start items-start">
-                              <BsFillInfoCircleFill className="w-5 h-5" />
-                              <span className="px-4 text-sm text-[#666F76] font-Poppins font-normal">
+                              <BsFillInfoCircleFill
+                                color="#fff"
+                                className="w-5 h-5"
+                              />
+                              <span className="px-4 text-sm text-[#fff] font-Poppins font-normal">
                                 ABOUT
                               </span>
                             </div>
@@ -757,17 +825,20 @@ const Header = ({ type = "", page = "" }) => {
                           <div
                             className={classNames(
                               active
-                                ? "bg-gray-100 text-gray-900"
-                                : "text-gray-700",
-                              "block px-4 py-4 cursor-pointer text-sm"
+                                ? "bg-[#fff] bg-opacity-10"
+                                : "bg-transparent",
+                              "block px-4 py-3 md:rounded-xl border-b-2 border-[#fff] border-opacity-20 md:border-b-0 cursor-pointer text-sm"
                             )}
                             onClick={() => {
                               router.push(`/contact`);
                             }}
                           >
                             <div className="flex justify-start items-start">
-                              <BiSolidPhoneCall className="w-5 h-5" />
-                              <span className="px-4 text-sm text-[#666F76] font-Poppins font-normal">
+                              <BiSolidPhoneCall
+                                color="#fff"
+                                className="w-5 h-5"
+                              />
+                              <span className="px-4 text-sm text-[#fff] font-Poppins font-normal">
                                 CONTACT
                               </span>
                             </div>
@@ -780,17 +851,17 @@ const Header = ({ type = "", page = "" }) => {
                             <div
                               className={classNames(
                                 active
-                                  ? "bg-gray-100 text-gray-900"
-                                  : "text-gray-700",
-                                "block px-4 py-4 cursor-pointer text-sm"
+                                  ? "bg-[#fff] bg-opacity-10"
+                                  : "bg-transparent",
+                                "block px-4 py-3 md:rounded-xl border-b-2 border-[#fff] border-opacity-20 md:border-b-0 cursor-pointer text-sm"
                               )}
                               onClick={() => {
                                 handleClick();
                               }}
                             >
                               <div className="flex justify-start items-start">
-                                <FaSignInAlt className="w-5 h-5" />
-                                <span className="px-4 text-sm text-[#666F76] font-Poppins font-normal">
+                                <FaSignInAlt color="#fff" className="w-5 h-5" />
+                                <span className="px-4 text-sm text-[#fff] font-Poppins font-normal">
                                   LOGIN/SIGNUP
                                 </span>
                               </div>
@@ -805,17 +876,20 @@ const Header = ({ type = "", page = "" }) => {
                               <div
                                 className={classNames(
                                   active
-                                    ? "bg-gray-100 text-gray-900"
-                                    : "text-gray-700",
-                                  "block px-4 py-4 cursor-pointer text-sm"
+                                    ? "bg-[#fff] bg-opacity-10"
+                                    : "bg-transparent",
+                                  "block px-4 py-3 md:rounded-xl border-b-2 border-[#fff] border-opacity-20 md:border-b-0 cursor-pointer text-sm"
                                 )}
                                 onClick={() => {
                                   router.push(`/${user?.uid}/favorites`);
                                 }}
                               >
                                 <div className="flex justify-start items-start">
-                                  <MdOutlineFavorite className="w-5 h-5" />
-                                  <span className="px-4 text-sm text-[#666F76] font-Poppins font-normal">
+                                  <MdOutlineFavorite
+                                    color="#fff"
+                                    className="w-5 h-5"
+                                  />
+                                  <span className="px-4 text-sm text-[#fff] font-Poppins font-normal">
                                     FAVORITES
                                   </span>
                                 </div>
@@ -827,18 +901,21 @@ const Header = ({ type = "", page = "" }) => {
                               <div
                                 className={classNames(
                                   active
-                                    ? "bg-gray-100 text-gray-900"
-                                    : "text-gray-700",
-                                  "block px-4 py-4 cursor-pointer text-sm"
+                                    ? "bg-[#fff] bg-opacity-10"
+                                    : "bg-transparent",
+                                  "block px-4 py-3 md:rounded-xl border-b-2 border-[#fff] border-opacity-20 md:border-b-0 cursor-pointer text-sm"
                                 )}
                                 onClick={() => {
                                   router.push(`/hostEvents?userID=${user.uid}`);
                                 }}
                               >
                                 <div className="flex justify-start items-start">
-                                  <BsFillCalendarEventFill className="w-5 h-5" />
-                                  <span className="px-4 text-sm text-[#666F76] font-Poppins font-normal">
-                                    My Past Events
+                                  <BsFillCalendarEventFill
+                                    color="#fff"
+                                    className="w-5 h-5"
+                                  />
+                                  <span className="px-4 text-sm text-[#fff] font-Poppins font-normal">
+                                    My Events
                                   </span>
                                 </div>
                               </div>
@@ -849,18 +926,48 @@ const Header = ({ type = "", page = "" }) => {
                               <div
                                 className={classNames(
                                   active
-                                    ? "bg-gray-100 text-gray-900"
-                                    : "text-gray-700",
-                                  "block px-4 py-4 cursor-pointer text-sm"
+                                    ? "bg-[#fff] bg-opacity-10"
+                                    : "bg-transparent",
+                                  "block px-4 py-3 md:rounded-xl border-b-2 border-[#fff] border-opacity-20 md:border-b-0 cursor-pointer text-sm"
+                                )}
+                                onClick={() => {
+                                  router.push(
+                                    `/digicard/my-digicard?userID=${user.uid}`
+                                  );
+                                }}
+                              >
+                                <div className="flex justify-start items-start">
+                                  <BsFillPersonVcardFill
+                                    color="#fff"
+                                    className="w-5 h-5"
+                                  />
+                                  <span className="px-4 text-sm text-[#fff] font-Poppins font-normal">
+                                    My DigiCard
+                                  </span>
+                                </div>
+                              </div>
+                            )}
+                          </Menu.Item>
+                          <Menu.Item>
+                            {({ active }) => (
+                              <div
+                                className={classNames(
+                                  active
+                                    ? "bg-[#fff] bg-opacity-10"
+                                    : "bg-transparent",
+                                  "block px-4 py-3 md:rounded-xl border-b-2 border-[#fff] border-opacity-20 md:border-b-0 cursor-pointer text-sm"
                                 )}
                                 onClick={() => {
                                   router.push("/faq");
                                 }}
                               >
                                 <div className="flex justify-start items-start">
-                                  <FaQuestionCircle className="w-5 h-5" />
-                                  <span className="px-4 text-sm text-[#666F76] font-Poppins font-normal">
-                                    FAQ
+                                  <FaQuestionCircle
+                                    color="#fff"
+                                    className="w-5 h-5"
+                                  />
+                                  <span className="px-4 text-sm text-[#fff] font-Poppins font-normal">
+                                    FAQs
                                   </span>
                                 </div>
                               </div>
@@ -871,17 +978,20 @@ const Header = ({ type = "", page = "" }) => {
                               <div
                                 className={classNames(
                                   active
-                                    ? "bg-gray-100 text-gray-900"
-                                    : "text-gray-700",
-                                  "block px-4 py-4 cursor-pointer text-sm"
+                                    ? "bg-[#fff] bg-opacity-10"
+                                    : "bg-transparent",
+                                  "block px-4 py-3 md:rounded-xl border-b-2 border-[#fff] border-opacity-20 md:border-b-0 cursor-pointer text-sm"
                                 )}
                                 onClick={() => {
                                   router.push("/settings");
                                 }}
                               >
                                 <div className="flex justify-start items-start">
-                                  <IoSettingsSharp className="w-5 h-5" />
-                                  <span className="px-4 text-sm text-[#666F76] font-Poppins font-normal">
+                                  <IoSettingsSharp
+                                    color="#fff"
+                                    className="w-5 h-5"
+                                  />
+                                  <span className="px-4 text-sm text-[#fff] font-Poppins font-normal">
                                     Integrations
                                   </span>
                                 </div>
@@ -894,9 +1004,9 @@ const Header = ({ type = "", page = "" }) => {
                                 <div
                                   className={classNames(
                                     active
-                                      ? "bg-gray-100 text-gray-900"
-                                      : "text-gray-700",
-                                    "block px-4 py-4 cursor-pointer text-sm"
+                                      ? "bg-[#fff] bg-opacity-10"
+                                      : "bg-transparent",
+                                    "block px-4 py-3 md:rounded-xl cursor-pointer text-sm"
                                   )}
                                   onClick={() => {
                                     signOut(auth)
@@ -914,8 +1024,11 @@ const Header = ({ type = "", page = "" }) => {
                                   }}
                                 >
                                   <div className="flex justify-start items-start">
-                                    <FaSignOutAlt className="w-5 h-5" />
-                                    <span className="px-4 text-sm text-[#666F76] font-Poppins font-normal">
+                                    <FaSignOutAlt
+                                      color="#fff"
+                                      className="w-5 h-5"
+                                    />
+                                    <span className="px-4 text-sm text-[#fff] font-Poppins font-normal">
                                       LOGOUT
                                     </span>
                                   </div>
